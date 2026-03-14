@@ -1,26 +1,41 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-playfair), Georgia, serif;
+  --font-body: var(--font-figtree), system-ui, sans-serif;
+  /* Design tokens - Saffron Town palette */
+  --color-primary: #BC8034;
+  --color-primary-hover: #A66E2B;
+  --color-primary-muted: #BC803422;
+  --color-secondary: #8C7A6B;
+  --color-secondary-muted: #8C7A6B22;
+  --color-secondary-border: #8C7A6B40;
+  --color-background: #F5EDE4;
+  --color-background-alt: #FFFFFF;
+  --color-surface: #D9CAB3;
+  --color-surface-muted: #E8E4DD;
+  --color-text-primary: #2C2520;
+  --color-text-secondary: #8C7A6B;
+  --color-text-muted: #8C7A6BAA;
+  --color-dark: #4A4038;
+  --color-dark-text: #D9CAB3;
+  --color-dark-text-muted: #D9CAB3AA;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  .article-content h2 {
+    @apply font-display text-3xl font-bold text-text-primary mt-12 mb-6 tracking-tight;
   }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  .article-content h3 {
+    @apply font-display text-2xl font-bold text-text-primary mt-10 mb-4 tracking-tight;
+  }
+  .article-content p {
+    @apply text-lg leading-relaxed text-secondary mb-8 font-body;
+  }
+  .article-content blockquote {
+    @apply border-l-4 border-primary pl-8 py-2 my-12 italic text-2xl text-text-primary leading-relaxed bg-primary/5 rounded-r-2xl;
+  }
+  .article-content strong {
+    @apply text-text-primary font-bold;
+  }
 }

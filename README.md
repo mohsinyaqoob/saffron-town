@@ -1,36 +1,62 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Saffron Town
+
+Premium Kashmiri Saffron, Almonds, Walnuts & Honey ecommerce website. Built with Next.js 16, Tailwind CSS 4, and modern best practices.
+
+## Tech Stack
+
+- **Framework:** Next.js 16 (App Router)
+- **Styling:** Tailwind CSS 4 with design tokens
+- **Fonts:** Playfair Display (display), Bricolage Grotesque (body)
+- **Language:** TypeScript
+
+## Project Structure
+
+```
+src/
+├── app/
+│   ├── layout.tsx          # Root layout, fonts, metadata
+│   ├── page.tsx            # Homepage
+│   ├── globals.css         # Tailwind + theme tokens
+│   ├── robots.ts           # SEO: robots.txt
+│   ├── sitemap.ts          # SEO: XML sitemap
+│   ├── manifest.ts         # PWA manifest
+│   └── ai.txt/
+│       └── route.ts        # GPT/AI findability
+├── components/
+│   ├── layout/             # Header, Footer
+│   ├── sections/           # Hero, ProductGrid, Blog, etc.
+│   ├── ui/                 # Button, Badge (reusable)
+│   └── seo/                # JSON-LD structured data
+└── lib/
+    ├── constants.ts        # Site config, products, nav
+    └── utils.ts            # cn() helper
+```
+
+## Design Tokens (globals.css)
+
+- **Primary:** `#BC8034` - CTAs, accents
+- **Secondary:** `#8C7A6B` - Body text, muted
+- **Background:** `#F5EDE4` - Page background
+- **Dark:** `#4A4038` - Footer, guarantee section
+
+## SEO & GPT Findability
+
+- **Meta:** Title, description, keywords, Open Graph
+- **Structured data:** Organization, WebSite, Product (JSON-LD)
+- **robots.txt:** Allows GPTBot, ChatGPT-User
+- **sitemap.xml:** Auto-generated
+- **/ai.txt:** Plain-text manifest for AI crawlers
+
+## Commands
+
+```bash
+npm run dev    # Development server
+npm run build  # Production build
+npm run start  # Start production server
+```
 
 ## Getting Started
 
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. `npm install` (if dependencies missing)
+2. Update `SITE_CONFIG.url` in `src/lib/constants.ts` for your domain
+3. Replace placeholder images with your product assets

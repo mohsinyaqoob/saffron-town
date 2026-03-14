@@ -1,0 +1,38 @@
+[
+  {
+    "id": "health-benefits-saffron",
+    "title": "The Golden Threads: Science-Backed Health Benefits of Kashmiri Saffron",
+    "slug": "health-benefits-saffron",
+    "excerpt": "Discover why premium saffron from Kashmir valleys is prized for wellness and culinary excellence.",
+    "content": "<p>Kashmiri saffron, often referred to as 'red gold', is more than just a culinary spice. For centuries, it has been cherished for its profound medicinal properties. Sourced from the fields of Pampore, this premium saffron is known for its high concentration of crocin, which gives it its distinct deep red color and powerful antioxidant properties.</p><blockquote>\"Saffron is the bridge between the earth's bounty and the soul's serenity. Its true value lies not in its weight, but in the vitality it brings to the human spirit.\"</blockquote><h2>1. A Natural Mood Booster</h2><p>Studies have shown that saffron can help alleviate symptoms of mild-to-moderate depression. It works by influencing serotonin levels in the brain, much like traditional antidepressants but without the synthetic side effects.</p><h2>2. Rich in Antioxidants</h2><p>Saffron is packed with plant compounds that act as antioxidants, such as crocin, crocetin, safranal, and kaempferol. These help protect your cells against oxidative stress and free radicals.</p><h2>3. The Pampore Heritage</h2><p>Pampore, the 'Saffron Capital of India', provides the unique climatic conditions required for the Kesar to grow with maximum potency. The soil here is uniquely rich in minerals that contribute to the distinctive aroma.</p>",
+    "date": "March 8, 2025",
+    "author": "Dr. Arifa Jan",
+    "category": "Wellness",
+    "image": "/images/blog/saffron-benefit.png",
+    "readTime": "5 min read"
+  },
+  {
+    "id": "farm-to-table-almonds",
+    "title": "Himalayan Orchards: A Journey from Farm to Your Table",
+    "slug": "farm-to-table-almonds",
+    "excerpt": "A journey from Himalayan orchards to your doorstep. Trace our quality-first sourcing process.",
+    "content": "<p>Ever wondered why Kashmiri almonds taste so much richer than their commercial counterparts? The secret lies in the high-altitude orchards and the traditional farming methods used in the Himalayan foothills.</p><h2>The Mamra Difference</h2><p>Unlike regular almonds, Kashmiri Mamra almonds are grown organically and are rich in natural oils. They are harvested by hand, sun-dried, and never chemically processed.</p><h2>Sustainable Sourcing</h2><p>At Saffron Town, we work directly with small-scale farmers. This not only ensures the highest quality but also supports the local Himalayan economy and promotes sustainable agriculture.</p>",
+    "date": "March 5, 2025",
+    "author": "Faisal Ahmed",
+    "category": "Sourcing",
+    "image": "/images/blog/almond-farm.png",
+    "readTime": "4 min read"
+  },
+  {
+    "id": "raw-honey-superfood",
+    "title": "Raw Honey: Why Unfiltered Mountain Honey is a Superfood",
+    "slug": "raw-honey-superfood",
+    "excerpt": "Why unfiltered honey from mountain apiaries offers more than just great taste.",
+    "content": "<p>Raw honey is often called 'liquid gold'. When it comes from the high-altitude mountain apiaries of the Himalayas, its nutritional profile is unmatched.</p><h2>Unfiltered Purity</h2><p>Commercial honey is often pasteurized and filtered, which destroys natural enzymes and removes beneficial pollen. Our Himalayan honey is cold-extracted and unfiltered, preserving all its natural goodness.</p><h2>Natural Healing</h2><p>From soothing a sore throat to acting as a natural energy booster, raw honey is a versatile addition to any healthy lifestyle.</p>",
+    "date": "March 2, 2025",
+    "author": "Sahil Bhat",
+    "category": "Nutrition",
+    "image": "/images/blog/honey-mountain.png",
+    "readTime": "6 min read"
+  }
+]

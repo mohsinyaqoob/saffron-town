@@ -1,0 +1,1387 @@
+{
+  "version": "2.8",
+  "children": [
+    {
+      "type": "frame",
+      "id": "bi8Au",
+      "x": -95,
+      "y": -10,
+      "name": "Saffron Town Homepage",
+      "width": 1440,
+      "fill": "#F5EDE4",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "59wFM",
+          "name": "header",
+          "width": "fill_container",
+          "height": 80,
+          "fill": "#FFFFFF",
+          "gap": 40,
+          "padding": [
+            24,
+            80
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "lnjVS",
+              "name": "logo",
+              "fill": "#2C2520",
+              "content": "Saffron Town",
+              "fontFamily": "Playfair Display",
+              "fontSize": 24,
+              "fontWeight": "600"
+            },
+            {
+              "type": "frame",
+              "id": "kWLaU",
+              "name": "nav",
+              "gap": 32,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "3YKe1",
+                  "name": "nav1",
+                  "fill": "#8C7A6B",
+                  "content": "Saffron",
+                  "fontFamily": "Bricolage Grotesque",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "aogrR",
+                  "name": "nav2",
+                  "fill": "#8C7A6B",
+                  "content": "Almonds",
+                  "fontFamily": "Bricolage Grotesque",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "OgNub",
+                  "name": "nav3",
+                  "fill": "#8C7A6B",
+                  "content": "Walnuts",
+                  "fontFamily": "Bricolage Grotesque",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "txRaJ",
+                  "name": "nav4",
+                  "fill": "#8C7A6B",
+                  "content": "Honey",
+                  "fontFamily": "Bricolage Grotesque",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "8EcaH",
+              "name": "ctaHeader",
+              "fill": "#BC8034",
+              "cornerRadius": 8,
+              "padding": [
+                14,
+                28
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "QHp1p",
+                  "name": "ctaHeaderText",
+                  "fill": "#FFFFFF",
+                  "content": "Shop Now",
+                  "fontFamily": "Bricolage Grotesque",
+                  "fontSize": 14,
+                  "fontWeight": "600"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "2G9zM",
+          "name": "hero",
+          "width": "fill_container",
+          "gap": 64,
+          "padding": [
+            80,
+            120
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "SdmOi",
+              "name": "heroText",
+              "width": 520,
+              "layout": "vertical",
+              "gap": 24,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "Tl3zB",
+                  "name": "heroBadge",
+                  "fill": "#8C7A6B22",
+                  "cornerRadius": 20,
+                  "padding": [
+                    8,
+                    16
+                  ],
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "dsnOP",
+                      "name": "heroBadgeText",
+                      "fill": "#8C7A6B",
+                      "content": "100% PURE · FARM DIRECT",
+                      "fontFamily": "Bricolage Grotesque",
+                      "fontSize": 11,
+                      "fontWeight": "500",
+                      "letterSpacing": 2
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "cjuzr",
+                  "name": "heroHeadline",
+                  "fill": "#2C2520",
+                  "textGrowth": "fixed-width",
+                  "width": 480,
+                  "content": "Premium Kashmiri Saffron & Nature’s Finest",
+                  "lineHeight": 1.2,
+                  "fontFamily": "Playfair Display",
+                  "fontSize": 48
+                },
+                {
+                  "type": "text",
+                  "id": "gjEeg",
+                  "name": "heroSubline",
+                  "fill": "#8C7A6B",
+                  "textGrowth": "fixed-width",
+                  "width": 480,
+                  "content": "Handpicked from Himalayan farms. Zero adulteration. Money-back guarantee.",
+                  "lineHeight": 1.5,
+                  "fontFamily": "Bricolage Grotesque",
+                  "fontSize": 18,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "izmdJ",
+                  "name": "heroCTA",
+                  "fill": "#BC8034",
+                  "cornerRadius": 8,
+                  "padding": [
+                    18,
+                    36
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "SfuZM",
+                      "name": "heroCTAText",
+                      "fill": "#FFFFFF",
+                      "content": "Explore Collection",
+                      "fontFamily": "Bricolage Grotesque",
+                      "fontSize": 16,
+                      "fontWeight": "600"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "lp1Yv",
+              "name": "heroImage",
+              "width": 520,
+              "height": 420,
+              "fill": {
+                "type": "image",
+                "enabled": true,
+                "url": "./images/generated-1773104458477.png",
+                "mode": "fill"
+              },
+              "cornerRadius": 16
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "6aYUg",
+          "name": "trustSection",
+          "width": "fill_container",
+          "fill": "#FFFFFF",
+          "gap": 48,
+          "padding": [
+            40,
+            120
+          ],
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "V1qmQ",
+              "name": "trust1",
+              "width": 280,
+              "layout": "vertical",
+              "gap": 12,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "rectangle",
+                  "cornerRadius": 24,
+                  "id": "mHTQU",
+                  "name": "trust1Icon",
+                  "fill": "#BC803422",
+                  "width": 48,
+                  "height": 48
+                },
+                {
+                  "type": "text",
+                  "id": "dQsfG",
+                  "name": "trust1Title",
+                  "fill": "#2C2520",
+                  "content": "Premium Only",
+                  "fontFamily": "Playfair Display",
+                  "fontSize": 16,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "0VNGI",
+                  "name": "trust1Desc",
+                  "fill": "#8C7A6B",
+                  "textGrowth": "fixed-width",
+                  "width": 240,
+                  "content": "Curated selection of the finest quality",
+                  "lineHeight": 1.4,
+                  "textAlign": "center",
+                  "fontFamily": "Bricolage Grotesque",
+                  "fontSize": 13,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "fwVTj",
+              "name": "trust2",
+              "width": 280,
+              "layout": "vertical",
+              "gap": 12,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "rectangle",
+                  "cornerRadius": 24,
+                  "id": "UbaH6",
+                  "name": "trust2Icon",
+                  "fill": "#8C7A6B22",
+                  "width": 48,
+                  "height": 48
+                },
+                {
+                  "type": "text",
+                  "id": "MLevT",
+                  "name": "trust2Title",
+                  "fill": "#2C2520",
+                  "content": "Farm Direct",
+                  "fontFamily": "Playfair Display",
+                  "fontSize": 16,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "R3thZ",
+                  "name": "trust2Desc",
+                  "fill": "#8C7A6B",
+                  "textGrowth": "fixed-width",
+                  "width": 240,
+                  "content": "Sourced directly from Himalayan farms",
+                  "lineHeight": 1.4,
+                  "textAlign": "center",
+                  "fontFamily": "Bricolage Grotesque",
+                  "fontSize": 13,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "QbPhk",
+              "name": "trust3",
+              "width": 280,
+              "layout": "vertical",
+              "gap": 12,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "rectangle",
+                  "cornerRadius": 24,
+                  "id": "Ucy1U",
+                  "name": "trust3Icon",
+                  "fill": "#8C7A6B33",
+                  "width": 48,
+                  "height": 48
+                },
+                {
+                  "type": "text",
+                  "id": "F0QCq",
+                  "name": "trust3Title",
+                  "fill": "#2C2520",
+                  "content": "100% Guarantee",
+                  "fontFamily": "Playfair Display",
+                  "fontSize": 16,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "xopdh",
+                  "name": "trust3Desc",
+                  "fill": "#8C7A6B",
+                  "textGrowth": "fixed-width",
+                  "width": 240,
+                  "content": "No adulteration. Money-back promise.",
+                  "lineHeight": 1.4,
+                  "textAlign": "center",
+                  "fontFamily": "Bricolage Grotesque",
+                  "fontSize": 13,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "HHWpK",
+          "name": "productsSection",
+          "width": "fill_container",
+          "fill": "#F5EDE4",
+          "layout": "vertical",
+          "gap": 12,
+          "padding": [
+            80,
+            120
+          ],
+          "children": [
+            {
+              "type": "text",
+              "id": "zBj6f",
+              "name": "productsTitle",
+              "fill": "#2C2520",
+              "content": "Our Collection",
+              "fontFamily": "Playfair Display",
+              "fontSize": 32,
+              "fontWeight": "500"
+            },
+            {
+              "type": "text",
+              "id": "hqNRt",
+              "name": "productsSub",
+              "fill": "#8C7A6B",
+              "content": "Handpicked for the health-conscious. Premium quality, farm-direct.",
+              "fontFamily": "Bricolage Grotesque",
+              "fontSize": 16,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "I13vW",
+              "name": "sectionDetail",
+              "fill": "#8C7A6B",
+              "content": "100% guaranteed · Free shipping over ₹2,000",
+              "fontFamily": "Bricolage Grotesque",
+              "fontSize": 14,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "cRFWT",
+              "name": "productGrid",
+              "width": "fill_container",
+              "gap": 24,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "QFohH",
+                  "name": "card1",
+                  "width": 280,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 16,
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": 24,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "QyeA9",
+                      "name": "card1Img",
+                      "width": "fill_container",
+                      "height": 160,
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "./images/generated-1773104078377.png",
+                        "mode": "fill"
+                      },
+                      "cornerRadius": 12
+                    },
+                    {
+                      "type": "text",
+                      "id": "IeKok",
+                      "name": "card1Title",
+                      "fill": "#2C2520",
+                      "content": "Kashmiri Saffron",
+                      "fontFamily": "Playfair Display",
+                      "fontSize": 18,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "W7xGo",
+                      "name": "sub1",
+                      "fill": "#8C7A6B",
+                      "content": "Finest-grade threads from Kashmir valleys",
+                      "fontFamily": "Bricolage Grotesque",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "1nDZG",
+                      "name": "price1",
+                      "fill": "#2C2520",
+                      "content": "From ₹2,499",
+                      "fontFamily": "Playfair Display",
+                      "fontSize": 16,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "oKOZB",
+                      "name": "rev1",
+                      "fill": "#8C7A6B",
+                      "content": "★ 4.2 · 1.4k reviews",
+                      "fontFamily": "Bricolage Grotesque",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "jE58f",
+                      "name": "card1Sizes",
+                      "fill": "#8C7A6B",
+                      "content": "1g · 2g · 5g · 10g",
+                      "fontFamily": "Bricolage Grotesque",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "TbzHn",
+                      "name": "btn1",
+                      "width": "fill_container",
+                      "fill": "#BC8034",
+                      "cornerRadius": 8,
+                      "padding": [
+                        12,
+                        20
+                      ],
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "nt1n6",
+                          "fill": "#FFFFFF",
+                          "content": "Add to Cart",
+                          "fontFamily": "Bricolage Grotesque",
+                          "fontSize": 14,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "VR14T",
+                  "name": "card2",
+                  "width": 280,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 16,
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": 24,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "wZ9to",
+                      "name": "card2Img",
+                      "width": "fill_container",
+                      "height": 160,
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "./images/generated-1773104092406.png",
+                        "mode": "fill"
+                      },
+                      "cornerRadius": 12
+                    },
+                    {
+                      "type": "text",
+                      "id": "hnkp0",
+                      "name": "card2Title",
+                      "fill": "#2C2520",
+                      "content": "Premium Almonds",
+                      "fontFamily": "Playfair Display",
+                      "fontSize": 18,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "ujYmB",
+                      "name": "sub2",
+                      "fill": "#8C7A6B",
+                      "content": "Crunchy, nutrient-rich from Himalayan orchards",
+                      "fontFamily": "Bricolage Grotesque",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "oHFQi",
+                      "name": "price2",
+                      "fill": "#2C2520",
+                      "content": "From ₹899",
+                      "fontFamily": "Playfair Display",
+                      "fontSize": 16,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "6OIp7",
+                      "name": "rev2",
+                      "fill": "#8C7A6B",
+                      "content": "★ 4.5 · 2.1k reviews",
+                      "fontFamily": "Bricolage Grotesque",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "nUCs2",
+                      "name": "card2Sizes",
+                      "fill": "#8C7A6B",
+                      "content": "1kg · 2kg · 3kg",
+                      "fontFamily": "Bricolage Grotesque",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "uHtzW",
+                      "name": "btn2",
+                      "width": "fill_container",
+                      "fill": "#BC8034",
+                      "cornerRadius": 8,
+                      "padding": [
+                        12,
+                        20
+                      ],
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "CokGH",
+                          "fill": "#FFFFFF",
+                          "content": "Add to Cart",
+                          "fontFamily": "Bricolage Grotesque",
+                          "fontSize": 14,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "o3FGO",
+                  "name": "card3",
+                  "width": 280,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 16,
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": 24,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "frDhZ",
+                      "name": "card3Img",
+                      "width": "fill_container",
+                      "height": 160,
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "./images/generated-1773104107091.png",
+                        "mode": "fill"
+                      },
+                      "cornerRadius": 12
+                    },
+                    {
+                      "type": "text",
+                      "id": "tObRH",
+                      "name": "card3Title",
+                      "fill": "#2C2520",
+                      "content": "Walnuts",
+                      "fontFamily": "Playfair Display",
+                      "fontSize": 18,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "E8MWU",
+                      "name": "sub3",
+                      "fill": "#8C7A6B",
+                      "content": "Fresh kernels, packed with omega-3",
+                      "fontFamily": "Bricolage Grotesque",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "8SCsM",
+                      "name": "price3",
+                      "fill": "#2C2520",
+                      "content": "From ₹749",
+                      "fontFamily": "Playfair Display",
+                      "fontSize": 16,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "fw6g4",
+                      "name": "rev3",
+                      "fill": "#8C7A6B",
+                      "content": "★ 4.3 · 1.8k reviews",
+                      "fontFamily": "Bricolage Grotesque",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "0AeR8",
+                      "name": "card3Sizes",
+                      "fill": "#8C7A6B",
+                      "content": "1kg · 2kg · 3kg",
+                      "fontFamily": "Bricolage Grotesque",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "4hXAg",
+                      "name": "btn3",
+                      "width": "fill_container",
+                      "fill": "#BC8034",
+                      "cornerRadius": 8,
+                      "padding": [
+                        12,
+                        20
+                      ],
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "kgS2j",
+                          "fill": "#FFFFFF",
+                          "content": "Add to Cart",
+                          "fontFamily": "Bricolage Grotesque",
+                          "fontSize": 14,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "4OVHf",
+                  "name": "card4",
+                  "width": 280,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 16,
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": 24,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "C9PET",
+                      "name": "card4Img",
+                      "width": "fill_container",
+                      "height": 160,
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "./images/generated-1773104133564.png",
+                        "mode": "fill"
+                      },
+                      "cornerRadius": 12
+                    },
+                    {
+                      "type": "text",
+                      "id": "y2xua",
+                      "name": "card4Title",
+                      "fill": "#2C2520",
+                      "content": "Raw Honey",
+                      "fontFamily": "Playfair Display",
+                      "fontSize": 18,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "vCEWS",
+                      "name": "sub4",
+                      "fill": "#8C7A6B",
+                      "content": "Pure, unfiltered from mountain apiaries",
+                      "fontFamily": "Bricolage Grotesque",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "hnE1J",
+                      "name": "price4",
+                      "fill": "#2C2520",
+                      "content": "From ₹599",
+                      "fontFamily": "Playfair Display",
+                      "fontSize": 16,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "5Zzf0",
+                      "name": "rev4",
+                      "fill": "#8C7A6B",
+                      "content": "★ 4.7 · 3.2k reviews",
+                      "fontFamily": "Bricolage Grotesque",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "Tgmdi",
+                      "name": "card4Sizes",
+                      "fill": "#8C7A6B",
+                      "content": "500g · 1kg",
+                      "fontFamily": "Bricolage Grotesque",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "8fN5o",
+                      "name": "btn4",
+                      "width": "fill_container",
+                      "fill": "#BC8034",
+                      "cornerRadius": 8,
+                      "padding": [
+                        12,
+                        20
+                      ],
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "Aedhp",
+                          "fill": "#FFFFFF",
+                          "content": "Add to Cart",
+                          "fontFamily": "Bricolage Grotesque",
+                          "fontSize": 14,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "Vbu8y",
+          "name": "blogSection",
+          "width": "fill_container",
+          "fill": "#FFFFFF",
+          "layout": "vertical",
+          "gap": 32,
+          "padding": [
+            80,
+            120
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "8xTsQ",
+              "name": "blogHeader",
+              "width": "fill_container",
+              "justifyContent": "space_between",
+              "alignItems": "end",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "DNtLi",
+                  "name": "blogTitle",
+                  "fill": "#2C2520",
+                  "content": "From the Blog",
+                  "fontFamily": "Playfair Display",
+                  "fontSize": 32,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "lWigx",
+                  "name": "viewAll",
+                  "fill": "#BC8034",
+                  "content": "View all posts →",
+                  "fontFamily": "Bricolage Grotesque",
+                  "fontSize": 14,
+                  "fontWeight": "600"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "NZSjq",
+              "name": "blogGrid",
+              "width": "fill_container",
+              "gap": 24,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "l1jZ3",
+                  "name": "blog1",
+                  "clip": true,
+                  "width": 380,
+                  "fill": "#F5EDE4",
+                  "cornerRadius": 12,
+                  "layout": "vertical",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "qhBkI",
+                      "name": "blog1Img",
+                      "width": "fill_container",
+                      "height": 180,
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "./images/generated-1773104809592.png",
+                        "mode": "fill"
+                      },
+                      "cornerRadius": [
+                        12,
+                        12,
+                        0,
+                        0
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "Kb1lx",
+                      "name": "blog1Content",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 12,
+                      "padding": 24,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "POGyq",
+                          "name": "blog1Date",
+                          "fill": "#8C7A6B",
+                          "content": "Mar 8, 2025",
+                          "fontFamily": "Bricolage Grotesque",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "kLaIc",
+                          "name": "blog1Title",
+                          "fill": "#2C2520",
+                          "textGrowth": "fixed-width",
+                          "width": 332,
+                          "content": "The Health Benefits of Kashmiri Saffron",
+                          "lineHeight": 1.3,
+                          "fontFamily": "Playfair Display",
+                          "fontSize": 18,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "text",
+                          "id": "lC2nK",
+                          "name": "blog1Excerpt",
+                          "fill": "#8C7A6B",
+                          "textGrowth": "fixed-width",
+                          "width": 332,
+                          "content": "Discover why premium saffron from Kashmir valleys is prized for wellness and culinary excellence.",
+                          "lineHeight": 1.5,
+                          "fontFamily": "Bricolage Grotesque",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "yZvHz",
+                          "name": "blog1Link",
+                          "fill": "#BC8034",
+                          "content": "Read more",
+                          "fontFamily": "Bricolage Grotesque",
+                          "fontSize": 14,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "dbdCV",
+                  "name": "blog2",
+                  "clip": true,
+                  "width": 380,
+                  "fill": "#F5EDE4",
+                  "cornerRadius": 12,
+                  "layout": "vertical",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "iuo0K",
+                      "name": "blog2Img",
+                      "width": "fill_container",
+                      "height": 180,
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "./images/generated-1773104823482.png",
+                        "mode": "fill"
+                      },
+                      "cornerRadius": [
+                        12,
+                        12,
+                        0,
+                        0
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "E2IKy",
+                      "name": "blog2Content",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 12,
+                      "padding": 24,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "Q1MnT",
+                          "name": "blog2Date",
+                          "fill": "#8C7A6B",
+                          "content": "Mar 5, 2025",
+                          "fontFamily": "Bricolage Grotesque",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "nv5q7",
+                          "name": "blog2Title",
+                          "fill": "#2C2520",
+                          "textGrowth": "fixed-width",
+                          "width": 332,
+                          "content": "Farm to Table: How We Source Our Almonds",
+                          "lineHeight": 1.3,
+                          "fontFamily": "Playfair Display",
+                          "fontSize": 18,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "text",
+                          "id": "FhZof",
+                          "name": "blog2Excerpt",
+                          "fill": "#8C7A6B",
+                          "textGrowth": "fixed-width",
+                          "width": 332,
+                          "content": "A journey from Himalayan orchards to your doorstep. Trace our quality-first sourcing.",
+                          "lineHeight": 1.5,
+                          "fontFamily": "Bricolage Grotesque",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "FdPEt",
+                          "name": "blog2Link",
+                          "fill": "#BC8034",
+                          "content": "Read more",
+                          "fontFamily": "Bricolage Grotesque",
+                          "fontSize": 14,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "2g1zb",
+                  "name": "blog3",
+                  "clip": true,
+                  "width": 380,
+                  "fill": "#F5EDE4",
+                  "cornerRadius": 12,
+                  "layout": "vertical",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "8XvFR",
+                      "name": "blog3Img",
+                      "width": "fill_container",
+                      "height": 180,
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "./images/generated-1773104837501.png",
+                        "mode": "fill"
+                      },
+                      "cornerRadius": [
+                        12,
+                        12,
+                        0,
+                        0
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "uzQew",
+                      "name": "blog3Content",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 12,
+                      "padding": 24,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "e6StY",
+                          "name": "blog3Date",
+                          "fill": "#8C7A6B",
+                          "content": "Mar 2, 2025",
+                          "fontFamily": "Bricolage Grotesque",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "OYOWD",
+                          "name": "blog3Title",
+                          "fill": "#2C2520",
+                          "textGrowth": "fixed-width",
+                          "width": 332,
+                          "content": "Raw Honey: Nature’s Sweetest Superfood",
+                          "lineHeight": 1.3,
+                          "fontFamily": "Playfair Display",
+                          "fontSize": 18,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "text",
+                          "id": "T1Z6G",
+                          "name": "blog3Excerpt",
+                          "fill": "#8C7A6B",
+                          "textGrowth": "fixed-width",
+                          "width": 332,
+                          "content": "Why unfiltered honey from mountain apiaries offers more than just great taste.",
+                          "lineHeight": 1.5,
+                          "fontFamily": "Bricolage Grotesque",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "7PPPm",
+                          "name": "blog3Link",
+                          "fill": "#BC8034",
+                          "content": "Read more",
+                          "fontFamily": "Bricolage Grotesque",
+                          "fontSize": 14,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "6LxSc",
+          "name": "guaranteeSection",
+          "width": "fill_container",
+          "fill": "#1A1A1C",
+          "layout": "vertical",
+          "gap": 32,
+          "padding": [
+            80,
+            120
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "SQQkl",
+              "name": "guaranteeTitle",
+              "fill": "#F5F5F0",
+              "content": "Our Promise",
+              "fontFamily": "Playfair Display",
+              "fontSize": 36,
+              "fontWeight": "500"
+            },
+            {
+              "type": "text",
+              "id": "SyTj8",
+              "name": "guaranteeText",
+              "fill": "#6E6E70",
+              "textGrowth": "fixed-width",
+              "width": 600,
+              "content": "100% originality guaranteed. If you find any adulteration in our products, we offer a full refund—no questions asked. We sell only what we would serve our own families.",
+              "lineHeight": 1.6,
+              "textAlign": "center",
+              "fontFamily": "Bricolage Grotesque",
+              "fontSize": 18,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "d98hG",
+              "name": "guaranteeBadge",
+              "fill": "#C9A962",
+              "cornerRadius": 8,
+              "padding": [
+                16,
+                32
+              ],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "ct3aW",
+                  "name": "guaranteeBadgeText",
+                  "fill": "#FFFFFF",
+                  "content": "MONEY-BACK GUARANTEE",
+                  "fontFamily": "Bricolage Grotesque",
+                  "fontSize": 14,
+                  "fontWeight": "600",
+                  "letterSpacing": 2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "7IVvN",
+          "name": "ctaSection",
+          "width": "fill_container",
+          "fill": "#FDFBF7",
+          "layout": "vertical",
+          "gap": 24,
+          "padding": [
+            80,
+            120
+          ],
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "LSdqR",
+              "name": "ctaHeadline",
+              "fill": "#1A1A1C",
+              "content": "Ready to taste the difference?",
+              "fontFamily": "Playfair Display",
+              "fontSize": 28,
+              "fontWeight": "500"
+            },
+            {
+              "type": "text",
+              "id": "evvIT",
+              "name": "ctaSub",
+              "fill": "#6E6E70",
+              "content": "Join thousands of health-conscious families who trust Saffron Town.",
+              "fontFamily": "Bricolage Grotesque",
+              "fontSize": 16,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "rbaqX",
+              "name": "ctaBtn",
+              "fill": "#C9A962",
+              "cornerRadius": 8,
+              "padding": [
+                18,
+                40
+              ],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "m4VTc",
+                  "name": "ctaBtnText",
+                  "fill": "#FFFFFF",
+                  "content": "Shop Collection",
+                  "fontFamily": "Bricolage Grotesque",
+                  "fontSize": 16,
+                  "fontWeight": "600"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "DOWQH",
+          "name": "footer",
+          "width": "fill_container",
+          "fill": "#242426",
+          "layout": "vertical",
+          "gap": 32,
+          "padding": [
+            48,
+            120
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "VO4CZ",
+              "name": "footerTop",
+              "width": "fill_container",
+              "justifyContent": "space_between",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "Io7eN",
+                  "name": "footerLogo",
+                  "fill": "#F5F5F0",
+                  "content": "Saffron Town",
+                  "fontFamily": "Playfair Display",
+                  "fontSize": 20,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "FMLP7",
+                  "name": "footerTagline",
+                  "fill": "#6E6E70",
+                  "content": "Premium products from Himalayan farms.",
+                  "fontFamily": "Bricolage Grotesque",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "cztI7",
+              "name": "footerBottom",
+              "width": "fill_container",
+              "justifyContent": "space_between",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "HHkIJ",
+                  "name": "footerCopy",
+                  "fill": "#4A4A4C",
+                  "content": "© 2025 Saffron Town. All rights reserved.",
+                  "fontFamily": "Bricolage Grotesque",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "P1DfY",
+                  "name": "footerLinks",
+                  "gap": 24,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "qxEvV",
+                      "name": "fLink1",
+                      "fill": "#6E6E70",
+                      "content": "Shipping",
+                      "fontFamily": "Bricolage Grotesque",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "wJPq4",
+                      "name": "fLink2",
+                      "fill": "#6E6E70",
+                      "content": "Returns",
+                      "fontFamily": "Bricolage Grotesque",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "YyDch",
+                      "name": "fLink3",
+                      "fill": "#6E6E70",
+                      "content": "Contact",
+                      "fontFamily": "Bricolage Grotesque",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,308 @@
+[
+  {
+    "id": "mongra-saffron",
+    "name": "Organic Mongra Saffron",
+    "category": "saffron",
+    "slug": "mongra-saffron",
+    "subtitle": "The World's Finest Saffron Stigmas",
+    "heroHeadline": "The Crown Jewel of Kashmir",
+    "heroSubline": "Handpicked from the sun-drenched fields of Pampore, our Mongra saffron represents the pinnacle of purity and potency. Only the deep crimson tips are selected for our royal collection.",
+    "heroBadge": "Pampore Grade A++",
+    "description": "Our Kashmiri Mongra Saffron is sourced directly from small heritage farms in Pampore. Known as the 'Saffron Capital of India', this region's unique soil produces threads with the highest crocin content in the world.",
+    "description2": "Each strand is hand-separated and sun-dried using traditional methods passed down through generations. Perfect for high-end culinary use, traditional medicine, and ceremonial rituals.",
+    "price": 499,
+    "currency": "INR",
+    "unit": "1g",
+    "stock": 50,
+    "variants": [
+      { "id": "mongra-1g", "size": "1g", "price": 499 },
+      { "id": "mongra-2g", "size": "2g", "price": 950 },
+      { "id": "mongra-5g", "size": "5g", "price": 2300 },
+      { "id": "mongra-10g", "size": "10g", "price": 4500 }
+    ],
+    "rating": 4.9,
+    "reviewCount": 1240,
+    "images": [
+      { "url": "/images/products/mongra-saffron-1.png", "alt": "Kashmiri Mongra Saffron threads in a wooden bowl" }
+    ],
+    "features": [
+      "Grade A++ Export Quality",
+      "No yellow style, deep red only",
+      "Highest Crocin (Color) > 250",
+      "100% Organic & ISO Tested"
+    ],
+    "specifications": {
+      "Grade": "Mongra (Grade 1)",
+      "Origin": "Pampore, Kashmir",
+      "Harvest": "Autumn 2024",
+      "Purity": "100% Pure Saffron"
+    },
+    "origin": "Pampore, Kashmir · Harvest: Nov 2024 · Shelf Life: 24 Months"
+  },
+  {
+    "id": "lacha-saffron",
+    "name": "Lacha Saffron",
+    "category": "saffron",
+    "slug": "lacha-saffron",
+    "subtitle": "Stigma & Style — Mid-Grade Excellence",
+    "heroHeadline": "The Versatile Choice",
+    "heroSubline": "Lacha saffron includes both crimson stigmas and the golden-yellow style, offering a balanced profile that's perfect for everyday cooking and traditional recipes.",
+    "heroBadge": "Pampore Grade A",
+    "description": "Lacha saffron is a popular choice for households seeking authentic Kashmiri saffron at a more accessible price. While Mongra uses only the pure red stigmas, Lacha includes the style—the thread connecting stigma to the flower—creating a slightly lighter hue and a distinct, aromatic character.",
+    "description2": "Ideal for biryanis, kheer, and festive dishes. Our Lacha is handpicked from the same Pampore farms as our Mongra, ensuring quality and traceability.",
+    "price": 350,
+    "currency": "INR",
+    "unit": "1g",
+    "stock": 40,
+    "variants": [
+      { "id": "lacha-1g", "size": "1g", "price": 350 },
+      { "id": "lacha-2g", "size": "2g", "price": 680 },
+      { "id": "lacha-5g", "size": "5g", "price": 1650 }
+    ],
+    "rating": 4.6,
+    "reviewCount": 520,
+    "images": [
+      { "url": "https://images.unsplash.com/photo-1608797178976-1a275d1f2a02?w=800&q=80", "alt": "Kashmiri Lacha Saffron threads" }
+    ],
+    "features": [
+      "Stigma + Style (Lacha grade)",
+      "Pure Kashmir origin",
+      "Aromatic & flavorful",
+      "Perfect for daily use"
+    ],
+    "specifications": {
+      "Grade": "Lacha (Grade 2)",
+      "Origin": "Pampore, Kashmir",
+      "Harvest": "Autumn 2024",
+      "Components": "Stigma + Style"
+    },
+    "origin": "Pampore, Kashmir · Harvest: Nov 2024 · Shelf Life: 24 Months"
+  },
+  {
+    "id": "mamra-almonds",
+    "name": "Kashmiri Mamra Almonds",
+    "category": "dry-fruits",
+    "slug": "mamra-almonds",
+    "subtitle": "Small in Size, Gigantic in Nutrition",
+    "heroHeadline": "The King of Almonds",
+    "heroSubline": "Unlike California almonds, Kashmiri Mamra almonds are grown naturally and are rich in essential oils. Every bite is a burst of Himalayan energy.",
+    "heroBadge": "Rich in Natural Oils",
+    "description": "Kashmiri Mamra Almonds are distinct for their small, concave shape and high oil content. They are grown in the high-altitude orchards of Kashmir without any chemical fertilizers.",
+    "description2": "Known for their brain-boosting properties and heart-healthy fats, these almonds are a staple of the royal Kashmiri diet. They have a rich, buttery flavor that is incomparable to regular varieties.",
+    "price": 1200,
+    "currency": "INR",
+    "unit": "500g",
+    "stock": 30,
+    "variants": [
+      { "id": "almonds-500g", "size": "500g", "price": 1200 },
+      { "id": "almonds-1kg", "size": "1kg", "price": 2300 },
+      { "id": "almonds-2kg", "size": "2kg", "price": 4500 }
+    ],
+    "rating": 4.8,
+    "reviewCount": 850,
+    "images": [
+      { "url": "/images/products/mamra-almonds-1.png", "alt": "Kashmiri Mamra Almonds on a copper platter" }
+    ],
+    "features": [
+      "100% Natural & Non-Pasteurized",
+      "Extremely rich in Almond Oil",
+      "Boosts Memory & Heart Health",
+      "Sourced from Himalayan Orchards"
+    ],
+    "specifications": {
+      "Variety": "Mamra (Kashmiri)",
+      "Grade": "Premium Selection",
+      "Oil Content": "> 5% higher than regular",
+      "Processing": "Sun-dried"
+    },
+    "origin": "Himalayan Orchards, Kashmir · Fresh Stock · Shelf Life: 12 Months"
+  },
+  {
+    "id": "walnut-kernels",
+    "name": "Snow White Walnut Kernels",
+    "category": "dry-fruits",
+    "slug": "walnut-kernels",
+    "subtitle": "Buttery, Crisp & Brain-Boosting",
+    "heroHeadline": "Pure White Himalayan Gold",
+    "heroSubline": "Hand-shelled to perfection, our snow-white walnut kernels are the finest yield of the season, offering a crisp texture and rich, buttery finish.",
+    "heroBadge": "Snow White Quality",
+    "description": "Our walnuts are harvested from the high valleys of Kashmir. These 'Snow White' kernels are the highest grade available, selected for their uniform light color and lack of bitterness.",
+    "description2": "Rich in Omega-3 fatty acids and antioxidants, these walnuts are not just a snack but a superfood. We ensure they are vacuum-packed to maintain their farm-fresh crunch.",
+    "price": 850,
+    "currency": "INR",
+    "unit": "500g",
+    "stock": 75,
+    "variants": [
+      { "id": "walnuts-500g", "size": "500g", "price": 850 },
+      { "id": "walnuts-1kg", "size": "1kg", "price": 1600 }
+    ],
+    "rating": 4.7,
+    "reviewCount": 920,
+    "images": [
+      { "url": "/images/products/walnuts-1.png", "alt": "Snow White Walnut Kernels on a slate" }
+    ],
+    "features": [
+      "No bitterness, mild buttery taste",
+      "Excellent source of Omega-3",
+      "Hand-shelled (Halves)",
+      "Zero preservatives"
+    ],
+    "specifications": {
+      "Grade": "Snow White (Extra Light)",
+      "Variety": "Kashmiri Kagzi",
+      "Form": "Halves (Kernels)",
+      "Quality": "Export Grade"
+    },
+    "origin": "Kashmir Valleys · Harvested: Oct 2024 · Shelf Life: 9 Months"
+  },
+  {
+    "id": "saffron-honey",
+    "name": "Royal Saffron Infused Honey",
+    "category": "honey",
+    "slug": "saffron-honey",
+    "subtitle": "The Ultimate Elixir of Wellness",
+    "heroHeadline": "Gold Meets Crimson",
+    "heroSubline": "Pure Himalayan white honey infused with the finest Mongra saffron threads. A medicinal masterpiece that tastes like heaven.",
+    "heroBadge": "Medicinal Grade",
+    "description": "This is not just honey; it's a royal infusion. We take the rarest white honey from the Himalayan foothills and age it with premium Mongra saffron threads to create a unique flavor profile.",
+    "description2": "The saffron releases its antioxidants and aroma into the honey over time, creating a golden elixir that supports immunity, digestion, and skin health.",
+    "price": 1100,
+    "currency": "INR",
+    "unit": "250g",
+    "stock": 25,
+    "variants": [
+      { "id": "honey-250g", "size": "250g", "price": 1100 },
+      { "id": "honey-500g", "size": "500g", "price": 2100 }
+    ],
+    "rating": 5.0,
+    "reviewCount": 420,
+    "images": [
+      { "url": "/images/products/saffron-honey-1.png", "alt": "Saffron infused honey jar" }
+    ],
+    "features": [
+      "Pure White Honey base",
+      "Infused with real Mongra Saffron",
+      "Natural Immunity Booster",
+      "No Added Sugar or Flavor"
+    ],
+    "specifications": {
+      "Honey Type": "Wild White Honey",
+      "Infusion": "Mongra Saffron (100mg per 250g)",
+      "Texture": "Creamy & Smooth",
+      "Origin": "High Altitude Himalayas"
+    },
+    "origin": "Himalayan Foothills · Organic Collection · Shelf Life: 36 Months"
+  },
+  {
+    "id": "multiflora-honey",
+    "name": "Multiflora Raw Honey",
+    "category": "honey",
+    "slug": "multiflora-honey",
+    "subtitle": "Raw, Organic Mountain Honey",
+    "heroHeadline": "Pure Himalayan Nectar",
+    "heroSubline": "Unprocessed, unfiltered honey from the high-altitude flora of the Himalayas. A true taste of the mountains in every spoonful.",
+    "heroBadge": "Raw & Unfiltered",
+    "description": "Our Multiflora Honey is collected from wild apiaries in the Himalayan foothills. Bees forage across diverse flora—wildflowers, chestnut, rhododendron—creating a complex, nuanced flavor that changes subtly with the seasons.",
+    "description2": "Never heated or filtered. This honey retains natural enzymes, pollen, and the authentic taste of Himalayan meadows. Ideal for wellness, baking, and as a natural sweetener.",
+    "price": 650,
+    "currency": "INR",
+    "unit": "500g",
+    "stock": 50,
+    "variants": [
+      { "id": "multi-500g", "size": "500g", "price": 650 },
+      { "id": "multi-1kg", "size": "1kg", "price": 1200 }
+    ],
+    "rating": 4.8,
+    "reviewCount": 380,
+    "images": [
+      { "url": "https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=800&q=80", "alt": "Raw multiflora honey in jar" }
+    ],
+    "features": [
+      "100% Raw & Unfiltered",
+      "No added sugar",
+      "Natural enzymes preserved",
+      "Wild Himalayan flora"
+    ],
+    "specifications": {
+      "Type": "Multiflora Raw",
+      "Processing": "Cold extracted",
+      "Origin": "Himalayan Apiaries",
+      "Texture": "Crystalline when cold"
+    },
+    "origin": "Himalayan Foothills · Wild Collection · Shelf Life: 24 Months"
+  },
+  {
+    "id": "luxury-saffron-box",
+    "name": "Luxury Saffron Box",
+    "category": "gifting",
+    "slug": "luxury-saffron-box",
+    "subtitle": "Saffron + Saffron Honey + Almonds — The Perfect Gift",
+    "heroHeadline": "The Ultimate Kashmir Experience",
+    "heroSubline": "A curated selection of our finest: Mongra saffron, saffron honey, and Mamra almonds. Elegantly packaged for gifting.",
+    "heroBadge": "Gift Ready",
+    "description": "Our Luxury Saffron Box brings together the crown jewels of Kashmir in one exquisite package. Perfect for weddings, festivals, or anyone who appreciates premium quality.",
+    "description2": "Each box includes premium Mongra saffron (2g), Royal Saffron Honey (250g), and Kashmiri Mamra Almonds (250g). Packaged in a beautiful presentation box.",
+    "price": 3999,
+    "currency": "INR",
+    "unit": "box",
+    "stock": 20,
+    "variants": [
+      { "id": "luxury-box", "size": "1 Box", "price": 3999 }
+    ],
+    "rating": 5.0,
+    "reviewCount": 95,
+    "images": [
+      { "url": "https://images.unsplash.com/photo-1608797178976-1a275d1f2a02?w=800&q=80", "alt": "Luxury saffron gift box" }
+    ],
+    "features": [
+      "Mongra Saffron 2g",
+      "Saffron Honey 250g",
+      "Mamra Almonds 250g",
+      "Gift-ready packaging"
+    ],
+    "specifications": {
+      "Contents": "Saffron, Honey, Almonds",
+      "Packaging": "Premium gift box",
+      "Ideal For": "Gifting, celebrations",
+      "Origin": "Kashmir, Himalayas"
+    },
+    "origin": "Curated in Kashmir · Gift Ready · Shelf Life: 24 Months"
+  },
+  {
+    "id": "royal-kashmir-hamper",
+    "name": "Royal Kashmir Hamper",
+    "category": "gifting",
+    "slug": "royal-kashmir-hamper",
+    "subtitle": "Premium Assortment — Walnuts, Almonds, Saffron, Honey",
+    "heroHeadline": "A Royal Selection",
+    "heroSubline": "Our most generous hamper: saffron, almonds, walnuts, and honey. The complete taste of Kashmir in one stunning package.",
+    "heroBadge": "Premium Hamper",
+    "description": "The Royal Kashmir Hamper is our flagship gift. A comprehensive assortment of Himalayan delicacies—saffron, Mamra almonds, snow white walnuts, and raw honey—perfect for corporate gifting, weddings, or special occasions.",
+    "description2": "Elegantly presented in a premium hamper box. Each item is from our current harvest, ensuring the finest quality and freshness.",
+    "price": 5999,
+    "currency": "INR",
+    "unit": "hamper",
+    "stock": 15,
+    "variants": [
+      { "id": "royal-hamper", "size": "1 Hamper", "price": 5999 }
+    ],
+    "rating": 5.0,
+    "reviewCount": 62,
+    "images": [
+      { "url": "https://images.unsplash.com/photo-1599599810769-bcde5a160d32?w=800&q=80", "alt": "Royal Kashmir gift hamper" }
+    ],
+    "features": [
+      "Mongra Saffron 2g",
+      "Mamra Almonds 500g",
+      "Walnut Kernels 500g",
+      "Multiflora Honey 500g"
+    ],
+    "specifications": {
+      "Contents": "Saffron, Almonds, Walnuts, Honey",
+      "Packaging": "Premium hamper box",
+      "Ideal For": "Corporate, weddings, festivals",
+      "Origin": "Kashmir, Himalayas"
+    },
+    "origin": "Curated in Kashmir · Gift Ready · Shelf Life: 12 Months"
+  }
+]
