@@ -60,3 +60,4 @@ npm run start  # Start production server
 1. `npm install` (if dependencies missing)
 2. Update `SITE_CONFIG.url` in `src/lib/constants.ts` for your domain
 3. Replace placeholder images with your product assets
+# saffron-town
