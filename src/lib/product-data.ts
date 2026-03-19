@@ -30,25 +30,25 @@ export type ProductPageData = {
   origin: string;
 };
 
-const VALID_CATEGORIES = ["saffron", "dry-fruits", "honey", "gifting"] as const;
+const VALID_CATEGORIES = ["saffron"] as const;
 const CATEGORY_NAMES: Record<string, string> = {
-  saffron: "Saffron (Kesar)",
-  "dry-fruits": "Dry Fruits",
-  honey: "Honey",
-  gifting: "Gifting",
+  saffron: "Saffron",
 };
 
 export function getProductData(slug: string): ProductPageData | undefined {
   return (products as unknown as ProductPageData[]).find((p) => p.slug === slug);
 }
 
+export function getDefaultProduct(): ProductPageData | undefined {
+  return (products as unknown as ProductPageData[])[0];
+}
+
 export function getAllProducts(): ProductPageData[] {
   return products as unknown as ProductPageData[];
 }
 
-export function getProductsByCategory(category: string): ProductPageData[] {
-  return getAllProducts().filter((p) => p.category === category);
-}
+/** Single product page URL - used for all product links */
+export const PRODUCT_PAGE_URL = "/shop/saffron";
 
 export function getCategoryDisplayName(category: string): string {
   return CATEGORY_NAMES[category] || category;

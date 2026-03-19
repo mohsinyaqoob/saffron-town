@@ -51,7 +51,7 @@ export default function CartPage() {
               <p className="text-secondary font-body mb-8 max-w-md">
                 It looks like you haven't added any products to your cart yet. Discover our premium collection and start shopping.
               </p>
-              <Link href="/">
+              <Link href="/shop/saffron">
                 <Button size="lg" className="rounded-full px-8">Continue Shopping</Button>
               </Link>
             </div>
@@ -61,7 +61,7 @@ export default function CartPage() {
                 {cart.map((item) => {
                   return (
                     <article key={item.cartItemId} className="flex flex-col sm:flex-row items-center gap-6 p-6 rounded-[2rem] bg-background border border-secondary-border/10 shadow-lg shadow-dark/5">
-                        <Link href={`/shop/${item.category}/${item.slug}`} className="relative h-32 w-32 shrink-0 rounded-2xl overflow-hidden bg-surface-muted">
+                        <Link href="/shop/saffron" className="relative h-32 w-32 shrink-0 rounded-2xl overflow-hidden bg-surface-muted">
                             <Image src={item.images[0].url} alt={item.images[0].alt} fill className="object-cover" />
                         </Link>
                         <div className="flex-grow flex flex-col items-center sm:items-start text-center sm:text-left">

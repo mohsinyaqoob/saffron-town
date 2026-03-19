@@ -1,15 +1,16 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
-import { getCategoryDisplayName, type ProductPageData } from "@/lib/product-data";
+import { getCategoryDisplayName, PRODUCT_PAGE_URL, type ProductPageData } from "@/lib/product-data";
 
 interface ProductCardProps {
   product: ProductPageData;
 }
 
 export function ProductCard({ product }: ProductCardProps) {
-  const href = `/shop/${product.category}/${product.slug}`;
-  const formattedPrice = new Intl.NumberFormat('en-IN', { style: 'currency', currency: product.currency, maximumFractionDigits: 0 }).format(product.price);
+  const href = PRODUCT_PAGE_URL;
+  const lowestPrice = Math.min(...product.variants.map((v) => v.price));
+  const formattedPrice = new Intl.NumberFormat("en-IN", { style: "currency", currency: product.currency, maximumFractionDigits: 0 }).format(lowestPrice);
 
   return (
     <article
@@ -52,8 +53,8 @@ export function ProductCard({ product }: ProductCardProps) {
             <div className="flex flex-col">
                 <span className="text-[10px] text-text-muted font-bold uppercase tracking-widest">Price</span>
                 <p className="font-display text-xl font-bold text-text-primary">
-                    {formattedPrice}
-                    <span className="text-xs font-normal text-text-muted ml-0.5">/ {product.unit}</span>
+                    {product.variants.length > 1 ? "From " : ""}{formattedPrice}
+                    <span className="text-xs font-normal text-text-muted ml-0.5">/ {product.variants[0]?.size || product.unit}</span>
                 </p>
             </div>
             <div className="flex items-center gap-1 bg-primary/5 px-2 py-1 rounded-lg">

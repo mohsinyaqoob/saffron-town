@@ -10,13 +10,13 @@ export function Hero() {
         <div className="flex w-full max-w-[520px] flex-col items-start gap-6">
           <Badge variant="secondary">THIS SEASON&apos;S HARVEST</Badge>
           <h1 className="font-display text-4xl font-normal leading-tight text-text-primary lg:text-5xl">
-            Premium Kashmiri Saffron & Dry Fruits
+            Premium Kashmiri Mongra Saffron
           </h1>
           <p className="text-lg leading-relaxed text-secondary font-body">
-            We sell only the most recent harvest. Farm-direct from the Himalayas. Money-back guarantee.
+            Grade A++ Pampore saffron. Controlled from seeding to harvesting. Farm-direct. Fresh harvest only—no old stock. Money-back guarantee.
           </p>
           <Link href="/shop/saffron">
-            <Button size="lg">Explore Collection</Button>
+            <Button size="lg">Shop Saffron</Button>
           </Link>
         </div>
         <div className="relative h-[340px] w-full max-w-[520px] overflow-hidden rounded-2xl lg:h-[420px]">

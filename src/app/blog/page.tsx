@@ -4,6 +4,25 @@ import Image from "next/image";
 import Link from "next/link";
 import { getAllPosts } from "@/lib/blog-data";
 import { Badge } from "@/components/ui/Badge";
+import { SITE_CONFIG } from "@/lib/constants";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: `The Saffron Journal | Himalayan Wisdom & Wellness | ${SITE_CONFIG.name}`,
+  description: "Discover stories behind heritage Kashmiri saffron, wellness insights, and the science of natural well-being from India's premium saffron dealer.",
+  alternates: { canonical: `${SITE_CONFIG.url}/blog` },
+  openGraph: {
+    title: `The Saffron Journal | ${SITE_CONFIG.name}`,
+    description: "Himalayan wisdom & wellness. Stories behind our heritage saffron and natural well-being.",
+    url: `${SITE_CONFIG.url}/blog`,
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `The Saffron Journal | ${SITE_CONFIG.name}`,
+    description: "Himalayan wisdom & wellness. Stories behind heritage Kashmiri saffron.",
+  },
+};
 
 export default function BlogListPage() {
   const posts = getAllPosts();

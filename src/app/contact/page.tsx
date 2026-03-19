@@ -6,7 +6,15 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: `Contact | ${SITE_CONFIG.name}`,
-  description: "Get in touch with Saffron Town. Questions about our products, orders, or partnerships.",
+  description:
+    "Contact Saffron Town—India's premium saffron dealer. Questions about Kashmiri Mongra saffron, orders, or partnerships. We respond within 24-48 hours.",
+  alternates: { canonical: `${SITE_CONFIG.url}/contact` },
+  openGraph: {
+    title: `Contact | ${SITE_CONFIG.name}`,
+    description: "Get in touch. Premium Kashmiri saffron inquiries, orders, partnerships.",
+    url: `${SITE_CONFIG.url}/contact`,
+    type: "website",
+  },
 };
 
 export default function ContactPage() {

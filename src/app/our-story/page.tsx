@@ -5,9 +5,16 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: `Our Story | ${SITE_CONFIG.name}`,
+  title: `Our Story | Seed-to-Harvest Saffron | ${SITE_CONFIG.name}`,
   description:
-    "How Saffron Town brings the freshest Himalayan harvest to your table. Farm-direct, traceable, and always the current season.",
+    "How Saffron Town controls saffron from seeding to harvesting. Premium dealer. Fresh harvest only. Farm-direct from Pampore, Kashmir. No compromise on quality.",
+  alternates: { canonical: `${SITE_CONFIG.url}/our-story` },
+  openGraph: {
+    title: `Our Story | ${SITE_CONFIG.name}`,
+    description: "Seed-to-harvest controlled saffron. Fresh harvest only. Farm-direct from Kashmir.",
+    url: `${SITE_CONFIG.url}/our-story`,
+    type: "website",
+  },
 };
 
 export default function OurStoryPage() {
@@ -32,43 +39,43 @@ export default function OurStoryPage() {
           <div className="mx-auto max-w-3xl px-6 lg:px-20 prose-headings:font-display prose-headings:font-bold prose-headings:text-text-primary prose-p:text-lg prose-p:leading-relaxed prose-p:text-secondary prose-p:mb-8">
             <p>
               {SITE_CONFIG.name} was born from a simple frustration: too many
-              people were paying premium prices for saffron, almonds, walnuts,
-              and honey that had been sitting in warehouses for months—or even
-              years. The difference between fresh harvest and old stock isn't
-              just taste. It's potency, aroma, and the very reason you bought
-              it in the first place.
+              people were paying premium prices for saffron that had been sitting
+              in warehouses for months—or even years. The difference between
+              fresh harvest and old stock isn't just taste. It's potency, aroma,
+              and the very reason you bought it in the first place.
             </p>
 
             <h2 className="font-display text-2xl font-bold mt-16 mb-6 text-text-primary">
-              Our Promise: Current Harvest Only
+              Seed to Harvest: We Control the Entire Chain
             </h2>
             <p>
-              We work directly with small heritage farms in Kashmir and the
-              Himalayan foothills. When a season's crop is ready, we bring it to
-              you. No warehousing for months. No mixing old stock with new. What
-              you receive is what was just harvested—saffron that blooms, nuts
-              that crunch, honey that tastes alive.
+              We work directly with heritage farms in Pampore—the Saffron Capital
+              of India. From seeding to harvesting, we oversee cultivation and
+              ensure every thread meets our standards. When a season's crop is
+              ready, we bring it to you. No warehousing for months. No mixing old
+              stock with new. What you receive is what was just harvested.
             </p>
 
             <h2 className="font-display text-2xl font-bold mt-16 mb-6 text-text-primary">
-              Farm-Direct, Traceable
+              Fresh Harvest Only—No Compromise
             </h2>
             <p>
-              Every product in our collection comes from farms we know. We visit
-              the fields, meet the growers, and ensure the same quality we'd
-              serve our own families. Traceability isn't a buzzword for us—it's
-              how we've always operated.
+              We sell only the current harvest. Every strand in our collection
+              comes from farms we know. We visit the fields, meet the growers,
+              and ensure the same quality we'd serve our own families.
+              Traceability isn't a buzzword for us—it's how we've always
+              operated.
             </p>
 
             <h2 className="font-display text-2xl font-bold mt-16 mb-6 text-text-primary">
               A Heritage Worth Preserving
             </h2>
             <p>
-              Kashmiri saffron, Mamra almonds, snow white walnuts—these aren't
-              commodities. They're part of a heritage that has thrived in the
-              Himalayas for generations. By supporting farm-direct and refusing
-              to sell old stock, we help preserve the tradition and reward the
-              farmers who grow the world's finest.
+              Kashmiri Mongra saffron isn't a commodity. It's part of a heritage
+              that has thrived in the Himalayas for generations. By supporting
+              farm-direct and refusing to sell old stock, we help preserve the
+              tradition and reward the farmers who grow the world's finest
+              saffron.
             </p>
 
             <div className="mt-20 pt-12 border-t border-secondary-border/20 text-center">

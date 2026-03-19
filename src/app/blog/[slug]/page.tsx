@@ -6,6 +6,7 @@ import Link from "next/link";
 import { getPostBySlug, getAllPosts } from "@/lib/blog-data";
 import { Badge } from "@/components/ui/Badge";
 import { SITE_CONFIG } from "@/lib/constants";
+import { ArticleJsonLd } from "@/components/seo/ArticleJsonLd";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -23,9 +24,27 @@ export async function generateMetadata({ params }: Props) {
   const post = getPostBySlug(slug);
   if (!post) return {};
 
+  const postUrl = `${SITE_CONFIG.url}/blog/${slug}`;
+  const imageUrl = post.image.startsWith("http") ? post.image : `${SITE_CONFIG.url}${post.image}`;
+
   return {
     title: `${post.title} | ${SITE_CONFIG.name}`,
     description: post.excerpt,
+    alternates: { canonical: postUrl },
+    openGraph: {
+      title: `${post.title} | ${SITE_CONFIG.name}`,
+      description: post.excerpt,
+      url: postUrl,
+      type: "article",
+      authors: [post.author],
+      images: [imageUrl],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${post.title} | ${SITE_CONFIG.name}`,
+      description: post.excerpt,
+      images: [imageUrl],
+    },
   };
 }
 
@@ -42,6 +61,14 @@ export default async function BlogPostPage({ params }: Props) {
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
+      <ArticleJsonLd
+        title={post.title}
+        excerpt={post.excerpt}
+        author={post.author}
+        date={post.date}
+        slug={post.slug}
+        image={post.image}
+      />
       <Header />
       <main className="flex-grow">
         {/* Editorial Header Section */}

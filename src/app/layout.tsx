@@ -19,27 +19,32 @@ const figtree = Figtree({
 export const metadata: Metadata = {
   metadataBase: new URL("https://saffrontown.com"),
   title: {
-    default: "Saffron Town | Premium Kashmiri Saffron, Almonds, Walnuts & Honey",
+    default: "Saffron Town | Premium Kashmiri Mongra Saffron | Fresh Harvest, Seed-to-Harvest",
     template: "%s | Saffron Town",
   },
   description:
-    "Premium Kashmiri Saffron, Almonds, Walnuts & Honey from Himalayan farms. 100% pure, farm-direct. Money-back guarantee. No adulteration.",
+    "Premium saffron dealer. Kashmiri Mongra Grade A++ from Pampore—controlled from seeding to harvesting. Fresh harvest only, no old stock. Farm-direct. 100% pure. Money-back guarantee.",
   keywords: [
-    "Kashmiri saffron",
-    "premium saffron",
-    "almonds",
-    "walnuts",
-    "raw honey",
-    "farm direct",
-    "Himalayan products",
+    "premium saffron dealer",
+    "Kashmiri Mongra saffron",
+    "fresh harvest saffron",
+    "Pampore saffron",
+    "seed to harvest saffron",
+    "farm direct saffron",
+    "Grade A++ saffron",
   ],
-  authors: [{ name: "Saffron Town" }],
+  authors: [{ name: "Saffron Town", url: "https://saffrontown.com" }],
   creator: "Saffron Town",
+  publisher: "Saffron Town",
   openGraph: {
     type: "website",
     locale: "en_IN",
     url: "https://saffrontown.com",
     siteName: "Saffron Town",
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@saffrontown",
   },
   robots: {
     index: true,
@@ -64,6 +69,7 @@ export default function RootLayout({
       <head>
         <JsonLd />
         <link rel="alternate" type="text/plain" href="/ai.txt" title="AI context - Saffron Town" />
+        <link rel="prefetch" href="/ai.txt" />
       </head>
       <body className="min-h-screen font-body antialiased">
         <ShopProvider>

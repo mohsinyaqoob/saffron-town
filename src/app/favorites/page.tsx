@@ -40,8 +40,8 @@ export default function FavoritesPage() {
               <p className="text-secondary font-body mb-8 max-w-md">
                 You haven't added any products to your collection. Discover our pure Kashmiri saffron and premium dry fruits.
               </p>
-              <Link href="/">
-                <Button size="lg" className="rounded-full px-8">Discover Saffron Town</Button>
+              <Link href="/shop/saffron">
+                <Button size="lg" className="rounded-full px-8">View Saffron</Button>
               </Link>
             </div>
           ) : (
