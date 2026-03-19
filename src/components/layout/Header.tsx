@@ -1,11 +1,11 @@
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
-import { NAV_LINKS, SITE_CONFIG } from "@/lib/constants";
-import { cn } from "@/lib/utils";
+import Link from "next/link";
 import { useState } from "react";
 import { useShop } from "@/context/ShopContext";
+import { NAV_LINKS, SITE_CONFIG } from "@/lib/constants";
+import { cn } from "@/lib/utils";
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -39,7 +39,7 @@ export function Header() {
                 "text-sm font-body transition-colors",
                 link.href === "/"
                   ? "font-medium text-text-primary"
-                  : "text-secondary hover:text-text-primary"
+                  : "text-secondary hover:text-text-primary",
               )}
             >
               {link.label}
@@ -56,12 +56,30 @@ export function Header() {
             aria-expanded={mobileMenuOpen}
           >
             {mobileMenuOpen ? (
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
                 <path d="M18 6 6 18" />
                 <path d="m6 6 12 12" />
               </svg>
             ) : (
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
                 <line x1="4" x2="20" y1="12" y2="12" />
                 <line x1="4" x2="20" y1="6" y2="6" />
                 <line x1="4" x2="20" y1="18" y2="18" />
@@ -74,7 +92,18 @@ export function Header() {
             className="group relative p-2 text-secondary transition-colors hover:text-primary"
             aria-label="Favorites"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform group-hover:scale-110">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="transition-transform group-hover:scale-110"
+            >
               <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
             </svg>
             {favorites.length > 0 && (
@@ -88,7 +117,18 @@ export function Header() {
             className="group relative p-2 text-secondary transition-colors hover:text-primary"
             aria-label="Cart"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform group-hover:scale-110">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="transition-transform group-hover:scale-110"
+            >
               <circle cx="8" cy="21" r="1" />
               <circle cx="19" cy="21" r="1" />
               <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
@@ -107,7 +147,7 @@ export function Header() {
         onClick={() => setMobileMenuOpen(false)}
         className={cn(
           "lg:hidden fixed inset-0 top-20 bg-dark/40 z-30 transition-opacity duration-300",
-          mobileMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+          mobileMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none",
         )}
         aria-label="Close menu"
       />
@@ -116,7 +156,7 @@ export function Header() {
         className={cn(
           "lg:hidden fixed inset-x-0 top-20 z-40 pt-2 px-4 pointer-events-none",
           "transition-all duration-300 ease-out",
-          !mobileMenuOpen && "invisible opacity-0"
+          !mobileMenuOpen && "invisible opacity-0",
         )}
         aria-hidden={!mobileMenuOpen}
       >
@@ -124,7 +164,9 @@ export function Header() {
           className={cn(
             "pointer-events-auto w-full rounded-xl border border-secondary-border/30 bg-background-alt shadow-xl overflow-y-auto max-h-[calc(100vh-6rem)] px-6 py-6 space-y-1",
             "transition-all duration-300 ease-out",
-            mobileMenuOpen ? "translate-y-0 opacity-100" : "-translate-y-2 opacity-0"
+            mobileMenuOpen
+              ? "translate-y-0 opacity-100"
+              : "-translate-y-2 opacity-0",
           )}
           aria-label="Mobile navigation"
         >

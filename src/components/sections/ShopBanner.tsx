@@ -20,10 +20,12 @@ export function ShopBanner() {
               Organic Mongra Saffron
             </h2>
             <p className="mt-4 max-w-xl text-lg text-white/90 font-body">
-              The crown jewel of Kashmir. Handpicked from the sun-drenched fields of Pampore — only the deepest crimson tips.
+              The crown jewel of Kashmir. Handpicked from the sun-drenched
+              fields of Pampore — only the deepest crimson tips.
             </p>
             <p className="mt-2 text-sm text-white/80 font-body">
-              1g Tester · 5g · 10g · 20g · 50g — Farm-direct · Money-back guarantee
+              1g Tester · 5g · 10g · 20g · 50g — Farm-direct · Money-back
+              guarantee
             </p>
             <span className="mt-8 inline-flex items-center justify-center rounded-full bg-white px-10 py-6 text-base font-bold text-primary shadow-xl transition-all group-hover:bg-white/95">
               Buy now

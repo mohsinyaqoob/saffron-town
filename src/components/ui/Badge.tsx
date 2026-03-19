@@ -6,7 +6,11 @@ interface BadgeProps {
   className?: string;
 }
 
-export function Badge({ children, variant = "secondary", className }: BadgeProps) {
+export function Badge({
+  children,
+  variant = "secondary",
+  className,
+}: BadgeProps) {
   return (
     <span
       className={cn(
@@ -14,9 +18,10 @@ export function Badge({ children, variant = "secondary", className }: BadgeProps
         {
           "bg-primary text-white": variant === "primary",
           "bg-secondary-muted text-secondary": variant === "secondary",
-          "border border-primary/30 bg-primary/5 text-primary": variant === "outline",
+          "border border-primary/30 bg-primary/5 text-primary":
+            variant === "outline",
         },
-        className
+        className,
       )}
     >
       {children}

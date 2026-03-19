@@ -1,9 +1,9 @@
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
 import { getAllPosts } from "@/lib/blog-data";
 
-export function BlogSection() {
-  const posts = getAllPosts().slice(0, 3);
+export async function BlogSection() {
+  const posts = (await getAllPosts()).slice(0, 3);
 
   return (
     <section className="bg-background-alt py-24" aria-labelledby="blog-heading">
@@ -17,7 +17,8 @@ export function BlogSection() {
               The Saffron Journal
             </h2>
             <p className="text-lg text-secondary font-body max-w-xl">
-              Insights into Himalayan heritage, sustainable farming, and natural wellness.
+              Insights into Himalayan heritage, sustainable farming, and natural
+              wellness.
             </p>
           </div>
           <Link
@@ -25,8 +26,18 @@ export function BlogSection() {
             className="group inline-flex items-center gap-2 px-6 py-3 rounded-full border border-primary/20 bg-primary/5 text-sm font-bold text-primary hover:bg-primary hover:text-white transition-all duration-300 font-body uppercase tracking-widest"
           >
             Explore Journal
-            <svg className="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            <svg
+              className="h-4 w-4 transition-transform group-hover:translate-x-1"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M17 8l4 4m0 0l-4 4m4-4H3"
+              />
             </svg>
           </Link>
         </div>
@@ -36,7 +47,10 @@ export function BlogSection() {
               key={post.id}
               className="group flex flex-col overflow-hidden rounded-[2rem] bg-background shadow-xl shadow-dark/5 ring-1 ring-secondary-border/10 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary/10"
             >
-              <Link href={`/blog/${post.slug}`} className="block aspect-[16/10] w-full overflow-hidden bg-surface-muted">
+              <Link
+                href={`/blog/${post.slug}`}
+                className="block aspect-[16/10] w-full overflow-hidden bg-surface-muted"
+              >
                 <Image
                   src={post.image}
                   alt={post.title}
@@ -60,16 +74,28 @@ export function BlogSection() {
                   {post.excerpt}
                 </p>
                 <div className="mt-auto flex items-center justify-between pt-6 border-t border-secondary-border/5">
-                    <span className="text-[10px] font-bold text-text-muted uppercase tracking-widest">{post.readTime}</span>
-                    <Link
-                      href={`/blog/${post.slug}`}
-                      className="text-xs font-bold text-primary hover:text-primary-hover font-body flex items-center gap-1 group/btn"
+                  <span className="text-[10px] font-bold text-text-muted uppercase tracking-widest">
+                    {post.readTime}
+                  </span>
+                  <Link
+                    href={`/blog/${post.slug}`}
+                    className="text-xs font-bold text-primary hover:text-primary-hover font-body flex items-center gap-1 group/btn"
+                  >
+                    Read Story
+                    <svg
+                      className="h-3 w-3 transition-transform group-hover/btn:translate-x-0.5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
                     >
-                      Read Story
-                      <svg className="h-3 w-3 transition-transform group-hover/btn:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-                      </svg>
-                    </Link>
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
+                  </Link>
                 </div>
               </div>
             </article>

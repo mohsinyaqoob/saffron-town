@@ -4,22 +4,22 @@
   --font-display: var(--font-playfair), Georgia, serif;
   --font-body: var(--font-figtree), system-ui, sans-serif;
   /* Design tokens - Saffron Town palette */
-  --color-primary: #BC8034;
-  --color-primary-hover: #A66E2B;
-  --color-primary-muted: #BC803422;
-  --color-secondary: #8C7A6B;
-  --color-secondary-muted: #8C7A6B22;
-  --color-secondary-border: #8C7A6B40;
-  --color-background: #F5EDE4;
-  --color-background-alt: #FFFFFF;
-  --color-surface: #D9CAB3;
-  --color-surface-muted: #E8E4DD;
-  --color-text-primary: #2C2520;
-  --color-text-secondary: #8C7A6B;
-  --color-text-muted: #8C7A6BAA;
-  --color-dark: #4A4038;
-  --color-dark-text: #D9CAB3;
-  --color-dark-text-muted: #D9CAB3AA;
+  --color-primary: #bc8034;
+  --color-primary-hover: #a66e2b;
+  --color-primary-muted: #bc803422;
+  --color-secondary: #8c7a6b;
+  --color-secondary-muted: #8c7a6b22;
+  --color-secondary-border: #8c7a6b40;
+  --color-background: #f5ede4;
+  --color-background-alt: #ffffff;
+  --color-surface: #d9cab3;
+  --color-surface-muted: #e8e4dd;
+  --color-text-primary: #2c2520;
+  --color-text-secondary: #8c7a6b;
+  --color-text-muted: #8c7a6baa;
+  --color-dark: #4a4038;
+  --color-dark-text: #d9cab3;
+  --color-dark-text-muted: #d9cab3aa;
 }
 
 @layer base {

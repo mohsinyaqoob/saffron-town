@@ -1,5 +1,5 @@
-import type { ProductPageData } from "@/lib/product-data";
 import { SITE_CONFIG } from "@/lib/constants";
+import type { ProductPageData } from "@/lib/product-data";
 
 interface ProductJsonLdProps {
   product: ProductPageData;
@@ -17,7 +17,7 @@ export function ProductJsonLd({ product }: ProductJsonLdProps) {
     name: product.name,
     description: product.description,
     image: product.images.map((img) =>
-      img.url.startsWith("http") ? img.url : `${SITE_CONFIG.url}${img.url}`
+      img.url.startsWith("http") ? img.url : `${SITE_CONFIG.url}${img.url}`,
     ),
     url: productUrl,
     sku: product.id,

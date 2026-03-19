@@ -1,6 +1,8 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useState } from "react";
+import type React from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+import { trackAddToCart } from "@/lib/analytics";
 import type { ProductPageData, ProductVariant } from "@/lib/product-data";
 
 export interface CartItem extends Omit<ProductPageData, "price"> {
@@ -12,7 +14,11 @@ export interface CartItem extends Omit<ProductPageData, "price"> {
 interface ShopContextType {
   cart: CartItem[];
   favorites: ProductPageData[];
-  addToCart: (product: ProductPageData, variant: ProductVariant, quantity?: number) => void;
+  addToCart: (
+    product: ProductPageData,
+    variant: ProductVariant,
+    quantity?: number,
+  ) => void;
   removeFromCart: (cartItemId: string) => void;
   updateQuantity: (cartItemId: string, quantity: number) => void;
   toggleFavorite: (product: ProductPageData) => void;
@@ -45,21 +51,37 @@ export function ShopProvider({ children }: { children: React.ReactNode }) {
     }
   }, [cart, favorites, mounted]);
 
-  const addToCart = (product: ProductPageData, variant: ProductVariant, quantity: number = 1) => {
+  const addToCart = (
+    product: ProductPageData,
+    variant: ProductVariant,
+    quantity: number = 1,
+  ) => {
     const cartItemId = `${product.id}-${variant.id}`;
-    
+
+    trackAddToCart({
+      id: product.id,
+      name: product.name,
+      variant: variant.size,
+      price: variant.price,
+      quantity,
+      currency: product.currency,
+    });
+
     setCart((prev) => {
       const existing = prev.find((item) => item.cartItemId === cartItemId);
       if (existing) {
         return prev.map((item) =>
           item.cartItemId === cartItemId
             ? { ...item, quantity: item.quantity + quantity }
-            : item
+            : item,
         );
       }
       // Omit original price from cart item to force using variant price
       const { price, ...productWithoutPrice } = product;
-      return [...prev, { ...productWithoutPrice, cartItemId, variant, quantity }];
+      return [
+        ...prev,
+        { ...productWithoutPrice, cartItemId, variant, quantity },
+      ];
     });
   };
 
@@ -74,8 +96,8 @@ export function ShopProvider({ children }: { children: React.ReactNode }) {
     }
     setCart((prev) =>
       prev.map((item) =>
-        item.cartItemId === cartItemId ? { ...item, quantity } : item
-      )
+        item.cartItemId === cartItemId ? { ...item, quantity } : item,
+      ),
     );
   };
 
@@ -95,7 +117,7 @@ export function ShopProvider({ children }: { children: React.ReactNode }) {
 
   const cartTotal = cart.reduce(
     (total, item) => total + item.variant.price * item.quantity,
-    0
+    0,
   );
 
   return (

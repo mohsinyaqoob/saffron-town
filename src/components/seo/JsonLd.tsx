@@ -14,7 +14,12 @@ export function JsonLd() {
     email: SITE_CONFIG.email,
     foundingDate: "2024",
     slogan: SITE_CONFIG.tagline,
-    knowsAbout: ["Kashmiri saffron", "Mongra saffron", "Pampore saffron", "Premium saffron"],
+    knowsAbout: [
+      "Kashmiri saffron",
+      "Mongra saffron",
+      "Pampore saffron",
+      "Premium saffron",
+    ],
     areaServed: "IN",
   };
 

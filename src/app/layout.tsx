@@ -1,8 +1,10 @@
+import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata } from "next";
-import { Playfair_Display, Figtree } from "next/font/google";
+import { Figtree, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { ShopProvider } from "@/context/ShopContext";
+import { SITE_CONFIG } from "@/lib/constants";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -17,13 +19,13 @@ const figtree = Figtree({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://saffrontown.com"),
+  metadataBase: new URL(SITE_CONFIG.url),
   title: {
-    default: "Saffron Town | Premium Kashmiri Mongra Saffron | Fresh Harvest, Seed-to-Harvest",
+    default: "Saffron Town — Pure Kashmiri Saffron Online",
     template: "%s | Saffron Town",
   },
   description:
-    "Premium saffron dealer. Kashmiri Mongra Grade A++ from Pampore—controlled from seeding to harvesting. Fresh harvest only, no old stock. Farm-direct. 100% pure. Money-back guarantee.",
+    "Buy 100% pure GI-certified Kashmiri saffron online. Free delivery across India.",
   keywords: [
     "premium saffron dealer",
     "Kashmiri Mongra saffron",
@@ -33,14 +35,14 @@ export const metadata: Metadata = {
     "farm direct saffron",
     "Grade A++ saffron",
   ],
-  authors: [{ name: "Saffron Town", url: "https://saffrontown.com" }],
-  creator: "Saffron Town",
-  publisher: "Saffron Town",
+  authors: [{ name: SITE_CONFIG.name, url: SITE_CONFIG.url }],
+  creator: SITE_CONFIG.name,
+  publisher: SITE_CONFIG.name,
   openGraph: {
     type: "website",
     locale: "en_IN",
-    url: "https://saffrontown.com",
-    siteName: "Saffron Town",
+    url: SITE_CONFIG.url,
+    siteName: SITE_CONFIG.name,
   },
   twitter: {
     card: "summary_large_image",
@@ -52,7 +54,7 @@ export const metadata: Metadata = {
     "max-snippet": -1,
   },
   alternates: {
-    canonical: "https://saffrontown.com",
+    canonical: SITE_CONFIG.url,
   },
 };
 
@@ -62,19 +64,28 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${playfair.variable} ${figtree.variable}`}
-    >
+    <html lang="en" className={`${playfair.variable} ${figtree.variable}`}>
       <head>
         <JsonLd />
-        <link rel="alternate" type="text/plain" href="/ai.txt" title="AI context - Saffron Town" />
+        {process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION && (
+          <meta
+            name="google-site-verification"
+            content={process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION}
+          />
+        )}
+        <link
+          rel="alternate"
+          type="text/plain"
+          href="/ai.txt"
+          title="AI context - Saffron Town"
+        />
         <link rel="prefetch" href="/ai.txt" />
       </head>
       <body className="min-h-screen font-body antialiased">
-        <ShopProvider>
-          {children}
-        </ShopProvider>
+        <ShopProvider>{children}</ShopProvider>
+        {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
+          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
+        )}
       </body>
     </html>
   );

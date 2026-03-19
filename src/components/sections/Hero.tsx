@@ -13,7 +13,8 @@ export function Hero() {
             Premium Kashmiri Mongra Saffron
           </h1>
           <p className="text-lg leading-relaxed text-secondary font-body">
-            Grade A++ Pampore saffron. Controlled from seeding to harvesting. Farm-direct. Fresh harvest only—no old stock. Money-back guarantee.
+            Grade A++ Pampore saffron. Controlled from seeding to harvesting.
+            Farm-direct. Fresh harvest only—no old stock. Money-back guarantee.
           </p>
           <Link href="/shop/saffron">
             <Button size="lg">Shop Saffron</Button>

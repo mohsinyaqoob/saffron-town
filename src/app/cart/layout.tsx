@@ -1,9 +1,18 @@
-import { SITE_CONFIG } from "@/lib/constants";
 import type { Metadata } from "next";
+import { SITE_CONFIG } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: `Cart | ${SITE_CONFIG.name}`,
-  description: "Your shopping cart. Premium Kashmiri Mongra saffron from Saffron Town.",
+  title: "Your Shopping Cart",
+  description:
+    "Review your cart. Authentic Kashmiri saffron and premium products. Secure checkout with free India-wide delivery.",
+  alternates: { canonical: `${SITE_CONFIG.url}/cart` },
+  openGraph: {
+    title: "Your Shopping Cart",
+    description:
+      "Review your cart. Authentic Kashmiri saffron. Secure checkout.",
+    url: `${SITE_CONFIG.url}/cart`,
+    type: "website",
+  },
   robots: { index: false, follow: true },
 };
 

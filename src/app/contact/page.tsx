@@ -1,17 +1,21 @@
-import { Header } from "@/components/layout/Header";
-import { Footer } from "@/components/layout/Footer";
-import { SITE_CONFIG } from "@/lib/constants";
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Footer } from "@/components/layout/Footer";
+import { Header } from "@/components/layout/Header";
+import { SITE_CONFIG } from "@/lib/constants";
+
+/** Static page — built once at deploy */
+export const dynamic = "force-static";
 
 export const metadata: Metadata = {
-  title: `Contact | ${SITE_CONFIG.name}`,
+  title: "Contact",
   description:
     "Contact Saffron Town—India's premium saffron dealer. Questions about Kashmiri Mongra saffron, orders, or partnerships. We respond within 24-48 hours.",
   alternates: { canonical: `${SITE_CONFIG.url}/contact` },
   openGraph: {
-    title: `Contact | ${SITE_CONFIG.name}`,
-    description: "Get in touch. Premium Kashmiri saffron inquiries, orders, partnerships.",
+    title: "Contact",
+    description:
+      "Get in touch. Premium Kashmiri saffron inquiries, orders, partnerships.",
     url: `${SITE_CONFIG.url}/contact`,
     type: "website",
   },

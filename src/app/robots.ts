@@ -1,4 +1,4 @@
-import { MetadataRoute } from "next";
+import type { MetadataRoute } from "next";
 import { SITE_CONFIG } from "@/lib/constants";
 
 export default function robots(): MetadataRoute.Robots {
@@ -7,7 +7,14 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/api/"],
+        disallow: [
+          "/api/",
+          "/studio/",
+          "/admin/",
+          "/cart",
+          "/favorites",
+          "/checkout",
+        ],
       },
       { userAgent: "GPTBot", allow: "/" },
       { userAgent: "ChatGPT-User", allow: "/" },

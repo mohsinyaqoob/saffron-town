@@ -1,8 +1,11 @@
-export { Hero } from "./Hero";
-export { ProductView } from "./ProductView";
-export { TrustBadges } from "./TrustBadges";
-export { ShopBanner } from "./ShopBanner";
-export { ProductCard } from "./ProductCard";
 export { BlogSection } from "./BlogSection";
-export { GuaranteeSection } from "./GuaranteeSection";
 export { CtaSection } from "./CtaSection";
+export { GuaranteeSection } from "./GuaranteeSection";
+export { Hero } from "./Hero";
+export { ProductActions } from "./ProductActions";
+export { ProductCard } from "./ProductCard";
+export { ProductGallery } from "./ProductGallery";
+export { ProductInfo } from "./ProductInfo";
+export { ProductView } from "./ProductView";
+export { ShopBanner } from "./ShopBanner";
+export { TrustBadges } from "./TrustBadges";

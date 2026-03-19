@@ -1,5 +1,5 @@
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
 import { SITE_CONFIG } from "@/lib/constants";
 
 const FOOTER_LINKS = [
@@ -14,10 +14,7 @@ export function Footer() {
       <div className="mx-auto max-w-7xl px-6 py-12 lg:px-20">
         <div className="flex flex-col gap-8 md:flex-row md:items-start md:justify-between">
           <div>
-            <Link
-              href="/"
-              className="flex items-center"
-            >
+            <Link href="/" className="flex items-center">
               <Image
                 src="/logo-horizon.svg"
                 alt={SITE_CONFIG.name}
@@ -44,7 +41,8 @@ export function Footer() {
         </div>
         <div className="mt-8 border-t border-dark-text-muted/20 pt-8">
           <p className="text-xs text-secondary font-body">
-            © {new Date().getFullYear()} {SITE_CONFIG.name}. All rights reserved.
+            © {new Date().getFullYear()} {SITE_CONFIG.name}. All rights
+            reserved.
           </p>
         </div>
       </div>

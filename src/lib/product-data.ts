@@ -36,7 +36,9 @@ const CATEGORY_NAMES: Record<string, string> = {
 };
 
 export function getProductData(slug: string): ProductPageData | undefined {
-  return (products as unknown as ProductPageData[]).find((p) => p.slug === slug);
+  return (products as unknown as ProductPageData[]).find(
+    (p) => p.slug === slug,
+  );
 }
 
 export function getDefaultProduct(): ProductPageData | undefined {
@@ -54,6 +56,8 @@ export function getCategoryDisplayName(category: string): string {
   return CATEGORY_NAMES[category] || category;
 }
 
-export function isValidCategory(category: string): category is (typeof VALID_CATEGORIES)[number] {
-  return VALID_CATEGORIES.includes(category as any);
+export function isValidCategory(
+  category: string,
+): category is (typeof VALID_CATEGORIES)[number] {
+  return (VALID_CATEGORIES as readonly string[]).includes(category);
 }

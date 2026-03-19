@@ -4,7 +4,8 @@ interface ArticleJsonLdProps {
   title: string;
   excerpt: string;
   author: string;
-  date: string;
+  datePublished: string;
+  dateModified?: string;
   slug: string;
   image: string;
 }
@@ -13,12 +14,15 @@ export function ArticleJsonLd({
   title,
   excerpt,
   author,
-  date,
+  datePublished,
+  dateModified,
   slug,
   image,
 }: ArticleJsonLdProps) {
   const url = `${SITE_CONFIG.url}/blog/${slug}`;
-  const imageUrl = image.startsWith("http") ? image : `${SITE_CONFIG.url}${image}`;
+  const imageUrl = image.startsWith("http")
+    ? image
+    : `${SITE_CONFIG.url}${image}`;
 
   const schema = {
     "@context": "https://schema.org",
@@ -27,7 +31,8 @@ export function ArticleJsonLd({
     description: excerpt,
     image: imageUrl,
     url,
-    datePublished: date,
+    datePublished,
+    ...(dateModified && { dateModified }),
     author: {
       "@type": "Person",
       name: author,

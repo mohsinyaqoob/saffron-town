@@ -24,7 +24,10 @@
     "rating": 4.9,
     "reviewCount": 1240,
     "images": [
-      { "url": "/images/products/mongra-saffron-1.png", "alt": "Kashmiri Mongra Saffron threads in a wooden bowl" }
+      {
+        "url": "/images/products/mongra-saffron-1.png",
+        "alt": "Kashmiri Mongra Saffron threads in a wooden bowl"
+      }
     ],
     "features": [
       "Grade A++ Export Quality",
