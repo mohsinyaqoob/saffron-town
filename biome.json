@@ -11,9 +11,7 @@
       "**",
       "!**/.next",
       "!**/out",
-      "!**/build",
-      "!**/.open-next",
-      "!**/.wrangler"
+      "!**/build"
     ]
   },
   "formatter": {

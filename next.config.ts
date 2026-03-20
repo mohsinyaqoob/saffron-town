@@ -1,15 +1,7 @@
-import type { NextConfig } from "next"
-// import { setupDevPlatform } from "@cloudflare/next-on-pages/next-dev";
-// import("@opennextjs/cloudflare").then((m) => m.initOpenNextCloudflareForDev());
-
-// if (process.env.NODE_ENV === "development") {
-//   await setupDevPlatform();
-// }
+import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    loader: "custom",
-    loaderFile: "./image-loader.ts",
     remotePatterns: [
       {
         protocol: "https",
