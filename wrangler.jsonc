@@ -14,9 +14,6 @@
       "service": "saffron-town"
     }
   ],
-  "images": {
-    "binding": "IMAGES"
-  },
   "observability": {
     "enabled": true
   }
