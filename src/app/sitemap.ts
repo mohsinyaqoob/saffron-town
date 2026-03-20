@@ -4,9 +4,6 @@ import { getAllProducts, PRODUCT_PAGE_URL } from "@/lib/product-data";
 import { client } from "@/sanity/client";
 import { SITEMAP_POSTS_QUERY } from "@/sanity/queries";
 
-/** Revalidate every 60s so new Sanity blog posts appear in sitemap without full rebuild */
-export const revalidate = 60;
-
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = SITE_CONFIG.url;
 

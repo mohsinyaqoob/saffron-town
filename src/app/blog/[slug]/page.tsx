@@ -15,8 +15,7 @@ type Props = {
   params: Promise<{ slug: string }>;
 };
 
-/** Blog posts from Sanity — ISR: re-generates every 60s so new posts go live without full rebuild */
-export const revalidate = 60;
+export const dynamic = "force-static";
 
 export async function generateStaticParams() {
   const posts = await getAllPosts();
