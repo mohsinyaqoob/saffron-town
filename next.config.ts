@@ -1,9 +1,10 @@
-import { setupDevPlatform } from "@cloudflare/next-on-pages/next-dev";
-import type { NextConfig } from "next";
+import type { NextConfig } from "next"
+// import { setupDevPlatform } from "@cloudflare/next-on-pages/next-dev";
+// import("@opennextjs/cloudflare").then((m) => m.initOpenNextCloudflareForDev());
 
-if (process.env.NODE_ENV === "development") {
-  await setupDevPlatform();
-}
+// if (process.env.NODE_ENV === "development") {
+//   await setupDevPlatform();
+// }
 
 const nextConfig: NextConfig = {
   images: {
@@ -31,4 +32,3 @@ const nextConfig: NextConfig = {
 
 export default nextConfig;
 
-import("@opennextjs/cloudflare").then((m) => m.initOpenNextCloudflareForDev());
