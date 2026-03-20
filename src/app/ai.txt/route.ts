@@ -1,3 +1,5 @@
+export const runtime = "edge";
+
 import { NextResponse } from "next/server";
 import { SITE_CONFIG } from "@/lib/constants";
 import { getAllProducts } from "@/lib/product-data";

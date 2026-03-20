@@ -1,3 +1,5 @@
+export const runtime = "edge";
+
 import type { PortableTextBlock } from "@portabletext/types";
 import Image from "next/image";
 import Link from "next/link";
