@@ -24,6 +24,14 @@ export const metadata: Metadata = {
       "Fresh harvest saffron. Seed-to-harvest controlled. Grade A++ Pampore. Farm-direct from Kashmir.",
     url: SITE_CONFIG.url,
     type: "website",
+    images: [
+      {
+        url: `${SITE_CONFIG.url}/products-grid.png`,
+        width: 1200,
+        height: 630,
+        alt: "Premium Kashmiri Mongra Saffron from Saffron Town",
+      },
+    ],
   },
 };
 

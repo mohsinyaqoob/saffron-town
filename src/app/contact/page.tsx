@@ -57,10 +57,10 @@ export default function ContactPage() {
                   </dt>
                   <dd>
                     <a
-                      href="mailto:hello@saffrontown.com"
+                      href={`mailto:${SITE_CONFIG.email}`}
                       className="text-primary font-semibold hover:underline"
                     >
-                      hello@saffrontown.com
+                      {SITE_CONFIG.email}
                     </a>
                   </dd>
                 </div>
@@ -70,10 +70,10 @@ export default function ContactPage() {
                   </dt>
                   <dd>
                     <a
-                      href="mailto:orders@saffrontown.com"
+                      href={`mailto:${SITE_CONFIG.orderEmail}`}
                       className="text-primary font-semibold hover:underline"
                     >
-                      orders@saffrontown.com
+                      {SITE_CONFIG.orderEmail}
                     </a>
                   </dd>
                 </div>

@@ -3,9 +3,12 @@ import Link from "next/link";
 import { SITE_CONFIG } from "@/lib/constants";
 
 const FOOTER_LINKS = [
-  { href: "/shipping", label: "Shipping" },
-  { href: "/returns", label: "Returns" },
+  { href: "/", label: "Home" },
+  { href: "/shop/saffron", label: "Shop" },
+  { href: "/blog", label: "Blog" },
+  { href: "/our-story", label: "Our Story" },
   { href: "/contact", label: "Contact" },
+  { href: "/privacy", label: "Privacy Policy" },
 ];
 
 export function Footer() {

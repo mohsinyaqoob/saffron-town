@@ -15,11 +15,11 @@
     "unit": "1g",
     "stock": 50,
     "variants": [
-      { "id": "mongra-1g", "size": "1g Tester", "price": 499 },
-      { "id": "mongra-5g", "size": "5g", "price": 2300 },
-      { "id": "mongra-10g", "size": "10g", "price": 4500 },
-      { "id": "mongra-20g", "size": "20g", "price": 8500 },
-      { "id": "mongra-50g", "size": "50g", "price": 19999 }
+      { "id": "mongra-1g", "size": "1g Tester", "price": 499, "mrp": 599 },
+      { "id": "mongra-5g", "size": "5g", "price": 2300, "mrp": 2699 },
+      { "id": "mongra-10g", "size": "10g", "price": 4500, "mrp": 5299 },
+      { "id": "mongra-20g", "size": "20g", "price": 8500, "mrp": 9999 },
+      { "id": "mongra-50g", "size": "50g", "price": 19999, "mrp": 22999 }
     ],
     "rating": 4.9,
     "reviewCount": 1240,
@@ -27,6 +27,10 @@
       {
         "url": "/images/products/mongra-saffron-1.png",
         "alt": "Kashmiri Mongra Saffron threads in a wooden bowl"
+      },
+      {
+        "url": "/images/products/mongra-saffron-1.png",
+        "alt": "Close-up of deep crimson Mongra saffron threads"
       }
     ],
     "features": [

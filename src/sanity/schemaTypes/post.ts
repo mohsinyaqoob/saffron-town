@@ -45,6 +45,15 @@ export const postType = defineType({
       type: "image",
       group: "content",
       options: { hotspot: true },
+      fields: [
+        {
+          name: "alt",
+          type: "string",
+          title: "Alt text",
+          description: "Important for SEO and accessibility",
+          validation: (rule) => rule.required(),
+        },
+      ],
       validation: (rule) => rule.required(),
     }),
     defineField({

@@ -4,6 +4,7 @@ export type ProductVariant = {
   id: string;
   size: string;
   price: number;
+  mrp?: number; // Optional M.R.P. for strikethrough display
 };
 
 export type ProductPageData = {

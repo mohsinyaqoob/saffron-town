@@ -15,7 +15,11 @@ type Props = {
   params: Promise<{ slug: string }>;
 };
 
-export const dynamic = "force-static";
+/** ISR: new Sanity posts go live within 60s without full redeploy */
+export const revalidate = 60;
+
+/** Render new slugs on-demand when published after deploy */
+export const dynamicParams = true;
 
 export async function generateStaticParams() {
   const posts = await getAllPosts();
@@ -105,7 +109,7 @@ export default async function BlogPostPage({ params }: Props) {
           <div className="absolute inset-0 z-0">
             <Image
               src={post.image}
-              alt={post.title}
+              alt={post.imageAlt ?? post.title}
               fill
               className="object-cover"
               priority

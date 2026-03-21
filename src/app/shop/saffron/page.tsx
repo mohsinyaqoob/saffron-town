@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
-import { ProductActions } from "@/components/sections/ProductActions";
-import { ProductGallery } from "@/components/sections/ProductGallery";
-import { ProductInfo } from "@/components/sections/ProductInfo";
+import { AmazonProductGallery } from "@/components/sections/AmazonProductGallery";
+import { ProductBuyBox } from "@/components/sections/ProductBuyBox";
+import { ProductDetailsAccordion } from "@/components/sections/ProductDetailsAccordion";
 import { BreadcrumbJsonLd } from "@/components/seo/BreadcrumbJsonLd";
 import { ProductJsonLd } from "@/components/seo/ProductJsonLd";
 import { SITE_CONFIG } from "@/lib/constants";
@@ -61,70 +62,26 @@ export default function SaffronProductPage() {
       />
       <Header />
       <main className="flex-grow">
-        <section className="relative overflow-hidden bg-background-alt pt-12 pb-20 lg:pt-20 lg:pb-32">
-          <div className="container mx-auto max-w-7xl px-6 lg:px-20 relative z-10">
-            <div className="grid gap-12 lg:grid-cols-2 lg:gap-24">
-              <ProductGallery product={product} />
-              <div className="flex flex-col gap-8">
-                <ProductInfo product={product} />
-                <ProductActions product={product} />
+        {/* Main product area */}
+        <div className="bg-background-alt">
+          <div className="mx-auto max-w-7xl px-6 lg:px-20 py-6">
+            {/* Desktop: gallery + reviews left, buy box right. Mobile: gallery, buy box, reviews at bottom */}
+            <div className="grid grid-cols-1 grid-rows-[auto_auto_auto] gap-8 lg:grid-cols-[1fr_380px] lg:grid-rows-[auto_auto] lg:gap-10">
+              {/* Left col, row 1 — gallery */}
+              <div className="lg:col-start-1 lg:row-start-1">
+                <AmazonProductGallery product={product} />
+              </div>
+              {/* Right col, spans 2 rows — buy box (sticky) */}
+              <div className="lg:col-start-2 lg:row-start-1 lg:row-span-2 lg:sticky lg:top-24 lg:self-start">
+                <ProductBuyBox product={product} />
+              </div>
+              {/* Left col, row 2 — product details accordions (below gallery on desktop, at bottom on mobile) */}
+              <div className="lg:col-start-1 lg:row-start-2">
+                <ProductDetailsAccordion product={product} />
               </div>
             </div>
           </div>
-        </section>
-        <section className="bg-surface-muted/30 py-16">
-          <div className="mx-auto max-w-7xl px-6 lg:px-20">
-            <div className="grid gap-12 lg:grid-cols-2">
-              <div>
-                <h2 className="font-display text-2xl font-semibold text-text-primary mb-6">
-                  Specifications
-                </h2>
-                <div className="grid grid-cols-1 gap-y-4">
-                  {Object.entries(product.specifications).map(
-                    ([key, value]) => (
-                      <div
-                        key={key}
-                        className="flex justify-between border-b border-secondary-border/20 pb-2"
-                      >
-                        <span className="text-sm font-medium text-secondary">
-                          {key}
-                        </span>
-                        <span className="text-sm text-text-primary">
-                          {value}
-                        </span>
-                      </div>
-                    ),
-                  )}
-                </div>
-              </div>
-              <div>
-                <h2 className="font-display text-2xl font-semibold text-text-primary mb-6">
-                  Why Choose Us?
-                </h2>
-                <ul className="space-y-4">
-                  {product.features.map((feature, i) => (
-                    <li key={i} className="flex items-start gap-3">
-                      <div className="mt-1 flex-shrink-0">
-                        <svg
-                          className="h-5 w-5 text-primary"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      </div>
-                      <p className="text-secondary">{feature}</p>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </div>
-        </section>
+        </div>
       </main>
       <Footer />
     </div>

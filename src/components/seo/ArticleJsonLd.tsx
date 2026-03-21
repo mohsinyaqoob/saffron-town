@@ -41,6 +41,10 @@ export function ArticleJsonLd({
       "@type": "Organization",
       name: SITE_CONFIG.name,
       url: SITE_CONFIG.url,
+      logo: {
+        "@type": "ImageObject",
+        url: `${SITE_CONFIG.url}/logo.png`,
+      },
     },
   };
 

@@ -4,6 +4,9 @@ import { getAllProducts, PRODUCT_PAGE_URL } from "@/lib/product-data";
 import { client } from "@/sanity/client";
 import { SITEMAP_POSTS_QUERY } from "@/sanity/queries";
 
+/** Sitemap refreshes every hour so new posts appear without redeploy */
+export const revalidate = 3600;
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = SITE_CONFIG.url;
 
@@ -32,6 +35,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: new Date(),
       changeFrequency: "monthly" as const,
       priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/privacy`,
+      lastModified: new Date(),
+      changeFrequency: "yearly" as const,
+      priority: 0.4,
     },
   ];
 
