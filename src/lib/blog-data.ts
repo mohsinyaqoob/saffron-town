@@ -64,10 +64,20 @@ function formatDate(iso: string) {
 
 function toBlogPost(p: SanityPost): BlogPost {
   const imageUrl = p.mainImage
-    ? urlFor(p.mainImage).width(1200).height(630).format("webp").quality(80).url()
+    ? urlFor(p.mainImage)
+        .width(1200)
+        .height(630)
+        .format("webp")
+        .quality(80)
+        .url()
     : p.image;
   const ogImage = p.seo?.ogImage
-    ? urlFor(p.seo.ogImage).width(1200).height(630).format("webp").quality(80).url()
+    ? urlFor(p.seo.ogImage)
+        .width(1200)
+        .height(630)
+        .format("webp")
+        .quality(80)
+        .url()
     : undefined;
   return {
     id: p._id,

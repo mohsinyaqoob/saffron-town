@@ -43,9 +43,9 @@ export default function PrivacyPage() {
             </h2>
             <p>
               When you place an order or contact us, we collect your name, email
-              address, shipping address, and payment details. This information is
-              used solely to process orders, deliver your saffron, and respond to
-              your inquiries.
+              address, shipping address, and payment details. This information
+              is used solely to process orders, deliver your saffron, and
+              respond to your inquiries.
             </p>
 
             <h2 className="font-display text-2xl font-bold mt-16 mb-6 text-text-primary">
@@ -53,8 +53,8 @@ export default function PrivacyPage() {
             </h2>
             <p>
               We use your information to fulfil orders, send delivery updates,
-              answer questions about our products, and improve our service. We do
-              not sell or share your personal data with third parties for
+              answer questions about our products, and improve our service. We
+              do not sell or share your personal data with third parties for
               marketing.
             </p>
 

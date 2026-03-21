@@ -11,7 +11,12 @@ const components = {
       value: { asset?: { _ref?: string }; alt?: string; caption?: string };
     }) => {
       if (!value?.asset) return null;
-      const src = urlFor(value).width(1200).height(675).format("webp").quality(80).url();
+      const src = urlFor(value)
+        .width(1200)
+        .height(675)
+        .format("webp")
+        .quality(80)
+        .url();
       return (
         <figure className="my-12">
           <div className="relative aspect-video w-full overflow-hidden rounded-2xl">

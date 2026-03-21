@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import type { ProductPageData } from "@/lib/product-data";
 
 interface AmazonProductGalleryProps {

@@ -42,7 +42,9 @@ export function ProductReviews() {
                 {[...Array(5)].map((_, j) => (
                   <span
                     key={j}
-                    className={j < t.rating ? "text-primary" : "text-secondary-border"}
+                    className={
+                      j < t.rating ? "text-primary" : "text-secondary-border"
+                    }
                   >
                     ★
                   </span>

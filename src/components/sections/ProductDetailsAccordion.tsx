@@ -10,7 +10,9 @@ interface ProductDetailsAccordionProps {
 /**
  * Amazon-style expandable product details: About this item, Product details, Specifications.
  */
-export function ProductDetailsAccordion({ product }: ProductDetailsAccordionProps) {
+export function ProductDetailsAccordion({
+  product,
+}: ProductDetailsAccordionProps) {
   const [openSections, setOpenSections] = useState<Set<string>>(
     () => new Set(["about", "description", "specs"]),
   );
@@ -62,7 +64,9 @@ export function ProductDetailsAccordion({ product }: ProductDetailsAccordionProp
               </tr>
             ))}
             <tr className="border-b border-secondary-border">
-              <td className="py-2 pr-4 font-medium text-secondary align-top">Brand</td>
+              <td className="py-2 pr-4 font-medium text-secondary align-top">
+                Brand
+              </td>
               <td className="py-2 text-text-primary">Saffron Town</td>
             </tr>
           </tbody>
@@ -74,13 +78,18 @@ export function ProductDetailsAccordion({ product }: ProductDetailsAccordionProp
   return (
     <div className="border border-secondary-border rounded-xl overflow-hidden">
       {sections.map(({ id, title, content }) => (
-        <div key={id} className="border-b border-secondary-border last:border-b-0">
+        <div
+          key={id}
+          className="border-b border-secondary-border last:border-b-0"
+        >
           <button
             type="button"
             onClick={() => toggleSection(id)}
             className="w-full px-4 py-3 text-left flex items-center justify-between bg-surface-muted/80 hover:bg-surface/50 transition-colors"
           >
-            <span className="font-medium text-text-primary text-sm font-display">{title}</span>
+            <span className="font-medium text-text-primary text-sm font-display">
+              {title}
+            </span>
             <svg
               className={`w-4 h-4 text-secondary transition-transform ${
                 openSections.has(id) ? "rotate-180" : ""
@@ -89,11 +98,18 @@ export function ProductDetailsAccordion({ product }: ProductDetailsAccordionProp
               stroke="currentColor"
               viewBox="0 0 24 24"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M19 9l-7 7-7-7"
+              />
             </svg>
           </button>
           {openSections.has(id) && (
-            <div className="px-5 py-4 bg-background-alt text-text-primary">{content}</div>
+            <div className="px-5 py-4 bg-background-alt text-text-primary">
+              {content}
+            </div>
           )}
         </div>
       ))}
