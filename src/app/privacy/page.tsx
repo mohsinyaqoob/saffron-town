@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { BreadcrumbNav } from "@/components/BreadcrumbNav";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { SITE_CONFIG } from "@/lib/constants";
@@ -7,16 +8,33 @@ import { SITE_CONFIG } from "@/lib/constants";
 /** Static page — built once at deploy */
 export const dynamic = "force-static";
 
+const OG_IMAGE = `${SITE_CONFIG.url}/products-grid.png`;
+
 export const metadata: Metadata = {
-  title: "Privacy Policy",
+  title: "Privacy Policy | Saffron Box",
   description:
-    "Privacy Policy for Saffron Town. How we collect, use, and protect your data when you shop for premium Kashmiri saffron.",
+    "Privacy Policy for Saffron Box. How we collect, use, and protect your data when you shop for premium Kashmiri saffron.",
   alternates: { canonical: `${SITE_CONFIG.url}/privacy` },
   openGraph: {
-    title: "Privacy Policy | Saffron Town",
-    description: "How we handle your data at Saffron Town.",
+    title: "Privacy Policy | Saffron Box",
+    description:
+      "How we collect, use, and protect your data when you shop at Saffron Box.",
     url: `${SITE_CONFIG.url}/privacy`,
     type: "website",
+    images: [
+      {
+        url: OG_IMAGE,
+        width: 1200,
+        height: 630,
+        alt: "Saffron Box privacy policy",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Privacy Policy | Saffron Box",
+    description: "How we handle your data at Saffron Box.",
+    images: [OG_IMAGE],
   },
 };
 
@@ -25,6 +43,14 @@ export default function PrivacyPage() {
     <div className="flex min-h-screen flex-col bg-background">
       <Header />
       <main className="flex-grow">
+        <div className="mx-auto max-w-7xl px-6 lg:px-20 pt-6">
+          <BreadcrumbNav
+            crumbs={[
+              { label: "Home", href: "/" },
+              { label: "Privacy Policy", href: "/privacy" },
+            ]}
+          />
+        </div>
         <section className="bg-surface-muted/30 py-20 lg:py-28">
           <div className="mx-auto max-w-3xl px-6 lg:px-20 text-center">
             <h1 className="font-display text-4xl font-bold tracking-tight text-text-primary lg:text-6xl">

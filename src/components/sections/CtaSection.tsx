@@ -12,7 +12,9 @@ export function CtaSection() {
           Fresh harvest. Farm-direct. Money-back guarantee.
         </p>
         <Link href="/shop/saffron">
-          <Button size="lg">Shop Collection</Button>
+          <Button size="lg" className="min-w-[44px] min-h-[44px]">
+            Buy verified Kashmiri saffron
+          </Button>
         </Link>
       </div>
     </section>

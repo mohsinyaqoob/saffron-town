@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { BreadcrumbNav } from "@/components/BreadcrumbNav";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { SITE_CONFIG } from "@/lib/constants";
@@ -7,17 +8,34 @@ import { SITE_CONFIG } from "@/lib/constants";
 /** Static page — built once at deploy */
 export const dynamic = "force-static";
 
+const OG_IMAGE = `${SITE_CONFIG.url}/products-grid.png`;
+
 export const metadata: Metadata = {
-  title: "Contact",
+  title: "Contact Saffron Box | Kashmiri Saffron Inquiries",
   description:
-    "Contact Saffron Town—India's premium saffron dealer. Questions about Kashmiri Mongra saffron, orders, or partnerships. We respond within 24-48 hours.",
+    "Contact Saffron Box—India's premium saffron dealer. Questions about Kashmiri Mongra saffron, orders, or partnerships. We respond within 24-48 hours.",
   alternates: { canonical: `${SITE_CONFIG.url}/contact` },
   openGraph: {
-    title: "Contact",
+    title: "Contact Saffron Box | Kashmiri Saffron Inquiries",
     description:
-      "Get in touch. Premium Kashmiri saffron inquiries, orders, partnerships.",
+      "Get in touch. Premium Kashmiri saffron inquiries, orders, partnerships. Response within 24-48 hours.",
     url: `${SITE_CONFIG.url}/contact`,
     type: "website",
+    images: [
+      {
+        url: OG_IMAGE,
+        width: 1200,
+        height: 630,
+        alt: "Contact Saffron Box for Kashmiri saffron",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Contact Saffron Box | Kashmiri Saffron Inquiries",
+    description:
+      "Premium Kashmiri saffron inquiries, orders, partnerships. Response within 24-48 hours.",
+    images: [OG_IMAGE],
   },
 };
 
@@ -26,11 +44,19 @@ export default function ContactPage() {
     <div className="flex min-h-screen flex-col bg-background">
       <Header />
       <main className="flex-grow">
+        <div className="mx-auto max-w-7xl px-6 lg:px-20 pt-6">
+          <BreadcrumbNav
+            crumbs={[
+              { label: "Home", href: "/" },
+              { label: "Contact", href: "/contact" },
+            ]}
+          />
+        </div>
         {/* Hero */}
         <section className="bg-surface-muted/30 py-20 lg:py-28">
           <div className="mx-auto max-w-3xl px-6 lg:px-20 text-center">
             <h1 className="font-display text-4xl font-bold tracking-tight text-text-primary lg:text-6xl">
-              Contact Us
+              Contact Saffron Box
             </h1>
             <p className="mt-6 text-lg leading-relaxed text-secondary font-body">
               Have a question? We&apos;d love to hear from you.

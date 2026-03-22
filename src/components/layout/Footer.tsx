@@ -4,7 +4,12 @@ import { SITE_CONFIG } from "@/lib/constants";
 
 const FOOTER_LINKS = [
   { href: "/", label: "Home" },
-  { href: "/shop/saffron", label: "Shop" },
+  { href: "/shop", label: "Shop" },
+  { href: "/shop/saffron", label: "Mongra Saffron" },
+  { href: "/about", label: "About" },
+  { href: "/gifting", label: "Gifting" },
+  { href: "/lab-reports", label: "Lab Reports" },
+  { href: "/reviews", label: "Reviews" },
   { href: "/blog", label: "Blog" },
   { href: "/our-story", label: "Our Story" },
   { href: "/contact", label: "Contact" },

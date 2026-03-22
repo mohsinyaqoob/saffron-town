@@ -1,3 +1,5 @@
+// src/lib/blog-data.ts
+
 import { client } from "@/sanity/client";
 import { urlFor } from "@/sanity/image";
 import {
@@ -26,32 +28,26 @@ export type BlogPost = {
     ogImage?: string;
     canonicalUrl?: string;
     noIndex?: boolean;
-    keywords?: string[];
   };
+  faqItems?: { question: string; answer: string }[];
 };
 
 type SanityPost = {
   _id: string;
   title: string;
   slug: string;
-  excerpt: string;
-  body?: unknown;
-  image: string;
-  imageAlt?: string;
-  mainImage?: { asset?: { _ref?: string } };
   publishedAt: string;
   updatedAt?: string;
-  author: string;
-  category: string;
-  readTime: number;
-  seo?: {
-    metaTitle?: string;
-    metaDescription?: string;
-    ogImage?: { asset?: { _ref?: string } };
-    canonicalUrl?: string;
-    noIndex?: boolean;
-    keywords?: string[];
-  };
+  body?: unknown;
+  seoTitle?: string;
+  seoDescription?: string;
+  mainImage?: { asset?: { _ref?: string }; alt?: string };
+  ogImage?: { asset?: { _ref?: string } };
+  canonicalUrl?: string;
+  noIndex?: boolean;
+  author?: { name?: string } | string;
+  category?: string;
+  faqItems?: { question: string; answer: string }[];
 };
 
 function formatDate(iso: string) {
@@ -70,39 +66,35 @@ function toBlogPost(p: SanityPost): BlogPost {
         .format("webp")
         .quality(80)
         .url()
-    : p.image;
-  const ogImage = p.seo?.ogImage
-    ? urlFor(p.seo.ogImage)
-        .width(1200)
-        .height(630)
-        .format("webp")
-        .quality(80)
-        .url()
+    : "";
+  const ogImage = p.ogImage
+    ? urlFor(p.ogImage).width(1200).height(630).format("webp").quality(80).url()
     : undefined;
   return {
     id: p._id,
     title: p.title,
     slug: p.slug,
-    excerpt: p.excerpt || "",
+    excerpt: p.seoDescription || "",
     content: p.body,
     date: formatDate(p.publishedAt),
     publishedAt: p.publishedAt,
     updatedAt: p.updatedAt,
-    author: p.author || "Saffron Town",
+    author:
+      (typeof p.author === "string"
+        ? p.author
+        : (p.author as { name?: string })?.name) || "Saffron Box Team",
     category: p.category || "Journal",
     image: imageUrl,
-    imageAlt: p.imageAlt,
-    readTime: `${p.readTime || 5} min read`,
-    seo: p.seo
-      ? {
-          metaTitle: p.seo.metaTitle,
-          metaDescription: p.seo.metaDescription,
-          ogImage,
-          canonicalUrl: p.seo.canonicalUrl,
-          noIndex: p.seo.noIndex,
-          keywords: p.seo.keywords,
-        }
-      : undefined,
+    imageAlt: p.mainImage?.alt,
+    readTime: "5 min read",
+    seo: {
+      metaTitle: p.seoTitle,
+      metaDescription: p.seoDescription,
+      ogImage,
+      canonicalUrl: p.canonicalUrl,
+      noIndex: p.noIndex,
+    },
+    faqItems: p.faqItems,
   };
 }
 

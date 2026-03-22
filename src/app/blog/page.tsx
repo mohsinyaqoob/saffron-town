@@ -1,6 +1,9 @@
+// src/app/blog/page.tsx
+
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { BreadcrumbNav } from "@/components/BreadcrumbNav";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { Badge } from "@/components/ui/Badge";
@@ -10,25 +13,47 @@ import { SITE_CONFIG } from "@/lib/constants";
 /** Blog listing — ISR: re-generates every 60s so new posts go live without full rebuild */
 export const revalidate = 60;
 
+const OG_IMAGE = `${SITE_CONFIG.url}/products-grid.png`;
+
 export const metadata: Metadata = {
-  title: "The Saffron Journal | Himalayan Wisdom & Wellness",
+  title: "Saffron Blog — Benefits, Recipes & Buying Guides",
   description:
-    "Discover stories behind heritage Kashmiri saffron, wellness insights, and the science of natural well-being from India's premium saffron dealer.",
+    "Everything you need to know about Kashmiri saffron — health benefits, recipes, how to spot fake saffron, and buying guides from the source.",
   alternates: { canonical: `${SITE_CONFIG.url}/blog` },
   openGraph: {
-    title: "The Saffron Journal | Himalayan Wisdom & Wellness",
+    title: "Saffron Blog — Benefits, Recipes & Buying Guides | Saffron Box",
     description:
-      "Himalayan wisdom & wellness. Stories behind our heritage saffron and natural well-being.",
+      "Everything you need to know about Kashmiri saffron — health, recipes, buying guides.",
     url: `${SITE_CONFIG.url}/blog`,
     type: "website",
+    images: [
+      {
+        url: OG_IMAGE,
+        width: 1200,
+        height: 630,
+        alt: "Saffron Box blog — Kashmiri saffron guides",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "The Saffron Journal | Himalayan Wisdom & Wellness",
+    title: "Saffron Blog — Benefits, Recipes & Buying Guides | Saffron Box",
     description:
-      "Himalayan wisdom & wellness. Stories behind heritage Kashmiri saffron.",
+      "Everything you need to know about Kashmiri saffron — health, recipes, buying guides.",
+    images: [OG_IMAGE],
   },
 };
+
+const CATEGORY_LABELS: Record<string, string> = {
+  health: "Health & wellness",
+  recipes: "Recipes",
+  "buying-guide": "Buying guide",
+  "about-saffron": "About saffron",
+};
+
+function formatCategory(value: string) {
+  return CATEGORY_LABELS[value] || value;
+}
 
 export default async function BlogListPage() {
   const posts = await getAllPosts();
@@ -37,6 +62,14 @@ export default async function BlogListPage() {
     <div className="flex min-h-screen flex-col bg-background">
       <Header />
       <main className="flex-grow">
+        <div className="mx-auto max-w-7xl px-6 lg:px-20 pt-6">
+          <BreadcrumbNav
+            crumbs={[
+              { label: "Home", href: "/" },
+              { label: "Blog", href: "/blog" },
+            ]}
+          />
+        </div>
         {/* Hero Section */}
         <section className="bg-surface-muted/30 py-16 lg:py-24">
           <div className="mx-auto max-w-7xl px-6 lg:px-20 text-center">
@@ -44,7 +77,7 @@ export default async function BlogListPage() {
               The Saffron Journal
             </Badge>
             <h1 className="font-display text-4xl font-bold tracking-tight text-text-primary lg:text-6xl">
-              Himalayan Wisdom & Wellness
+              Saffron Blog — Benefits, Recipes & Buying Guides
             </h1>
             <p className="mt-6 text-lg leading-relaxed text-secondary font-body max-w-2xl mx-auto">
               Discover the stories behind our heritage crops and the science of
@@ -56,7 +89,7 @@ export default async function BlogListPage() {
         {/* Blog Post List */}
         <section className="py-20">
           <div className="mx-auto max-w-7xl px-6 lg:px-20">
-            <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-12 md:grid-cols-2">
               {posts.map((post) => (
                 <article
                   key={post.id}
@@ -68,63 +101,38 @@ export default async function BlogListPage() {
                   >
                     <Image
                       src={post.image}
-                      alt={post.title}
+                      alt={post.imageAlt ?? post.title}
                       fill
                       className="object-cover transition-transform duration-700 group-hover:scale-110"
                       sizes="(max-width: 768px) 100vw, 400px"
+                      loading="lazy"
                     />
-                    <div className="absolute top-4 left-4">
-                      <span className="backdrop-blur-md bg-white/70 text-dark px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ring-1 ring-dark/5">
-                        {post.category}
-                      </span>
-                    </div>
+                    {post.category && (
+                      <div className="absolute top-4 left-4">
+                        <span className="backdrop-blur-md bg-white/70 text-dark px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ring-1 ring-dark/5">
+                          {formatCategory(post.category)}
+                        </span>
+                      </div>
+                    )}
                   </Link>
                   <div className="flex flex-col flex-grow p-8">
                     <div className="flex items-center gap-3 text-xs text-text-muted font-body mb-4">
                       <span>{post.date}</span>
-                      <span className="h-1 w-1 rounded-full bg-secondary-border" />
-                      <span>{post.readTime}</span>
+                      {post.author && (
+                        <>
+                          <span className="h-1 w-1 rounded-full bg-secondary-border" />
+                          <span>{post.author}</span>
+                        </>
+                      )}
                     </div>
                     <Link href={`/blog/${post.slug}`}>
                       <h2 className="font-display text-2xl font-bold text-text-primary group-hover:text-primary transition-colors line-clamp-2">
                         {post.title}
                       </h2>
                     </Link>
-                    <p className="mt-4 text-sm text-secondary font-body line-clamp-3">
+                    <p className="mt-4 text-sm text-secondary font-body line-clamp-3 flex-grow">
                       {post.excerpt}
                     </p>
-                    <div className="mt-auto pt-8 flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-[10px] font-bold text-primary">
-                          {post.author
-                            .split(" ")
-                            .map((n) => n[0])
-                            .join("")}
-                        </div>
-                        <span className="text-xs font-semibold text-text-primary">
-                          {post.author}
-                        </span>
-                      </div>
-                      <Link
-                        href={`/blog/${post.slug}`}
-                        className="text-xs font-bold text-primary uppercase tracking-widest flex items-center gap-1 group/link"
-                      >
-                        Read More
-                        <svg
-                          className="h-3 w-3 transition-transform group-hover/link:translate-x-1"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M9 5l7 7-7 7"
-                          />
-                        </svg>
-                      </Link>
-                    </div>
                   </div>
                 </article>
               ))}

@@ -1,9 +1,45 @@
 import { PortableText as PortableTextReact } from "@portabletext/react";
 import type { PortableTextBlock } from "@portabletext/types";
 import Image from "next/image";
+import Link from "next/link";
 import { urlFor } from "@/sanity/image";
 
+function isExternalUrl(href: string) {
+  return href.startsWith("http://") || href.startsWith("https://");
+}
+
 const components = {
+  marks: {
+    link: ({
+      children,
+      value,
+    }: {
+      children?: React.ReactNode;
+      value?: { href?: string };
+    }) => {
+      const href = value?.href ?? "#";
+      if (isExternalUrl(href)) {
+        return (
+          <a
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-primary font-semibold hover:underline"
+          >
+            {children}
+          </a>
+        );
+      }
+      return (
+        <Link
+          href={href}
+          className="text-primary font-semibold hover:underline"
+        >
+          {children}
+        </Link>
+      );
+    },
+  },
   types: {
     image: ({
       value,
@@ -22,7 +58,7 @@ const components = {
           <div className="relative aspect-video w-full overflow-hidden rounded-2xl">
             <Image
               src={src}
-              alt={value.alt || "Blog post image"}
+              alt={value.alt || "Kashmiri saffron blog post image"}
               fill
               className="object-cover"
               sizes="(max-width: 768px) 100vw, 720px"

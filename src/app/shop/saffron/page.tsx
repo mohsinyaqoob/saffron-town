@@ -1,13 +1,16 @@
 import type { Metadata } from "next";
+import { BreadcrumbNav } from "@/components/BreadcrumbNav";
+import { FAQSection } from "@/components/FAQSection";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { AmazonProductGallery } from "@/components/sections/AmazonProductGallery";
 import { ProductBuyBox } from "@/components/sections/ProductBuyBox";
 import { ProductDetailsAccordion } from "@/components/sections/ProductDetailsAccordion";
-import { BreadcrumbJsonLd } from "@/components/seo/BreadcrumbJsonLd";
 import { ProductJsonLd } from "@/components/seo/ProductJsonLd";
+import { TestimonialsWidget } from "@/components/testimonials";
 import { SITE_CONFIG } from "@/lib/constants";
 import { getDefaultProduct } from "@/lib/product-data";
+import { SHOP_FAQS } from "@/lib/shop-faqs";
 
 /** Static product page — built once at deploy, served from CDN */
 export const dynamic = "force-static";
@@ -50,34 +53,46 @@ export default function SaffronProductPage() {
   const product = getDefaultProduct();
   if (!product) return null;
 
+  const faqs = SHOP_FAQS.map((f) => ({
+    question: f.question,
+    answer: f.answer,
+  }));
+
   return (
     <div className="flex min-h-screen flex-col bg-background">
       <ProductJsonLd product={product} />
-      <BreadcrumbJsonLd
-        items={[
-          { name: "Home", url: SITE_CONFIG.url },
-          { name: "Saffron", url: `${SITE_CONFIG.url}/shop/saffron` },
-        ]}
-      />
       <Header />
       <main className="flex-grow">
+        <div className="mx-auto max-w-7xl px-6 lg:px-20 py-6">
+          <BreadcrumbNav
+            crumbs={[
+              { label: "Home", href: "/" },
+              { label: "Shop", href: "/shop" },
+              { label: "Mongra Saffron", href: "/shop/saffron" },
+            ]}
+          />
+        </div>
         {/* Main product area */}
         <div className="bg-background-alt">
           <div className="mx-auto max-w-7xl px-6 lg:px-20 py-6">
-            {/* Desktop: gallery + reviews left, buy box right. Mobile: gallery, buy box, reviews at bottom */}
             <div className="grid grid-cols-1 grid-rows-[auto_auto_auto] gap-8 lg:grid-cols-[1fr_380px] lg:grid-rows-[auto_auto] lg:gap-10">
-              {/* Left col, row 1 — gallery */}
               <div className="lg:col-start-1 lg:row-start-1">
                 <AmazonProductGallery product={product} />
               </div>
-              {/* Right col, spans 2 rows — buy box (sticky) */}
               <div className="lg:col-start-2 lg:row-start-1 lg:row-span-2 lg:sticky lg:top-24 lg:self-start">
                 <ProductBuyBox product={product} />
               </div>
-              {/* Left col, row 2 — product details accordions (below gallery on desktop, at bottom on mobile) */}
               <div className="lg:col-start-1 lg:row-start-2">
                 <ProductDetailsAccordion product={product} />
               </div>
+            </div>
+            <FAQSection faqs={faqs} />
+            <div className="mt-16">
+              <TestimonialsWidget
+                variant="top"
+                limit={3}
+                title="What Customers Say"
+              />
             </div>
           </div>
         </div>

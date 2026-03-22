@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 
 export function GuaranteeSection() {
@@ -14,13 +15,15 @@ export function GuaranteeSection() {
           100% pure. Only the current harvest. If you find any adulteration,
           full refund—no questions asked.
         </p>
-        <Button
-          variant="primary"
-          size="md"
-          className="tracking-widest uppercase text-sm"
-        >
-          Money-back guarantee
-        </Button>
+        <Link href="/lab-reports">
+          <Button
+            variant="primary"
+            size="md"
+            className="tracking-widest uppercase text-sm min-w-[44px] min-h-[44px]"
+          >
+            View lab reports
+          </Button>
+        </Link>
       </div>
     </section>
   );

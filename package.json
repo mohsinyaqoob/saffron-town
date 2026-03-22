@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "studio": "sanity dev",
+    "seed:blog": "npx tsx scripts/seed-blog-posts.ts",
     "build": "next build",
     "dev": "next dev --port 6600",
     "start": "next start",
@@ -35,6 +36,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "dotenv": "^16.6.1",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
     "tailwindcss": "^4",

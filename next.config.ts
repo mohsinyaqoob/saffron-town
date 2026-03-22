@@ -4,8 +4,28 @@ const nextConfig: NextConfig = {
   redirects: async () => [
     {
       source: "/:path*",
-      has: [{ type: "host", value: "www.saffron.town" }],
-      destination: "https://saffron.town/:path*",
+      has: [{ type: "host", value: "www.saffron.box" }],
+      destination: "https://saffron.box/:path*",
+      permanent: true,
+    },
+    {
+      source: "/products",
+      destination: "/shop",
+      permanent: true,
+    },
+    {
+      source: "/products/:path*",
+      destination: "/shop/:path*",
+      permanent: true,
+    },
+    {
+      source: "/kesar",
+      destination: "/shop",
+      permanent: true,
+    },
+    {
+      source: "/kashmir-saffron",
+      destination: "/shop",
       permanent: true,
     },
   ],

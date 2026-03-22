@@ -27,18 +27,18 @@ export function ShopBanner() {
               1g Tester · 5g · 10g · 20g · 50g — Farm-direct · Money-back
               guarantee
             </p>
-            <span className="mt-8 inline-flex items-center justify-center rounded-full bg-white px-10 py-6 text-base font-bold text-primary shadow-xl transition-all group-hover:bg-white/95">
-              Buy now
+            <span className="mt-8 inline-flex items-center justify-center rounded-full bg-white px-10 py-6 text-base font-bold text-primary shadow-xl transition-all group-hover:bg-white/95 min-w-[44px] min-h-[44px]">
+              Shop Kashmiri Mongra saffron
             </span>
           </div>
           <div className="relative h-64 w-64 flex-shrink-0 lg:h-80 lg:w-80">
             <Image
               src="/images/products/mongra-saffron-1.png"
-              alt="Kashmiri Mongra Saffron"
+              alt="Kashmiri Mongra saffron threads in wooden bowl"
               fill
               className="object-contain drop-shadow-2xl"
               sizes="320px"
-              priority={false}
+              loading="lazy"
             />
           </div>
         </div>

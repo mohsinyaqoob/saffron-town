@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { BreadcrumbNav } from "@/components/BreadcrumbNav";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { SITE_CONFIG } from "@/lib/constants";
@@ -26,6 +27,14 @@ export default function OurStoryPage() {
     <div className="flex min-h-screen flex-col bg-background">
       <Header />
       <main className="flex-grow">
+        <div className="mx-auto max-w-7xl px-6 lg:px-20 pt-6">
+          <BreadcrumbNav
+            crumbs={[
+              { label: "Home", href: "/" },
+              { label: "Our Story", href: "/our-story" },
+            ]}
+          />
+        </div>
         {/* Hero */}
         <section className="bg-surface-muted/30 py-20 lg:py-28">
           <div className="mx-auto max-w-3xl px-6 lg:px-20 text-center">

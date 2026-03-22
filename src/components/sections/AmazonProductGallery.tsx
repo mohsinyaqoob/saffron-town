@@ -40,8 +40,9 @@ export function AmazonProductGallery({ product }: AmazonProductGalleryProps) {
               src={img.url}
               alt={img.alt}
               fill
-              className="object-contain"
+              className="object-contain rounded-2xl"
               priority={idx === 0}
+              loading={idx === 0 ? undefined : "lazy"}
               sizes="(max-width: 768px) 100vw, 50vw"
             />
           </div>
@@ -72,9 +73,10 @@ export function AmazonProductGallery({ product }: AmazonProductGalleryProps) {
               <Image
                 src={img.url}
                 alt={img.alt}
-                fill
+                width={56}
+                height={56}
                 className="object-contain p-1"
-                sizes="56px"
+                loading="lazy"
               />
             </button>
           ))}

@@ -1,3 +1,5 @@
+// src/app/sitemap.ts
+
 import type { MetadataRoute } from "next";
 import { SITE_CONFIG } from "@/lib/constants";
 import { getAllProducts, PRODUCT_PAGE_URL } from "@/lib/product-data";
@@ -10,7 +12,7 @@ export const revalidate = 3600;
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = SITE_CONFIG.url;
 
-  /** Priority 1.0 = homepage only */
+  /** Static routes with user-specified priorities and changeFrequency */
   const staticRoutes: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
@@ -19,22 +21,52 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 1.0,
     },
     {
+      url: `${baseUrl}/shop`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.9,
+    },
+    {
       url: `${baseUrl}/blog`,
       lastModified: new Date(),
       changeFrequency: "weekly" as const,
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/our-story`,
-      lastModified: new Date(),
-      changeFrequency: "monthly" as const,
-      priority: 0.7,
-    },
-    {
       url: `${baseUrl}/contact`,
       lastModified: new Date(),
       changeFrequency: "monthly" as const,
       priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/lab-reports`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/gifting`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/our-story`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/about`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/reviews`,
+      lastModified: new Date(),
+      changeFrequency: "weekly" as const,
+      priority: 0.8,
     },
     {
       url: `${baseUrl}/privacy`,
@@ -44,7 +76,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  /** Static products — map over products array (one URL per product page) */
+  /** Product pages — /shop/[product] */
   const products = getAllProducts();
   const productUrls: MetadataRoute.Sitemap =
     products.length > 0
@@ -58,7 +90,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         ]
       : [];
 
-  /** Sanity blog posts — fetch slugs from API */
+  /** Blog posts — fetch slugs from Sanity, priority 0.8 for blog posts */
   let blogPosts: MetadataRoute.Sitemap = [];
   try {
     const posts =
@@ -68,8 +100,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     blogPosts = (posts || []).map((p) => ({
       url: `${baseUrl}/blog/${p.slug}`,
       lastModified: new Date(p._updatedAt),
-      changeFrequency: "monthly" as const,
-      priority: 0.7,
+      changeFrequency: "weekly" as const,
+      priority: 0.8,
     }));
   } catch {
     // Sanity may not be configured yet

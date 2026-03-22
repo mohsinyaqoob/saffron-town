@@ -57,6 +57,7 @@ export async function BlogSection() {
                   width={600}
                   height={400}
                   className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  loading="lazy"
                 />
               </Link>
               <div className="flex flex-col flex-grow p-8">

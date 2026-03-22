@@ -2,17 +2,22 @@ import type { Metadata } from "next";
 import { SITE_CONFIG } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "Your Collection",
+  title: "Favorites | Saffron Box",
   description:
-    "Your curated favorites from Saffron Town. Premium Kashmiri saffron and Himalayan products.",
+    "Your saved Kashmiri saffron and premium products from Saffron Box.",
   alternates: { canonical: `${SITE_CONFIG.url}/favorites` },
+  robots: { index: false, follow: true },
   openGraph: {
-    title: "Your Collection",
-    description: "Your curated favorites. Premium Kashmiri saffron.",
+    title: "Favorites | Saffron Box",
+    description: "Your saved Kashmiri saffron products.",
     url: `${SITE_CONFIG.url}/favorites`,
     type: "website",
   },
-  robots: { index: false, follow: true },
+  twitter: {
+    card: "summary",
+    title: "Favorites | Saffron Box",
+    description: "Your saved Kashmiri saffron products.",
+  },
 };
 
 export default function FavoritesLayout({

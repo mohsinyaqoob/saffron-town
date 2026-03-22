@@ -1,12 +1,16 @@
+// src/app/blog/[slug]/page.tsx
+
 import type { PortableTextBlock } from "@portabletext/types";
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { BreadcrumbNav } from "@/components/BreadcrumbNav";
+import { FAQSection } from "@/components/FAQSection";
+import { JsonLd } from "@/components/JsonLd";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { PortableText } from "@/components/PortableText";
-import { ArticleJsonLd } from "@/components/seo/ArticleJsonLd";
-import { BreadcrumbJsonLd } from "@/components/seo/BreadcrumbJsonLd";
 import { Badge } from "@/components/ui/Badge";
 import { getAllPosts, getPostBySlug } from "@/lib/blog-data";
 import { SITE_CONFIG } from "@/lib/constants";
@@ -15,70 +19,95 @@ type Props = {
   params: Promise<{ slug: string }>;
 };
 
-/** ISR: new Sanity posts go live within 60s without full redeploy */
-export const revalidate = 60;
-
-/** Render new slugs on-demand when published after deploy */
-export const dynamicParams = true;
-
+/** Static params — pre-render every post at build time */
 export async function generateStaticParams() {
-  const posts = await getAllPosts();
-  return posts.map((post) => ({
-    slug: post.slug,
-  }));
+  try {
+    const { client } = await import("@/sanity/client");
+    const { ALL_POST_SLUGS_QUERY } = await import("@/sanity/queries");
+    const slugs = await client.fetch<{ slug: string }[]>(ALL_POST_SLUGS_QUERY);
+    return (slugs || []).map((item) => ({ slug: item.slug }));
+  } catch {
+    return [];
+  }
 }
 
-export async function generateMetadata({ params }: Props) {
+/** ISR: new posts go live within 60s without full redeploy */
+export const revalidate = 60;
+
+/** Dynamic params: render new slugs on-demand when published after deploy */
+export const dynamicParams = true;
+
+/** Dynamic metadata — pulls SEO fields directly from Sanity */
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const post = await getPostBySlug(slug);
   if (!post) return {};
 
-  const postUrl = `${SITE_CONFIG.url}/blog/${slug}`;
-  const imageUrl = post.seo?.ogImage || post.image;
-  const finalImage = imageUrl.startsWith("http")
-    ? imageUrl
-    : `${SITE_CONFIG.url}${imageUrl}`;
-  /** Use template for brand suffix — pass only page-specific title */
-  const title = post.seo?.metaTitle || post.title;
-  const description = post.seo?.metaDescription || post.excerpt;
+  const canonical = post.seo?.canonicalUrl || `${SITE_CONFIG.url}/blog/${slug}`;
+  const ogImageUrl =
+    post.seo?.ogImage || post.image || `${SITE_CONFIG.url}/og-default.jpg`;
 
-  const metadata: { robots?: { index: boolean; follow: boolean } } = {};
-  if (post.seo?.noIndex) {
-    metadata.robots = { index: false, follow: true };
-  }
-
-  return {
-    title,
-    description,
-    alternates: { canonical: post.seo?.canonicalUrl || postUrl },
+  const metadata: Metadata = {
+    title: post.seo?.metaTitle || post.title,
+    description: post.seo?.metaDescription || post.excerpt,
+    alternates: { canonical },
+    robots: post.seo?.noIndex
+      ? { index: false, follow: false }
+      : { index: true, follow: true },
     openGraph: {
-      title,
-      description,
-      url: postUrl,
+      title: post.seo?.metaTitle || post.title,
+      description: post.seo?.metaDescription || post.excerpt,
+      url: canonical,
       type: "article",
-      authors: [post.author],
       publishedTime: post.publishedAt,
       modifiedTime: post.updatedAt,
-      images: [finalImage],
+      authors: post.author ? [post.author] : undefined,
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
       siteName: SITE_CONFIG.name,
     },
     twitter: {
       card: "summary_large_image",
-      title,
-      description,
-      images: [finalImage],
+      title: post.seo?.metaTitle || post.title,
+      description: post.seo?.metaDescription || post.excerpt,
+      images: [ogImageUrl],
     },
-    ...metadata,
   };
+
+  return metadata;
 }
 
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
   const post = await getPostBySlug(slug);
-
   if (!post) notFound();
 
-  // Simple related posts based on category
+  const canonical = post.seo?.canonicalUrl || `${SITE_CONFIG.url}/blog/${slug}`;
+  const ogImageUrl = post.seo?.ogImage || post.image;
+
+  /** Article JSON-LD per schema.org/Article */
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: post.title,
+    author: { "@type": "Person", name: post.author || "Saffron Box Team" },
+    publisher: {
+      "@type": "Organization",
+      name: SITE_CONFIG.name,
+      logo: { "@type": "ImageObject", url: SITE_CONFIG.logo },
+    },
+    datePublished: post.publishedAt,
+    dateModified: post.updatedAt || post.publishedAt,
+    image: ogImageUrl,
+    mainEntityOfPage: { "@type": "WebPage", "@id": canonical },
+  };
+
   const allPosts = await getAllPosts();
   const relatedPosts = allPosts
     .filter((p) => p.slug !== slug && p.category === post.category)
@@ -86,24 +115,20 @@ export default async function BlogPostPage({ params }: Props) {
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
-      <ArticleJsonLd
-        title={post.title}
-        excerpt={post.excerpt}
-        author={post.author}
-        datePublished={post.publishedAt}
-        dateModified={post.updatedAt}
-        slug={post.slug}
-        image={post.seo?.ogImage || post.image}
-      />
-      <BreadcrumbJsonLd
-        items={[
-          { name: "Home", url: SITE_CONFIG.url },
-          { name: "Blog", url: `${SITE_CONFIG.url}/blog` },
-          { name: post.title, url: `${SITE_CONFIG.url}/blog/${slug}` },
-        ]}
-      />
+      <JsonLd schema={articleSchema} />
       <Header />
       <main className="flex-grow">
+        {/* Breadcrumb — BreadcrumbNav injects BreadcrumbList schema */}
+        <div className="mx-auto max-w-7xl px-6 lg:px-20 pt-6">
+          <BreadcrumbNav
+            crumbs={[
+              { label: "Home", href: "/" },
+              { label: "Blog", href: "/blog" },
+              { label: post.title, href: `/blog/${slug}` },
+            ]}
+          />
+        </div>
+
         {/* Editorial Header Section */}
         <section className="relative w-full min-h-[60vh] lg:min-h-[75vh] flex flex-col">
           <div className="absolute inset-0 z-0">
@@ -115,7 +140,6 @@ export default async function BlogPostPage({ params }: Props) {
               priority
               sizes="100vw"
             />
-            {/* Black overlay 40% + gradient for text contrast at bottom */}
             <div className="absolute inset-0 bg-black/40 z-10" />
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/60 z-10" />
           </div>
@@ -140,31 +164,39 @@ export default async function BlogPostPage({ params }: Props) {
               </svg>
               Journal Home
             </Link>
-            <div className="flex justify-center mb-6">
-              <Badge
-                variant="primary"
-                className="bg-primary/95 backdrop-blur-sm px-5 text-white border-0"
-              >
-                {post.category}
-              </Badge>
-            </div>
+            {post.category && (
+              <div className="flex justify-center mb-6">
+                <Badge
+                  variant="primary"
+                  className="bg-primary/95 backdrop-blur-sm px-5 text-white border-0"
+                >
+                  {post.category}
+                </Badge>
+              </div>
+            )}
             <h1 className="font-display text-4xl font-bold tracking-tight lg:text-6xl mb-8 leading-[1.15] text-white drop-shadow-lg">
               {post.title}
             </h1>
             <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-sm font-body text-white/95">
-              <div className="flex items-center gap-3">
-                <div className="h-10 w-10 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center font-bold text-white uppercase text-xs shrink-0">
-                  {post.author
-                    .split(" ")
-                    .map((n) => n[0])
-                    .join("")}
-                </div>
-                <span className="font-semibold text-white">{post.author}</span>
-              </div>
-              <span
-                className="hidden sm:inline h-1 w-1 rounded-full bg-white/50 shrink-0"
-                aria-hidden
-              />
+              {post.author && (
+                <>
+                  <div className="flex items-center gap-3">
+                    <div className="h-10 w-10 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center font-bold text-white uppercase text-xs shrink-0">
+                      {post.author
+                        .split(" ")
+                        .map((n) => n[0])
+                        .join("")}
+                    </div>
+                    <span className="font-semibold text-white">
+                      {post.author}
+                    </span>
+                  </div>
+                  <span
+                    className="hidden sm:inline h-1 w-1 rounded-full bg-white/50 shrink-0"
+                    aria-hidden
+                  />
+                </>
+              )}
               <span className="text-white/90">{post.date}</span>
               <span
                 className="hidden sm:inline h-1 w-1 rounded-full bg-white/50 shrink-0"
@@ -178,89 +210,77 @@ export default async function BlogPostPage({ params }: Props) {
         {/* Article Body */}
         <div className="mx-auto max-w-7xl px-6 lg:px-20 py-20 lg:py-32 grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-20">
           <article className="max-w-3xl">
-            {/* Content rendering */}
             <div className="article-content">
               {Array.isArray(post.content) ? (
                 <PortableText value={post.content as PortableTextBlock[]} />
               ) : null}
             </div>
 
+            {/* FAQSection injects FAQPage schema when faqItems exist */}
+            {post.faqItems && post.faqItems.length > 0 && (
+              <FAQSection faqs={post.faqItems} />
+            )}
+
             {/* Author Card Footer */}
-            <div className="mt-24 p-12 rounded-[2.5rem] bg-surface-muted/30 border border-secondary-border/10">
-              <div className="flex flex-col md:flex-row items-center gap-8">
-                <div className="h-32 w-32 shrink-0 rounded-[2rem] bg-primary relative overflow-hidden ring-4 ring-white shadow-xl shadow-primary/10">
-                  <div className="absolute inset-0 flex items-center justify-center text-4xl font-display font-bold text-white">
-                    {post.author
-                      .split(" ")
-                      .map((n) => n[0])
-                      .join("")}
+            {post.author && (
+              <div className="mt-24 p-12 rounded-[2.5rem] bg-surface-muted/30 border border-secondary-border/10">
+                <div className="flex flex-col md:flex-row items-center gap-8">
+                  <div className="h-32 w-32 shrink-0 rounded-[2rem] bg-primary relative overflow-hidden ring-4 ring-white shadow-xl shadow-primary/10">
+                    <div className="absolute inset-0 flex items-center justify-center text-4xl font-display font-bold text-white">
+                      {post.author
+                        .split(" ")
+                        .map((n) => n[0])
+                        .join("")}
+                    </div>
                   </div>
-                </div>
-                <div className="text-center md:text-left">
-                  <h3 className="font-display text-2xl font-bold text-text-primary mb-2">
-                    Written by {post.author}
-                  </h3>
-                  <p className="text-secondary font-body leading-relaxed mb-4">
-                    Specialist in Himalayan biodiversity and sustainable
-                    agricultural practices. Committed to preserving the heritage
-                    of Kashmiri crops through science-backed wellness insights.
-                  </p>
-                  <div className="flex justify-center md:justify-start gap-4">
-                    <Link
-                      href="#"
-                      className="text-xs font-bold uppercase tracking-widest text-primary hover:underline"
-                    >
-                      Full Bio
-                    </Link>
-                    <Link
-                      href="#"
-                      className="text-xs font-bold uppercase tracking-widest text-primary hover:underline"
-                    >
-                      Twitter
-                    </Link>
-                    <Link
-                      href="#"
-                      className="text-xs font-bold uppercase tracking-widest text-primary hover:underline"
-                    >
-                      Instagram
-                    </Link>
+                  <div className="text-center md:text-left">
+                    <h3 className="font-display text-2xl font-bold text-text-primary mb-2">
+                      Written by {post.author}
+                    </h3>
+                    <p className="text-secondary font-body leading-relaxed mb-4">
+                      Specialist in Himalayan biodiversity and sustainable
+                      agricultural practices.
+                    </p>
                   </div>
                 </div>
               </div>
-            </div>
+            )}
           </article>
 
-          {/* Sidebar / Recommended Articles */}
+          {/* Sidebar / Related Articles */}
           <aside className="space-y-16">
-            <div>
-              <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-text-muted mb-8 pb-4 border-b border-secondary-border/10">
-                Related Stories
-              </h4>
-              <div className="space-y-12">
-                {relatedPosts.map((rp) => (
-                  <Link
-                    key={rp.id}
-                    href={`/blog/${rp.slug}`}
-                    className="group flex flex-col gap-4"
-                  >
-                    <div className="relative aspect-[4/3] rounded-3xl overflow-hidden ring-1 ring-dark/5 shadow-lg group-hover:shadow-xl transition-all duration-500">
-                      <Image
-                        src={rp.image}
-                        alt={rp.title}
-                        fill
-                        className="object-cover group-hover:scale-110 transition-transform duration-700"
-                      />
-                    </div>
-                    <h5 className="font-display font-bold text-lg text-text-primary group-hover:text-primary transition-colors leading-snug">
-                      {rp.title}
-                    </h5>
-                    <span className="text-[10px] font-bold text-text-muted">
-                      {rp.date}
-                    </span>
-                  </Link>
-                ))}
+            {relatedPosts.length > 0 && (
+              <div>
+                <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-text-muted mb-8 pb-4 border-b border-secondary-border/10">
+                  Related Stories
+                </h4>
+                <div className="space-y-12">
+                  {relatedPosts.map((rp) => (
+                    <Link
+                      key={rp.id}
+                      href={`/blog/${rp.slug}`}
+                      className="group flex flex-col gap-4"
+                    >
+                      <div className="relative aspect-[4/3] rounded-3xl overflow-hidden ring-1 ring-dark/5 shadow-lg group-hover:shadow-xl transition-all duration-500">
+                        <Image
+                          src={rp.image}
+                          alt={rp.title}
+                          fill
+                          className="object-cover group-hover:scale-110 transition-transform duration-700"
+                          loading="lazy"
+                        />
+                      </div>
+                      <h5 className="font-display font-bold text-lg text-text-primary group-hover:text-primary transition-colors leading-snug">
+                        {rp.title}
+                      </h5>
+                      <span className="text-[10px] font-bold text-text-muted">
+                        {rp.date}
+                      </span>
+                    </Link>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
             <div className="p-8 rounded-[2rem] bg-primary text-white space-y-4 shadow-2xl shadow-primary/20">
               <h4 className="font-display text-xl font-bold italic">

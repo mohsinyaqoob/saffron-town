@@ -1,3 +1,5 @@
+// src/app/not-found.tsx
+
 import Link from "next/link";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
@@ -13,9 +15,35 @@ export default function NotFound() {
         <p className="text-secondary font-body mb-8">
           The page you&apos;re looking for doesn&apos;t exist.
         </p>
-        <Link href="/" className="text-primary font-semibold hover:underline">
-          Return home
-        </Link>
+        <div className="flex flex-wrap gap-4 justify-center">
+          <Link
+            href="/shop"
+            className="inline-flex items-center gap-2 text-primary font-semibold hover:underline"
+          >
+            Browse shop
+          </Link>
+          <span className="text-secondary">|</span>
+          <Link
+            href="/blog"
+            className="inline-flex items-center gap-2 text-primary font-semibold hover:underline"
+          >
+            Read the blog
+          </Link>
+          <span className="text-secondary">|</span>
+          <Link
+            href="/about"
+            className="inline-flex items-center gap-2 text-primary font-semibold hover:underline"
+          >
+            About us
+          </Link>
+          <span className="text-secondary">|</span>
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 text-primary font-semibold hover:underline"
+          >
+            Return home
+          </Link>
+        </div>
       </main>
       <Footer />
     </div>
