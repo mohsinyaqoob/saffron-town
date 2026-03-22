@@ -4,8 +4,8 @@ const nextConfig: NextConfig = {
   redirects: async () => [
     {
       source: "/:path*",
-      has: [{ type: "host", value: "www.saffron.town" }],
-      destination: "https://saffron.town/:path*",
+      has: [{ type: "host", value: "saffron.town" }], // ← non-www triggers redirect
+      destination: "https://www.saffron.town/:path*", // ← sends to www
       permanent: true,
     },
     {

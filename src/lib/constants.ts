@@ -1,7 +1,7 @@
 export const SITE_CONFIG = {
   name: "Saffron Town",
   tagline: "Always the most recent harvest.",
-  url: "https://saffron.town",
+  url: "https://www.saffron.town",
   description:
     "Premium Kashmiri Mongra Saffron dealer. Farm-direct, seed-to-harvest controlled. Grade A++ Pampore saffron—fresh harvest only, no compromise on quality. Money-back guarantee.",
   keywords: [
