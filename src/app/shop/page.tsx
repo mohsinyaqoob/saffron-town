@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     "Buy lab-tested, GI-tagged Kashmiri Mongra saffron from farm-direct sources. ISO 3632 certified. 1g to 50g. Fresh harvest only. Money-back guarantee.",
   alternates: { canonical: `${SITE_CONFIG.url}/shop` },
   openGraph: {
-    title: "Shop Pure Kashmiri Saffron | Saffron Box",
+    title: "Shop Pure Kashmiri Saffron | Saffron Town",
     description:
       "Lab-tested, GI-tagged Mongra saffron. Farm-direct from Pampore. Fresh harvest only.",
     url: `${SITE_CONFIG.url}/shop`,
@@ -28,13 +28,13 @@ export const metadata: Metadata = {
         url: OG_IMAGE,
         width: 1200,
         height: 630,
-        alt: "Kashmiri Mongra saffron from Saffron Box",
+        alt: "Kashmiri Mongra saffron from Saffron Town",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Shop Pure Kashmiri Saffron | Saffron Box",
+    title: "Shop Pure Kashmiri Saffron | Saffron Town",
     description:
       "Lab-tested, GI-tagged Mongra saffron. Farm-direct from Pampore. Fresh harvest only.",
     images: [OG_IMAGE],
@@ -95,7 +95,7 @@ export default function ShopPage() {
               safflower petals, or turmeric mixed with real threads. You can run
               home tests — the water test, rub test, and smell test — but the
               only way to verify crocin content and purity is professional ISO
-              3632 laboratory analysis. Every Saffron Box batch is
+              3632 laboratory analysis. Every Saffron Town batch is
               third-party-tested. Download the lab report for your order at{" "}
               <Link
                 href="/lab-reports"

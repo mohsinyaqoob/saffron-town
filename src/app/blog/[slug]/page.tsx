@@ -96,7 +96,7 @@ export default async function BlogPostPage({ params }: Props) {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: post.title,
-    author: { "@type": "Person", name: post.author || "Saffron Box Team" },
+    author: { "@type": "Person", name: post.author || "Saffron Town" },
     publisher: {
       "@type": "Organization",
       name: SITE_CONFIG.name,

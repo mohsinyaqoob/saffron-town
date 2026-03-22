@@ -10,12 +10,12 @@ import { SITE_CONFIG } from "@/lib/constants";
 const OG_IMAGE = `${SITE_CONFIG.url}/products-grid.png`;
 
 export const metadata: Metadata = {
-  title: "Saffron Gift Boxes | Weddings, Diwali | Saffron Box",
+  title: "Saffron Gift Boxes | Weddings, Diwali | Saffron Town",
   description:
-    "Premium Kashmiri saffron gift boxes from Saffron Box. Perfect for weddings, Diwali, and special occasions. Farm-direct, beautifully packaged.",
+    "Premium Kashmiri saffron gift boxes from Saffron Town. Perfect for weddings, Diwali, and special occasions. Farm-direct, beautifully packaged.",
   alternates: { canonical: `${SITE_CONFIG.url}/gifting` },
   openGraph: {
-    title: "Saffron Gift Boxes | Weddings, Diwali | Saffron Box",
+    title: "Saffron Gift Boxes | Weddings, Diwali | Saffron Town",
     description:
       "Premium saffron gift boxes. Perfect for weddings, Diwali, and special occasions. Farm-direct.",
     url: `${SITE_CONFIG.url}/gifting`,
@@ -25,13 +25,13 @@ export const metadata: Metadata = {
         url: OG_IMAGE,
         width: 1200,
         height: 630,
-        alt: "Kashmiri saffron gift boxes from Saffron Box",
+        alt: "Kashmiri saffron gift boxes from Saffron Town",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Saffron Gift Boxes | Weddings, Diwali | Saffron Box",
+    title: "Saffron Gift Boxes | Weddings, Diwali | Saffron Town",
     description:
       "Premium saffron gift boxes. Perfect for weddings, Diwali, and special occasions.",
     images: [OG_IMAGE],

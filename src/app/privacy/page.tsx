@@ -12,14 +12,14 @@ const OG_IMAGE = `${SITE_CONFIG.url}/products-grid.png`;
 
 export const metadata: Metadata = {
   robots: { index: false, follow: true },
-  title: "Privacy Policy | Saffron Box",
+  title: "Privacy Policy | Saffron Town",
   description:
-    "Privacy Policy for Saffron Box. How we collect, use, and protect your data when you shop for premium Kashmiri saffron.",
+    "Privacy Policy for Saffron Town. How we collect, use, and protect your data when you shop for premium Kashmiri saffron.",
   alternates: { canonical: `${SITE_CONFIG.url}/privacy` },
   openGraph: {
-    title: "Privacy Policy | Saffron Box",
+    title: "Privacy Policy | Saffron Town",
     description:
-      "How we collect, use, and protect your data when you shop at Saffron Box.",
+      "How we collect, use, and protect your data when you shop at Saffron Town.",
     url: `${SITE_CONFIG.url}/privacy`,
     type: "website",
     images: [
@@ -27,14 +27,14 @@ export const metadata: Metadata = {
         url: OG_IMAGE,
         width: 1200,
         height: 630,
-        alt: "Saffron Box privacy policy",
+        alt: "Saffron Town privacy policy",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Privacy Policy | Saffron Box",
-    description: "How we handle your data at Saffron Box.",
+    title: "Privacy Policy | Saffron Town",
+    description: "How we handle your data at Saffron Town.",
     images: [OG_IMAGE],
   },
 };

@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     "Everything you need to know about Kashmiri saffron — health benefits, recipes, how to spot fake saffron, and buying guides from the source.",
   alternates: { canonical: `${SITE_CONFIG.url}/blog` },
   openGraph: {
-    title: "Saffron Blog — Benefits, Recipes & Buying Guides | Saffron Box",
+    title: "Saffron Blog — Benefits, Recipes & Buying Guides | Saffron Town",
     description:
       "Everything you need to know about Kashmiri saffron — health, recipes, buying guides.",
     url: `${SITE_CONFIG.url}/blog`,
@@ -30,13 +30,13 @@ export const metadata: Metadata = {
         url: OG_IMAGE,
         width: 1200,
         height: 630,
-        alt: "Saffron Box blog — Kashmiri saffron guides",
+        alt: "Saffron Town blog — Kashmiri saffron guides",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Saffron Blog — Benefits, Recipes & Buying Guides | Saffron Box",
+    title: "Saffron Blog — Benefits, Recipes & Buying Guides | Saffron Town",
     description:
       "Everything you need to know about Kashmiri saffron — health, recipes, buying guides.",
     images: [OG_IMAGE],

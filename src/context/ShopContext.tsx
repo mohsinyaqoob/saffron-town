@@ -36,8 +36,8 @@ export function ShopProvider({ children }: { children: React.ReactNode }) {
 
   // Load from local storage on mount
   useEffect(() => {
-    const savedCart = localStorage.getItem("saffronbox_cart");
-    const savedFavorites = localStorage.getItem("saffronbox_favorites");
+    const savedCart = localStorage.getItem("saffrontown_cart");
+    const savedFavorites = localStorage.getItem("saffrontown_favorites");
     if (savedCart) setCart(JSON.parse(savedCart));
     if (savedFavorites) setFavorites(JSON.parse(savedFavorites));
     setMounted(true);
@@ -46,8 +46,8 @@ export function ShopProvider({ children }: { children: React.ReactNode }) {
   // Save to local storage on changes
   useEffect(() => {
     if (mounted) {
-      localStorage.setItem("saffronbox_cart", JSON.stringify(cart));
-      localStorage.setItem("saffronbox_favorites", JSON.stringify(favorites));
+      localStorage.setItem("saffrontown_cart", JSON.stringify(cart));
+      localStorage.setItem("saffrontown_favorites", JSON.stringify(favorites));
     }
   }, [cart, favorites, mounted]);
 

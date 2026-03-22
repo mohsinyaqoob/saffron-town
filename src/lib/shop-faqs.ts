@@ -11,7 +11,7 @@ export const SHOP_FAQS = [
   {
     question: "How do I know your saffron is genuine?",
     answer:
-      "Every batch of Saffron Box saffron is independently tested to ISO 3632 standards. You can download the lab report for your batch directly from our Lab Reports page.",
+      "Every batch of Saffron Town saffron is independently tested to ISO 3632 standards. You can download the lab report for your batch directly from our Lab Reports page.",
   },
   {
     question: "How to store saffron?",

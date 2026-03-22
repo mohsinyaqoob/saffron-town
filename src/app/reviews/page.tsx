@@ -16,12 +16,12 @@ export const revalidate = 300;
 const OG_IMAGE = `${SITE_CONFIG.url}/products-grid.png`;
 
 export const metadata: Metadata = {
-  title: "Customer Reviews | Saffron Box",
+  title: "Customer Reviews | Saffron Town",
   description:
-    "50+ real customer reviews of Saffron Box's pure Kashmiri Mongra saffron. Pregnancy, post-partum, immunity, skin. Lab-tested, farm-direct from Pampore. Read what our customers say.",
+    "50+ real customer reviews of Saffron Town's pure Kashmiri Mongra saffron. Pregnancy, post-partum, immunity, skin. Lab-tested, farm-direct from Pampore. Read what our customers say.",
   alternates: { canonical: `${SITE_CONFIG.url}/reviews` },
   openGraph: {
-    title: "Customer Reviews | Saffron Box",
+    title: "Customer Reviews | Saffron Town",
     description:
       "50+ real customer reviews of pure Kashmiri saffron. Pregnancy, immunity, skin glow. Lab-tested, farm-direct from Pampore.",
     url: `${SITE_CONFIG.url}/reviews`,
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Customer Reviews | Saffron Box",
+    title: "Customer Reviews | Saffron Town",
     description:
       "50+ real customer reviews of pure Kashmiri saffron. Lab-tested, farm-direct.",
     images: [OG_IMAGE],

@@ -12,10 +12,10 @@ const OG_IMAGE = `${SITE_CONFIG.url}/products-grid.png`;
 export const metadata: Metadata = {
   title: "Lab Reports | ISO 3632 Kashmiri Saffron Tests",
   description:
-    "ISO 3632 lab reports for Saffron Box's pure Kashmiri Mongra saffron. Third-party tested for purity and crocin content.",
+    "ISO 3632 lab reports for Saffron Town's pure Kashmiri Mongra saffron. Third-party tested for purity and crocin content.",
   alternates: { canonical: `${SITE_CONFIG.url}/lab-reports` },
   openGraph: {
-    title: "Lab Reports | ISO 3632 Kashmiri Saffron Tests | Saffron Box",
+    title: "Lab Reports | ISO 3632 Kashmiri Saffron Tests | Saffron Town",
     description:
       "ISO 3632 lab reports. Third-party tested for purity and crocin content. Download your batch certificate.",
     url: `${SITE_CONFIG.url}/lab-reports`,
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Lab Reports | ISO 3632 Kashmiri Saffron Tests | Saffron Box",
+    title: "Lab Reports | ISO 3632 Kashmiri Saffron Tests | Saffron Town",
     description:
       "ISO 3632 lab reports. Third-party tested for purity and crocin content.",
     images: [OG_IMAGE],

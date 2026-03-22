@@ -11,12 +11,12 @@ export const dynamic = "force-static";
 const OG_IMAGE = `${SITE_CONFIG.url}/products-grid.png`;
 
 export const metadata: Metadata = {
-  title: "Contact Saffron Box | Kashmiri Saffron Inquiries",
+  title: "Contact Saffron Town | Kashmiri Saffron Inquiries",
   description:
-    "Contact Saffron Box—India's premium saffron dealer. Questions about Kashmiri Mongra saffron, orders, or partnerships. We respond within 24-48 hours.",
+    "Contact Saffron Town—India's premium saffron dealer. Questions about Kashmiri Mongra saffron, orders, or partnerships. We respond within 24-48 hours.",
   alternates: { canonical: `${SITE_CONFIG.url}/contact` },
   openGraph: {
-    title: "Contact Saffron Box | Kashmiri Saffron Inquiries",
+    title: "Contact Saffron Town | Kashmiri Saffron Inquiries",
     description:
       "Get in touch. Premium Kashmiri saffron inquiries, orders, partnerships. Response within 24-48 hours.",
     url: `${SITE_CONFIG.url}/contact`,
@@ -26,13 +26,13 @@ export const metadata: Metadata = {
         url: OG_IMAGE,
         width: 1200,
         height: 630,
-        alt: "Contact Saffron Box for Kashmiri saffron",
+        alt: "Contact Saffron Town for Kashmiri saffron",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Contact Saffron Box | Kashmiri Saffron Inquiries",
+    title: "Contact Saffron Town | Kashmiri Saffron Inquiries",
     description:
       "Premium Kashmiri saffron inquiries, orders, partnerships. Response within 24-48 hours.",
     images: [OG_IMAGE],
@@ -49,7 +49,7 @@ export default function ContactPage() {
             { label: "Home", href: "/" },
             { label: "Contact", href: "/contact" },
           ]}
-          title="Contact Saffron Box"
+          title="Contact Saffron Town"
           description="Have a question? We'd love to hear from you."
         />
 

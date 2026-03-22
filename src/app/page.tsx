@@ -16,12 +16,12 @@ import { SITE_CONFIG } from "@/lib/constants";
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: "Premium Kashmiri Mongra Saffron | Fresh Harvest | Saffron Box",
+  title: "Premium Kashmiri Mongra Saffron | Fresh Harvest | Saffron Town",
   description:
     "India's premium saffron dealer. Kashmiri Mongra Grade A++ from Pampore. Fresh harvest only. Farm-direct. Money-back guarantee. Shop verified kesar.",
   alternates: { canonical: SITE_CONFIG.url },
   openGraph: {
-    title: "Premium Kashmiri Mongra Saffron | Saffron Box",
+    title: "Premium Kashmiri Mongra Saffron | Saffron Town",
     description:
       "Fresh harvest saffron. Seed-to-harvest controlled. Grade A++ Pampore. Farm-direct from Kashmir.",
     url: SITE_CONFIG.url,
@@ -31,13 +31,13 @@ export const metadata: Metadata = {
         url: `${SITE_CONFIG.url}/products-grid.png`,
         width: 1200,
         height: 630,
-        alt: "Premium Kashmiri Mongra Saffron from Saffron Box",
+        alt: "Premium Kashmiri Mongra Saffron from Saffron Town",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Premium Kashmiri Mongra Saffron | Saffron Box",
+    title: "Premium Kashmiri Mongra Saffron | Saffron Town",
     description:
       "Fresh harvest saffron. Seed-to-harvest controlled. Grade A++ Pampore. Farm-direct from Kashmir.",
     images: [`${SITE_CONFIG.url}/products-grid.png`],

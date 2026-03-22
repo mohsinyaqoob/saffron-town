@@ -82,7 +82,7 @@ function toBlogPost(p: SanityPost): BlogPost {
     author:
       (typeof p.author === "string"
         ? p.author
-        : (p.author as { name?: string })?.name) || "Saffron Box Team",
+        : (p.author as { name?: string })?.name) || "Saffron Town",
     category: p.category || "Journal",
     image: imageUrl,
     imageAlt: p.mainImage?.alt,

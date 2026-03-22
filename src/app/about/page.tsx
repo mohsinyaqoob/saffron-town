@@ -14,10 +14,10 @@ const OG_IMAGE = `${SITE_CONFIG.url}/products-grid.png`;
 export const metadata: Metadata = {
   title: "From the Saffron Fields of Pampore to Your Door",
   description:
-    "Discover how Saffron Box brings pure Kashmiri saffron from Pampore's high-altitude fields to your door. Farm-direct, GI-tagged, harvest-fresh kesar.",
+    "Discover how Saffron Town brings pure Kashmiri saffron from Pampore's high-altitude fields to your door. Farm-direct, GI-tagged, harvest-fresh kesar.",
   alternates: { canonical: `${SITE_CONFIG.url}/about` },
   openGraph: {
-    title: "From the Saffron Fields of Pampore to Your Door | Saffron Box",
+    title: "From the Saffron Fields of Pampore to Your Door | Saffron Town",
     description:
       "The story behind India's premium farm-direct Kashmiri saffron. Pampore geography, harvest window, and why freshness matters.",
     url: `${SITE_CONFIG.url}/about`,
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "From the Saffron Fields of Pampore to Your Door | Saffron Box",
+    title: "From the Saffron Fields of Pampore to Your Door | Saffron Town",
     description:
       "The story behind India's premium farm-direct Kashmiri saffron.",
     images: [OG_IMAGE],
@@ -78,7 +78,7 @@ export default function AboutPage() {
               months or years.
             </p>
             <p>
-              Saffron Box works directly with growers in Pampore. We do not
+              Saffron Town works directly with growers in Pampore. We do not
               blend, repackage, or sit on inventory. Every batch is traceable,
               third-party tested to ISO 3632, and certified with a GI tag that
               confirms its Kashmiri origin.
