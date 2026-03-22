@@ -2,12 +2,21 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { useShop } from "@/context/ShopContext";
 import { NAV_LINKS, SITE_CONFIG } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
+function isLinkActive(href: string, pathname: string): boolean {
+  if (pathname === href) return true;
+  if (href !== "/" && pathname.startsWith(`${href}/`)) return true;
+  if (href.startsWith("/shop") && pathname === "/shop") return true;
+  return false;
+}
+
 export function Header() {
+  const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { cart, favorites } = useShop();
 
@@ -31,20 +40,24 @@ export function Header() {
           className="hidden lg:flex items-center gap-6 lg:gap-8"
           aria-label="Main navigation"
         >
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={cn(
-                "text-sm font-body transition-colors",
-                link.href === "/"
-                  ? "font-medium text-text-primary"
-                  : "text-secondary hover:text-text-primary",
-              )}
-            >
-              {link.label}
-            </Link>
-          ))}
+          {NAV_LINKS.map((link) => {
+            const active = isLinkActive(link.href, pathname);
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={cn(
+                  "text-sm font-body transition-colors",
+                  active
+                    ? "font-semibold text-primary"
+                    : "text-secondary hover:text-text-primary",
+                )}
+                aria-current={active ? "page" : undefined}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
         </nav>
 
         <div className="flex items-center gap-2 sm:gap-4">
@@ -170,16 +183,25 @@ export function Header() {
           )}
           aria-label="Mobile navigation"
         >
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              onClick={() => setMobileMenuOpen(false)}
-              className="block py-3 px-3 -mx-3 text-base font-body text-secondary hover:text-text-primary hover:bg-surface-muted/50 rounded-lg transition-colors"
-            >
-              {link.label}
-            </Link>
-          ))}
+          {NAV_LINKS.map((link) => {
+            const active = isLinkActive(link.href, pathname);
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setMobileMenuOpen(false)}
+                className={cn(
+                  "block py-3 px-3 -mx-3 text-base font-body rounded-lg transition-colors",
+                  active
+                    ? "font-semibold text-primary bg-primary/10"
+                    : "text-secondary hover:text-text-primary hover:bg-surface-muted/50",
+                )}
+                aria-current={active ? "page" : undefined}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
         </nav>
       </div>
     </header>

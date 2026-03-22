@@ -294,7 +294,7 @@ export default async function BlogPostPage({ params }: Props) {
                 placeholder="Your Email"
                 className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-sm placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-white/30"
               />
-              <button className="w-full bg-white text-primary font-bold py-3 rounded-xl hover:bg-surface-muted transition-colors text-sm uppercase tracking-widest shadow-lg">
+              <button className="w-full bg-background-alt text-primary font-bold py-3 rounded-xl hover:bg-surface-muted transition-colors text-sm uppercase tracking-widest shadow-lg">
                 Subscribe
               </button>
             </div>

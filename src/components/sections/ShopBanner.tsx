@@ -27,7 +27,7 @@ export function ShopBanner() {
               1g Tester · 5g · 10g · 20g · 50g — Farm-direct · Money-back
               guarantee
             </p>
-            <span className="mt-8 inline-flex items-center justify-center rounded-full bg-white px-10 py-6 text-base font-bold text-primary shadow-xl transition-all group-hover:bg-white/95 min-w-[44px] min-h-[44px]">
+            <span className="mt-8 inline-flex items-center justify-center rounded-full bg-background-alt px-10 py-6 text-base font-bold text-primary shadow-xl transition-all group-hover:bg-background-alt/95 min-w-[44px] min-h-[44px]">
               Shop Kashmiri Mongra saffron
             </span>
           </div>

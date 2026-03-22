@@ -39,7 +39,7 @@ export function ProductCard({ product }: ProductCardProps) {
         />
         <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-dark/40 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
         <div className="absolute top-4 left-4">
-          <span className="backdrop-blur-md bg-white/70 text-dark px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ring-1 ring-dark/5">
+          <span className="backdrop-blur-md bg-background-alt/80 text-dark px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ring-1 ring-dark/5">
             {getCategoryDisplayName(product.category)}
           </span>
         </div>

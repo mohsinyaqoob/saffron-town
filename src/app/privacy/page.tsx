@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { BreadcrumbNav } from "@/components/BreadcrumbNav";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
+import { PageHeader } from "@/components/sections";
 import { SITE_CONFIG } from "@/lib/constants";
 
 /** Static page — built once at deploy */
@@ -43,24 +43,14 @@ export default function PrivacyPage() {
     <div className="flex min-h-screen flex-col bg-background">
       <Header />
       <main className="flex-grow">
-        <div className="mx-auto max-w-7xl px-6 lg:px-20 pt-6">
-          <BreadcrumbNav
-            crumbs={[
-              { label: "Home", href: "/" },
-              { label: "Privacy Policy", href: "/privacy" },
-            ]}
-          />
-        </div>
-        <section className="bg-surface-muted/30 py-20 lg:py-28">
-          <div className="mx-auto max-w-3xl px-6 lg:px-20 text-center">
-            <h1 className="font-display text-4xl font-bold tracking-tight text-text-primary lg:text-6xl">
-              Privacy Policy
-            </h1>
-            <p className="mt-6 text-lg leading-relaxed text-secondary font-body">
-              Last updated: March 2025
-            </p>
-          </div>
-        </section>
+        <PageHeader
+          crumbs={[
+            { label: "Home", href: "/" },
+            { label: "Privacy Policy", href: "/privacy" },
+          ]}
+          title="Privacy Policy"
+          description="Last updated: March 2025"
+        />
 
         <section className="py-20 lg:py-28">
           <div className="mx-auto max-w-3xl px-6 lg:px-20 prose-headings:font-display prose-headings:font-bold prose-headings:text-text-primary prose-p:text-lg prose-p:leading-relaxed prose-p:text-secondary prose-p:mb-8">

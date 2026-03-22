@@ -2,6 +2,8 @@ export { BlogSection } from "./BlogSection";
 export { CtaSection } from "./CtaSection";
 export { GuaranteeSection } from "./GuaranteeSection";
 export { Hero } from "./Hero";
+export { PageHeader } from "./PageHeader";
+export { PageHero } from "./PageHero";
 export { ProductActions } from "./ProductActions";
 export { ProductCard } from "./ProductCard";
 export { ProductGallery } from "./ProductGallery";

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { BreadcrumbNav } from "@/components/BreadcrumbNav";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
+import { PageHeader } from "@/components/sections";
 import { SITE_CONFIG } from "@/lib/constants";
 
 /** Static page — built once at deploy */
@@ -44,25 +44,14 @@ export default function ContactPage() {
     <div className="flex min-h-screen flex-col bg-background">
       <Header />
       <main className="flex-grow">
-        <div className="mx-auto max-w-7xl px-6 lg:px-20 pt-6">
-          <BreadcrumbNav
-            crumbs={[
-              { label: "Home", href: "/" },
-              { label: "Contact", href: "/contact" },
-            ]}
-          />
-        </div>
-        {/* Hero */}
-        <section className="bg-surface-muted/30 py-20 lg:py-28">
-          <div className="mx-auto max-w-3xl px-6 lg:px-20 text-center">
-            <h1 className="font-display text-4xl font-bold tracking-tight text-text-primary lg:text-6xl">
-              Contact Saffron Box
-            </h1>
-            <p className="mt-6 text-lg leading-relaxed text-secondary font-body">
-              Have a question? We&apos;d love to hear from you.
-            </p>
-          </div>
-        </section>
+        <PageHeader
+          crumbs={[
+            { label: "Home", href: "/" },
+            { label: "Contact", href: "/contact" },
+          ]}
+          title="Contact Saffron Box"
+          description="Have a question? We'd love to hear from you."
+        />
 
         {/* Content */}
         <section className="py-20 lg:py-28">

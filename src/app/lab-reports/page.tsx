@@ -2,9 +2,9 @@
 
 import type { Metadata } from "next";
 import Link from "next/link";
-import { BreadcrumbNav } from "@/components/BreadcrumbNav";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
+import { PageHeader } from "@/components/sections";
 import { SITE_CONFIG } from "@/lib/constants";
 
 const OG_IMAGE = `${SITE_CONFIG.url}/products-grid.png`;
@@ -43,25 +43,15 @@ export default function LabReportsPage() {
     <div className="flex min-h-screen flex-col bg-background">
       <Header />
       <main className="flex-grow">
-        <div className="mx-auto max-w-7xl px-6 lg:px-20 pt-6">
-          <BreadcrumbNav
-            crumbs={[
-              { label: "Home", href: "/" },
-              { label: "Lab Reports", href: "/lab-reports" },
-            ]}
-          />
-        </div>
-        <section className="bg-surface-muted/30 py-20 lg:py-28">
-          <div className="mx-auto max-w-3xl px-6 lg:px-20 text-center">
-            <h1 className="font-display text-4xl font-bold tracking-tight text-text-primary lg:text-6xl">
-              Kashmiri Saffron Lab Reports
-            </h1>
-            <p className="mt-6 text-lg leading-relaxed text-secondary font-body">
-              Our saffron is tested by third-party labs for ISO 3632 compliance
-              and purity.
-            </p>
-          </div>
-        </section>
+        <PageHeader
+          crumbs={[
+            { label: "Home", href: "/" },
+            { label: "Lab Reports", href: "/lab-reports" },
+          ]}
+          title="Kashmiri Saffron Lab Reports"
+          description="Our saffron is tested by third-party labs for ISO 3632 compliance and purity."
+          cta={{ href: "/shop", label: "Shop saffron" }}
+        />
         <section className="py-20 lg:py-28">
           <div className="mx-auto max-w-3xl px-6 lg:px-20 text-center">
             <p className="text-secondary font-body mb-8">

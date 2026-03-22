@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { BreadcrumbNav } from "@/components/BreadcrumbNav";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
+import { PageHeader } from "@/components/sections";
 import { ReviewsJsonLd } from "@/components/seo/ReviewsJsonLd";
 import {
   TestimonialCard,
@@ -71,46 +71,32 @@ export default function ReviewsPage() {
       <ReviewsJsonLd testimonials={testimonials} />
       <Header />
       <main className="flex-grow">
-        <div className="mx-auto max-w-7xl px-6 lg:px-20 pt-6">
-          <BreadcrumbNav
-            crumbs={[
-              { label: "Home", href: "/" },
-              { label: "Reviews", href: "/reviews" },
-            ]}
-          />
-        </div>
-        <section
-          aria-labelledby="reviews-heading"
-          className="bg-surface-muted/30 py-16 lg:py-24"
-        >
-          <div className="mx-auto max-w-7xl px-6 lg:px-20">
-            <div className="mx-auto max-w-2xl text-center">
-              <h1
-                id="reviews-heading"
-                className="font-display text-4xl font-bold tracking-tight text-text-primary lg:text-5xl"
-              >
-                Customer Reviews
-              </h1>
-              <p className="mt-6 text-lg leading-relaxed text-secondary font-body">
-                Real reviews from customers who tried our fresh harvest Kashmiri
-                saffron. Farm-direct, latest crop—no old stock.
-              </p>
-              {testimonials.length > 0 && (
-                <div className="mt-8 inline-flex items-center gap-2 rounded-xl border border-secondary-border/30 bg-background-alt px-6 py-4">
-                  <span className="text-2xl font-bold text-primary">
-                    {avgRating}
-                  </span>
-                  <span className="text-secondary" aria-hidden>
-                    ★
-                  </span>
-                  <span className="text-secondary">
-                    based on {testimonials.length} reviews
-                  </span>
-                </div>
-              )}
-            </div>
-          </div>
-        </section>
+        <PageHeader
+          crumbs={[
+            { label: "Home", href: "/" },
+            { label: "Reviews", href: "/reviews" },
+          ]}
+          title="Customer Reviews"
+          description="Real reviews from customers who tried our fresh harvest Kashmiri saffron. Farm-direct, latest crop—no old stock."
+          size="compact"
+          maxWidth="narrow"
+          id="reviews"
+          heroExtra={
+            testimonials.length > 0 ? (
+              <div className="inline-flex items-center gap-2 rounded-xl border border-secondary-border/30 bg-background-alt px-6 py-4">
+                <span className="text-2xl font-bold text-primary">
+                  {avgRating}
+                </span>
+                <span className="text-secondary" aria-hidden>
+                  ★
+                </span>
+                <span className="text-secondary">
+                  based on {testimonials.length} reviews
+                </span>
+              </div>
+            ) : undefined
+          }
+        />
 
         <section aria-label="Reviews list" className="py-16 lg:py-24">
           <div className="mx-auto max-w-7xl px-6 lg:px-20">

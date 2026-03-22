@@ -3,10 +3,9 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { BreadcrumbNav } from "@/components/BreadcrumbNav";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
-import { Badge } from "@/components/ui/Badge";
+import { PageHeader } from "@/components/sections";
 import { getAllPosts } from "@/lib/blog-data";
 import { SITE_CONFIG } from "@/lib/constants";
 
@@ -62,29 +61,17 @@ export default async function BlogListPage() {
     <div className="flex min-h-screen flex-col bg-background">
       <Header />
       <main className="flex-grow">
-        <div className="mx-auto max-w-7xl px-6 lg:px-20 pt-6">
-          <BreadcrumbNav
-            crumbs={[
-              { label: "Home", href: "/" },
-              { label: "Blog", href: "/blog" },
-            ]}
-          />
-        </div>
-        {/* Hero Section */}
-        <section className="bg-surface-muted/30 py-16 lg:py-24">
-          <div className="mx-auto max-w-7xl px-6 lg:px-20 text-center">
-            <Badge variant="outline" className="mb-6">
-              The Saffron Journal
-            </Badge>
-            <h1 className="font-display text-4xl font-bold tracking-tight text-text-primary lg:text-6xl">
-              Saffron Blog — Benefits, Recipes & Buying Guides
-            </h1>
-            <p className="mt-6 text-lg leading-relaxed text-secondary font-body max-w-2xl mx-auto">
-              Discover the stories behind our heritage crops and the science of
-              natural well-being.
-            </p>
-          </div>
-        </section>
+        <PageHeader
+          crumbs={[
+            { label: "Home", href: "/" },
+            { label: "Blog", href: "/blog" },
+          ]}
+          title="Saffron Blog — Benefits, Recipes & Buying Guides"
+          description="Discover the stories behind our heritage crops and the science of natural well-being."
+          badge="The Saffron Journal"
+          size="compact"
+          maxWidth="wide"
+        />
 
         {/* Blog Post List */}
         <section className="py-20">
@@ -93,7 +80,7 @@ export default async function BlogListPage() {
               {posts.map((post) => (
                 <article
                   key={post.id}
-                  className="group flex flex-col overflow-hidden rounded-[2rem] bg-white shadow-xl shadow-dark/5 ring-1 ring-secondary-border/10 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary/10"
+                  className="group flex flex-col overflow-hidden rounded-[2rem] bg-background-alt shadow-xl shadow-dark/5 ring-1 ring-secondary-border/10 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary/10"
                 >
                   <Link
                     href={`/blog/${post.slug}`}
@@ -109,7 +96,7 @@ export default async function BlogListPage() {
                     />
                     {post.category && (
                       <div className="absolute top-4 left-4">
-                        <span className="backdrop-blur-md bg-white/70 text-dark px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ring-1 ring-dark/5">
+                        <span className="backdrop-blur-md bg-background-alt/80 text-dark px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ring-1 ring-dark/5">
                           {formatCategory(post.category)}
                         </span>
                       </div>

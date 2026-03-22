@@ -22,6 +22,21 @@ function toAbsoluteUrl(href: string): string {
   return `${base}${path}`;
 }
 
+function ChevronIcon() {
+  return (
+    <svg
+      aria-hidden
+      className="h-3.5 w-3.5 shrink-0 text-secondary-border"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      strokeWidth={2}
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+    </svg>
+  );
+}
+
 export function BreadcrumbNav({ crumbs }: BreadcrumbNavProps) {
   if (!crumbs?.length) return null;
 
@@ -39,18 +54,17 @@ export function BreadcrumbNav({ crumbs }: BreadcrumbNavProps) {
   return (
     <>
       <JsonLd schema={breadcrumbSchema} />
-      <nav aria-label="Breadcrumb" className="py-4">
-        <ol className="flex flex-wrap items-center gap-2 text-sm font-body text-secondary">
+      <nav
+        aria-label="Breadcrumb"
+        className="border-b border-secondary-border/20 pb-5 pt-1"
+      >
+        <ol className="flex flex-wrap items-center gap-x-1 gap-y-1 text-sm font-body">
           {crumbs.map((crumb, idx) => (
-            <li key={idx} className="flex items-center gap-2">
-              {idx > 0 && (
-                <span aria-hidden className="text-secondary-border">
-                  /
-                </span>
-              )}
+            <li key={idx} className="flex items-center gap-x-1">
+              {idx > 0 && <ChevronIcon />}
               {idx === crumbs.length - 1 ? (
                 <span
-                  className="text-text-primary font-medium"
+                  className="truncate max-w-[200px] sm:max-w-none text-text-primary font-semibold"
                   aria-current="page"
                 >
                   {crumb.label}
@@ -58,7 +72,7 @@ export function BreadcrumbNav({ crumbs }: BreadcrumbNavProps) {
               ) : (
                 <Link
                   href={crumb.href}
-                  className="hover:text-primary hover:underline transition-colors"
+                  className="text-secondary hover:text-primary transition-colors duration-200 rounded px-1.5 py-0.5 -mx-1.5 -my-0.5 hover:bg-primary/5"
                 >
                   {crumb.label}
                 </Link>

@@ -73,7 +73,7 @@ export default function SaffronProductPage() {
           />
         </div>
         {/* Main product area */}
-        <div className="bg-background-alt">
+        <div className="bg-surface-muted/30">
           <div className="mx-auto max-w-7xl px-6 lg:px-20 py-6">
             <div className="grid grid-cols-1 grid-rows-[auto_auto_auto] gap-8 lg:grid-cols-[1fr_380px] lg:grid-rows-[auto_auto] lg:gap-10">
               <div className="lg:col-start-1 lg:row-start-1">
