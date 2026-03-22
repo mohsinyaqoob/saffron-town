@@ -11,6 +11,7 @@ export const dynamic = "force-static";
 const OG_IMAGE = `${SITE_CONFIG.url}/products-grid.png`;
 
 export const metadata: Metadata = {
+  robots: { index: false, follow: true },
   title: "Privacy Policy | Saffron Box",
   description:
     "Privacy Policy for Saffron Box. How we collect, use, and protect your data when you shop for premium Kashmiri saffron.",

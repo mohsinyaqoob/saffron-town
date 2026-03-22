@@ -12,68 +12,63 @@ export const revalidate = 3600;
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = SITE_CONFIG.url;
 
-  /** Static routes with user-specified priorities and changeFrequency */
+  /** Static routes — use real lastModified dates so Google trusts them; avoid new Date() which looks like a lie */
   const staticRoutes: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
-      lastModified: new Date(),
+      lastModified: new Date("2025-03-22"),
       changeFrequency: "weekly" as const,
       priority: 1.0,
     },
     {
       url: `${baseUrl}/shop`,
-      lastModified: new Date(),
+      lastModified: new Date("2025-03-22"),
       changeFrequency: "monthly" as const,
       priority: 0.9,
     },
     {
       url: `${baseUrl}/blog`,
-      lastModified: new Date(),
+      lastModified: new Date("2025-03-22"),
       changeFrequency: "weekly" as const,
       priority: 0.8,
     },
     {
       url: `${baseUrl}/contact`,
-      lastModified: new Date(),
+      lastModified: new Date("2025-03-22"),
       changeFrequency: "monthly" as const,
       priority: 0.6,
     },
     {
       url: `${baseUrl}/lab-reports`,
-      lastModified: new Date(),
+      lastModified: new Date("2025-03-22"),
       changeFrequency: "monthly" as const,
       priority: 0.6,
     },
     {
       url: `${baseUrl}/gifting`,
-      lastModified: new Date(),
+      lastModified: new Date("2025-03-22"),
       changeFrequency: "monthly" as const,
       priority: 0.6,
     },
     {
       url: `${baseUrl}/our-story`,
-      lastModified: new Date(),
+      lastModified: new Date("2025-03-22"),
       changeFrequency: "monthly" as const,
       priority: 0.6,
     },
     {
       url: `${baseUrl}/about`,
-      lastModified: new Date(),
+      lastModified: new Date("2025-03-22"),
       changeFrequency: "monthly" as const,
       priority: 0.6,
     },
     {
       url: `${baseUrl}/reviews`,
-      lastModified: new Date(),
+      lastModified: new Date("2025-03-22"),
       changeFrequency: "weekly" as const,
       priority: 0.8,
     },
-    {
-      url: `${baseUrl}/privacy`,
-      lastModified: new Date(),
-      changeFrequency: "yearly" as const,
-      priority: 0.4,
-    },
+    /* privacy excluded — legal pages are noindex, no sitemap entry to save crawl budget */
   ];
 
   /** Product pages — /shop/[product] */
@@ -83,7 +78,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       ? [
           {
             url: `${baseUrl}${PRODUCT_PAGE_URL}`,
-            lastModified: new Date(),
+            lastModified: new Date("2025-03-22"),
             changeFrequency: "weekly" as const,
             priority: 0.9,
           },
