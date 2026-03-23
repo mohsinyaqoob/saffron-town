@@ -37,11 +37,7 @@ export function TestimonialCard({ testimonial }: TestimonialCardProps) {
     .slice(0, 2);
 
   return (
-    <article
-      className="rounded-2xl border border-secondary-border/20 bg-background-alt p-6 shadow-sm transition-shadow hover:shadow-md"
-      itemScope
-      itemType="https://schema.org/Review"
-    >
+    <article className="rounded-2xl border border-secondary-border/20 bg-background-alt p-6 shadow-sm transition-shadow hover:shadow-md">
       <header className="flex items-start gap-4">
         {testimonial.avatar ? (
           <Image
@@ -60,13 +56,8 @@ export function TestimonialCard({ testimonial }: TestimonialCardProps) {
           </div>
         )}
         <div className="min-w-0 flex-1">
-          <p
-            className="font-semibold text-text-primary"
-            itemProp="author"
-            itemScope
-            itemType="https://schema.org/Person"
-          >
-            <span itemProp="name">{testimonial.customerName}</span>
+          <p className="font-semibold text-text-primary">
+            {testimonial.customerName}
           </p>
           <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1">
             <StarRating rating={testimonial.rating} />
@@ -79,16 +70,12 @@ export function TestimonialCard({ testimonial }: TestimonialCardProps) {
           <time
             className="mt-0.5 block text-xs text-text-muted"
             dateTime={testimonial.reviewDate}
-            itemProp="datePublished"
           >
             {testimonial.formattedDate}
           </time>
         </div>
       </header>
-      <blockquote
-        className="mt-4 text-secondary leading-relaxed"
-        itemProp="reviewBody"
-      >
+      <blockquote className="mt-4 text-secondary leading-relaxed">
         {testimonial.reviewText}
       </blockquote>
     </article>

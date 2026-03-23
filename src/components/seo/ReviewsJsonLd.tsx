@@ -10,8 +10,9 @@ const REVIEWS_URL = `${SITE_CONFIG.url}/reviews`;
 
 /**
  * Product schema with AggregateRating and Reviews for Google rich results.
- * Each Review includes itemReviewed so Google associates reviews with the product.
- * @graph includes Product, WebPage, and ItemList for better indexing.
+ * Each Review includes itemReviewed (Product reference) so Google associates reviews with the product.
+ * Note: ItemList was removed — nesting Review with itemReviewed inside ListItem causes
+ * "directional conflict" errors in Google Search Console. Product.review array is sufficient.
  */
 export function ReviewsJsonLd({ testimonials }: ReviewsJsonLdProps) {
   const withRating = testimonials.filter(
@@ -22,6 +23,29 @@ export function ReviewsJsonLd({ testimonials }: ReviewsJsonLdProps) {
       ? withRating.reduce((s, t) => s + (t.rating ?? 0), 0) / withRating.length
       : 5;
   const reviewCount = testimonials.length || 1;
+
+  const productReviews = testimonials.slice(0, 20).map((t) => {
+    const review: Record<string, unknown> = {
+      "@type": "Review",
+      itemReviewed: {
+        "@type": "Product",
+        name: "Kashmiri Mongra Saffron",
+        "@id": `${PRODUCT_URL}#product`,
+      },
+      author: { "@type": "Person", name: t.customerName || "Customer" },
+      datePublished: t.reviewDate,
+      reviewBody: t.reviewText,
+    };
+    if (t.rating != null && t.rating > 0) {
+      review.reviewRating = {
+        "@type": "Rating",
+        ratingValue: t.rating,
+        bestRating: 5,
+        worstRating: 1,
+      };
+    }
+    return review;
+  });
 
   const graph = [
     {
@@ -39,21 +63,7 @@ export function ReviewsJsonLd({ testimonials }: ReviewsJsonLdProps) {
         worstRating: "1",
         reviewCount,
       },
-      review: testimonials.slice(0, 15).map((t) => ({
-        "@type": "Review",
-        itemReviewed: { "@id": `${PRODUCT_URL}#product` },
-        author: { "@type": "Person", name: t.customerName },
-        datePublished: t.reviewDate,
-        reviewBody: t.reviewText,
-        ...(t.rating != null && {
-          reviewRating: {
-            "@type": "Rating",
-            ratingValue: t.rating,
-            bestRating: 5,
-            worstRating: 1,
-          },
-        }),
-      })),
+      review: productReviews,
     },
     {
       "@type": "WebPage",
@@ -63,31 +73,6 @@ export function ReviewsJsonLd({ testimonials }: ReviewsJsonLdProps) {
       description:
         "Real customer reviews of Saffron Town's pure Kashmiri Mongra saffron. Pregnancy, post-partum, immunity, skin. Lab-tested, farm-direct from Pampore.",
       mainEntity: { "@id": `${PRODUCT_URL}#product` },
-    },
-    {
-      "@type": "ItemList",
-      url: REVIEWS_URL,
-      name: "Saffron Town Customer Reviews",
-      numberOfItems: testimonials.length,
-      itemListElement: testimonials.slice(0, 25).map((t, i) => ({
-        "@type": "ListItem",
-        position: i + 1,
-        item: {
-          "@type": "Review",
-          itemReviewed: { "@id": `${PRODUCT_URL}#product` },
-          author: { "@type": "Person", name: t.customerName },
-          datePublished: t.reviewDate,
-          reviewBody: t.reviewText,
-          ...(t.rating != null && {
-            reviewRating: {
-              "@type": "Rating",
-              ratingValue: t.rating,
-              bestRating: 5,
-              worstRating: 1,
-            },
-          }),
-        },
-      })),
     },
   ];
 

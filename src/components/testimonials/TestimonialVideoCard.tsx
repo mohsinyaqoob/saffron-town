@@ -39,11 +39,7 @@ export function TestimonialVideoCard({
   const isVimeo = embedUrl.includes("vimeo.com");
 
   return (
-    <article
-      className="rounded-2xl border border-secondary-border/20 bg-background-alt overflow-hidden shadow-sm transition-shadow hover:shadow-md"
-      itemScope
-      itemType="https://schema.org/Review"
-    >
+    <article className="rounded-2xl border border-secondary-border/20 bg-background-alt overflow-hidden shadow-sm transition-shadow hover:shadow-md">
       <div className="relative aspect-video bg-dark">
         {isYoutube || isVimeo ? (
           <iframe
@@ -65,13 +61,8 @@ export function TestimonialVideoCard({
         )}
       </div>
       <div className="p-6">
-        <p
-          className="font-semibold text-text-primary"
-          itemProp="author"
-          itemScope
-          itemType="https://schema.org/Person"
-        >
-          <span itemProp="name">{testimonial.customerName}</span>
+        <p className="font-semibold text-text-primary">
+          {testimonial.customerName}
         </p>
         {testimonial.productPurchased && (
           <p className="mt-0.5 text-sm text-text-muted">
@@ -81,15 +72,11 @@ export function TestimonialVideoCard({
         <time
           className="mt-0.5 block text-xs text-text-muted"
           dateTime={testimonial.reviewDate}
-          itemProp="datePublished"
         >
           {testimonial.formattedDate}
         </time>
         {testimonial.reviewText && (
-          <blockquote
-            className="mt-4 text-secondary text-sm leading-relaxed"
-            itemProp="reviewBody"
-          >
+          <blockquote className="mt-4 text-secondary text-sm leading-relaxed">
             {testimonial.reviewText}
           </blockquote>
         )}
