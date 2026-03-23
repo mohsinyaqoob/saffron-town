@@ -6,7 +6,6 @@ const FOOTER_LINKS = [
   { href: "/", label: "Home" },
   { href: "/shop", label: "Shop" },
   { href: "/shop/saffron", label: "Mongra Saffron" },
-  { href: "/about", label: "About" },
   { href: "/gifting", label: "Gifting" },
   { href: "/lab-reports", label: "Lab Reports" },
   { href: "/reviews", label: "Reviews" },

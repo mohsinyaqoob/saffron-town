@@ -10,7 +10,7 @@ export interface PageHeaderProps extends Omit<PageHeroProps, "children"> {
 
 /**
  * Reusable page header: BreadcrumbNav + PageHero.
- * Use on inner pages (shop, blog, about, contact, etc.) for consistent layout.
+ * Use on inner pages (shop, blog, contact, etc.) for consistent layout.
  */
 export function PageHeader({
   crumbs,

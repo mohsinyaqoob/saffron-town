@@ -1,0 +1,7 @@
+#!/bin/bash
+cp "/Users/mohsinyaqoob/.gemini/antigravity/brain/00a09242-effa-4938-9be5-30b70b2b88c7/saffron_depression_blog_1774233580786.png" "/Users/mohsinyaqoob/Projects/saffronbox/gen-images/Can Saffron Help With Depression Here's What Clinical Studies Show.png"
+cp "/Users/mohsinyaqoob/.gemini/antigravity/brain/00a09242-effa-4938-9be5-30b70b2b88c7/saffron_cost_blog_1774233600792.png" "/Users/mohsinyaqoob/Projects/saffronbox/gen-images/How Much Does Real Kashmiri Saffron Cost A 2025 Price Guide.png"
+cp "/Users/mohsinyaqoob/.gemini/antigravity/brain/00a09242-effa-4938-9be5-30b70b2b88c7/saffron_milk_blog_1774233617273.png" "/Users/mohsinyaqoob/Projects/saffronbox/gen-images/10 Proven Benefits of Drinking Kesar (Saffron) Milk Every Day.png"
+cp "/Users/mohsinyaqoob/.gemini/antigravity/brain/00a09242-effa-4938-9be5-30b70b2b88c7/saffron_fake_blog_1774233634355.png" "/Users/mohsinyaqoob/Projects/saffronbox/gen-images/How to Tell Real Saffron From Fake - 5 Tests You Can Do at Home.png"
+cp "/Users/mohsinyaqoob/.gemini/antigravity/brain/00a09242-effa-4938-9be5-30b70b2b88c7/saffron_vs_iranian_1774233647474.png" "/Users/mohsinyaqoob/Projects/saffronbox/gen-images/Kashmiri vs Iranian Saffron - Which is Better and Why It Matters.png"
+cp "/Users/mohsinyaqoob/.gemini/antigravity/brain/00a09242-effa-4938-9be5-30b70b2b88c7/saffron_pregnancy_blog_1774233666102.png" "/Users/mohsinyaqoob/Projects/saffronbox/gen-images/Is Saffron Safe During Pregnancy - Benefits, Risks and the Right Dose.png"

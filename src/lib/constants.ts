@@ -24,11 +24,10 @@ export const SITE_CONFIG = {
   ],
 } as const;
 
-/* Main nav: Home | Shop | Our Story | About | Reviews | Blog | Contact */
+/* Main nav: Home | Shop | Our Story | Reviews | Blog | Contact */
 export const NAV_LINKS = [
   { href: "/", label: "Home" },
   { href: "/our-story", label: "Our Story" },
-  { href: "/about", label: "About" },
   { href: "/shop/saffron", label: "Shop" },
   { href: "/reviews", label: "Reviews" },
   { href: "/blog", label: "Blog" },
