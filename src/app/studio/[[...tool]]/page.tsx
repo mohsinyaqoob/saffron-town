@@ -1,9 +1,6 @@
-export const dynamic = "force-static";
+import { NextStudio } from "next-sanity/studio";
+import config from "../../../../sanity.config";
 
 export default function StudioPage() {
-  return (
-    <div>
-      <p>Studio is not available in production. Run locally!</p>
-    </div>
-  );
+  return <NextStudio config={config} />;
 }

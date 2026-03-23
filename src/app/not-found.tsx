@@ -1,14 +1,19 @@
 // src/app/not-found.tsx
 
 import Link from "next/link";
+import { BreadcrumbNav } from "@/components/BreadcrumbNav";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 
 export default function NotFound() {
   return (
-    <div className="flex min-h-screen flex-col bg-background">
+    <div className="flex min-h-screen flex-col bg-background-alt pt-16">
       <Header />
-      <main className="flex-grow flex flex-col items-center justify-center px-6 py-24 text-center">
+      <main className="flex-grow">
+        <div className="mx-auto max-w-7xl px-6 lg:px-20 pt-6">
+          <BreadcrumbNav crumbs={[{ label: "Home", href: "/" }]} />
+        </div>
+        <div className="flex flex-col items-center justify-center px-6 py-24 text-center">
         <h1 className="font-display text-4xl font-bold text-text-primary mb-4">
           Page not found
         </h1>
@@ -43,6 +48,7 @@ export default function NotFound() {
           >
             Return home
           </Link>
+        </div>
         </div>
       </main>
       <Footer />

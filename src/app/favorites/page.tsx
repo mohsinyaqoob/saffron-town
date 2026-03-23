@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { BreadcrumbNav } from "@/components/BreadcrumbNav";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { ProductCard } from "@/components/sections/ProductCard";
@@ -13,8 +14,16 @@ export default function FavoritesPage() {
   return (
     <div className="flex min-h-screen flex-col bg-background">
       <Header />
-      <main className="flex-grow py-20 lg:py-32">
-        <div className="mx-auto max-w-7xl px-6 lg:px-20">
+      <main className="flex-grow">
+        <div className="mx-auto max-w-7xl px-6 lg:px-20 pt-6">
+          <BreadcrumbNav
+            crumbs={[
+              { label: "Home", href: "/" },
+              { label: "Favorites", href: "/favorites" },
+            ]}
+          />
+        </div>
+        <div className="mx-auto max-w-7xl px-6 lg:px-20 py-20 lg:py-32">
           <div className="mb-12 border-b border-secondary-border/20 pb-8 flex items-end justify-between">
             <div>
               <h1 className="font-display text-4xl font-bold tracking-tight text-text-primary lg:text-5xl">

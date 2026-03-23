@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { BreadcrumbNav } from "@/components/BreadcrumbNav";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { Button } from "@/components/ui/Button";
@@ -22,8 +23,16 @@ export default function CartPage() {
   return (
     <div className="flex min-h-screen flex-col bg-background-alt text-text-primary">
       <Header />
-      <main className="flex-grow py-20 lg:py-32">
-        <div className="mx-auto max-w-7xl px-6 lg:px-20">
+      <main className="flex-grow">
+        <div className="mx-auto max-w-7xl px-6 lg:px-20 pt-6">
+          <BreadcrumbNav
+            crumbs={[
+              { label: "Home", href: "/" },
+              { label: "Cart", href: "/cart" },
+            ]}
+          />
+        </div>
+        <div className="mx-auto max-w-7xl px-6 lg:px-20 py-20 lg:py-32">
           <div className="flex items-end justify-between border-b border-secondary-border/20 pb-8 mb-12">
             <div>
               <h1 className="font-display text-4xl font-bold tracking-tight text-text-primary lg:text-5xl">
