@@ -33,10 +33,10 @@ export function ShopBanner() {
           </div>
           <div className="relative h-64 w-64 flex-shrink-0 lg:h-80 lg:w-80">
             <Image
-              src="/images/products/mongra-saffron-1.png"
+              src="/images/harvest.png"
               alt="Kashmiri Mongra saffron threads in wooden bowl"
               fill
-              className="object-contain drop-shadow-2xl"
+              className="object-contain drop-shadow-2xl rounded-2xl"
               sizes="320px"
               loading="lazy"
             />

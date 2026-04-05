@@ -133,15 +133,16 @@ export default function OurStoryPage() {
               <figure className="mt-10 sm:mt-14 rounded-2xl overflow-hidden shadow-lg">
                 <div className="relative aspect-[4/3] sm:aspect-[16/10]">
                   <Image
-                    src="/images/products/mongra-saffron-1.png"
+                    src="/images/harvest2.png"
                     alt="Crimson Kashmiri Mongra saffron threads—pure, hand-harvested"
                     fill
                     className="object-cover"
                     sizes="(max-width: 640px) 100vw, 896px"
                   />
                 </div>
-                <figcaption className="mt-3 text-sm text-text-muted font-body text-center">
-                  Kashmiri Mongra saffron — every thread from Pampore
+                <figcaption className="py-4 text-sm text-text-muted font-body text-center">
+                  Kashmiri Saffron harvest requires careful hands and a deep
+                  understanding of the land.
                 </figcaption>
               </figure>
             </div>

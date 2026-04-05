@@ -61,7 +61,7 @@ export default function Home() {
     <>
       <JsonLd schema={websiteSchema} />
       <Header />
-      <main>
+      <main className="space-y-8">
         <Hero />
         <TrustBadges />
         <ShopBanner />

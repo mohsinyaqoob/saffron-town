@@ -16,9 +16,16 @@ export function Hero() {
             Grade A++ Pampore saffron. Controlled from seeding to harvesting.
             Farm-direct. Fresh harvest only—no old stock. Money-back guarantee.
           </p>
-          <Link href="/shop/saffron">
-            <Button size="lg">Shop Saffron</Button>
-          </Link>
+          <div className="flex gap-4">
+            <Link href="/lab-reports">
+              <Button size="md" variant="outline">
+                Lab Reports
+              </Button>
+            </Link>
+            <Link href="/shop/saffron">
+              <Button size="md">Shop Saffron</Button>
+            </Link>
+          </div>
         </div>
         <div className="relative h-[340px] w-full max-w-[520px] overflow-hidden rounded-2xl lg:h-[420px]">
           <Image

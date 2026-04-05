@@ -40,9 +40,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     {
       url: `${baseUrl}/lab-reports`,
-      lastModified: new Date("2025-03-22"),
+      lastModified: new Date("2026-04-03"),
       changeFrequency: "monthly" as const,
-      priority: 0.6,
+      priority: 0.8,
     },
     {
       url: `${baseUrl}/gifting`,
@@ -79,7 +79,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         ]
       : [];
 
-  /** Blog posts — fetch slugs from Sanity, priority 0.8 for blog posts */
+  /** Blog posts — fetch slugs from Sanity */
   let blogPosts: MetadataRoute.Sitemap = [];
   try {
     const posts =

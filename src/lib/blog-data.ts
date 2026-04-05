@@ -7,7 +7,6 @@ import {
   POST_SLUGS_QUERY,
   POSTS_QUERY,
 } from "@/sanity/queries";
-import { STATIC_BLOG_POSTS } from "./static-blog-posts";
 
 export type BlogPost = {
   id: string;
@@ -99,48 +98,27 @@ function toBlogPost(p: SanityPost): BlogPost {
   };
 }
 
-function mergePosts(sanityPosts: BlogPost[]): BlogPost[] {
-  const sanitySlugSet = new Set(sanityPosts.map((p) => p.slug));
-  const uniqueStatic = STATIC_BLOG_POSTS.filter(
-    (sp) => !sanitySlugSet.has(sp.slug),
-  );
-  return [...sanityPosts, ...uniqueStatic].sort(
-    (a, b) =>
-      new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),
-  );
-}
-
 export async function getAllPosts(): Promise<BlogPost[]> {
   try {
     const posts = await client.fetch<SanityPost[]>(POSTS_QUERY);
-    return mergePosts((posts || []).map(toBlogPost));
+    return (posts || []).map(toBlogPost);
   } catch {
-    return mergePosts([]);
+    return [];
   }
 }
 
 export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
-  const staticMatch = STATIC_BLOG_POSTS.find((p) => p.slug === slug);
-
   try {
     const post = await client.fetch<SanityPost | null>(POST_BY_SLUG_QUERY, {
       slug,
     });
-    if (post) return toBlogPost(post);
+    return post ? toBlogPost(post) : null;
   } catch {
-    // Sanity unavailable — fall through to static
+    return null;
   }
-
-  return staticMatch ?? null;
 }
 
 export async function getPostSlugs(): Promise<string[]> {
-  const staticSlugs = STATIC_BLOG_POSTS.map((p) => p.slug);
-  try {
-    const result = await client.fetch<{ slug: string }[]>(POST_SLUGS_QUERY);
-    const sanitySlugs = (result || []).map((r) => r.slug);
-    return [...new Set([...sanitySlugs, ...staticSlugs])];
-  } catch {
-    return staticSlugs;
-  }
+  const result = await client.fetch<{ slug: string }[]>(POST_SLUGS_QUERY);
+  return (result || []).map((r) => r.slug);
 }
