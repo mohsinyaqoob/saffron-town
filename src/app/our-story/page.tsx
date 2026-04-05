@@ -14,7 +14,7 @@ const PAGE_URL = `${SITE_CONFIG.url}/our-story`;
 const OG_IMAGE = `${SITE_CONFIG.url}/products-grid.png`;
 
 export const metadata: Metadata = {
-  title: "Our Story | Saffron Town — From Pampore to Your Table",
+  title: "About Saffron Town — From Pampore to Your Table",
   description:
     "Saffron Town takes its name from Pampore, Kashmir—the true Saffron Town. Farm-direct, 100% pure Kashmiri Mongra saffron. Lab-tested, fresh harvest only. Discover our story.",
   keywords: [
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: PAGE_URL },
   openGraph: {
-    title: "Our Story | Saffron Town — From Pampore to Your Table",
+    title: "About Saffron Town — From Pampore to Your Table",
     description:
       "Named after Pampore, the real Saffron Town. Farm-direct, lab-tested, fresh harvest. 100% pure Kashmiri saffron. Zero compromise.",
     url: PAGE_URL,
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Our Story | Saffron Town — From Pampore to Your Table",
+    title: "About Saffron Town — From Pampore to Your Table",
     description:
       "Farm-direct Kashmiri saffron from Pampore. Lab-tested. Fresh harvest only. Zero compromise.",
     images: [OG_IMAGE],
@@ -63,7 +63,7 @@ export const metadata: Metadata = {
 const webPageSchema = {
   "@context": "https://schema.org",
   "@type": "WebPage",
-  name: "Our Story | Saffron Town — From Pampore to Your Table",
+  name: "About Saffron Town — From Pampore to Your Table",
   description:
     "Saffron Town takes its name from Pampore, Kashmir—the true Saffron Town. Farm-direct, 100% pure Kashmiri Mongra saffron. Lab-tested, fresh harvest only.",
   url: PAGE_URL,
@@ -93,14 +93,14 @@ export default function OurStoryPage() {
         <PageHeader
           crumbs={[
             { label: "Home", href: "/" },
-            { label: "Our Story", href: "/our-story" },
+            { label: "About", href: "/our-story" },
           ]}
-          title="Our Story"
+          title="About Saffron Town"
           description="We took our name from a place: Pampore, Kashmir. The real Saffron Town. Where the world's finest saffron has been grown for centuries."
           cta={{ href: "/shop/saffron", label: "Explore our saffron" }}
         />
 
-        <article aria-label="Our Story — From Pampore to Your Table">
+        <article aria-label="About Saffron Town — From Pampore to Your Table">
           {/* The place: Pampore heritage */}
           <section
             className="py-12 sm:py-16 lg:py-24"

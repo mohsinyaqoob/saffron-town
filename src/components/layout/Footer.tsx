@@ -10,7 +10,7 @@ const FOOTER_LINKS = [
   { href: "/lab-reports", label: "Lab Reports" },
   { href: "/reviews", label: "Reviews" },
   { href: "/blog", label: "Blog" },
-  { href: "/our-story", label: "Our Story" },
+  { href: "/our-story", label: "About" },
   { href: "/contact", label: "Contact" },
   { href: "/privacy", label: "Privacy Policy" },
 ];
