@@ -196,7 +196,7 @@ export function ProductBuyBox({ product }: ProductBuyBoxProps) {
       {/* Price block */}
       <div className="border-b border-secondary-border pb-4">
         {discountPercent && (
-          <span className="text-sm font-medium text-red-600">
+          <span className="text-sm font-medium text-primary">
             -{discountPercent}%
           </span>
         )}

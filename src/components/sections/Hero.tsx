@@ -22,7 +22,7 @@ export function Hero() {
         </div>
         <div className="relative h-[340px] w-full max-w-[520px] overflow-hidden rounded-2xl lg:h-[420px]">
           <Image
-            src="/products-grid.png"
+            src="/images/hero.png"
             alt="Premium Kashmiri saffron, honey and almonds - Saffron Town products"
             fill
             className="object-cover"

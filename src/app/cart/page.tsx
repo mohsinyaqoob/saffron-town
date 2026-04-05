@@ -45,7 +45,7 @@ export default function CartPage() {
             {cart.length > 0 && (
               <button
                 onClick={clearCart}
-                className="text-xs font-bold text-text-muted hover:text-red-500 transition-colors uppercase tracking-widest underline decoration-transparent hover:decoration-red-500 underline-offset-4"
+                className="text-xs font-bold text-text-muted hover:text-primary transition-colors uppercase tracking-widest underline decoration-transparent hover:decoration-primary underline-offset-4"
               >
                 Clear Cart
               </button>
@@ -159,7 +159,7 @@ export default function CartPage() {
                         </div>
                         <button
                           onClick={() => removeFromCart(item.cartItemId)}
-                          className="text-xs font-bold text-text-muted hover:text-red-500 transition-colors uppercase tracking-widest underline decoration-secondary-border/30 hover:decoration-red-500 underline-offset-4"
+                          className="text-xs font-bold text-text-muted hover:text-primary transition-colors uppercase tracking-widest underline decoration-secondary-border/30 hover:decoration-primary underline-offset-4"
                         >
                           Remove
                         </button>

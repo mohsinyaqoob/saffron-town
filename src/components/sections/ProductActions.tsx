@@ -38,7 +38,7 @@ export function ProductActions({ product }: ProductActionsProps) {
         </div>
         <div className="h-10 w-px bg-secondary-border/20" />
         <div className="flex flex-col">
-          <div className="flex items-center gap-1 text-yellow-500 mb-1">
+          <div className="flex items-center gap-1 text-primary/80 mb-1">
             {[...Array(5)].map((_, i) => (
               <svg
                 key={i}

@@ -3,26 +3,32 @@
 @theme inline {
   --font-display: var(--font-playfair), Georgia, serif;
   --font-body: var(--font-figtree), system-ui, sans-serif;
-  /* Design tokens - Saffron Town palette */
-  --color-primary: #bc8034;
-  --color-primary-hover: #a66e2b;
-  --color-primary-muted: #bc803422;
-  --color-secondary: #8c7a6b;
-  --color-secondary-muted: #8c7a6b22;
-  --color-secondary-border: #8c7a6b40;
-  --color-background: #f5ede4;
-  --color-background-alt: #faf7f2;
-  --color-surface: #d9cab3;
-  --color-surface-muted: #e8e4dd;
-  --color-text-primary: #2c2520;
-  --color-text-secondary: #8c7a6b;
-  --color-text-muted: #8c7a6baa;
-  --color-dark: #4a4038;
-  --color-dark-text: #d9cab3;
-  --color-dark-text-muted: #d9cab3aa;
+  /* Design tokens - Crocin-forward palette */
+  --color-primary: #9a2425;
+  --color-primary-hover: #7f1d1e;
+  --color-primary-muted: #9a242522;
+  --color-secondary: #6b4041;
+  --color-secondary-muted: #6b40411f;
+  --color-secondary-border: #9a242540;
+  --color-background: #f8f1ef;
+  --color-background-alt: #fdf8f7;
+  --color-surface: #e9d6d3;
+  --color-surface-muted: #f2e5e3;
+  --color-text-primary: #2a1718;
+  --color-text-secondary: #5b3738;
+  --color-text-muted: #5b3738b0;
+  --color-dark: #3b1516;
+  --color-dark-text: #f6ebe8;
+  --color-dark-text-muted: #f6ebe8b3;
 }
 
 @layer base {
+  body {
+    @apply bg-background text-text-primary;
+  }
+  ::selection {
+    @apply bg-primary/20 text-text-primary;
+  }
   .article-content h2 {
     @apply font-display text-3xl font-bold text-text-primary mt-12 mb-6 tracking-tight;
   }
