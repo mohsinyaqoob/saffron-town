@@ -66,7 +66,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${playfair.variable} ${figtree.variable}`}>
+    <html
+      lang="en"
+      className={`${playfair.variable} ${figtree.variable}`}
+      suppressHydrationWarning
+    >
       <head>
         <JsonLd />
         {process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION && (
