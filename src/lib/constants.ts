@@ -36,14 +36,17 @@ export const NAV_LINKS = [
 
 export const TRUST_BADGES = [
   {
+    id: "fresh-harvest",
     title: "Fresh Harvest",
     description: "Only the current harvest. Never old stock.",
   },
   {
+    id: "farm-direct",
     title: "Farm Direct",
     description: "Straight from Himalayan farms to your doorstep",
   },
   {
+    id: "guarantee",
     title: "100% Guarantee",
     description: "No adulteration. Money-back promise.",
   },
