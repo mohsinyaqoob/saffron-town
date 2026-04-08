@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { BlogShareButtons } from "@/components/BlogShareButtons";
 import { BreadcrumbNav } from "@/components/BreadcrumbNav";
 import { FAQSection } from "@/components/FAQSection";
 import { JsonLd } from "@/components/JsonLd";
@@ -204,6 +205,17 @@ export default async function BlogPostPage({ params }: Props) {
               />
               <span className="text-white/90">{post.readTime}</span>
             </div>
+            <div className="mt-10 pt-8 border-t border-white/20">
+              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/70 mb-4">
+                Share
+              </p>
+              <BlogShareButtons
+                url={canonical}
+                title={post.title}
+                description={post.excerpt}
+                variant="hero"
+              />
+            </div>
           </div>
         </section>
 
@@ -220,6 +232,18 @@ export default async function BlogPostPage({ params }: Props) {
             {post.faqItems && post.faqItems.length > 0 && (
               <FAQSection faqs={post.faqItems} />
             )}
+
+            <div className="mt-16 pt-10 border-t border-secondary-border/15">
+              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-text-muted mb-4">
+                Share this article
+              </p>
+              <BlogShareButtons
+                url={canonical}
+                title={post.title}
+                description={post.excerpt}
+                variant="article"
+              />
+            </div>
 
             {/* Author Card Footer */}
             {post.author && (
