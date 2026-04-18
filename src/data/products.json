@@ -16,13 +16,14 @@
     "stock": 50,
     "variants": [
       { "id": "mongra-1g", "size": "1g Tester", "price": 499, "mrp": 599 },
+      { "id": "mongra-2g", "size": "2g", "price": 999, "mrp": 1199 },
       { "id": "mongra-5g", "size": "5g", "price": 2300, "mrp": 2699 },
       { "id": "mongra-10g", "size": "10g", "price": 4500, "mrp": 5299 },
       { "id": "mongra-20g", "size": "20g", "price": 8500, "mrp": 9999 },
       { "id": "mongra-50g", "size": "50g", "price": 19999, "mrp": 22999 }
     ],
-    "rating": 4.9,
-    "reviewCount": 1240,
+    "rating": 0,
+    "reviewCount": 0,
     "images": [
       {
         "url": "/images/products/mongra-saffron-1.png",
@@ -45,6 +46,6 @@
       "Harvest": "Autumn 2024",
       "Purity": "100% Pure Saffron"
     },
-    "origin": "Pampore, Kashmir · Harvest: Nov 2024 · Shelf Life: 24 Months"
+    "origin": "Pampore, Kashmir · Harvest: Nov 2025 · Shelf Life: 36 Months"
   }
 ]

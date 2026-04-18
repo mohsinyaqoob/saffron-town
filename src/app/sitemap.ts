@@ -62,6 +62,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "weekly" as const,
       priority: 0.8,
     },
+    {
+      url: `${baseUrl}/prebook-2026-harvest`,
+      lastModified: new Date("2026-04-12"),
+      changeFrequency: "monthly" as const,
+      priority: 0.85,
+    },
     /* privacy excluded — legal pages are noindex, no sitemap entry to save crawl budget */
   ];
 

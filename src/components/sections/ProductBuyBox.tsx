@@ -1,20 +1,27 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useShop } from "@/context/ShopContext";
-import type { ProductPageData } from "@/lib/product-data";
+import type { ProductPageData, ProductVariant } from "@/lib/product-data";
+import {
+  getGridPackVariants,
+  parsePackGramsFromSize,
+} from "@/lib/saffron-pack-variants";
 
 interface ProductBuyBoxProps {
   product: ProductPageData;
 }
 
 /**
- * Amazon-style buy box: title, ratings, badge, price block, offers, service icons,
+ * Amazon-style buy box: title, trust line, price block, offers, service icons,
  * variant, quantity, CTAs, accordions, and footer links.
  */
 export function ProductBuyBox({ product }: ProductBuyBoxProps) {
-  const [selectedVariant, setSelectedVariant] = useState(product.variants[0]);
+  const gridVariants = useMemo(() => getGridPackVariants(product), [product]);
+  const [selectedVariant, setSelectedVariant] = useState<ProductVariant>(
+    () => gridVariants[0] ?? product.variants[0],
+  );
   const [quantity, setQuantity] = useState(1);
   const { addToCart, toggleFavorite, isFavorite } = useShop();
 
@@ -165,33 +172,33 @@ export function ProductBuyBox({ product }: ProductBuyBoxProps) {
         Visit the Saffron Town Store
       </Link>
 
-      {/* Ratings + badge + velocity */}
-      <div className="flex flex-wrap items-center gap-2">
-        <div className="flex items-center gap-1">
-          {[...Array(5)].map((_, i) => (
-            <span
-              key={i}
-              className={
-                i < Math.floor(product.rating)
-                  ? "text-primary"
-                  : "text-secondary-border"
-              }
-            >
-              ★
-            </span>
-          ))}
+      {product.reviewCount > 0 ? (
+        <div className="flex flex-wrap items-center gap-2">
+          <div className="flex items-center gap-1">
+            {[...Array(5)].map((_, i) => (
+              <span
+                key={i}
+                className={
+                  i < Math.floor(product.rating)
+                    ? "text-primary"
+                    : "text-secondary-border"
+                }
+              >
+                ★
+              </span>
+            ))}
+          </div>
+          <span className="text-sm text-secondary font-body">
+            ({product.reviewCount.toLocaleString()} reviews)
+          </span>
         </div>
-        <span className="text-sm text-secondary font-body">
-          ({product.reviewCount.toLocaleString()})
-        </span>
-        <span className="text-primary bg-primary/10 px-2 py-0.5 rounded text-xs font-bold">
-          Best Seller
-        </span>
-        <span className="text-sm text-secondary font-body">in Saffron</span>
-      </div>
-      <p className="text-sm text-secondary font-body">
-        1K+ bought in past month
-      </p>
+      ) : (
+        <p className="text-sm text-secondary font-body leading-relaxed">
+          Be among the first to try this harvest—farm-direct Mongra from
+          Pampore, lab-tested to ISO 3632. No inflated claims; just traceable
+          quality.
+        </p>
+      )}
 
       {/* Price block */}
       <div className="border-b border-secondary-border pb-4">
@@ -209,10 +216,7 @@ export function ProductBuyBox({ product }: ProductBuyBoxProps) {
             {formatPrice(
               Math.round(
                 selectedVariant.price /
-                  (parseInt(
-                    selectedVariant.size.replace(/\D/g, "") || "1",
-                    10,
-                  ) || 1),
+                  (parsePackGramsFromSize(selectedVariant.size) || 1),
               ),
             )}{" "}
             per 1g)
@@ -262,7 +266,7 @@ export function ProductBuyBox({ product }: ProductBuyBoxProps) {
       {/* Buy box card */}
       <div className="bg-background-alt border border-secondary-border rounded-xl p-5 shadow-lg shadow-dark/5">
         {/* Variant selector */}
-        {product.variants.length > 1 && (
+        {gridVariants.length > 0 && (
           <div className="mb-4">
             <p className="text-sm font-medium text-text-primary mb-2 font-body">
               Size:{" "}
@@ -270,19 +274,24 @@ export function ProductBuyBox({ product }: ProductBuyBoxProps) {
                 {selectedVariant.size}
               </span>
             </p>
-            <div className="flex flex-wrap gap-2">
-              {product.variants.map((v) => (
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3">
+              {gridVariants.map((v) => (
                 <button
                   key={v.id}
                   type="button"
                   onClick={() => setSelectedVariant(v)}
-                  className={`min-w-[60px] px-3 py-2 text-sm border rounded-lg transition-colors font-body ${
+                  className={`rounded-xl border px-3 py-3 text-left text-sm transition-colors font-body ${
                     selectedVariant.id === v.id
                       ? "border-primary bg-primary/10 ring-1 ring-primary/30 text-primary"
                       : "border-secondary-border hover:border-primary/50 bg-background"
                   }`}
                 >
-                  {v.size}
+                  <span className="block font-bold text-text-primary">
+                    {v.size}
+                  </span>
+                  <span className="mt-1 block text-xs text-secondary">
+                    {formatPrice(v.price)}
+                  </span>
                 </button>
               ))}
             </div>

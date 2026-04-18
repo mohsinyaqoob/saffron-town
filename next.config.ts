@@ -28,6 +28,11 @@ const nextConfig: NextConfig = {
       destination: "/shop",
       permanent: true,
     },
+    {
+      source: "/blog/how-to-test-saffron-at-home",
+      destination: "/blog/how-to-identify-fake-saffron",
+      permanent: true,
+    },
   ],
   images: {
     remotePatterns: [

@@ -5,12 +5,13 @@ import { SITE_CONFIG } from "@/lib/constants";
 const FOOTER_LINKS = [
   { href: "/", label: "Home" },
   { href: "/shop", label: "Shop" },
+  { href: "/prebook-2026-harvest", label: "Prebook" },
   { href: "/shop/saffron", label: "Mongra Saffron" },
   { href: "/gifting", label: "Gifting" },
   { href: "/lab-reports", label: "Lab Reports" },
   { href: "/reviews", label: "Reviews" },
   { href: "/blog", label: "Blog" },
-  { href: "/our-story", label: "About" },
+  { href: "/our-story", label: "Our Story" },
   { href: "/contact", label: "Contact" },
   { href: "/privacy", label: "Privacy Policy" },
 ];
@@ -48,8 +49,7 @@ export function Footer() {
         </div>
         <div className="mt-8 border-t border-dark-text-muted/20 pt-8">
           <p className="text-xs text-secondary font-body">
-            © {new Date().getFullYear()} {SITE_CONFIG.name}. All rights
-            reserved.
+            © {new Date().getFullYear()} Saffron Town. All rights reserved.
           </p>
         </div>
       </div>

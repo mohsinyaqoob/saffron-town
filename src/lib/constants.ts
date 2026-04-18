@@ -1,3 +1,14 @@
+/**
+ * Shop + prebook pack grid (2g–50g) is defined in `saffron-pack-variants.ts` and
+ * priced in `data/products.json` so both surfaces stay in sync.
+ */
+export {
+  getGridPackVariants,
+  MONGRA_SAFFRON_SLUG,
+  parsePackGramsFromSize,
+  SHOP_PACK_GRID_GRAMS,
+} from "./saffron-pack-variants";
+
 export const SITE_CONFIG = {
   name: "Saffron Town",
   tagline: "Always the most recent harvest.",
@@ -24,10 +35,10 @@ export const SITE_CONFIG = {
   ],
 } as const;
 
-/* Main nav: Home | Shop | About | Reviews | Blog | Contact */
+/* Main nav: Home | Shop | Our Story | Reviews | Blog | Contact */
 export const NAV_LINKS = [
   { href: "/", label: "Home" },
-  { href: "/our-story", label: "About" },
+  { href: "/our-story", label: "Our Story" },
   { href: "/shop/saffron", label: "Shop" },
   { href: "/reviews", label: "Reviews" },
   { href: "/blog", label: "Blog" },

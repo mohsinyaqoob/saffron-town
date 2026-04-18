@@ -21,6 +21,15 @@ export function ProductJsonLd({ product }: ProductJsonLdProps) {
     description: product.description,
     brand: { "@type": "Brand", name: SITE_CONFIG.name },
     sku: product.id,
+    ...(product.reviewCount > 0 && product.rating > 0
+      ? {
+          aggregateRating: {
+            "@type": "AggregateRating",
+            ratingValue: product.rating.toString(),
+            reviewCount: product.reviewCount.toString(),
+          },
+        }
+      : {}),
     offers: {
       "@type": "Offer",
       priceCurrency: product.currency,
@@ -57,11 +66,6 @@ export function ProductJsonLd({ product }: ProductJsonLdProps) {
           "https://schema.org/MerchantReturnFiniteReturnWindow",
         merchantReturnDays: 7,
       },
-    },
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: product.rating.toString(),
-      reviewCount: product.reviewCount.toString(),
     },
     additionalProperty: [
       {

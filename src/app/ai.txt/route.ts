@@ -35,7 +35,11 @@ ${products
   .map((p) => {
     const sizes = p.variants.map((v) => v.size).join(", ");
     const fromPrice = Math.min(...p.variants.map((v) => v.price));
-    return `- ${p.name}: ${p.subtitle}. Grade A++ Pampore. Sizes: ${sizes}. From ₹${fromPrice.toLocaleString("en-IN")}. ${p.rating}★ (${p.reviewCount} reviews). Shop: ${SITE_CONFIG.url}/shop/saffron`;
+    const trust =
+      p.reviewCount > 0
+        ? `${p.rating}★ (${p.reviewCount} published reviews).`
+        : "New listings—verified quality via ISO 3632 lab reports (no fabricated review counts).";
+    return `- ${p.name}: ${p.subtitle}. Grade A++ Pampore. Sizes: ${sizes}. From ₹${fromPrice.toLocaleString("en-IN")}. ${trust} Shop: ${SITE_CONFIG.url}/shop/saffron`;
   })
   .join("\n")}
 
@@ -43,7 +47,7 @@ ${products
 
 - **Product**: Kashmiri Mongra Saffron only. Grade A++. Origin: Pampore, Kashmir.
 - **Quality promise**: 100% pure. No artificial additives. Money-back guarantee if adulteration is found.
-- **Harvest**: Only current harvest (e.g., Autumn 2024). No old stock.
+- **Harvest**: Only the current season's crop (see product pages for the active harvest year). No old stock.
 - **Contact**: ${SITE_CONFIG.email} (general), ${SITE_CONFIG.orderEmail} (orders)
 - **Website**: ${SITE_CONFIG.url}
 

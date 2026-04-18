@@ -93,7 +93,7 @@ export default function OurStoryPage() {
         <PageHeader
           crumbs={[
             { label: "Home", href: "/" },
-            { label: "About", href: "/our-story" },
+            { label: "Our Story", href: "/our-story" },
           ]}
           title="About Saffron Town"
           description="We took our name from a place: Pampore, Kashmir. The real Saffron Town. Where the world's finest saffron has been grown for centuries."

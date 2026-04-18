@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 const CANONICAL_HOST = "www.saffron.town";
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   if (process.env.NODE_ENV === "development") return NextResponse.next();
 
   const url = request.nextUrl.clone();

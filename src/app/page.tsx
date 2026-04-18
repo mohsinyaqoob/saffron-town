@@ -6,6 +6,7 @@ import {
   CtaSection,
   GuaranteeSection,
   Hero,
+  HomePrebookSection,
   ShopBanner,
   TrustBadges,
 } from "@/components/sections";
@@ -65,6 +66,7 @@ export default function Home() {
         <Hero />
         <TrustBadges />
         <ShopBanner />
+        <HomePrebookSection />
         <TestimonialsWidget variant="top" limit={3} />
         <BlogSection />
         <GuaranteeSection />

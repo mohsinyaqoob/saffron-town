@@ -38,6 +38,9 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      gsap:
+        specifier: ^3.15.0
+        version: 3.15.0
       next:
         specifier: 16.1.6
         version: 16.1.6(@babel/core@7.29.0)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -3912,6 +3915,9 @@ packages:
   groq@5.17.1:
     resolution: {integrity: sha512-KxBNTwLtv/lUZHxU2uSfsL6mZJFMS4qllsTcHhBsLPm39fXT0NZWy5qUzOt6ejCwFGUw/F+UdOwAt1BCGCdYuQ==}
     engines: {node: '>=20.19 <22 || >=22.12'}
+
+  gsap@3.15.0:
+    resolution: {integrity: sha512-dMW4CWBTUK1AEEDeZc1g4xpPGIrSf9fJF960qbTZmN/QwZIWY5wgliS6JWl9/25fpTGJrMRtSjGtOmPnfjZB+A==}
 
   gunzip-maybe@1.4.2:
     resolution: {integrity: sha512-4haO1M4mLO91PW57BMsDFf75UmwoRX0GkdD+Faw+Lr+r/OZrOCS0pIBwOL1xCKQqnQzbNFGgK2V2CpBUPeFNTw==}
@@ -10507,6 +10513,8 @@ snapshots:
   groq@3.88.1-typegen-experimental.0: {}
 
   groq@5.17.1: {}
+
+  gsap@3.15.0: {}
 
   gunzip-maybe@1.4.2:
     dependencies:

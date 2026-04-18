@@ -311,7 +311,7 @@ export default async function BlogPostPage({ params }: Props) {
                 &quot;Bring the Himalayas to your home.&quot;
               </h4>
               <p className="text-sm font-body text-white/80 leading-relaxed">
-                Join 5,000+ wellness seekers waiting for our harvest updates.
+                Get harvest updates and saffron guides.
               </p>
               <input
                 type="email"
