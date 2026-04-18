@@ -2,10 +2,12 @@ import type { Metadata } from "next";
 import { JsonLd } from "@/components/JsonLd";
 import { Footer, Header } from "@/components/layout";
 import {
+  ActivityFeedToast,
   BlogSection,
   CtaSection,
   GuaranteeSection,
   Hero,
+  HomePageMotion,
   HomePrebookSection,
   ShopBanner,
   TrustBadges,
@@ -61,17 +63,33 @@ export default function Home() {
   return (
     <>
       <JsonLd schema={websiteSchema} />
+      <HomePageMotion />
       <Header />
       <main className="space-y-8">
         <Hero />
-        <TrustBadges />
-        <ShopBanner />
-        <HomePrebookSection />
-        <TestimonialsWidget variant="top" limit={3} />
-        <BlogSection />
-        <GuaranteeSection />
-        <CtaSection />
+        <div data-home-fade-up>
+          <TrustBadges />
+        </div>
+        <div data-home-fade-up>
+          <ShopBanner />
+        </div>
+        <div data-home-fade-up>
+          <HomePrebookSection />
+        </div>
+        <div data-home-fade-up>
+          <TestimonialsWidget variant="top" limit={3} />
+        </div>
+        <div data-home-fade-up>
+          <BlogSection />
+        </div>
+        <div data-home-fade-up>
+          <GuaranteeSection />
+        </div>
+        <div data-home-fade-up>
+          <CtaSection />
+        </div>
       </main>
+      <ActivityFeedToast />
       <Footer />
     </>
   );

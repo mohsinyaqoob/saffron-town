@@ -22,6 +22,52 @@
   --color-dark-text-muted: #f6ebe8b3;
 }
 
+/* Mobile testimonials: horizontal marquee (pauses on hover; scrollable if reduced motion) */
+@keyframes testimonial-marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.testimonial-marquee-outer {
+  overflow: hidden;
+}
+
+.testimonial-marquee-track {
+  display: flex;
+  width: max-content;
+  gap: 1rem;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .testimonial-marquee-track {
+    animation: testimonial-marquee 55s linear infinite;
+  }
+
+  @media (hover: hover) {
+    .testimonial-marquee-outer:hover .testimonial-marquee-track {
+      animation-play-state: paused;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .testimonial-marquee-outer {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 0.25rem;
+  }
+
+  .testimonial-marquee-track {
+    animation: none;
+  }
+}
+
 @layer base {
   body {
     @apply bg-background text-text-primary;

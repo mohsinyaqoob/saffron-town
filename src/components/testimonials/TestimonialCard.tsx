@@ -2,9 +2,13 @@
 
 import Image from "next/image";
 import type { Testimonial } from "@/lib/testimonials-data";
+import { cn } from "@/lib/utils";
 
 interface TestimonialCardProps {
   testimonial: Testimonial;
+  /** Narrow card for horizontal marquee on small screens */
+  compact?: boolean;
+  className?: string;
 }
 
 function StarRating({ rating }: { rating?: number }) {
@@ -28,7 +32,11 @@ function StarRating({ rating }: { rating?: number }) {
   );
 }
 
-export function TestimonialCard({ testimonial }: TestimonialCardProps) {
+export function TestimonialCard({
+  testimonial,
+  compact = false,
+  className,
+}: TestimonialCardProps) {
   const initials = testimonial.customerName
     .split(" ")
     .map((n) => n[0])
@@ -37,32 +45,54 @@ export function TestimonialCard({ testimonial }: TestimonialCardProps) {
     .slice(0, 2);
 
   return (
-    <article className="rounded-2xl border border-secondary-border/20 bg-background-alt p-6 shadow-sm transition-shadow hover:shadow-md">
-      <header className="flex items-start gap-4">
+    <article
+      className={cn(
+        "rounded-2xl border border-secondary-border/20 bg-background-alt shadow-sm transition-shadow hover:shadow-md",
+        compact ? "p-4" : "p-6",
+        className,
+      )}
+    >
+      <header className="flex items-start gap-3 sm:gap-4">
         {testimonial.avatar ? (
           <Image
             src={testimonial.avatar}
             alt={testimonial.avatarAlt ?? testimonial.customerName}
             width={48}
             height={48}
-            className="h-12 w-12 shrink-0 rounded-full object-cover"
+            className={cn(
+              "shrink-0 rounded-full object-cover",
+              compact ? "h-10 w-10" : "h-12 w-12",
+            )}
           />
         ) : (
           <div
-            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary/15 text-sm font-semibold text-primary"
+            className={cn(
+              "flex shrink-0 items-center justify-center rounded-full bg-primary/15 font-semibold text-primary",
+              compact ? "h-10 w-10 text-xs" : "h-12 w-12 text-sm",
+            )}
             aria-hidden
           >
             {initials}
           </div>
         )}
         <div className="min-w-0 flex-1">
-          <p className="font-semibold text-text-primary">
+          <p
+            className={cn(
+              "font-semibold text-text-primary",
+              compact && "text-sm leading-snug",
+            )}
+          >
             {testimonial.customerName}
           </p>
           <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1">
             <StarRating rating={testimonial.rating} />
             {testimonial.productPurchased && (
-              <span className="text-sm text-text-muted">
+              <span
+                className={cn(
+                  "text-text-muted",
+                  compact ? "text-xs" : "text-sm",
+                )}
+              >
                 {testimonial.productPurchased}
               </span>
             )}
@@ -75,7 +105,14 @@ export function TestimonialCard({ testimonial }: TestimonialCardProps) {
           </time>
         </div>
       </header>
-      <blockquote className="mt-4 text-secondary leading-relaxed">
+      <blockquote
+        className={cn(
+          "text-secondary leading-relaxed",
+          compact
+            ? "mt-3 line-clamp-3 text-sm"
+            : "mt-4 text-base leading-relaxed",
+        )}
+      >
         {testimonial.reviewText}
       </blockquote>
     </article>

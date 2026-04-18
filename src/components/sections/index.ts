@@ -1,7 +1,9 @@
+export { ActivityFeedToast } from "./ActivityFeedToast";
 export { BlogSection } from "./BlogSection";
 export { CtaSection } from "./CtaSection";
 export { GuaranteeSection } from "./GuaranteeSection";
 export { Hero } from "./Hero";
+export { HomePageMotion } from "./HomePageMotion";
 export { HomePrebookSection } from "./HomePrebookSection";
 export { PageHeader } from "./PageHeader";
 export { PageHero } from "./PageHero";

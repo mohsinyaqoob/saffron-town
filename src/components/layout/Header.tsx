@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useShop } from "@/context/ShopContext";
 import { NAV_LINKS, SITE_CONFIG } from "@/lib/constants";
 import { cn } from "@/lib/utils";
@@ -18,20 +18,45 @@ function isLinkActive(href: string, pathname: string): boolean {
 export function Header() {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isAtTop, setIsAtTop] = useState(true);
   const { cart, favorites } = useShop();
+  const isHome = pathname === "/";
 
   const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
 
+  useEffect(() => {
+    const onScroll = () => setIsAtTop(window.scrollY < 12);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const transparentMode = isHome && isAtTop && !mobileMenuOpen;
+
   return (
-    <header className="bg-background sticky top-0 z-50 border-b-2 border-secondary-border/50 shadow-sm shadow-dark/5">
-      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 lg:px-20">
-        <Link href="/" className="flex items-center">
+    <header
+      className={cn(
+        "z-50 w-full max-w-full min-w-0 overflow-x-hidden transition-all duration-300",
+        isHome ? "fixed left-0 right-0 top-0" : "sticky top-0 left-0 right-0",
+        transparentMode
+          ? "bg-transparent border-b border-transparent shadow-none"
+          : "bg-background border-b-2 border-secondary-border/50 shadow-sm shadow-dark/5",
+      )}
+    >
+      <div className="mx-auto flex h-20 min-w-0 w-full max-w-7xl items-center justify-between gap-1.5 px-3 sm:gap-2 sm:px-6 lg:px-20">
+        <Link
+          href="/"
+          className="flex min-w-0 flex-1 items-center overflow-hidden pr-1"
+        >
           <Image
             src="/logo-horizon.svg"
             alt={SITE_CONFIG.name}
             width={180}
             height={40}
-            className="h-10 w-auto object-contain"
+            className={cn(
+              "h-8 w-auto max-h-8 max-w-full object-contain object-left transition-[filter] duration-300 sm:h-10 sm:max-h-10 lg:max-w-[200px]",
+              transparentMode && "brightness-0 invert",
+            )}
             priority
           />
         </Link>
@@ -48,9 +73,13 @@ export function Header() {
                 href={link.href}
                 className={cn(
                   "text-sm font-body transition-colors",
-                  active
-                    ? "font-semibold text-primary"
-                    : "text-secondary hover:text-text-primary",
+                  transparentMode
+                    ? active
+                      ? "font-semibold text-white"
+                      : "text-white/90 hover:text-white"
+                    : active
+                      ? "font-semibold text-primary"
+                      : "text-secondary hover:text-text-primary",
                 )}
                 aria-current={active ? "page" : undefined}
               >
@@ -60,11 +89,16 @@ export function Header() {
           })}
         </nav>
 
-        <div className="flex items-center gap-2 sm:gap-4">
+        <div className="flex shrink-0 items-center gap-0 sm:gap-4">
           <button
             type="button"
             onClick={() => setMobileMenuOpen((v) => !v)}
-            className="lg:hidden p-2 text-secondary hover:text-text-primary transition-colors rounded-md hover:bg-surface-muted/50"
+            className={cn(
+              "lg:hidden shrink-0 p-1.5 transition-colors rounded-md sm:p-2",
+              transparentMode
+                ? "text-white hover:text-white hover:bg-white/10"
+                : "text-secondary hover:text-text-primary hover:bg-surface-muted/50",
+            )}
             aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileMenuOpen}
           >
@@ -102,7 +136,12 @@ export function Header() {
 
           <Link
             href="/favorites"
-            className="group relative p-2 text-secondary transition-colors hover:text-primary"
+            className={cn(
+              "group relative shrink-0 p-1.5 transition-colors sm:p-2",
+              transparentMode
+                ? "text-white/85 hover:text-white"
+                : "text-secondary hover:text-primary",
+            )}
             aria-label="Favorites"
           >
             <svg
@@ -127,7 +166,12 @@ export function Header() {
           </Link>
           <Link
             href="/cart"
-            className="group relative p-2 text-secondary transition-colors hover:text-primary"
+            className={cn(
+              "group relative shrink-0 p-1.5 transition-colors sm:p-2",
+              transparentMode
+                ? "text-white/85 hover:text-white"
+                : "text-secondary hover:text-primary",
+            )}
             aria-label="Cart"
           >
             <svg
@@ -167,7 +211,7 @@ export function Header() {
 
       <div
         className={cn(
-          "lg:hidden fixed inset-x-0 top-20 z-40 pt-2 px-4 pointer-events-none",
+          "lg:hidden fixed inset-x-0 top-20 z-40 max-w-[100vw] pt-2 px-3 pointer-events-none sm:px-4",
           "transition-all duration-300 ease-out",
           !mobileMenuOpen && "invisible opacity-0",
         )}

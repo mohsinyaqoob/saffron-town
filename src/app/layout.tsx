@@ -68,7 +68,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${playfair.variable} ${figtree.variable}`}
+      className={`${playfair.variable} ${figtree.variable} overflow-x-hidden`}
       suppressHydrationWarning
     >
       <head>
@@ -87,7 +87,7 @@ export default function RootLayout({
         />
         <link rel="prefetch" href="/ai.txt" />
       </head>
-      <body className="min-h-screen font-body antialiased">
+      <body className="min-h-screen overflow-x-hidden font-body antialiased">
         <ShopProvider>{children}</ShopProvider>
         {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
           <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />

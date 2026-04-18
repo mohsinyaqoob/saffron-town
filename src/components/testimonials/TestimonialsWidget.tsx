@@ -40,6 +40,10 @@ export function TestimonialsWidget({
 
   if (testimonials.length === 0) return null;
 
+  const textReviews = testimonials.filter((t) => t.reviewType === "text");
+  const marqueeLoop =
+    textReviews.length > 0 ? [...textReviews, ...textReviews] : [];
+
   const displayTitle =
     title ??
     (variant === "recent"
@@ -70,14 +74,27 @@ export function TestimonialsWidget({
             </Link>
           )}
         </div>
-        <ul className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {testimonials
-            .filter((t) => t.reviewType === "text")
-            .map((t) => (
-              <li key={t.id}>
-                <TestimonialCard testimonial={t} />
-              </li>
-            ))}
+        {marqueeLoop.length > 0 ? (
+          <div className="testimonial-marquee-outer relative mt-8 md:hidden">
+            <div className="testimonial-marquee-track">
+              {marqueeLoop.map((t, i) => (
+                <div
+                  key={`${t.id}-marquee-${i}`}
+                  className="w-[min(78vw,280px)] shrink-0"
+                >
+                  <TestimonialCard testimonial={t} compact />
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : null}
+
+        <ul className="mt-8 hidden gap-6 md:grid md:grid-cols-2 lg:grid-cols-3">
+          {textReviews.map((t) => (
+            <li key={t.id}>
+              <TestimonialCard testimonial={t} />
+            </li>
+          ))}
         </ul>
       </div>
     </section>
