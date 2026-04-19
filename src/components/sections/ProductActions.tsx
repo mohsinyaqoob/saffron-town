@@ -1,8 +1,11 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { useShop } from "@/context/ShopContext";
+import { trackAddToCart } from "@/lib/analytics";
+import { checkoutHref } from "@/lib/checkout-line";
 import type { ProductPageData } from "@/lib/product-data";
 
 interface ProductActionsProps {
@@ -12,10 +15,19 @@ interface ProductActionsProps {
 export function ProductActions({ product }: ProductActionsProps) {
   const [selectedVariant, setSelectedVariant] = useState(product.variants[0]);
   const [quantity, setQuantity] = useState(1);
-  const { addToCart, toggleFavorite, isFavorite } = useShop();
+  const router = useRouter();
+  const { toggleFavorite, isFavorite } = useShop();
 
-  const handleAddToCart = () => {
-    addToCart(product, selectedVariant, quantity);
+  const goCheckout = () => {
+    trackAddToCart({
+      id: product.id,
+      name: product.name,
+      variant: selectedVariant.size,
+      price: selectedVariant.price,
+      quantity,
+      currency: product.currency,
+    });
+    router.push(checkoutHref(product.id, selectedVariant.id, quantity));
   };
 
   return (
@@ -121,11 +133,11 @@ export function ProductActions({ product }: ProductActionsProps) {
 
       <div className="mt-4 flex flex-col gap-4 sm:flex-row">
         <Button
-          onClick={handleAddToCart}
+          onClick={goCheckout}
           size="xl"
           className="flex-1 bg-primary hover:bg-primary-hover text-white font-bold py-6 px-12 rounded-full shadow-lg shadow-primary/20 transition-all hover:-translate-y-1"
         >
-          Add to Cart —{" "}
+          Buy now —{" "}
           {new Intl.NumberFormat("en-IN", {
             style: "currency",
             currency: product.currency,

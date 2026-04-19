@@ -3,8 +3,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import {
   Controller,
   type FieldErrors,
@@ -16,17 +16,18 @@ import { HearAboutCombobox } from "@/components/checkout/HearAboutCombobox";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import {
+  CheckoutLoadingShell,
   CheckoutOrderRedirectLayout,
-  ShopCartHydratingLayout,
 } from "@/components/shop/ShopPageLoaders";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
-import { useShop } from "@/context/ShopContext";
 import { trackBeginCheckout } from "@/lib/analytics";
 import {
   type CheckoutFormValues,
   checkoutFormSchema,
 } from "@/lib/checkout-form-schema";
+import { parseCheckoutQuery, resolveCheckoutLine } from "@/lib/checkout-line";
+import { PRODUCT_PAGE_URL } from "@/lib/product-data";
 import { cn } from "@/lib/utils";
 
 function formatInr(amount: number, currency = "INR") {
@@ -40,9 +41,18 @@ function formatInr(amount: number, currency = "INR") {
 const fieldErrorClass =
   "border-red-400/80 ring-2 ring-red-200/60 focus:border-red-400 focus:ring-red-200/80";
 
-export default function CheckoutPage() {
+function CheckoutPageContent() {
   const router = useRouter();
-  const { cart, cartTotal, clearCart, isCartHydrated } = useShop();
+  const searchParams = useSearchParams();
+  const line = useMemo(() => {
+    const parsed = parseCheckoutQuery(searchParams);
+    if (!parsed.ok) return null;
+    return resolveCheckoutLine(parsed);
+  }, [searchParams]);
+
+  const lines = line ? [line] : [];
+  const cartTotal = line ? line.variant.price * line.quantity : 0;
+
   const [redirectingAfterOrder, setRedirectingAfterOrder] = useState(false);
   const lastBeginCheckoutSig = useRef("");
 
@@ -67,18 +77,25 @@ export default function CheckoutPage() {
   });
 
   const formattedTotal = formatInr(cartTotal);
-  const itemCount = cart.reduce((sum, i) => sum + i.quantity, 0);
+  const itemCount = line ? line.quantity : 0;
 
   useEffect(() => {
-    if (cart.length === 0) return;
-    const sig = `${cartTotal}|${cart.map((i) => `${i.cartItemId}:${i.quantity}`).join(",")}`;
+    if (!line) return;
+    const sig = `${cartTotal}|${line.cartItemId}:${line.quantity}`;
     if (lastBeginCheckoutSig.current === sig) return;
     lastBeginCheckoutSig.current = sig;
-    trackBeginCheckout(cart, cartTotal, "INR");
-  }, [cart, cartTotal]);
+    trackBeginCheckout([line], cartTotal, "INR");
+  }, [line, cartTotal]);
 
   async function onSubmit(data: CheckoutFormValues) {
     clearErrors("root");
+    if (!line) {
+      setError("root", {
+        message:
+          "Your checkout session is missing. Go back to the shop and use Buy now.",
+      });
+      return;
+    }
     const res = await fetch("/api/orders", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -89,11 +106,13 @@ export default function CheckoutPage() {
         pincode: data.pincode.trim(),
         heardAboutUs: data.heardAboutUs || undefined,
         notes: data.notes || undefined,
-        items: cart.map((i) => ({
-          productId: i.id,
-          variantId: i.variant.id,
-          quantity: i.quantity,
-        })),
+        items: [
+          {
+            productId: line.id,
+            variantId: line.variant.id,
+            quantity: line.quantity,
+          },
+        ],
       }),
     });
     const payload = (await res.json().catch(() => ({}))) as {
@@ -119,7 +138,6 @@ export default function CheckoutPage() {
     if (receipt) q.set("receipt", receipt);
     const successPath = `/orders/${encodeURIComponent(payload.id)}/success${q.toString() ? `?${q}` : ""}`;
     window.setTimeout(() => {
-      clearCart();
       router.replace(successPath);
     }, 0);
   }
@@ -158,15 +176,6 @@ export default function CheckoutPage() {
     return <CheckoutOrderRedirectLayout />;
   }
 
-  if (!isCartHydrated) {
-    return (
-      <ShopCartHydratingLayout
-        title="Loading checkout"
-        description="Restoring your cart from this device…"
-      />
-    );
-  }
-
   return (
     <div className="flex min-h-screen flex-col bg-background text-text-primary">
       <Header />
@@ -175,24 +184,25 @@ export default function CheckoutPage() {
           <BreadcrumbNav
             crumbs={[
               { label: "Home", href: "/" },
-              { label: "Cart", href: "/cart" },
+              { label: "Shop", href: PRODUCT_PAGE_URL },
               { label: "Checkout", href: "/checkout" },
             ]}
           />
         </div>
 
         <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-20 lg:py-12">
-          {cart.length === 0 ? (
+          {!line ? (
             <div className="mx-auto max-w-lg rounded-3xl border border-secondary-border/20 bg-background-alt/80 px-8 py-14 text-center shadow-sm">
               <h1 className="font-display text-2xl font-bold text-text-primary sm:text-3xl">
                 Nothing to check out yet
               </h1>
               <p className="mt-3 text-sm leading-relaxed text-secondary font-body">
-                Add a pack from the shop or prebook the harvest, then return
-                here to place your order.
+                Choose a pack on the shop page (or prebook), then tap{" "}
+                <strong className="text-text-primary">Buy now</strong> to open
+                checkout with your selection.
               </p>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
-                <Link href="/shop/saffron">
+                <Link href={PRODUCT_PAGE_URL}>
                   <Button size="lg" className="w-full rounded-2xl sm:w-auto">
                     Shop saffron
                   </Button>
@@ -212,15 +222,14 @@ export default function CheckoutPage() {
             <>
               <div className="border-b border-secondary-border/15 pb-8">
                 <p className="text-xs font-bold uppercase tracking-widest text-primary">
-                  Step 2 of 2
+                  Secure checkout
                 </p>
                 <h1 className="mt-2 font-display text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">
                   Checkout
                 </h1>
                 <p className="mt-2 max-w-2xl text-sm leading-relaxed text-secondary font-body sm:text-base">
-                  Review your line items, add your details for delivery, then
-                  place the order. We will reach out with payment and dispatch
-                  options.
+                  Review your order, add delivery details, then place the order.
+                  We will reach out with payment and dispatch options.
                 </p>
               </div>
 
@@ -240,7 +249,7 @@ export default function CheckoutPage() {
                     Order review
                   </h2>
                   <ul className="mt-4 space-y-3">
-                    {cart.map((item) => (
+                    {lines.map((item) => (
                       <li key={item.cartItemId}>
                         <div className="flex gap-4 rounded-2xl border border-secondary-border/20 bg-background-alt p-4 sm:p-5">
                           <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-surface-muted ring-1 ring-secondary-border/10 sm:h-24 sm:w-24">
@@ -565,10 +574,10 @@ export default function CheckoutPage() {
                     </Button>
 
                     <Link
-                      href="/cart"
+                      href={PRODUCT_PAGE_URL}
                       className="flex min-h-11 w-full items-center justify-center rounded-2xl border border-secondary-border/40 text-sm font-semibold text-secondary transition-colors hover:bg-surface-muted"
                     >
-                      Back to cart
+                      Back to shop
                     </Link>
 
                     <p className="text-center text-[11px] leading-relaxed text-text-muted font-body">
@@ -584,5 +593,13 @@ export default function CheckoutPage() {
       </main>
       <Footer />
     </div>
+  );
+}
+
+export default function CheckoutPage() {
+  return (
+    <Suspense fallback={<CheckoutLoadingShell />}>
+      <CheckoutPageContent />
+    </Suspense>
   );
 }

@@ -15,10 +15,10 @@ function Spinner({ className }: { className?: string }) {
   );
 }
 
-/** Shown until localStorage cart has been read (avoids empty-cart flash on refresh). */
-export function ShopCartHydratingLayout({
-  title = "Loading your cart",
-  description = "Restoring items from this device…",
+/** Full-page loader (e.g. Suspense fallback for checkout). */
+export function CheckoutLoadingShell({
+  title = "Loading checkout",
+  description = "One moment…",
 }: {
   title?: string;
   description?: string;

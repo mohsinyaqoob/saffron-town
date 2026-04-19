@@ -5,7 +5,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/Button";
-import { useShop } from "@/context/ShopContext";
+import { trackAddToCart } from "@/lib/analytics";
+import { checkoutHref } from "@/lib/checkout-line";
 import { getUpcomingHarvestSeason } from "@/lib/prebook-season";
 import { getProductData, type ProductVariant } from "@/lib/product-data";
 import {
@@ -30,7 +31,6 @@ function getPrebookPackImage(size: string) {
 
 export function PrebookActionPanel() {
   const router = useRouter();
-  const { cart, addToCart, removeFromCart } = useShop();
 
   const product = useMemo(() => getProductData(MONGRA_SAFFRON_SLUG), []);
   const season = useMemo(() => getUpcomingHarvestSeason(), []);
@@ -41,17 +41,6 @@ export function PrebookActionPanel() {
 
   const [selectedPack, setSelectedPack] = useState<ProductVariant | null>(null);
   const [error, setError] = useState("");
-
-  const stripMongraGridPacksFromCart = () => {
-    if (!product || packVariants.length === 0) return;
-    const packIds = new Set(packVariants.map((v) => v.id));
-    const toRemove = cart
-      .filter((i) => i.id === product.id && packIds.has(i.variant.id))
-      .map((i) => i.cartItemId);
-    for (const cid of toRemove) {
-      removeFromCart(cid);
-    }
-  };
 
   const handleContinueToCheckout = () => {
     setError("");
@@ -64,9 +53,15 @@ export function PrebookActionPanel() {
       return;
     }
 
-    stripMongraGridPacksFromCart();
-    addToCart(product, selectedPack, 1);
-    router.push("/checkout");
+    trackAddToCart({
+      id: product.id,
+      name: product.name,
+      variant: selectedPack.size,
+      price: selectedPack.price,
+      quantity: 1,
+      currency: product.currency,
+    });
+    router.push(checkoutHref(product.id, selectedPack.id, 1));
   };
 
   return (
@@ -191,8 +186,8 @@ export function PrebookActionPanel() {
           Continue to checkout
         </Button>
         <p className="text-center text-xs text-text-muted font-body">
-          Uses the same product data as /shop/saffron. Other cart lines stay
-          until you remove them.
+          Uses the same pack sizes and prices as the shop. Checkout opens with
+          this pack (quantity 1).
         </p>
       </div>
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { sendGAEvent } from "@next/third-parties/google";
-import type { CartItem } from "@/context/ShopContext";
+import type { CheckoutLineItem } from "@/lib/checkout-line";
 
 /**
  * GA4 e-commerce events. Requires NEXT_PUBLIC_GA_MEASUREMENT_ID to be set.
@@ -32,14 +32,14 @@ export function trackAddToCart(item: {
 }
 
 export function trackBeginCheckout(
-  cart: CartItem[],
+  lines: CheckoutLineItem[],
   total: number,
   currency = "INR",
 ) {
   sendGAEvent("event", "begin_checkout", {
     currency,
     value: total,
-    items: cart.map((item) => ({
+    items: lines.map((item) => ({
       item_id: item.id,
       item_name: item.name,
       item_variant: item.variant.size,
@@ -50,7 +50,7 @@ export function trackBeginCheckout(
 }
 
 export function trackPurchase(
-  cart: CartItem[],
+  lines: CheckoutLineItem[],
   total: number,
   transactionId: string,
   currency = "INR",
@@ -59,7 +59,7 @@ export function trackPurchase(
     transaction_id: transactionId,
     currency,
     value: total,
-    items: cart.map((item) => ({
+    items: lines.map((item) => ({
       item_id: item.id,
       item_name: item.name,
       item_variant: item.variant.size,

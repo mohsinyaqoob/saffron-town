@@ -1,8 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { useShop } from "@/context/ShopContext";
+import { trackAddToCart } from "@/lib/analytics";
+import { checkoutHref } from "@/lib/checkout-line";
 import type { ProductPageData, ProductVariant } from "@/lib/product-data";
 import {
   getGridPackVariants,
@@ -23,7 +26,8 @@ export function ProductBuyBox({ product }: ProductBuyBoxProps) {
     () => gridVariants[0] ?? product.variants[0],
   );
   const [quantity, setQuantity] = useState(1);
-  const { addToCart, toggleFavorite, isFavorite } = useShop();
+  const router = useRouter();
+  const { toggleFavorite, isFavorite } = useShop();
 
   const formatPrice = (n: number) =>
     new Intl.NumberFormat("en-IN", {
@@ -32,15 +36,16 @@ export function ProductBuyBox({ product }: ProductBuyBoxProps) {
       maximumFractionDigits: 0,
     }).format(n);
 
-  const handleAddToCart = () => {
-    addToCart(product, selectedVariant, quantity);
-  };
-
-  const handleBuyNow = () => {
-    addToCart(product, selectedVariant, quantity);
-    if (typeof window !== "undefined") {
-      window.location.href = "/cart";
-    }
+  const goCheckout = () => {
+    trackAddToCart({
+      id: product.id,
+      name: product.name,
+      variant: selectedVariant.size,
+      price: selectedVariant.price,
+      quantity,
+      currency: product.currency,
+    });
+    router.push(checkoutHref(product.id, selectedVariant.id, quantity));
   };
 
   const discountPercent =
@@ -320,20 +325,12 @@ export function ProductBuyBox({ product }: ProductBuyBoxProps) {
           </select>
         </div>
 
-        {/* Add to Cart / Buy Now */}
         <button
           type="button"
-          onClick={handleAddToCart}
-          className="w-full py-3 px-4 rounded-full bg-primary hover:bg-primary-hover text-white text-sm font-bold mb-3 transition-colors font-body shadow-md shadow-primary/20"
+          onClick={goCheckout}
+          className="w-full py-3 px-4 rounded-full bg-primary hover:bg-primary-hover text-white text-sm font-bold mb-4 transition-colors font-body shadow-md shadow-primary/20"
         >
-          Add to Cart
-        </button>
-        <button
-          type="button"
-          onClick={handleBuyNow}
-          className="w-full py-3 px-4 rounded-full border-2 border-primary bg-transparent hover:bg-primary/5 text-primary text-sm font-bold mb-4 transition-colors font-body"
-        >
-          Buy Now
+          Buy now — {formatPrice(selectedVariant.price * quantity)}
         </button>
 
         {/* Secure transaction */}

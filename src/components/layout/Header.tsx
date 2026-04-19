@@ -19,10 +19,8 @@ export function Header() {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isAtTop, setIsAtTop] = useState(true);
-  const { cart, favorites } = useShop();
+  const { favorites } = useShop();
   const isHome = pathname === "/";
-
-  const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
 
   useEffect(() => {
     const onScroll = () => setIsAtTop(window.scrollY < 12);
@@ -161,38 +159,6 @@ export function Header() {
             {favorites.length > 0 && (
               <span className="absolute right-1 top-1 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-primary text-[9px] font-bold text-white shadow-sm ring-2 ring-background-alt">
                 {favorites.length}
-              </span>
-            )}
-          </Link>
-          <Link
-            href="/cart"
-            className={cn(
-              "group relative shrink-0 p-1.5 transition-colors sm:p-2",
-              transparentMode
-                ? "text-white/85 hover:text-white"
-                : "text-secondary hover:text-primary",
-            )}
-            aria-label="Cart"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="transition-transform group-hover:scale-110"
-            >
-              <circle cx="8" cy="21" r="1" />
-              <circle cx="19" cy="21" r="1" />
-              <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
-            </svg>
-            {cartCount > 0 && (
-              <span className="absolute right-0 top-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-white shadow-sm ring-2 ring-background-alt">
-                {cartCount}
               </span>
             )}
           </Link>

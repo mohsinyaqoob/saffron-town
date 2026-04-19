@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
 import { isValidHearAboutChannel } from "@/data/heard-about-channels";
+import { sendOrderAdminNotification } from "@/lib/order-admin-notify";
+import { limitOrderPostInMemory } from "@/lib/order-rate-limit-memory";
 import { signOrderReceiptToken } from "@/lib/order-receipt-token";
+import { getOrderRequestClientIp } from "@/lib/order-request-ip";
 import { getPrisma, isDirectPostgresUrl } from "@/lib/prisma";
 import { getProductById } from "@/lib/product-data";
 
@@ -52,6 +55,21 @@ export async function POST(request: Request) {
           "Orders are not configured: set DATABASE_URL to a direct PostgreSQL connection string (postgresql://…), not a Prisma Accelerate URL.",
       },
       { status: 503 },
+    );
+  }
+
+  const clientIp = getOrderRequestClientIp(request);
+  const limited = limitOrderPostInMemory(clientIp);
+  if (!limited.ok) {
+    return NextResponse.json(
+      {
+        error:
+          "Too many order attempts from this network. Please wait a few minutes and try again.",
+      },
+      {
+        status: 429,
+        headers: { "Retry-After": String(limited.retryAfterSec) },
+      },
     );
   }
 
@@ -202,6 +220,24 @@ export async function POST(request: Request) {
       QUERY_TIMEOUT_MS,
       "Database",
     );
+
+    void sendOrderAdminNotification({
+      orderId: order.id,
+      customerName,
+      customerEmail: email,
+      phone: phoneRaw,
+      pincode,
+      subtotalRupees,
+      currency,
+      lines: lineCreates.map((l) => ({
+        productName: l.productName,
+        variantLabel: l.variantLabel,
+        quantity: l.quantity,
+        lineTotalRupees: l.lineTotalRupees,
+      })),
+      heardAboutUs: heardRaw && heardRaw.length > 0 ? heardRaw : null,
+      notes: notes ?? null,
+    });
 
     const receipt = signOrderReceiptToken(order.id);
     return NextResponse.json({ id: order.id, receipt });
