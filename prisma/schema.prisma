@@ -1,0 +1,45 @@
+// https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+}
+
+model Order {
+  id             String      @id @default(cuid())
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+  status         OrderStatus @default(PENDING)
+  currency       String      @default("INR")
+  subtotalRupees Int
+  customerName   String
+  phone          String
+  email          String
+  pincode        String
+  heardAboutUs   String?
+  cityPin        String?
+  notes          String?
+  items          OrderItem[]
+}
+
+model OrderItem {
+  id              String @id @default(cuid())
+  orderId         String
+  order           Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId       String
+  productName     String
+  variantId       String
+  variantLabel    String
+  quantity        Int
+  unitPriceRupees Int
+  lineTotalRupees Int
+}

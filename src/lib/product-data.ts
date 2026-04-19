@@ -42,6 +42,10 @@ export function getProductData(slug: string): ProductPageData | undefined {
   );
 }
 
+export function getProductById(id: string): ProductPageData | undefined {
+  return (products as unknown as ProductPageData[]).find((p) => p.id === id);
+}
+
 export function getDefaultProduct(): ProductPageData | undefined {
   return (products as unknown as ProductPageData[])[0];
 }

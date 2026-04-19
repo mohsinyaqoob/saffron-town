@@ -5,26 +5,42 @@ import Link from "next/link";
 import { BreadcrumbNav } from "@/components/BreadcrumbNav";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
+import { ShopCartHydratingLayout } from "@/components/shop/ShopPageLoaders";
+import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { useShop } from "@/context/ShopContext";
-import { trackBeginCheckout, trackPurchase } from "@/lib/analytics";
-import { SITE_CONFIG } from "@/lib/constants";
+import { trackBeginCheckout } from "@/lib/analytics";
+
+function formatInr(amount: number, currency = "INR") {
+  return new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency,
+    maximumFractionDigits: 0,
+  }).format(amount);
+}
 
 export default function CartPage() {
-  const { cart, removeFromCart, updateQuantity, cartTotal, clearCart } =
-    useShop();
+  const {
+    cart,
+    removeFromCart,
+    updateQuantity,
+    cartTotal,
+    clearCart,
+    isCartHydrated,
+  } = useShop();
 
-  const formattedTotal = new Intl.NumberFormat("en-IN", {
-    style: "currency",
-    currency: "INR",
-    maximumFractionDigits: 0,
-  }).format(cartTotal);
+  const itemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+  const formattedTotal = formatInr(cartTotal);
+
+  if (!isCartHydrated) {
+    return <ShopCartHydratingLayout />;
+  }
 
   return (
-    <div className="flex min-h-screen flex-col bg-background-alt text-text-primary">
+    <div className="flex min-h-screen flex-col bg-background text-text-primary">
       <Header />
-      <main className="flex-grow">
-        <div className="mx-auto max-w-7xl px-6 lg:px-20 pt-6">
+      <main className="flex-grow pb-16">
+        <div className="mx-auto max-w-7xl px-4 pt-5 sm:px-6 lg:px-20">
           <BreadcrumbNav
             crumbs={[
               { label: "Home", href: "/" },
@@ -32,34 +48,39 @@ export default function CartPage() {
             ]}
           />
         </div>
-        <div className="mx-auto max-w-7xl px-6 lg:px-20 py-20 lg:py-32">
-          <div className="flex items-end justify-between border-b border-secondary-border/20 pb-8 mb-12">
+
+        <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-20 lg:py-12">
+          <div className="flex flex-col gap-4 border-b border-secondary-border/15 pb-8 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <h1 className="font-display text-4xl font-bold tracking-tight text-text-primary lg:text-5xl">
-                Your Shopping Cart
+              <h1 className="font-display text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">
+                Shopping cart
               </h1>
-              <p className="mt-4 text-lg text-secondary font-body">
-                Authentic Kashmiri products waiting for you.
+              <p className="mt-2 max-w-xl text-sm leading-relaxed text-secondary font-body sm:text-base">
+                {cart.length === 0
+                  ? "Browse farm-direct Mongra saffron and add a pack when you are ready."
+                  : `${itemCount} item${itemCount === 1 ? "" : "s"} · Review sizes and quantities, then continue to checkout.`}
               </p>
             </div>
             {cart.length > 0 && (
               <button
-                onClick={clearCart}
-                className="text-xs font-bold text-text-muted hover:text-primary transition-colors uppercase tracking-widest underline decoration-transparent hover:decoration-primary underline-offset-4"
+                type="button"
+                onClick={() => clearCart()}
+                className="self-start text-xs font-bold uppercase tracking-widest text-text-muted underline decoration-transparent underline-offset-4 transition-colors hover:text-primary hover:decoration-primary sm:self-auto"
               >
-                Clear Cart
+                Clear cart
               </button>
             )}
           </div>
 
           {cart.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-20 text-center bg-surface-muted/30 rounded-[3rem] border border-secondary-border/10">
-              <div className="h-24 w-24 rounded-full bg-primary/10 flex items-center justify-center mb-6">
+            <div className="mx-auto mt-12 max-w-lg rounded-3xl border border-secondary-border/20 bg-background-alt/80 px-8 py-14 text-center shadow-sm">
+              <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10 text-primary">
                 <svg
-                  className="h-10 w-10 text-primary"
+                  className="h-8 w-8"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
+                  aria-hidden
                 >
                   <path
                     strokeLinecap="round"
@@ -69,173 +90,254 @@ export default function CartPage() {
                   />
                 </svg>
               </div>
-              <h2 className="font-display text-2xl font-bold text-text-primary mb-4">
+              <h2 className="font-display text-2xl font-bold text-text-primary">
                 Your cart is empty
               </h2>
-              <p className="text-secondary font-body mb-8 max-w-md">
-                It looks like you haven't added any products to your cart yet.
-                Discover our premium collection and start shopping.
+              <p className="mt-3 text-sm leading-relaxed text-secondary font-body">
+                Start with a lab-tested pack, or prebook the next harvest—same
+                quality promise either way.
               </p>
-              <Link href="/shop/saffron">
-                <Button size="lg" className="rounded-full px-8">
-                  Continue Shopping
-                </Button>
-              </Link>
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
+                <Link href="/shop/saffron">
+                  <Button size="lg" className="w-full rounded-2xl sm:w-auto">
+                    Shop saffron
+                  </Button>
+                </Link>
+                <Link href="/prebook-2026-harvest">
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="w-full rounded-2xl sm:w-auto"
+                  >
+                    Prebook harvest
+                  </Button>
+                </Link>
+              </div>
             </div>
           ) : (
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-16">
-              <div className="lg:col-span-2 space-y-8">
-                {cart.map((item) => {
-                  return (
-                    <article
-                      key={item.cartItemId}
-                      className="flex flex-col sm:flex-row items-center gap-6 p-6 rounded-[2rem] bg-background border border-secondary-border/10 shadow-lg shadow-dark/5"
-                    >
-                      <Link
-                        href="/shop/saffron"
-                        className="relative h-32 w-32 shrink-0 rounded-2xl overflow-hidden bg-surface-muted"
-                      >
-                        <Image
-                          src={item.images[0].url}
-                          alt={item.images[0].alt}
-                          fill
-                          className="object-cover"
-                        />
-                      </Link>
-                      <div className="flex-grow flex flex-col items-center sm:items-start text-center sm:text-left">
-                        <div className="flex items-center gap-3">
-                          <h3 className="font-display text-xl font-bold text-text-primary">
-                            {item.name}
-                          </h3>
-                          <span className="bg-primary/10 text-primary text-xs font-bold px-2 py-0.5 rounded uppercase tracking-widest">
-                            {item.variant.size}
-                          </span>
-                        </div>
-                        <span className="text-sm font-body text-secondary mb-4">
-                          {item.subtitle}
-                        </span>
-                        <div className="flex items-center gap-4 border border-secondary-border/30 rounded-full px-4 py-2">
-                          <button
-                            onClick={() =>
-                              updateQuantity(item.cartItemId, item.quantity - 1)
-                            }
-                            className="text-text-muted hover:text-primary transition-colors disabled:opacity-50 font-bold"
-                            disabled={item.quantity <= 1}
+            <div className="mt-10 grid gap-10 lg:grid-cols-12 lg:gap-12">
+              <section className="lg:col-span-7" aria-labelledby="cart-items">
+                <h2 id="cart-items" className="sr-only">
+                  Cart items
+                </h2>
+                <ul className="space-y-4">
+                  {cart.map((item) => {
+                    const lineTotal = item.variant.price * item.quantity;
+                    return (
+                      <li key={item.cartItemId}>
+                        <article className="flex gap-4 rounded-2xl border border-secondary-border/20 bg-background-alt p-4 shadow-sm sm:gap-5 sm:p-5">
+                          <Link
+                            href="/shop/saffron"
+                            className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-surface-muted ring-1 ring-secondary-border/15 sm:h-28 sm:w-28"
                           >
-                            -
-                          </button>
-                          <span className="font-bold text-sm tracking-widest">
-                            {item.quantity}
-                          </span>
-                          <button
-                            onClick={() =>
-                              updateQuantity(item.cartItemId, item.quantity + 1)
-                            }
-                            className="text-text-muted hover:text-primary transition-colors font-bold"
-                          >
-                            +
-                          </button>
-                        </div>
-                      </div>
-                      <div className="flex flex-col items-center sm:items-end justify-between h-full min-h-[120px] pb-2">
-                        <div className="text-center sm:text-right mb-4">
-                          <p className="font-display text-xl font-bold text-text-primary">
-                            {new Intl.NumberFormat("en-IN", {
-                              style: "currency",
-                              currency: item.currency,
-                              maximumFractionDigits: 0,
-                            }).format(item.variant.price * item.quantity)}
-                          </p>
-                          {item.quantity > 1 && (
-                            <p className="text-xs text-text-muted mt-1 font-body">
-                              {new Intl.NumberFormat("en-IN", {
-                                style: "currency",
-                                currency: item.currency,
-                                maximumFractionDigits: 0,
-                              }).format(item.variant.price)}{" "}
-                              each
-                            </p>
-                          )}
-                        </div>
-                        <button
-                          onClick={() => removeFromCart(item.cartItemId)}
-                          className="text-xs font-bold text-text-muted hover:text-primary transition-colors uppercase tracking-widest underline decoration-secondary-border/30 hover:decoration-primary underline-offset-4"
-                        >
-                          Remove
-                        </button>
-                      </div>
-                    </article>
-                  );
-                })}
-              </div>
-              <aside>
-                <div className="p-8 rounded-[2rem] bg-surface-muted/50 border border-secondary-border/10 shadow-xl shadow-dark/5 sticky top-32">
-                  <h2 className="font-display text-2xl font-bold mb-8">
-                    Order Summary
+                            <Image
+                              src={item.images[0].url}
+                              alt={item.images[0].alt}
+                              fill
+                              className="object-cover"
+                              sizes="112px"
+                            />
+                          </Link>
+
+                          <div className="flex min-w-0 flex-1 flex-col justify-between gap-3">
+                            <div className="min-w-0">
+                              <div className="flex flex-wrap items-center gap-2 gap-y-1">
+                                <h3 className="font-display text-lg font-bold leading-snug text-text-primary sm:text-xl">
+                                  {item.name}
+                                </h3>
+                                <Badge
+                                  variant="outline"
+                                  className="text-[10px] uppercase tracking-wider"
+                                >
+                                  {item.variant.size}
+                                </Badge>
+                              </div>
+                              <p className="mt-1 line-clamp-2 text-sm text-secondary font-body">
+                                {item.subtitle}
+                              </p>
+                            </div>
+
+                            <div className="flex flex-wrap items-center justify-between gap-3">
+                              <div className="inline-flex items-center rounded-full border border-secondary-border/40 bg-background px-1 py-1">
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    updateQuantity(
+                                      item.cartItemId,
+                                      item.quantity - 1,
+                                    )
+                                  }
+                                  className="flex h-9 w-9 items-center justify-center rounded-full text-text-muted transition-colors hover:bg-surface-muted hover:text-text-primary disabled:opacity-40"
+                                  disabled={item.quantity <= 1}
+                                  aria-label="Decrease quantity"
+                                >
+                                  −
+                                </button>
+                                <span className="min-w-[2rem] text-center text-sm font-bold tabular-nums">
+                                  {item.quantity}
+                                </span>
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    updateQuantity(
+                                      item.cartItemId,
+                                      item.quantity + 1,
+                                    )
+                                  }
+                                  className="flex h-9 w-9 items-center justify-center rounded-full text-text-muted transition-colors hover:bg-surface-muted hover:text-text-primary"
+                                  aria-label="Increase quantity"
+                                >
+                                  +
+                                </button>
+                              </div>
+
+                              <div className="flex items-baseline gap-3 sm:flex-col sm:items-end sm:gap-0">
+                                <p className="font-display text-lg font-bold text-text-primary sm:text-xl">
+                                  {formatInr(lineTotal, item.currency)}
+                                </p>
+                                {item.quantity > 1 && (
+                                  <p className="text-xs text-text-muted font-body">
+                                    {formatInr(
+                                      item.variant.price,
+                                      item.currency,
+                                    )}{" "}
+                                    each
+                                  </p>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="flex shrink-0 flex-col items-end justify-between">
+                            <button
+                              type="button"
+                              onClick={() => removeFromCart(item.cartItemId)}
+                              className="rounded-lg p-2 text-text-muted transition-colors hover:bg-primary/10 hover:text-primary"
+                              aria-label={`Remove ${item.name}`}
+                            >
+                              <svg
+                                className="h-5 w-5"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                aria-hidden
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth="2"
+                                  d="M6 18L18 6M6 6l12 12"
+                                />
+                              </svg>
+                            </button>
+                          </div>
+                        </article>
+                      </li>
+                    );
+                  })}
+                </ul>
+
+                <div className="mt-8">
+                  <Link
+                    href="/shop/saffron"
+                    className="text-sm font-semibold text-primary underline-offset-2 hover:underline"
+                  >
+                    ← Continue shopping
+                  </Link>
+                </div>
+              </section>
+
+              <aside className="lg:col-span-5">
+                <div className="sticky top-28 space-y-6 rounded-3xl border border-secondary-border/20 bg-background-alt p-6 shadow-lg shadow-dark/5 sm:p-8">
+                  <h2 className="font-display text-xl font-bold text-text-primary">
+                    Order summary
                   </h2>
-                  <div className="space-y-4 mb-8 text-sm font-body border-b border-secondary-border/10 pb-8">
-                    <div className="flex justify-between">
-                      <span className="text-secondary">Subtotal</span>
-                      <span className="font-bold text-text-primary">
+
+                  <ul className="space-y-3 border-b border-secondary-border/15 pb-6 text-sm font-body">
+                    {cart.map((item) => (
+                      <li
+                        key={`sum-${item.cartItemId}`}
+                        className="flex justify-between gap-3 text-secondary"
+                      >
+                        <span className="min-w-0 truncate">
+                          {item.name}{" "}
+                          <span className="text-text-muted">
+                            ×{item.quantity}
+                          </span>
+                        </span>
+                        <span className="shrink-0 font-semibold text-text-primary">
+                          {formatInr(
+                            item.variant.price * item.quantity,
+                            item.currency,
+                          )}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <div className="space-y-3 text-sm font-body">
+                    <div className="flex justify-between text-secondary">
+                      <span>Subtotal</span>
+                      <span className="font-semibold text-text-primary">
                         {formattedTotal}
                       </span>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-secondary">Shipping</span>
-                      <span className="font-bold text-text-primary">Free</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-secondary">Taxes</span>
-                      <span className="font-bold text-text-primary text-xs tracking-widest text-right">
-                        Calculated at checkout
+                    <div className="flex justify-between text-secondary">
+                      <span>Shipping</span>
+                      <span className="font-semibold text-primary">
+                        Free (India)
                       </span>
                     </div>
                   </div>
-                  <div className="flex justify-between items-center mb-10">
-                    <span className="font-display text-xl font-bold text-text-primary">
-                      Total
+
+                  <div className="flex items-center justify-between border-t border-secondary-border/15 pt-6">
+                    <span className="font-display text-lg font-bold">
+                      Estimated total
                     </span>
-                    <span className="font-display text-3xl font-bold text-text-primary">
+                    <span className="font-display text-2xl font-bold text-primary">
                       {formattedTotal}
                     </span>
                   </div>
-                  <Button
-                    size="lg"
-                    className="w-full rounded-2xl mb-4 py-5 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 transition-all"
-                    onClick={() => {
-                      const transactionId = `order-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
-                      trackBeginCheckout(cart, cartTotal, "INR");
-                      trackPurchase(cart, cartTotal, transactionId, "INR");
-                      const orderLines = cart
-                        .map(
-                          (item) =>
-                            `- ${item.name} (${item.variant.size}) x${item.quantity}: ₹${item.variant.price * item.quantity}`,
-                        )
-                        .join("\n");
-                      const body = encodeURIComponent(
-                        `Order Request\n\nTotal: ₹${cartTotal}\n\nItems:\n${orderLines}\n\n---\nPlease confirm availability and share payment details.`,
-                      );
-                      window.location.href = `mailto:${SITE_CONFIG.orderEmail}?subject=Order%20Request%20-%20₹${cartTotal}&body=${body}`;
-                    }}
-                  >
-                    Proceed to Checkout
-                  </Button>
-                  <p className="text-xs text-text-muted text-center flex items-center justify-center gap-2 tracking-widest">
-                    <svg
-                      className="h-4 w-4"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                      />
-                    </svg>
-                    SSL Secure Checkout
+
+                  <p className="text-xs leading-relaxed text-text-muted font-body">
+                    Taxes, if any, are included or confirmed by our team after
+                    your order. We will share payment details when we confirm
+                    your order.
                   </p>
+
+                  <Link
+                    href="/checkout"
+                    onClick={() => trackBeginCheckout(cart, cartTotal, "INR")}
+                    className="block"
+                  >
+                    <Button
+                      size="lg"
+                      className="w-full rounded-2xl shadow-md shadow-primary/20"
+                    >
+                      Proceed to checkout
+                    </Button>
+                  </Link>
+
+                  <ul className="space-y-2 text-xs text-text-muted font-body">
+                    <li className="flex gap-2">
+                      <span className="text-primary" aria-hidden>
+                        ✓
+                      </span>
+                      Farm-direct Kashmiri Mongra, lab-tested batches
+                    </li>
+                    <li className="flex gap-2">
+                      <span className="text-primary" aria-hidden>
+                        ✓
+                      </span>
+                      Questions?{" "}
+                      <Link
+                        href="/contact"
+                        className="font-semibold text-primary underline-offset-2 hover:underline"
+                      >
+                        Contact us
+                      </Link>
+                    </li>
+                  </ul>
                 </div>
               </aside>
             </div>

@@ -13,6 +13,8 @@ export interface CartItem extends Omit<ProductPageData, "price"> {
 
 interface ShopContextType {
   cart: CartItem[];
+  /** True after localStorage cart/favorites are loaded — avoids empty UI flash on refresh. */
+  isCartHydrated: boolean;
   favorites: ProductPageData[];
   addToCart: (
     product: ProductPageData,
@@ -124,6 +126,7 @@ export function ShopProvider({ children }: { children: React.ReactNode }) {
     <ShopContext.Provider
       value={{
         cart,
+        isCartHydrated: mounted,
         favorites,
         addToCart,
         removeFromCart,
