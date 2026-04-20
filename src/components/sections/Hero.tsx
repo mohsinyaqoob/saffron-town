@@ -7,7 +7,7 @@ export function Hero() {
   return (
     <section className="relative flex min-h-screen w-full items-center overflow-hidden bg-background">
       <Image
-        src="/images/harvest.png"
+        src="/images/hero-v2.png"
         alt=""
         fill
         priority
@@ -49,15 +49,6 @@ export function Hero() {
                 className="border-white/70 bg-white/10 text-white hover:bg-white hover:text-dark"
               >
                 Prebook Harvest
-              </Button>
-            </Link>
-            <Link href="/lab-reports">
-              <Button
-                size="md"
-                variant="outline"
-                className="border-white/70 bg-white/10 text-white hover:bg-white hover:text-dark"
-              >
-                Lab Reports
               </Button>
             </Link>
           </div>
