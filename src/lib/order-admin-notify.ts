@@ -75,6 +75,15 @@ export async function sendOrderAdminNotification(payload: {
     });
     if (error) {
       console.error("[order-admin-notify] Resend error", error);
+      const msg = String((error as { message?: string }).message ?? "");
+      if (
+        msg.includes("domain is not verified") ||
+        msg.includes("not verified")
+      ) {
+        console.error(
+          "[order-admin-notify] Resend rejected the sender. Use a `from` address on a domain that shows Verified in the same Resend account as RESEND_API_KEY, or unset ORDER_NOTIFY_FROM to fall back to onboarding@resend.dev (testing only).",
+        );
+      }
     }
   } catch (e) {
     console.error("[order-admin-notify] failed", e);

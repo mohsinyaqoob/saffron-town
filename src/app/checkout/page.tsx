@@ -567,10 +567,21 @@ function CheckoutPageContent() {
                     <Button
                       type="submit"
                       size="lg"
-                      className="w-full rounded-2xl shadow-md shadow-primary/20"
+                      className="w-full gap-3 rounded-2xl shadow-md shadow-primary/20"
                       disabled={isSubmitting}
+                      aria-busy={isSubmitting}
                     >
-                      {isSubmitting ? "Placing order…" : "Place order"}
+                      {isSubmitting ? (
+                        <>
+                          <span
+                            className="h-5 w-5 shrink-0 animate-spin rounded-full border-2 border-white/35 border-t-white"
+                            aria-hidden
+                          />
+                          <span>Placing order…</span>
+                        </>
+                      ) : (
+                        "Place order"
+                      )}
                     </Button>
 
                     <Link
