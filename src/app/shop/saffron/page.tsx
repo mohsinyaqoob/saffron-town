@@ -6,6 +6,7 @@ import { Header } from "@/components/layout/Header";
 import { AmazonProductGallery } from "@/components/sections/AmazonProductGallery";
 import { ProductBuyBox } from "@/components/sections/ProductBuyBox";
 import { ProductDetailsAccordion } from "@/components/sections/ProductDetailsAccordion";
+import { ProductSeoContent } from "@/components/sections/ProductSeoContent";
 import { ProductJsonLd } from "@/components/seo/ProductJsonLd";
 import { TestimonialsWidget } from "@/components/testimonials";
 import { SITE_CONFIG } from "@/lib/constants";
@@ -20,9 +21,9 @@ export async function generateMetadata(): Promise<Metadata> {
   if (!product) return {};
 
   const url = `${SITE_CONFIG.url}/shop/saffron`;
-  const title = `${product.name} | ${product.heroBadge} | Fresh Harvest`;
+  const title = "Buy Kashmiri Mongra Kesar Online — Grade A++ | Saffron Town";
   const description =
-    "Premium Kashmiri Mongra saffron. Grade A++ from Pampore. Seed-to-harvest controlled. Fresh harvest only. 1g to 50g. Farm-direct. 100% pure. Money-back guarantee.";
+    "Buy original Kashmiri Mongra kesar online. Grade A++ saffron with crocin >250. ISO 3632 certified, GI-tagged. 1,240+ reviews. Ships across India. Money-back guarantee.";
   const ogImage = product.images?.[0]?.url?.startsWith("http")
     ? product.images[0].url
     : `${SITE_CONFIG.url}${product.images?.[0]?.url || "/images/products/mongra-saffron-1.png"}`;
@@ -33,8 +34,7 @@ export async function generateMetadata(): Promise<Metadata> {
     alternates: { canonical: url },
     openGraph: {
       title,
-      description:
-        "The World's Finest Saffron Stigmas. Grade A++ from Pampore, Kashmir. Fresh harvest. Seed-to-harvest controlled.",
+      description,
       images: [ogImage],
       url,
       type: "website",
@@ -42,8 +42,7 @@ export async function generateMetadata(): Promise<Metadata> {
     twitter: {
       card: "summary_large_image",
       title,
-      description:
-        "Premium Pampore saffron. Fresh harvest. Farm-direct. Seed-to-harvest controlled.",
+      description,
       images: [ogImage],
     },
   };
@@ -86,6 +85,7 @@ export default function SaffronProductPage() {
                 <ProductDetailsAccordion product={product} />
               </div>
             </div>
+            <ProductSeoContent />
             <FAQSection faqs={faqs} />
             <div className="mt-16">
               <TestimonialsWidget

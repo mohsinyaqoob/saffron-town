@@ -92,12 +92,18 @@ export default async function BlogPostPage({ params }: Props) {
   const canonical = post.seo?.canonicalUrl || `${SITE_CONFIG.url}/blog/${slug}`;
   const ogImageUrl = post.seo?.ogImage || post.image;
 
-  /** Article JSON-LD per schema.org/Article */
+  /** BlogPosting JSON-LD — more specific than Article, eligible for richer SERP cards */
   const articleSchema = {
     "@context": "https://schema.org",
-    "@type": "Article",
+    "@type": "BlogPosting",
     headline: post.title,
-    author: { "@type": "Person", name: post.author || "Saffron Town" },
+    description: post.excerpt,
+    image: ogImageUrl,
+    author: {
+      "@type": "Organization",
+      name: SITE_CONFIG.name,
+      url: SITE_CONFIG.url,
+    },
     publisher: {
       "@type": "Organization",
       name: SITE_CONFIG.name,
@@ -105,7 +111,6 @@ export default async function BlogPostPage({ params }: Props) {
     },
     datePublished: post.publishedAt,
     dateModified: post.updatedAt || post.publishedAt,
-    image: ogImageUrl,
     mainEntityOfPage: { "@type": "WebPage", "@id": canonical },
   };
 

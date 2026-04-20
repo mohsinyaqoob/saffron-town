@@ -68,6 +68,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "monthly" as const,
       priority: 0.85,
     },
+    {
+      url: `${baseUrl}/kesar-for-pregnancy`,
+      lastModified: new Date("2026-04-20"),
+      changeFrequency: "monthly" as const,
+      priority: 0.85,
+    },
     /* privacy excluded — legal pages are noindex, no sitemap entry to save crawl budget */
   ];
 

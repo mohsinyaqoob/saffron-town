@@ -8,10 +8,9 @@ export function Hero() {
     <section className="relative flex min-h-screen w-full items-center overflow-hidden bg-background">
       <Image
         src="/images/hero-v2.png"
-        alt=""
+        alt="Hands cradling fresh-harvest Kashmiri Mongra kesar threads from Pampore"
         fill
         priority
-        aria-hidden
         className="object-cover"
         sizes="100vw"
       />
@@ -32,11 +31,14 @@ export function Hero() {
             THIS SEASON&apos;S HARVEST
           </Badge>
           <h1 className="font-display text-4xl font-normal leading-tight text-white sm:text-5xl lg:text-6xl">
-            Fresh Harvest Saffron Only
+            Buy Pure Kashmiri Kesar (Saffron) Online — Fresh Harvest, Farm
+            Direct
           </h1>
           <p className="text-base leading-relaxed text-white/90 font-body sm:text-lg">
-            Grade A++ Pampore saffron, farm-direct and fresh harvest only.
-            Transparent sourcing, ISO lab-tested quality, and zero old stock.
+            Grade A++ Pampore Mongra kesar, farm-direct and fresh harvest only.
+            Transparent sourcing, ISO 3632 lab-tested quality, and zero old
+            stock. Trusted by thousands of Indian families for cooking, kesar
+            milk and pregnancy.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3">
             <Link href="/shop/saffron">

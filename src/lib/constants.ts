@@ -28,7 +28,7 @@ export const SITE_CONFIG = {
   // E-E-A-T: Clear ownership and contact for trust signals
   email: "hello@saffron.town",
   orderEmail: "orders@saffron.town",
-  logo: "https://saffron.town/logo.png",
+  logo: "https://www.saffron.town/logo-horizon.svg",
   sameAs: [
     "https://instagram.com/saffrontown",
     "https://facebook.com/saffrontown",

@@ -164,10 +164,13 @@ export function ProductBuyBox({ product }: ProductBuyBoxProps) {
 
   return (
     <div className="space-y-4">
-      {/* Title */}
+      {/* Title — SEO H1 targets "kashmiri mongra kesar" head term */}
       <h1 className="text-xl lg:text-2xl font-bold text-text-primary font-display leading-tight">
-        {product.name}, {product.heroBadge} — {selectedVariant.size}
+        Buy Kashmiri Mongra Kesar — Grade A++ Pure Saffron Online
       </h1>
+      <p className="text-sm text-secondary font-body">
+        {product.heroBadge} · {selectedVariant.size}
+      </p>
 
       {/* Visit Brand Store */}
       <Link

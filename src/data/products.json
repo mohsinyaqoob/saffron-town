@@ -1,19 +1,20 @@
 [
   {
     "id": "mongra-saffron",
-    "name": "Organic Mongra Saffron",
+    "name": "Pure Kashmiri Mongra Kesar (Saffron) — Grade A++",
     "category": "saffron",
     "slug": "mongra-saffron",
-    "subtitle": "The World's Finest Saffron Stigmas",
+    "subtitle": "The World's Finest Saffron Stigmas — 100% Pure Kashmiri Kesar",
     "heroHeadline": "The Crown Jewel of Kashmir",
-    "heroSubline": "Handpicked from the sun-drenched fields of Pampore, our Mongra saffron represents the pinnacle of purity and potency. Only the deep crimson tips are selected for our royal collection.",
+    "heroSubline": "Handpicked from the sun-drenched fields of Pampore, our Mongra kesar represents the pinnacle of purity and potency. Only the deep crimson tips are selected for our royal collection.",
     "heroBadge": "Pampore Grade A++",
-    "description": "Our Kashmiri Mongra Saffron is sourced directly from small heritage farms in Pampore. Known as the 'Saffron Capital of India', this region's unique soil produces threads with the highest crocin content in the world.",
-    "description2": "Each strand is hand-separated and sun-dried using traditional methods passed down through generations. Perfect for high-end culinary use, traditional medicine, and ceremonial rituals.",
+    "description": "100% pure Kashmiri Mongra kesar, handpicked from Pampore. ISO 3632 lab-tested, GI-tagged, farm-direct. Grade A++ with crocin >250. Available in 1g, 2g, 5g, 10g, 20g and 50g packs. Trusted by thousands of Indian families for cooking, kesar milk and pregnancy.",
+    "description2": "Each strand of our kashmiri saffron is hand-separated and sun-dried using traditional methods passed down through generations. Perfect for biryani, kesar milk, pregnancy nutrition, traditional Ayurvedic use, and ceremonial rituals.",
     "price": 499,
     "currency": "INR",
     "unit": "1g",
     "stock": 50,
+    "mpn": "ST-MONGRA-A++",
     "variants": [
       { "id": "mongra-1g", "size": "1g Tester", "price": 499, "mrp": 599 },
       { "id": "mongra-2g", "size": "2g", "price": 999, "mrp": 1199 },
@@ -27,24 +28,38 @@
     "images": [
       {
         "url": "/images/products/mongra-saffron-1.png",
-        "alt": "Kashmiri Mongra Saffron threads in a wooden bowl"
+        "alt": "Kashmiri Mongra kesar (saffron) threads in a wooden bowl — Grade A++ from Pampore"
       },
       {
         "url": "/images/products/mongra-saffron-1.png",
-        "alt": "Close-up of deep crimson Mongra saffron threads"
+        "alt": "Close-up of deep crimson pure Kashmiri saffron threads"
+      },
+      {
+        "url": "/images/products/mongra-saffron-1.png",
+        "alt": "Glass of kesar milk with saffron threads — pure Kashmiri kesar for pregnancy and wellness"
+      },
+      {
+        "url": "/images/products/mongra-saffron-1.png",
+        "alt": "Saffron Town sealed premium packaging of Kashmiri Mongra kesar"
+      },
+      {
+        "url": "/images/products/mongra-saffron-1.png",
+        "alt": "Kashmiri saffron threads in a spoon with saffron biryani — authentic cooking use"
       }
     ],
     "features": [
       "Grade A++ Export Quality",
       "No yellow style, deep red only",
       "Highest Crocin (Color) > 250",
-      "100% Organic & ISO Tested"
+      "100% Pure Kashmiri Kesar — Organic & ISO 3632 Lab-Tested",
+      "GI-Tagged Kashmir origin"
     ],
     "specifications": {
-      "Grade": "Mongra (Grade 1)",
-      "Origin": "Pampore, Kashmir",
+      "Grade": "Mongra (Grade 1 / A++)",
+      "Origin": "Pampore, Kashmir (GI-Tagged)",
       "Harvest": "Autumn 2024",
-      "Purity": "100% Pure Saffron"
+      "Purity": "100% Pure Kashmiri Saffron (Kesar)",
+      "Certification": "ISO 3632, GI Tag"
     },
     "origin": "Pampore, Kashmir · Harvest: Nov 2025 · Shelf Life: 36 Months"
   }

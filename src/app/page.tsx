@@ -9,6 +9,7 @@ import {
   Hero,
   HomePageMotion,
   HomePrebookSection,
+  PregnancyHighlight,
   ShopBanner,
   TrustBadges,
 } from "@/components/sections";
@@ -19,14 +20,21 @@ import { SITE_CONFIG } from "@/lib/constants";
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: "Premium Kashmiri Mongra Saffron | Fresh Harvest | Saffron Town",
+  title: "Buy Pure Kashmiri Kesar Online | Mongra Saffron | Saffron Town India",
   description:
-    "India's premium saffron dealer. Kashmiri Mongra Grade A++ from Pampore. Fresh harvest only. Farm-direct. Money-back guarantee. Shop verified kesar.",
-  alternates: { canonical: SITE_CONFIG.url },
+    "Buy 100% pure Kashmiri Mongra kesar online. Grade A++ saffron, ISO lab-tested, farm-direct from Pampore. Fresh harvest only. Free delivery above ₹499.",
+  alternates: {
+    canonical: SITE_CONFIG.url,
+    languages: {
+      "en-IN": SITE_CONFIG.url,
+      "x-default": SITE_CONFIG.url,
+    },
+  },
   openGraph: {
-    title: "Premium Kashmiri Mongra Saffron | Saffron Town",
+    title:
+      "Buy Pure Kashmiri Kesar Online | Mongra Saffron | Saffron Town India",
     description:
-      "Fresh harvest saffron. Seed-to-harvest controlled. Grade A++ Pampore. Farm-direct from Kashmir.",
+      "Buy 100% pure Kashmiri Mongra kesar online. Grade A++ saffron, ISO lab-tested, farm-direct from Pampore. Fresh harvest only. Free delivery above ₹499.",
     url: SITE_CONFIG.url,
     type: "website",
     images: [
@@ -34,15 +42,16 @@ export const metadata: Metadata = {
         url: `${SITE_CONFIG.url}/products-grid.png`,
         width: 1200,
         height: 630,
-        alt: "Premium Kashmiri Mongra Saffron from Saffron Town",
+        alt: "Pure Kashmiri Mongra Kesar (Saffron) — Grade A++ from Saffron Town",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Premium Kashmiri Mongra Saffron | Saffron Town",
+    title:
+      "Buy Pure Kashmiri Kesar Online | Mongra Saffron | Saffron Town India",
     description:
-      "Fresh harvest saffron. Seed-to-harvest controlled. Grade A++ Pampore. Farm-direct from Kashmir.",
+      "Buy 100% pure Kashmiri Mongra kesar online. Grade A++ saffron, ISO lab-tested, farm-direct from Pampore. Free delivery above ₹499.",
     images: [`${SITE_CONFIG.url}/products-grid.png`],
   },
 };
@@ -59,10 +68,29 @@ const websiteSchema = {
   },
 };
 
+/** Explicit Organization schema on the homepage — reinforces the sitewide
+ * Organization JSON-LD with the India-specific contactPoint SEO spec. */
+const homepageOrganizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: SITE_CONFIG.name,
+  url: SITE_CONFIG.url,
+  logo: SITE_CONFIG.logo,
+  description:
+    "Premium Kashmiri Mongra Kesar (Saffron) — farm-direct from Pampore. ISO lab-tested, GI-tagged, fresh harvest only.",
+  contactPoint: {
+    "@type": "ContactPoint",
+    contactType: "customer service",
+    areaServed: "IN",
+    availableLanguage: ["English", "Hindi"],
+  },
+  sameAs: SITE_CONFIG.sameAs,
+};
+
 export default function Home() {
   return (
     <>
-      <JsonLd schema={websiteSchema} />
+      <JsonLd schema={[websiteSchema, homepageOrganizationSchema]} />
       <HomePageMotion />
       <Header />
       <main className="space-y-8">
@@ -75,6 +103,9 @@ export default function Home() {
         </div>
         <div data-home-fade-up>
           <HomePrebookSection />
+        </div>
+        <div data-home-fade-up>
+          <PregnancyHighlight />
         </div>
         <div data-home-fade-up>
           <TestimonialsWidget variant="top" limit={3} />
