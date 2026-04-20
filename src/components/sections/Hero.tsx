@@ -31,8 +31,7 @@ export function Hero() {
             THIS SEASON&apos;S HARVEST
           </Badge>
           <h1 className="font-display text-4xl font-normal leading-tight text-white sm:text-5xl lg:text-6xl">
-            Buy Pure Kashmiri Kesar (Saffron) Online — Fresh Harvest, Farm
-            Direct
+            Fresh Harvest Only. Pure Kashmiri Kesar, Farm Direct.
           </h1>
           <p className="text-base leading-relaxed text-white/90 font-body sm:text-lg">
             Grade A++ Pampore Mongra kesar, farm-direct and fresh harvest only.
