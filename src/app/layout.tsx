@@ -94,7 +94,14 @@ export default function RootLayout({
           href="/ai.txt"
           title="AI context - Saffron Town"
         />
+        <link
+          rel="alternate"
+          type="text/plain"
+          href="/llms.txt"
+          title="llms.txt - Saffron Town"
+        />
         <link rel="prefetch" href="/ai.txt" />
+        <link rel="prefetch" href="/llms.txt" />
       </head>
       <body className="min-h-screen overflow-x-hidden font-body antialiased">
         <ShopProvider>{children}</ShopProvider>

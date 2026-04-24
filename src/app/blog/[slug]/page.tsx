@@ -13,6 +13,7 @@ import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { PortableText } from "@/components/PortableText";
 import { Badge } from "@/components/ui/Badge";
+import { getAuthorByName } from "@/lib/authors-data";
 import { getAllPosts, getPostBySlug } from "@/lib/blog-data";
 import { SITE_CONFIG } from "@/lib/constants";
 
@@ -92,18 +93,39 @@ export default async function BlogPostPage({ params }: Props) {
   const canonical = post.seo?.canonicalUrl || `${SITE_CONFIG.url}/blog/${slug}`;
   const ogImageUrl = post.seo?.ogImage || post.image;
 
-  /** BlogPosting JSON-LD — more specific than Article, eligible for richer SERP cards */
+  /** BlogPosting JSON-LD — more specific than Article, eligible for richer SERP cards.
+   * Author is `Person` when we can match the byline to our registry; this is the
+   * single biggest E-E-A-T lever for AI Overview citations. Org fallback keeps
+   * the schema valid for legacy posts without a matching profile. */
+  const authorProfile = getAuthorByName(post.author);
+  const authorSchema = authorProfile
+    ? {
+        "@type": "Person",
+        "@id": `${SITE_CONFIG.url}/authors/${authorProfile.slug}#person`,
+        name: authorProfile.name,
+        url: `${SITE_CONFIG.url}/authors/${authorProfile.slug}`,
+        jobTitle: authorProfile.jobTitle,
+        description: authorProfile.shortBio,
+        sameAs: authorProfile.sameAs,
+        worksFor: {
+          "@type": "Organization",
+          name: SITE_CONFIG.name,
+          url: SITE_CONFIG.url,
+        },
+      }
+    : {
+        "@type": "Organization",
+        name: SITE_CONFIG.name,
+        url: SITE_CONFIG.url,
+      };
+
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     headline: post.title,
     description: post.excerpt,
     image: ogImageUrl,
-    author: {
-      "@type": "Organization",
-      name: SITE_CONFIG.name,
-      url: SITE_CONFIG.url,
-    },
+    author: authorSchema,
     publisher: {
       "@type": "Organization",
       name: SITE_CONFIG.name,
@@ -112,6 +134,7 @@ export default async function BlogPostPage({ params }: Props) {
     datePublished: post.publishedAt,
     dateModified: post.updatedAt || post.publishedAt,
     mainEntityOfPage: { "@type": "WebPage", "@id": canonical },
+    inLanguage: "en-IN",
   };
 
   const allPosts = await getAllPosts();

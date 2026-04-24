@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { FAQSection } from "@/components/FAQSection";
 import { JsonLd } from "@/components/JsonLd";
 import { Footer, Header } from "@/components/layout";
 import {
@@ -15,6 +16,7 @@ import {
 } from "@/components/sections";
 import { TestimonialsWidget } from "@/components/testimonials";
 import { SITE_CONFIG } from "@/lib/constants";
+import { HOME_FAQS } from "@/lib/home-faqs";
 
 /** Home fetches blog preview from Sanity — ISR so new posts appear without full rebuild */
 export const revalidate = 60;
@@ -115,6 +117,17 @@ export default function Home() {
         </div>
         <div data-home-fade-up>
           <GuaranteeSection />
+        </div>
+        {/* Homepage FAQ — brand/commercial intent; FAQSection auto-injects FAQPage JSON-LD */}
+        <div data-home-fade-up>
+          <div className="mx-auto max-w-4xl px-6 lg:px-20">
+            <FAQSection
+              faqs={HOME_FAQS.map((f) => ({
+                question: f.question,
+                answer: f.answer,
+              }))}
+            />
+          </div>
         </div>
         <div data-home-fade-up>
           <CtaSection />
