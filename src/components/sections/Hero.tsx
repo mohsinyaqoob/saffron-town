@@ -7,7 +7,7 @@ export function Hero() {
   return (
     <section className="relative flex min-h-screen w-full items-center overflow-hidden bg-background">
       <Image
-        src="/images/hero-v2.png"
+        src="/images/hero-v3.png"
         alt="Hands cradling fresh-harvest Kashmiri Mongra kesar threads from Pampore"
         fill
         priority

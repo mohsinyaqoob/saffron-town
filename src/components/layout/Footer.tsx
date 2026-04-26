@@ -48,6 +48,19 @@ export function Footer() {
           </div>
         </div>
         <div className="mt-8 border-t border-dark-text-muted/20 pt-8">
+          <div className="mb-8 sm:mb-10">
+            <div className="mx-auto w-full min-w-0 max-w-4xl">
+              <div className="relative w-full aspect-[1774/887]">
+                <Image
+                  src="/images/trust-badges.png"
+                  alt="Trust badges: secure payment, quality guarantees, and recognised certifications for Saffron Town"
+                  fill
+                  className="object-contain object-center"
+                  sizes="(max-width: 896px) 100vw, 896px"
+                />
+              </div>
+            </div>
+          </div>
           <p className="text-xs text-secondary font-body">
             © {new Date().getFullYear()} Saffron Town. All rights reserved.
           </p>
