@@ -8,6 +8,11 @@ import { trackAddToCart } from "@/lib/analytics";
 import { checkoutHref } from "@/lib/checkout-line";
 import type { ProductPageData, ProductVariant } from "@/lib/product-data";
 import {
+  CUSTOM_SAFFRON_VARIANT_ID,
+  get50gPerGramRupees,
+  priceCustomGrams,
+} from "@/lib/saffron-custom-pricing";
+import {
   getGridPackVariants,
   parsePackGramsFromSize,
 } from "@/lib/saffron-pack-variants";
@@ -20,14 +25,65 @@ interface ProductBuyBoxProps {
  * Amazon-style buy box: title, trust line, price block, offers, service icons,
  * variant, quantity, CTAs, accordions, and footer links.
  */
+const BULK_QUICK_GRAMS = [50, 100, 250, 500, 1000, 2000] as const;
+
+type ShopMode = "pack" | "bulk";
+
 export function ProductBuyBox({ product }: ProductBuyBoxProps) {
   const gridVariants = useMemo(() => getGridPackVariants(product), [product]);
   const [selectedVariant, setSelectedVariant] = useState<ProductVariant>(
     () => gridVariants[0] ?? product.variants[0],
   );
   const [quantity, setQuantity] = useState(1);
+  const bulkConfig = product.customWeight;
+  const hasBulk = Boolean(bulkConfig);
+  const [shopMode, setShopMode] = useState<ShopMode>("pack");
+  const [bulkGrams, setBulkGrams] = useState(() => {
+    const c = product.customWeight;
+    return c ? c.minGrams : 2;
+  });
   const router = useRouter();
   const { toggleFavorite, isFavorite } = useShop();
+
+  const bulkPriced = useMemo(() => {
+    if (!hasBulk || shopMode !== "bulk") return null;
+    try {
+      return priceCustomGrams(product, bulkGrams);
+    } catch {
+      return null;
+    }
+  }, [bulkGrams, hasBulk, product, shopMode]);
+
+  const displayVariant = useMemo((): {
+    size: string;
+    price: number;
+    mrp?: number;
+  } => {
+    if (shopMode === "bulk" && bulkPriced) {
+      return {
+        size: bulkPriced.variantLabel,
+        price: bulkPriced.lineTotalRupees,
+      };
+    }
+    return {
+      size: selectedVariant.size,
+      price: selectedVariant.price,
+      mrp: selectedVariant.mrp,
+    };
+  }, [bulkPriced, selectedVariant, shopMode]);
+
+  const packRate50g = useMemo(
+    () => (hasBulk ? get50gPerGramRupees(product) : null),
+    [hasBulk, product],
+  );
+
+  const savingsVs50gRupees =
+    shopMode === "bulk" &&
+    bulkPriced &&
+    packRate50g != null &&
+    bulkPriced.perGramRupees < packRate50g
+      ? (packRate50g - bulkPriced.perGramRupees) * bulkGrams
+      : 0;
 
   const formatPrice = (n: number) =>
     new Intl.NumberFormat("en-IN", {
@@ -37,6 +93,33 @@ export function ProductBuyBox({ product }: ProductBuyBoxProps) {
     }).format(n);
 
   const goCheckout = () => {
+    if (shopMode === "bulk" && hasBulk) {
+      if (!bulkPriced) return;
+      const g = bulkConfig
+        ? Math.min(
+            bulkConfig.maxGrams,
+            Math.max(bulkConfig.minGrams, Math.floor(bulkGrams)),
+          )
+        : 2;
+      const perG = (() => {
+        try {
+          return priceCustomGrams(product, g).perGramRupees;
+        } catch {
+          return 0;
+        }
+      })();
+      if (perG <= 0) return;
+      trackAddToCart({
+        id: product.id,
+        name: product.name,
+        variant: "custom",
+        price: perG,
+        quantity: g,
+        currency: product.currency,
+      });
+      router.push(checkoutHref(product.id, CUSTOM_SAFFRON_VARIANT_ID, 1, g));
+      return;
+    }
     trackAddToCart({
       id: product.id,
       name: product.name,
@@ -49,7 +132,9 @@ export function ProductBuyBox({ product }: ProductBuyBoxProps) {
   };
 
   const discountPercent =
-    selectedVariant.mrp && selectedVariant.mrp > selectedVariant.price
+    shopMode === "pack" &&
+    selectedVariant.mrp &&
+    selectedVariant.mrp > selectedVariant.price
       ? Math.round(
           ((selectedVariant.mrp - selectedVariant.price) /
             selectedVariant.mrp) *
@@ -169,7 +254,7 @@ export function ProductBuyBox({ product }: ProductBuyBoxProps) {
         Buy Kashmiri Mongra Kesar — Grade A++ Pure Saffron Online
       </h1>
       <p className="text-sm text-secondary font-body">
-        {product.heroBadge} · {selectedVariant.size}
+        {product.heroBadge} · {displayVariant.size}
       </p>
 
       {/* Visit Brand Store */}
@@ -217,27 +302,38 @@ export function ProductBuyBox({ product }: ProductBuyBoxProps) {
         )}
         <div className="flex items-baseline gap-2 flex-wrap">
           <span className="text-2xl font-bold text-text-primary font-display">
-            {formatPrice(selectedVariant.price)}
+            {formatPrice(displayVariant.price)}
           </span>
           <span className="text-sm text-secondary font-body">
-            (
-            {formatPrice(
-              Math.round(
-                selectedVariant.price /
-                  (parsePackGramsFromSize(selectedVariant.size) || 1),
-              ),
-            )}{" "}
-            per 1g)
+            {shopMode === "bulk" && bulkPriced ? (
+              <>
+                ({formatPrice(bulkPriced.perGramRupees)} per 1g · {bulkGrams}g
+                total)
+              </>
+            ) : (
+              <>
+                (
+                {formatPrice(
+                  Math.round(
+                    selectedVariant.price /
+                      (parsePackGramsFromSize(selectedVariant.size) || 1),
+                  ),
+                )}{" "}
+                per 1g)
+              </>
+            )}
           </span>
         </div>
-        {selectedVariant.mrp && selectedVariant.mrp > selectedVariant.price && (
-          <p className="text-sm text-secondary mt-1">
-            M.R.P.:{" "}
-            <span className="line-through">
-              {formatPrice(selectedVariant.mrp)}
-            </span>
-          </p>
-        )}
+        {shopMode === "pack" &&
+          selectedVariant.mrp &&
+          selectedVariant.mrp > selectedVariant.price && (
+            <p className="text-sm text-secondary mt-1">
+              M.R.P.:{" "}
+              <span className="line-through">
+                {formatPrice(selectedVariant.mrp)}
+              </span>
+            </p>
+          )}
         <p className="text-sm text-primary font-medium mt-1">FREE delivery</p>
       </div>
 
@@ -273,8 +369,36 @@ export function ProductBuyBox({ product }: ProductBuyBoxProps) {
 
       {/* Buy box card */}
       <div className="bg-background-alt border border-secondary-border rounded-xl p-5 shadow-lg shadow-dark/5">
-        {/* Variant selector */}
-        {gridVariants.length > 0 && (
+        {hasBulk && bulkConfig && (
+          <fieldset className="mb-4 flex rounded-lg border border-secondary-border p-0.5 bg-surface-muted/50">
+            <legend className="sr-only">Purchase mode</legend>
+            <button
+              type="button"
+              onClick={() => setShopMode("pack")}
+              className={`flex-1 rounded-md px-2 py-2 text-center text-xs font-semibold font-body sm:text-sm transition-colors ${
+                shopMode === "pack"
+                  ? "bg-background text-text-primary shadow-sm"
+                  : "text-secondary hover:text-text-primary"
+              }`}
+            >
+              Pick a pack
+            </button>
+            <button
+              type="button"
+              onClick={() => setShopMode("bulk")}
+              className={`flex-1 rounded-md px-2 py-2 text-center text-xs font-semibold font-body sm:text-sm transition-colors ${
+                shopMode === "bulk"
+                  ? "bg-background text-text-primary shadow-sm"
+                  : "text-secondary hover:text-text-primary"
+              }`}
+            >
+              Bulk / Wholesale
+            </button>
+          </fieldset>
+        )}
+
+        {/* Pack grid */}
+        {shopMode === "pack" && gridVariants.length > 0 && (
           <div className="mb-4">
             <p className="text-sm font-medium text-text-primary mb-2 font-body">
               Size:{" "}
@@ -306,34 +430,113 @@ export function ProductBuyBox({ product }: ProductBuyBoxProps) {
           </div>
         )}
 
-        {/* Quantity */}
-        <div className="mb-4">
-          <label
-            htmlFor="product-quantity"
-            className="text-sm font-medium text-text-primary mb-2 block font-body"
-          >
-            Quantity:
-          </label>
-          <select
-            id="product-quantity"
-            value={quantity}
-            onChange={(e) => setQuantity(Number(e.target.value))}
-            className="border border-secondary-border rounded-lg px-3 py-2 text-sm bg-surface-muted hover:bg-surface/50 cursor-pointer w-20 font-body"
-          >
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (
-              <option key={n} value={n}>
-                {n}
-              </option>
-            ))}
-          </select>
-        </div>
+        {/* Bulk / wholesale */}
+        {shopMode === "bulk" && hasBulk && bulkConfig && (
+          <div className="mb-4 space-y-3">
+            <p className="text-sm font-medium text-text-primary font-body">
+              Weight:{" "}
+              <span className="text-secondary font-normal">
+                {bulkConfig.minGrams}g – {bulkConfig.maxGrams}g
+              </span>
+            </p>
+            <div className="flex items-center gap-2">
+              <input
+                type="number"
+                id="bulk-grams"
+                min={bulkConfig.minGrams}
+                max={bulkConfig.maxGrams}
+                step={1}
+                value={bulkGrams}
+                onChange={(e) => {
+                  const n = Number(e.target.value);
+                  if (Number.isFinite(n)) setBulkGrams(Math.trunc(n));
+                  else if (e.target.value === "") setBulkGrams(0);
+                }}
+                onBlur={() => {
+                  const lo = bulkConfig.minGrams;
+                  const hi = bulkConfig.maxGrams;
+                  setBulkGrams(
+                    Math.min(
+                      hi,
+                      Math.max(lo, Number.isFinite(bulkGrams) ? bulkGrams : lo),
+                    ),
+                  );
+                }}
+                className="w-28 rounded-lg border border-secondary-border bg-background px-3 py-2 text-sm text-text-primary font-body"
+              />
+              <span className="text-sm text-secondary font-body">grams</span>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {BULK_QUICK_GRAMS.map((g) => {
+                if (g < bulkConfig.minGrams || g > bulkConfig.maxGrams)
+                  return null;
+                return (
+                  <button
+                    key={g}
+                    type="button"
+                    onClick={() => setBulkGrams(g)}
+                    className={`rounded-full border px-3 py-1 text-xs font-medium font-body transition-colors ${
+                      bulkGrams === g
+                        ? "border-primary bg-primary/10 text-primary"
+                        : "border-secondary-border text-secondary hover:border-primary/40"
+                    }`}
+                  >
+                    {g >= 1000 ? `${g / 1000}kg` : `${g}g`}
+                  </button>
+                );
+              })}
+            </div>
+            {bulkPriced && (
+              <p className="text-sm text-text-primary font-body">
+                <span className="font-bold">
+                  {formatPrice(bulkPriced.lineTotalRupees)}
+                </span>{" "}
+                total
+                {savingsVs50gRupees > 0 && packRate50g != null && (
+                  <span className="ml-1 text-primary">
+                    (saves {formatPrice(savingsVs50gRupees)} vs 50g pack @{" "}
+                    {formatPrice(packRate50g)}/g)
+                  </span>
+                )}
+              </p>
+            )}
+          </div>
+        )}
+
+        {/* Quantity (packs only) */}
+        {shopMode === "pack" && (
+          <div className="mb-4">
+            <label
+              htmlFor="product-quantity"
+              className="text-sm font-medium text-text-primary mb-2 block font-body"
+            >
+              Quantity:
+            </label>
+            <select
+              id="product-quantity"
+              value={quantity}
+              onChange={(e) => setQuantity(Number(e.target.value))}
+              className="border border-secondary-border rounded-lg px-3 py-2 text-sm bg-surface-muted hover:bg-surface/50 cursor-pointer w-20 font-body"
+            >
+              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (
+                <option key={n} value={n}>
+                  {n}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
 
         <button
           type="button"
           onClick={goCheckout}
-          className="w-full py-3 px-4 rounded-full bg-primary hover:bg-primary-hover text-white text-sm font-bold mb-4 transition-colors font-body shadow-md shadow-primary/20"
+          disabled={shopMode === "bulk" && !bulkPriced}
+          className="w-full py-3 px-4 rounded-full bg-primary hover:bg-primary-hover text-white text-sm font-bold mb-4 transition-colors font-body shadow-md shadow-primary/20 disabled:opacity-50 disabled:pointer-events-none"
         >
-          Buy now — {formatPrice(selectedVariant.price * quantity)}
+          Buy now —{" "}
+          {shopMode === "bulk" && bulkPriced
+            ? formatPrice(bulkPriced.lineTotalRupees)
+            : formatPrice(selectedVariant.price * quantity)}
         </button>
 
         {/* Secure transaction */}

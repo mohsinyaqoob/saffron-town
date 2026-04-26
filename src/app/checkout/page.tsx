@@ -51,7 +51,9 @@ function CheckoutPageContent() {
   }, [searchParams]);
 
   const lines = line ? [line] : [];
-  const cartTotal = line ? line.variant.price * line.quantity : 0;
+  const cartTotal = line
+    ? line.variant.price * line.quantity
+    : 0; /* bulk: price is line total, quantity 1 */
 
   const [redirectingAfterOrder, setRedirectingAfterOrder] = useState(false);
   const lastBeginCheckoutSig = useRef("");
@@ -78,6 +80,12 @@ function CheckoutPageContent() {
 
   const formattedTotal = formatInr(cartTotal);
   const itemCount = line ? line.quantity : 0;
+  const subtotalSummary =
+    line && line.variant.grams != null
+      ? `1 line · ${line.variant.grams}g saffron`
+      : itemCount === 1
+        ? "1 item"
+        : `${itemCount} items`;
 
   useEffect(() => {
     if (!line) return;
@@ -111,6 +119,9 @@ function CheckoutPageContent() {
             productId: line.id,
             variantId: line.variant.id,
             quantity: line.quantity,
+            ...(line.variant.grams != null
+              ? { grams: line.variant.grams }
+              : {}),
           },
         ],
       }),
@@ -277,10 +288,21 @@ function CheckoutPageContent() {
                               {item.subtitle}
                             </p>
                             <p className="mt-2 text-xs text-text-muted font-body">
-                              Qty{" "}
-                              <span className="font-semibold text-text-primary">
-                                {item.quantity}
-                              </span>
+                              {item.variant.grams != null ? (
+                                <>
+                                  Net weight:{" "}
+                                  <span className="font-semibold text-text-primary">
+                                    {item.variant.grams}g
+                                  </span>
+                                </>
+                              ) : (
+                                <>
+                                  Qty{" "}
+                                  <span className="font-semibold text-text-primary">
+                                    {item.quantity}
+                                  </span>
+                                </>
+                              )}
                             </p>
                           </div>
                           <div className="shrink-0 text-right">
@@ -526,7 +548,7 @@ function CheckoutPageContent() {
 
                     <div className="space-y-2 border-t border-secondary-border/15 pt-6 text-sm font-body">
                       <div className="flex justify-between text-secondary">
-                        <span>Subtotal ({itemCount} units)</span>
+                        <span>Subtotal ({subtotalSummary})</span>
                         <span className="font-semibold text-text-primary">
                           {formattedTotal}
                         </span>

@@ -61,6 +61,21 @@
       "Purity": "100% Pure Kashmiri Saffron (Kesar)",
       "Certification": "ISO 3632, GI Tag"
     },
-    "origin": "Pampore, Kashmir · Harvest: Nov 2025 · Shelf Life: 36 Months"
+    "origin": "Pampore, Kashmir · Harvest: Nov 2025 · Shelf Life: 36 Months",
+    "customWeight": {
+      "minGrams": 2,
+      "maxGrams": 2000,
+      "tiers": [
+        { "uptoGrams": 4, "perGramRupees": 500 },
+        { "uptoGrams": 9, "perGramRupees": 460 },
+        { "uptoGrams": 19, "perGramRupees": 450 },
+        { "uptoGrams": 49, "perGramRupees": 425 },
+        { "uptoGrams": 99, "perGramRupees": 400 },
+        { "uptoGrams": 249, "perGramRupees": 385 },
+        { "uptoGrams": 499, "perGramRupees": 370 },
+        { "uptoGrams": 999, "perGramRupees": 355 },
+        { "uptoGrams": 2000, "perGramRupees": 345 }
+      ]
+    }
   }
 ]

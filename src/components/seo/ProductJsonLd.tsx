@@ -24,7 +24,18 @@ export function ProductJsonLd({ product }: ProductJsonLdProps) {
   const productUrl = `${SITE_CONFIG.url}/shop/saffron`;
   const prices = product.variants.map((v) => v.price);
   const lowPrice = Math.min(...prices);
-  const highPrice = Math.max(...prices);
+  const packHigh = Math.max(...prices);
+  const cw = product.customWeight;
+  const bulkFirstTier = cw?.tiers[0] ? cw.tiers[0] : undefined;
+  const bulkLastTier =
+    cw && cw.tiers.length > 0 ? cw.tiers[cw.tiers.length - 1] : undefined;
+  const cheapestBulkPerG = bulkLastTier?.perGramRupees ?? 0;
+  const bulkLineMax =
+    cw && bulkLastTier && cheapestBulkPerG > 0
+      ? cw.maxGrams * cheapestBulkPerG
+      : 0;
+  const highPrice = Math.max(packHigh, bulkLineMax);
+
   const imageUrl = product.images[0]?.url?.startsWith("http")
     ? product.images[0].url
     : `${SITE_CONFIG.url}${product.images[0]?.url || "/images/products/mongra-saffron-1.png"}`;
@@ -69,7 +80,37 @@ export function ProductJsonLd({ product }: ProductJsonLdProps) {
     returnFees: "https://schema.org/FreeReturn",
   } as const;
 
-  // One Offer per SKU — Google prefers per-variant offers plus AggregateOffer
+  const bulkByWeightOffer =
+    cw && bulkFirstTier && bulkLastTier && cheapestBulkPerG > 0
+      ? {
+          "@type": "Offer",
+          sku: `${product.id}-bulk-weight`,
+          name: `${product.name} — custom weight (2g – ${cw.maxGrams}g, bulk)`,
+          url: productUrl,
+          priceCurrency: product.currency,
+          price: (cw.minGrams * bulkFirstTier.perGramRupees).toString(),
+          priceValidUntil,
+          availability: "https://schema.org/InStock",
+          itemCondition: "https://schema.org/NewCondition",
+          priceSpecification: {
+            "@type": "UnitPriceSpecification",
+            price: cheapestBulkPerG.toString(),
+            priceCurrency: product.currency,
+            unitText: "GRM",
+            unitCode: "GRM" as const,
+            referenceQuantity: {
+              "@type": "QuantitativeValue",
+              value: 1,
+              unitText: "GRM" as const,
+            },
+          },
+          seller: { "@type": "Organization", name: SITE_CONFIG.name },
+          shippingDetails,
+          hasMerchantReturnPolicy: merchantReturnPolicy,
+        }
+      : null;
+
+  // One Offer per pack SKU, plus an optional bulk-by-weight offer.
   const variantOffers = product.variants.map((v) => ({
     "@type": "Offer",
     sku: v.id,
@@ -85,16 +126,20 @@ export function ProductJsonLd({ product }: ProductJsonLdProps) {
     hasMerchantReturnPolicy: merchantReturnPolicy,
   }));
 
+  const allOffers = bulkByWeightOffer
+    ? [...variantOffers, bulkByWeightOffer]
+    : variantOffers;
+
   const aggregateOffer = {
     "@type": "AggregateOffer",
     url: productUrl,
     priceCurrency: product.currency,
     lowPrice: lowPrice.toString(),
     highPrice: highPrice.toString(),
-    offerCount: product.variants.length,
+    offerCount: allOffers.length,
     availability: "https://schema.org/InStock",
     seller: { "@type": "Organization", name: SITE_CONFIG.name },
-    offers: variantOffers,
+    offers: allOffers,
   };
 
   const topReviews = getTopTestimonials(5).map((t) => ({

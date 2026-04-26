@@ -8,6 +8,7 @@ import { Header } from "@/components/layout/Header";
 import { Button } from "@/components/ui/Button";
 import { SITE_CONFIG } from "@/lib/constants";
 import { getDefaultProduct } from "@/lib/product-data";
+import { getPerGramRupees } from "@/lib/saffron-custom-pricing";
 
 /** Refreshes monthly so the price table stays in sync with the product JSON. */
 export const revalidate = 2592000;
@@ -73,6 +74,14 @@ const PRICE_FAQS = [
 
 export default function KashmiriSaffronPricePage() {
   const product = getDefaultProduct();
+
+  const example100gTier = product
+    ? (() => {
+        const p = getPerGramRupees(product, 100);
+        if (!p) return null;
+        return Math.round(100 * p.perGramRupees);
+      })()
+    : null;
 
   const articleSchema = {
     "@context": "https://schema.org",
@@ -177,6 +186,58 @@ export default function KashmiriSaffronPricePage() {
               </tbody>
             </table>
           </div>
+
+          {product?.customWeight && product.customWeight.tiers.length > 0 && (
+            <div className="mt-12">
+              <h3 className="font-display text-2xl font-bold text-text-primary">
+                Bulk / wholesale tiers (2g – 2kg)
+              </h3>
+              <p className="mt-3 text-secondary font-body text-sm max-w-2xl">
+                Order any whole-gram amount from 2g up to 2kg. Price per gram
+                drops in tiers — same product as our retail packs, shipped as
+                one line item.
+              </p>
+              <div className="mt-6 overflow-hidden rounded-2xl border border-secondary-border/20">
+                <table className="w-full text-left">
+                  <thead className="bg-surface-muted/50 text-xs font-bold uppercase tracking-[0.15em] text-text-muted">
+                    <tr>
+                      <th className="px-5 py-4">Up to (grams)</th>
+                      <th className="px-5 py-4">Rate / gram (INR)</th>
+                      <th className="px-5 py-4 hidden sm:table-cell">
+                        Example: 100g
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="text-sm font-body text-secondary">
+                    {product.customWeight.tiers.map((t) => {
+                      const isTierFor100g = (() => {
+                        const p100 = getPerGramRupees(product, 100);
+                        return p100?.perGramRupees === t.perGramRupees;
+                      })();
+                      return (
+                        <tr
+                          key={t.uptoGrams}
+                          className="border-t border-secondary-border/15"
+                        >
+                          <td className="px-5 py-4 font-semibold text-text-primary">
+                            Up to {t.uptoGrams}g
+                          </td>
+                          <td className="px-5 py-4">
+                            ₹{t.perGramRupees.toLocaleString("en-IN")}/g
+                          </td>
+                          <td className="px-5 py-4 hidden sm:table-cell text-text-muted">
+                            {isTierFor100g && example100gTier != null
+                              ? `~₹${example100gTier.toLocaleString("en-IN")} for 100g`
+                              : "—"}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
 
           <div className="mt-8 flex flex-wrap items-center gap-4">
             <Link href="/shop/saffron">

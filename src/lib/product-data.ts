@@ -1,11 +1,24 @@
 import products from "@/data/products.json";
 import testimonialsData from "@/data/testimonials.json";
 
+export type CustomWeightTier = {
+  uptoGrams: number;
+  perGramRupees: number;
+};
+
+export type CustomWeightConfig = {
+  minGrams: number;
+  maxGrams: number;
+  tiers: CustomWeightTier[];
+};
+
 export type ProductVariant = {
   id: string;
   size: string;
   price: number;
   mrp?: number; // Optional M.R.P. for strikethrough display
+  /** Set for bulk/wholesale lines so checkout + API can revalidate pricing. */
+  grams?: number;
 };
 
 export type ProductPageData = {
@@ -24,6 +37,8 @@ export type ProductPageData = {
   unit: string;
   stock: number;
   mpn?: string;
+  /** Optional bulk/wholesale pricing (2g–2kg), tiered ₹/g. */
+  customWeight?: CustomWeightConfig;
   variants: ProductVariant[];
   rating: number;
   reviewCount: number;

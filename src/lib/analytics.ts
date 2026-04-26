@@ -16,6 +16,7 @@ export function trackAddToCart(item: {
   quantity: number;
   currency?: string;
 }) {
+  // Bulk: `variant` is "custom", `price` = ₹/g, `quantity` = grams → value = line total.
   sendGAEvent("event", "add_to_cart", {
     currency: item.currency ?? "INR",
     value: item.price * item.quantity,
@@ -39,13 +40,25 @@ export function trackBeginCheckout(
   sendGAEvent("event", "begin_checkout", {
     currency,
     value: total,
-    items: lines.map((item) => ({
-      item_id: item.id,
-      item_name: item.name,
-      item_variant: item.variant.size,
-      price: item.variant.price,
-      quantity: item.quantity,
-    })),
+    items: lines.map((item) => {
+      const g = item.variant.grams;
+      if (g != null) {
+        return {
+          item_id: item.id,
+          item_name: item.name,
+          item_variant: "custom",
+          price: item.variant.price / g,
+          quantity: g,
+        };
+      }
+      return {
+        item_id: item.id,
+        item_name: item.name,
+        item_variant: item.variant.size,
+        price: item.variant.price,
+        quantity: item.quantity,
+      };
+    }),
   });
 }
 
@@ -59,12 +72,24 @@ export function trackPurchase(
     transaction_id: transactionId,
     currency,
     value: total,
-    items: lines.map((item) => ({
-      item_id: item.id,
-      item_name: item.name,
-      item_variant: item.variant.size,
-      price: item.variant.price,
-      quantity: item.quantity,
-    })),
+    items: lines.map((item) => {
+      const g = item.variant.grams;
+      if (g != null) {
+        return {
+          item_id: item.id,
+          item_name: item.name,
+          item_variant: "custom",
+          price: item.variant.price / g,
+          quantity: g,
+        };
+      }
+      return {
+        item_id: item.id,
+        item_name: item.name,
+        item_variant: item.variant.size,
+        price: item.variant.price,
+        quantity: item.quantity,
+      };
+    }),
   });
 }

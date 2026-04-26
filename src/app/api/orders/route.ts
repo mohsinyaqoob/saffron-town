@@ -6,6 +6,12 @@ import { signOrderReceiptToken } from "@/lib/order-receipt-token";
 import { getOrderRequestClientIp } from "@/lib/order-request-ip";
 import { getPrisma, isDirectPostgresUrl } from "@/lib/prisma";
 import { getProductById } from "@/lib/product-data";
+import {
+  CUSTOM_SAFFRON_VARIANT_ID,
+  isCustomVariantId,
+  priceCustomGrams,
+  validateCustomGrams,
+} from "@/lib/saffron-custom-pricing";
 
 const QUERY_TIMEOUT_MS = 15_000;
 
@@ -35,6 +41,8 @@ type IncomingItem = {
   productId?: string;
   variantId?: string;
   quantity?: number;
+  /** Required when `variantId` is bulk/wholesale custom. */
+  grams?: number;
 };
 
 const emailOk = (s: string) =>
@@ -174,6 +182,48 @@ export async function POST(request: Request) {
         { error: "Unknown product in cart." },
         { status: 400 },
       );
+    }
+
+    if (isCustomVariantId(line.variantId)) {
+      if (!product.customWeight) {
+        return NextResponse.json(
+          { error: "Bulk / wholesale is not available for this product." },
+          { status: 400 },
+        );
+      }
+      if (typeof line.grams !== "number") {
+        return NextResponse.json(
+          { error: "Invalid bulk weight." },
+          { status: 400 },
+        );
+      }
+      const gramsCheck = validateCustomGrams(product, line.grams);
+      if (!gramsCheck.ok) {
+        return NextResponse.json(
+          { error: "Invalid bulk weight." },
+          { status: 400 },
+        );
+      }
+      const lineQty = 1;
+      if (qty !== lineQty) {
+        return NextResponse.json(
+          { error: "Invalid quantity for bulk order." },
+          { status: 400 },
+        );
+      }
+      const priced = priceCustomGrams(product, gramsCheck.grams);
+      currency = product.currency || "INR";
+      subtotalRupees += priced.lineTotalRupees;
+      lineCreates.push({
+        productId: product.id,
+        productName: product.name,
+        variantId: CUSTOM_SAFFRON_VARIANT_ID,
+        variantLabel: priced.variantLabel,
+        quantity: lineQty,
+        unitPriceRupees: priced.unitPriceRupees,
+        lineTotalRupees: priced.lineTotalRupees,
+      });
+      continue;
     }
 
     const variant = product.variants.find((v) => v.id === line.variantId);
