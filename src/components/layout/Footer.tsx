@@ -34,6 +34,14 @@ export function Footer() {
             <p className="mt-1 text-sm text-dark-text-muted font-body">
               {SITE_CONFIG.tagline}
             </p>
+            <p className="mt-3 text-sm font-body">
+              <a
+                href={`tel:${SITE_CONFIG.phone}`}
+                className="text-dark-text-muted hover:text-dark-text transition-colors"
+              >
+                {SITE_CONFIG.phone}
+              </a>
+            </p>
           </div>
           <div className="flex gap-6">
             {FOOTER_LINKS.map((link) => (

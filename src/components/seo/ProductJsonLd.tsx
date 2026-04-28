@@ -22,6 +22,12 @@ interface ProductJsonLdProps {
  */
 export function ProductJsonLd({ product }: ProductJsonLdProps) {
   const productUrl = `${SITE_CONFIG.url}/shop/saffron`;
+  const sellerOrg = {
+    "@type": "Organization" as const,
+    name: SITE_CONFIG.name,
+    url: SITE_CONFIG.url,
+    telephone: SITE_CONFIG.phone,
+  };
   const prices = product.variants.map((v) => v.price);
   const lowPrice = Math.min(...prices);
   const packHigh = Math.max(...prices);
@@ -104,7 +110,7 @@ export function ProductJsonLd({ product }: ProductJsonLdProps) {
               unitText: "GRM" as const,
             },
           },
-          seller: { "@type": "Organization", name: SITE_CONFIG.name },
+          seller: sellerOrg,
           shippingDetails,
           hasMerchantReturnPolicy: merchantReturnPolicy,
         }
@@ -121,7 +127,7 @@ export function ProductJsonLd({ product }: ProductJsonLdProps) {
     priceValidUntil,
     availability: "https://schema.org/InStock",
     itemCondition: "https://schema.org/NewCondition",
-    seller: { "@type": "Organization", name: SITE_CONFIG.name },
+    seller: sellerOrg,
     shippingDetails,
     hasMerchantReturnPolicy: merchantReturnPolicy,
   }));
@@ -138,7 +144,7 @@ export function ProductJsonLd({ product }: ProductJsonLdProps) {
     highPrice: highPrice.toString(),
     offerCount: allOffers.length,
     availability: "https://schema.org/InStock",
-    seller: { "@type": "Organization", name: SITE_CONFIG.name },
+    seller: sellerOrg,
     offers: allOffers,
   };
 
@@ -215,6 +221,7 @@ export function ProductJsonLd({ product }: ProductJsonLdProps) {
       "@type": "Organization",
       name: SITE_CONFIG.name,
       url: SITE_CONFIG.url,
+      telephone: SITE_CONFIG.phone,
     },
     sku: product.id,
     mpn: product.mpn || "ST-MONGRA-A++",

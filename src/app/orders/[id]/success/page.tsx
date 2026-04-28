@@ -104,7 +104,13 @@ export default async function OrderSuccessPage({
             </h1>
             <p className="mt-3 max-w-xl text-sm leading-relaxed text-secondary font-body">
               {SITE_CONFIG.name} has received your order. We will contact you on
-              email or WhatsApp with payment and dispatch details.
+              email or WhatsApp with payment and dispatch details. Questions?{" "}
+              <a
+                href={`tel:${SITE_CONFIG.phone}`}
+                className="font-semibold text-primary underline-offset-2 hover:underline"
+              >
+                {SITE_CONFIG.phone}
+              </a>
             </p>
           </div>
 

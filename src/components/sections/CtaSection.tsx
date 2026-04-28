@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
+import { SITE_CONFIG } from "@/lib/constants";
 
 export function CtaSection() {
   return (
@@ -10,6 +11,15 @@ export function CtaSection() {
         </h2>
         <p className="text-base text-secondary font-body">
           Fresh harvest. Farm-direct. Money-back guarantee.
+        </p>
+        <p className="text-sm text-text-muted font-body">
+          Questions?{" "}
+          <a
+            href={`tel:${SITE_CONFIG.phone}`}
+            className="font-semibold text-primary hover:underline"
+          >
+            {SITE_CONFIG.phone}
+          </a>
         </p>
         <Link href="/shop/saffron">
           <Button size="lg" className="min-w-[44px] min-h-[44px]">

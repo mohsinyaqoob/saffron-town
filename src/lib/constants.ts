@@ -28,6 +28,8 @@ export const SITE_CONFIG = {
   // E-E-A-T: Clear ownership and contact for trust signals
   email: "hello@saffron.town",
   orderEmail: "orders@saffron.town",
+  /** E.164 — keep in sync with Google Business Profile primary phone */
+  phone: "+917006846538",
   logo: "https://www.saffron.town/logo-horizon.svg",
   sameAs: [
     "https://instagram.com/saffrontown",

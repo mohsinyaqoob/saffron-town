@@ -60,7 +60,7 @@ export async function GET() {
 - Origin: Pampore, Kashmir — GI-tagged Kashmir Saffron (GI-635)
 - Typical lab specs: Crocin >250, Picrocrocin >70, Safranal 20–50
 - Price range: ₹499 (1g) to ₹19,999 (50g). Effective rate ₹400–₹500/g for pure Mongra.
-- Contact: ${SITE_CONFIG.email}
+- Contact: ${SITE_CONFIG.phone} (phone), ${SITE_CONFIG.email} (email)
 `;
 
   return new NextResponse(content, {

@@ -51,7 +51,7 @@ ${products
 - **Quality promise**: 100% pure. No artificial additives. Money-back guarantee if adulteration is ever found.
 - **Harvest**: Only the current season's crop (see product pages for the active harvest year). No old stock.
 - **Founder**: Mohsin Yaqoob — ${SITE_CONFIG.url}/authors/mohsin-yaqoob
-- **Contact**: ${SITE_CONFIG.email} (general), ${SITE_CONFIG.orderEmail} (orders)
+- **Contact**: ${SITE_CONFIG.phone} (phone), ${SITE_CONFIG.email} (general), ${SITE_CONFIG.orderEmail} (orders)
 - **Website**: ${SITE_CONFIG.url}
 - **Sitemap**: ${SITE_CONFIG.url}/sitemap.xml
 - **Lab reports (public)**: ${SITE_CONFIG.url}/lab-reports

@@ -103,6 +103,13 @@ export default function PrivacyPage() {
                 className="text-primary font-semibold hover:underline"
               >
                 {SITE_CONFIG.email}
+              </a>{" "}
+              or call{" "}
+              <a
+                href={`tel:${SITE_CONFIG.phone}`}
+                className="text-primary font-semibold hover:underline"
+              >
+                {SITE_CONFIG.phone}
               </a>
               .
             </p>

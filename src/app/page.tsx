@@ -78,13 +78,15 @@ const homepageOrganizationSchema = {
   name: SITE_CONFIG.name,
   url: SITE_CONFIG.url,
   logo: SITE_CONFIG.logo,
+  telephone: SITE_CONFIG.phone,
   description:
     "Premium Kashmiri Mongra Kesar (Saffron) — farm-direct from Pampore. ISO lab-tested, GI-tagged, fresh harvest only.",
   contactPoint: {
     "@type": "ContactPoint",
     contactType: "customer service",
+    telephone: SITE_CONFIG.phone,
     areaServed: "IN",
-    availableLanguage: ["English", "Hindi"],
+    availableLanguage: ["English", "Hindi", "Urdu"],
   },
   sameAs: SITE_CONFIG.sameAs,
 };

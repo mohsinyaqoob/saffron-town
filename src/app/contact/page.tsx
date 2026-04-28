@@ -13,12 +13,12 @@ const OG_IMAGE = `${SITE_CONFIG.url}/products-grid.png`;
 export const metadata: Metadata = {
   title: "Contact Saffron Town | Kashmiri Saffron Inquiries",
   description:
-    "Contact Saffron Town—India's premium saffron dealer. Questions about Kashmiri Mongra saffron, orders, or partnerships. We respond within 24-48 hours.",
+    "Contact Saffron Town—India's premium saffron dealer. Call +91 70068 46538 or email for Kashmiri Mongra saffron, orders, or partnerships. We respond within 24–48 hours.",
   alternates: { canonical: `${SITE_CONFIG.url}/contact` },
   openGraph: {
     title: "Contact Saffron Town | Kashmiri Saffron Inquiries",
     description:
-      "Get in touch. Premium Kashmiri saffron inquiries, orders, partnerships. Response within 24-48 hours.",
+      "Call +91 70068 46538 or email. Premium Kashmiri saffron inquiries, orders, partnerships. Response within 24–48 hours.",
     url: `${SITE_CONFIG.url}/contact`,
     type: "website",
     images: [
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Contact Saffron Town | Kashmiri Saffron Inquiries",
     description:
-      "Premium Kashmiri saffron inquiries, orders, partnerships. Response within 24-48 hours.",
+      "Call +91 70068 46538 or email. Kashmiri saffron inquiries, orders, partnerships. Response within 24–48 hours.",
     images: [OG_IMAGE],
   },
 };
@@ -61,11 +61,24 @@ export default function ContactPage() {
                 Get in Touch
               </h2>
               <p className="text-secondary font-body mb-8">
-                For orders, product inquiries, or partnerships, reach out via
-                email. We typically respond within 24–48 hours.
+                For orders, product inquiries, or partnerships, call or email
+                us. We typically respond within 24–48 hours.
               </p>
 
               <dl className="space-y-6">
+                <div>
+                  <dt className="text-xs font-bold uppercase tracking-widest text-text-muted mb-1">
+                    Phone
+                  </dt>
+                  <dd>
+                    <a
+                      href={`tel:${SITE_CONFIG.phone}`}
+                      className="text-primary font-semibold hover:underline"
+                    >
+                      {SITE_CONFIG.phone}
+                    </a>
+                  </dd>
+                </div>
                 <div>
                   <dt className="text-xs font-bold uppercase tracking-widest text-text-muted mb-1">
                     Email
