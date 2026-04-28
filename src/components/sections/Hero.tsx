@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/Button";
 
 export function Hero() {
   return (
-    <section className="relative flex min-h-screen w-full items-center overflow-hidden bg-background">
+    <section className="relative min-h-dvh w-full overflow-hidden bg-background">
       <Image
         src="/images/hero-v3.png"
         alt="Hands cradling fresh-harvest Kashmiri Mongra kesar threads from Pampore"
@@ -20,7 +20,7 @@ export function Hero() {
       />
 
       <div
-        className="relative z-10 mx-auto w-full max-w-7xl px-6 lg:px-20"
+        className="relative z-10 mx-auto flex min-h-dvh w-full max-w-7xl flex-col justify-center pl-[max(1.5rem,env(safe-area-inset-left))] pr-[max(1.5rem,env(safe-area-inset-right))] pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] lg:px-20"
         data-home-hero
       >
         <div className="mx-auto flex w-full max-w-3xl flex-col items-center gap-6 text-center">
