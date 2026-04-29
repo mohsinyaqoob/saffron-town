@@ -133,7 +133,7 @@ export default function OurStoryPage() {
               <figure className="mt-10 sm:mt-14 rounded-2xl overflow-hidden shadow-lg">
                 <div className="relative aspect-[4/3] sm:aspect-[16/10]">
                   <Image
-                    src="/images/harvest2.png"
+                    src="/images/team.png"
                     alt="Crimson Kashmiri Mongra saffron threads—pure, hand-harvested"
                     fill
                     className="object-cover"
