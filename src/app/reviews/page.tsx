@@ -16,7 +16,9 @@ export const revalidate = 300;
 const OG_IMAGE = `${SITE_CONFIG.url}/products-grid.png`;
 
 export const metadata: Metadata = {
-  title: "Customer Reviews | Saffron Town",
+  // Brand suffix is added by the title.template in app/layout.tsx — don't
+  // append it here, or the rendered <title> ends up "… | Saffron Town | Saffron Town".
+  title: "Customer Reviews",
   description:
     "50+ real customer reviews of Saffron Town's pure Kashmiri Mongra saffron. Pregnancy, post-partum, immunity, skin. Lab-tested, farm-direct from Pampore. Read what our customers say.",
   alternates: { canonical: `${SITE_CONFIG.url}/reviews` },

@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import { SITE_CONFIG } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "Favorites | Saffron Town",
+  // Brand suffix is added by the title.template in app/layout.tsx — don't
+  // append it here, or the rendered <title> ends up "… | Saffron Town | Saffron Town".
+  title: "Favorites",
   description:
     "Your saved Kashmiri saffron and premium products from Saffron Town.",
   alternates: { canonical: `${SITE_CONFIG.url}/favorites` },

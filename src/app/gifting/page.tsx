@@ -10,7 +10,9 @@ import { SITE_CONFIG } from "@/lib/constants";
 const OG_IMAGE = `${SITE_CONFIG.url}/products-grid.png`;
 
 export const metadata: Metadata = {
-  title: "Saffron Gift Boxes | Weddings, Diwali | Saffron Town",
+  // Brand suffix is added by the title.template in app/layout.tsx — don't
+  // append it here, or the rendered <title> ends up "… | Saffron Town | Saffron Town".
+  title: "Saffron Gift Boxes — Weddings, Diwali",
   description:
     "Premium Kashmiri saffron gift boxes from Saffron Town. Perfect for weddings, Diwali, and special occasions. Farm-direct, beautifully packaged.",
   alternates: { canonical: `${SITE_CONFIG.url}/gifting` },

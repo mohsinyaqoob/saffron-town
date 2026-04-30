@@ -12,7 +12,9 @@ const OG_IMAGE = `${SITE_CONFIG.url}/products-grid.png`;
 
 export const metadata: Metadata = {
   robots: { index: false, follow: true },
-  title: "Privacy Policy | Saffron Town",
+  // Brand suffix is added by the title.template in app/layout.tsx — don't
+  // append it here, or the rendered <title> ends up "… | Saffron Town | Saffron Town".
+  title: "Privacy Policy",
   description:
     "Privacy Policy for Saffron Town. How we collect, use, and protect your data when you shop for premium Kashmiri saffron.",
   alternates: { canonical: `${SITE_CONFIG.url}/privacy` },

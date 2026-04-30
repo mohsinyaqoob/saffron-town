@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { BreadcrumbNav } from "@/components/BreadcrumbNav";
 import { FAQSection } from "@/components/FAQSection";
+import { JournalLinkList } from "@/components/JournalLinkList";
 import { JsonLd } from "@/components/JsonLd";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
@@ -234,6 +235,31 @@ export default function MongraVsLachaPage() {
             </Link>
           </div>
         </section>
+
+        <JournalLinkList
+          heading="Further reading on the Journal"
+          lede="Once you know which grade you're buying, the next questions are usually authenticity and price. These long-form guides go deeper than this comparison page."
+          links={[
+            {
+              title: "Mongra vs Lacha — full grade-by-grade breakdown",
+              slug: "mongra-vs-lacha-saffron",
+              blurb:
+                "Photographs of every grade — Mongra, Lacha, Zarda, Guchchi — with the ISO 3632 numbers each typically hits and what each is best used for.",
+            },
+            {
+              title: "How to identify fake saffron — buyer's checklist",
+              slug: "how-to-identify-fake-saffron",
+              blurb:
+                "Even within Mongra, dyed safflower and re-packed Iranian threads are common. The label cues and home tests that catch them out.",
+            },
+            {
+              title: "2026 Kashmiri saffron price guide",
+              slug: "saffron-price-guide",
+              blurb:
+                "What Mongra, Lacha and Zarda should each cost per gram in 2026 — and why suspiciously cheap Mongra is almost always Lacha or Iranian re-pack.",
+            },
+          ]}
+        />
 
         <FAQSection faqs={FAQS.map((f) => ({ ...f }))} />
       </main>

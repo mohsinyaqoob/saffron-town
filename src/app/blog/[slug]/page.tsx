@@ -21,13 +21,18 @@ type Props = {
   params: Promise<{ slug: string }>;
 };
 
-/** Static params — pre-render every post at build time */
+/** Static params — pre-render every post at build time. Skip slugs that are
+ * 308-redirected (the redirect runs at the edge before this page renders, so
+ * pre-rendering them only burns build time). */
 export async function generateStaticParams() {
   try {
     const { client } = await import("@/sanity/client");
     const { ALL_POST_SLUGS_QUERY } = await import("@/sanity/queries");
+    const { REDIRECTED_BLOG_SLUGS } = await import("@/lib/blog-redirects");
     const slugs = await client.fetch<{ slug: string }[]>(ALL_POST_SLUGS_QUERY);
-    return (slugs || []).map((item) => ({ slug: item.slug }));
+    return (slugs || [])
+      .filter((item) => !REDIRECTED_BLOG_SLUGS.has(item.slug))
+      .map((item) => ({ slug: item.slug }));
   } catch {
     return [];
   }
@@ -137,10 +142,19 @@ export default async function BlogPostPage({ params }: Props) {
     inLanguage: "en-IN",
   };
 
+  /** Surface up to 6 related posts in the sidebar — same-category first, then
+   * top up with the most recent posts so newer/orphan posts always pick up
+   * inbound internal links. The richer the link graph, the faster Google
+   * promotes "Discovered – currently not indexed" URLs into the index. */
   const allPosts = await getAllPosts();
-  const relatedPosts = allPosts
-    .filter((p) => p.slug !== slug && p.category === post.category)
-    .slice(0, 2);
+  const sameCategory = allPosts.filter(
+    (p) => p.slug !== slug && p.category === post.category,
+  );
+  const otherPosts = allPosts.filter(
+    (p) => p.slug !== slug && p.category !== post.category,
+  );
+  const RELATED_LIMIT = 6;
+  const relatedPosts = [...sameCategory, ...otherPosts].slice(0, RELATED_LIMIT);
 
   return (
     <div className="flex min-h-screen flex-col bg-background">

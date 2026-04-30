@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { BreadcrumbNav } from "@/components/BreadcrumbNav";
 import { FAQSection } from "@/components/FAQSection";
+import { JournalLinkList } from "@/components/JournalLinkList";
 import { JsonLd } from "@/components/JsonLd";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
@@ -246,6 +247,32 @@ export default function KashmiriVsIranianPage() {
             </Link>
           </div>
         </section>
+
+        <JournalLinkList
+          heading="Further reading on the Journal"
+          lede="If you want to dig deeper into the comparison, the long-form guides below cover the lab data, the price spread, and how the two origins differ in everyday cooking."
+          links={[
+            {
+              title:
+                "Kashmiri vs Iranian saffron — the long-form lab-data comparison",
+              slug: "kashmiri-saffron-vs-iranian-saffron",
+              blurb:
+                "ISO 3632 numbers, real strand photographs, and the seven adulteration tricks Indian importers use to pass off Iranian Sargol as Kashmiri Mongra.",
+            },
+            {
+              title: "2026 Kashmiri saffron price guide",
+              slug: "saffron-price-guide",
+              blurb:
+                "Why genuine Kashmiri Mongra costs ₹400–₹600 per gram in 2026, the price thresholds that always signal a fake, and what a fair Iranian Negin should cost.",
+            },
+            {
+              title: "Mongra vs Lacha — the only saffron grade that matters",
+              slug: "mongra-vs-lacha-saffron",
+              blurb:
+                "Inside the GI-tagged Pampore harvest: how Mongra, Lacha and Zarda are graded, and why Mongra is the only grade that hits the highest crocin numbers.",
+            },
+          ]}
+        />
 
         <FAQSection faqs={FAQS.map((f) => ({ ...f }))} />
       </main>

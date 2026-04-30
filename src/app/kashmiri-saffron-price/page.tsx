@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { BreadcrumbNav } from "@/components/BreadcrumbNav";
 import { FAQSection } from "@/components/FAQSection";
+import { JournalLinkList } from "@/components/JournalLinkList";
 import { JsonLd } from "@/components/JsonLd";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
@@ -335,6 +336,31 @@ export default function KashmiriSaffronPricePage() {
         </section>
 
         <FAQSection faqs={PRICE_FAQS.map((f) => ({ ...f }))} />
+
+        <JournalLinkList
+          heading="Further reading on saffron pricing & quality"
+          lede="Price is only one half of the buying decision. These long-form Journal pieces cover the other half — what makes one gram of saffron worth ₹600 and another ₹150."
+          links={[
+            {
+              title: "2026 Kashmiri saffron price guide — the full breakdown",
+              slug: "saffron-price-guide",
+              blurb:
+                "Why Kashmiri Mongra costs what it costs in 2026, the price thresholds that always signal a fake, and how to read a per-gram quote without getting overcharged.",
+            },
+            {
+              title: "Kashmiri vs Iranian saffron — which is actually purer?",
+              slug: "kashmiri-saffron-vs-iranian-saffron",
+              blurb:
+                "Why Iranian Sargol is half the price of Kashmiri Mongra — and why most fake saffron in Indian markets is Iranian re-pack, not safflower.",
+            },
+            {
+              title: "How to identify fake saffron — five home tests",
+              slug: "how-to-identify-fake-saffron",
+              blurb:
+                "Before you spend, run these five at-home tests. Every one takes under 15 minutes and catches the most common adulteration tricks.",
+            },
+          ]}
+        />
 
         <section className="mx-auto max-w-4xl px-6 lg:px-20 py-16 text-center">
           <h2 className="font-display text-3xl font-bold text-text-primary">

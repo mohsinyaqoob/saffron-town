@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { BreadcrumbNav } from "@/components/BreadcrumbNav";
 import { FAQSection } from "@/components/FAQSection";
+import { JournalLinkList } from "@/components/JournalLinkList";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { ProductJsonLd } from "@/components/seo/ProductJsonLd";
@@ -322,6 +323,32 @@ export default function KesarForPregnancyPage() {
         <div className="mx-auto max-w-4xl px-6 lg:px-20">
           <FAQSection faqs={PREGNANCY_FAQS} />
         </div>
+
+        <JournalLinkList
+          heading="Further reading for expecting mothers"
+          lede="If you're starting kesar in pregnancy, these long-form Journal guides cover the safety, dosage and authenticity questions that come up most often after the first trimester."
+          links={[
+            {
+              title:
+                "Saffron during pregnancy — trimester-by-trimester safety guide",
+              slug: "saffron-for-pregnancy",
+              blurb:
+                "What every Indian gynaecologist says about saffron in pregnancy, the safe daily dose, and why most warnings online are about adulterated saffron — not the real thing.",
+            },
+            {
+              title: "How to identify fake saffron — buyer's checklist",
+              slug: "how-to-identify-fake-saffron",
+              blurb:
+                "Adulterated saffron is the actual risk in pregnancy. Five at-home tests plus the label cues that tell you it's the real thing before you spend a rupee.",
+            },
+            {
+              title: "Saffron benefits for skin — pregnancy glow, explained",
+              slug: "saffron-benefits-for-skin",
+              blurb:
+                "Why kesar milk is the most-recommended pregnancy ritual for skin, and the daily-use questions (when to start, when to stop) most blogs miss.",
+            },
+          ]}
+        />
 
         {/* Final CTA */}
         <section className="py-20 bg-primary text-white">

@@ -21,20 +21,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const author = getAuthorBySlug(slug);
   if (!author) return {};
   const url = `${SITE_CONFIG.url}/authors/${author.slug}`;
-  const title = `${author.name} — ${author.jobTitle} | Saffron Town`;
+  // Brand suffix is added by the title.template in app/layout.tsx — don't
+  // append it here, or the rendered <title> ends up "… | Saffron Town | Saffron Town".
+  const title = `${author.name} — ${author.jobTitle}`;
   return {
     title,
     description: author.shortBio,
     alternates: { canonical: url },
     openGraph: {
-      title,
+      title: `${title} | ${SITE_CONFIG.name}`,
       description: author.shortBio,
       url,
       type: "profile",
     },
     twitter: {
       card: "summary",
-      title,
+      title: `${title} | ${SITE_CONFIG.name}`,
       description: author.shortBio,
     },
   };

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { BreadcrumbNav } from "@/components/BreadcrumbNav";
 import { FAQSection } from "@/components/FAQSection";
+import { JournalLinkList } from "@/components/JournalLinkList";
 import { JsonLd } from "@/components/JsonLd";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
@@ -268,6 +269,31 @@ export default function RealVsFakeSaffronTestPage() {
             </Link>
           </div>
         </section>
+
+        <JournalLinkList
+          heading="Further reading on saffron authenticity"
+          lede="If you want to go deeper on each home test — including photos of pass and fail results — these long-form guides on the Saffron Town Journal walk through every step in detail."
+          links={[
+            {
+              title: "How to identify fake saffron — the buyer's checklist",
+              slug: "how-to-identify-fake-saffron",
+              blurb:
+                "What dyed safflower, corn silk, and re-packed Iranian saffron look like in real life — and the five label cues that tell you it's the real thing before you ever open the tin.",
+            },
+            {
+              title: "Kashmiri vs Iranian saffron — which is actually purer?",
+              slug: "kashmiri-saffron-vs-iranian-saffron",
+              blurb:
+                "Why Kashmiri Mongra tests higher on crocin than most Iranian Sargol — and why most fake saffron in Indian markets is mislabelled Iranian re-pack, not safflower.",
+            },
+            {
+              title: "Mongra vs Lacha — the saffron grade that matters most",
+              slug: "mongra-vs-lacha-saffron",
+              blurb:
+                "What separates Grade A++ Mongra from Lacha (yellow style attached), and why the grade you buy decides how many strands you need per dish.",
+            },
+          ]}
+        />
 
         <FAQSection faqs={FAQS.map((f) => ({ ...f }))} />
       </main>
