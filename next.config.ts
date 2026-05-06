@@ -2,14 +2,6 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   serverExternalPackages: ["pdfkit"],
-  redirects: async () => [
-    {
-      source: "/:path*",
-      has: [{ type: "host", value: "www.saffron.town" }],
-      destination: "https://saffron.town/:path*",
-      permanent: true,
-    },
-  ],
   images: {
     remotePatterns: [
       {
