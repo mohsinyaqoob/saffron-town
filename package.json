@@ -13,7 +13,9 @@
     "dev": "next dev --port 6600",
     "start": "next start",
     "lint": "biome check .",
-    "lint:autofix": "biome check . --write"
+    "lint:autofix": "biome check . --write",
+    "gsc:auth": "bash scripts/run-gsc-auth.sh",
+    "gsc:reauth": "bash scripts/run-gsc-auth.sh --reauth"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

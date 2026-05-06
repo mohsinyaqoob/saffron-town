@@ -13,6 +13,7 @@ const FOOTER_LINKS = [
   { href: "/reviews", label: "Reviews" },
   { href: "/blog", label: "Blog" },
   { href: "/our-story", label: "Our Story" },
+  { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
   { href: "/privacy", label: "Privacy Policy" },
 ];

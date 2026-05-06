@@ -1,6 +1,7 @@
 // src/app/sitemap.ts
 
 import type { MetadataRoute } from "next";
+import { getAllAuthors } from "@/lib/authors-data";
 import { REDIRECTED_BLOG_SLUGS } from "@/lib/blog-redirects";
 import { SITE_CONFIG } from "@/lib/constants";
 import { getAllProducts, PRODUCT_PAGE_URL } from "@/lib/product-data";
@@ -71,6 +72,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     },
     {
+      url: `${baseUrl}/about`,
+      lastModified: monthAnchor,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    },
+    {
       url: `${baseUrl}/reviews`,
       lastModified: now,
       changeFrequency: "weekly" as const,
@@ -88,12 +95,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "monthly" as const,
       priority: 0.5,
     },
-    {
-      url: `${baseUrl}/authors/mohsin-yaqoob`,
+    ...getAllAuthors().map((author) => ({
+      url: `${baseUrl}/authors/${author.slug}`,
       lastModified: monthAnchor,
       changeFrequency: "monthly" as const,
       priority: 0.5,
-    },
+    })),
     /* privacy excluded — legal pages are noindex, no sitemap entry to save crawl budget */
   ];
 
