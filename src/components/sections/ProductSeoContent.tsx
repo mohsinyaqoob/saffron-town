@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { getJournalSettings } from "@/lib/journal-settings";
 
 /**
  * Long-form SEO content block surfacing our priority H2/H3 phrases on
@@ -6,7 +7,9 @@ import Link from "next/link";
  * verify", and "kesar for pregnancy, cooking & wellness". Internal links
  * drive lab-report and pregnancy funnel traffic back to the buy box.
  */
-export function ProductSeoContent() {
+export async function ProductSeoContent() {
+  const journal = await getJournalSettings();
+
   return (
     <section
       aria-labelledby="product-seo-heading"
@@ -58,15 +61,30 @@ export function ProductSeoContent() {
           most important moments. A few strands colour a biryani or pulao, lift
           a kheer, and turn plain milk into the traditional kesar doodh served
           to expecting mothers from the second trimester. Because purity matters
-          most during pregnancy, we recommend only lab-tested Mongra grade —
-          read our detailed guide on{" "}
-          <Link
-            href="/kesar-for-pregnancy"
-            className="text-primary font-semibold hover:underline"
-          >
-            pure Kashmiri kesar for pregnancy
-          </Link>{" "}
-          for safe dosage, timing, and recipes.
+          most during pregnancy, we recommend only lab-tested Mongra grade —{" "}
+          {journal.pregnancy ? (
+            <>
+              read{" "}
+              <Link
+                href={journal.pregnancy.href}
+                className="text-primary font-semibold hover:underline"
+              >
+                our pregnancy &amp; kesar guide
+              </Link>{" "}
+              for safe dosage, timing, and recipes.
+            </>
+          ) : (
+            <>
+              see{" "}
+              <Link
+                href="/blog"
+                className="text-primary font-semibold hover:underline"
+              >
+                pregnancy &amp; kesar guides on the Journal
+              </Link>{" "}
+              for dosage, timing, and recipes.
+            </>
+          )}
         </p>
       </div>
     </section>

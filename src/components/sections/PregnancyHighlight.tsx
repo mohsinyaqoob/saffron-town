@@ -1,13 +1,21 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
+import { getJournalSettings } from "@/lib/journal-settings";
 
 /**
- * Homepage internal link to /kesar-for-pregnancy — captures the
- * high-intent long-tail "kesar for pregnancy" search without cluttering
- * the hero.
+ * Homepage internal link to the pregnancy Journal post selected in Sanity
+ * (Journal settings) — captures high-intent "kesar for pregnancy" search.
  */
-export function PregnancyHighlight() {
+export async function PregnancyHighlight() {
+  const journal = await getJournalSettings();
+  const pregnancy = journal.pregnancy;
+
+  const guideHref = pregnancy?.href ?? "/blog";
+  const guideLabel = pregnancy
+    ? "Read the Pregnancy Guide"
+    : "Browse the Journal";
+
   return (
     <section className="bg-background-alt py-16 lg:py-20">
       <div className="mx-auto max-w-7xl px-6 lg:px-20 grid gap-10 lg:grid-cols-[480px_1fr] items-center">
@@ -35,8 +43,8 @@ export function PregnancyHighlight() {
             purity certificate for every batch.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-4">
-            <Link href="/kesar-for-pregnancy">
-              <Button size="md">Read the Pregnancy Guide</Button>
+            <Link href={guideHref}>
+              <Button size="md">{guideLabel}</Button>
             </Link>
             <Link
               href="/shop/saffron"

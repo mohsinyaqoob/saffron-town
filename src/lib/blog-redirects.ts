@@ -1,10 +1,10 @@
 /**
- * Blog slugs that 308-redirect to a canonical post (configured in
- * `next.config.ts`). Listed here so the sitemap can filter them out — emitting
- * a sitemap entry that immediately redirects is exactly the signal that gets
- * a URL classified as "Page with redirect" in Search Console and never
- * indexed. Keep this in sync with the redirect rules in next.config.ts.
+ * Blog slugs excluded from static generation / sitemap when those URLs are served
+ * only as redirects from `next.config.ts`. Empty today — journal URLs live only
+ * at `/blog/{sanitySlug}` with no slug→slug redirects in Next config.
+ *
+ * If you add a `{ source: "/blog/old-slug", destination: "/blog/new-slug" }`
+ * redirect later, add `old-slug` here so the old URL is not pre-rendered or
+ * listed as a standalone sitemap URL.
  */
-export const REDIRECTED_BLOG_SLUGS: ReadonlySet<string> = new Set([
-  "how-to-test-saffron-at-home",
-]);
+export const REDIRECTED_BLOG_SLUGS: ReadonlySet<string> = new Set([]);

@@ -12,7 +12,7 @@ export {
 export const SITE_CONFIG = {
   name: "Saffron Town",
   tagline: "Always the most recent harvest.",
-  url: "https://www.saffron.town",
+  url: "https://saffron.town",
   description:
     "Premium Kashmiri Mongra Saffron dealer. Farm-direct, seed-to-harvest controlled. Grade A++ Pampore saffron—fresh harvest only, no compromise on quality. Money-back guarantee.",
   keywords: [
@@ -30,7 +30,7 @@ export const SITE_CONFIG = {
   orderEmail: "orders@saffron.town",
   /** E.164 — keep in sync with Google Business Profile primary phone */
   phone: "+917006846538",
-  logo: "https://www.saffron.town/logo-horizon.svg",
+  logo: "https://saffron.town/logo-horizon.svg",
   sameAs: [
     "https://instagram.com/saffrontown",
     "https://facebook.com/saffrontown",

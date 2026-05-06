@@ -2,6 +2,11 @@ export const runtime = "edge";
 
 import { NextResponse } from "next/server";
 import { SITE_CONFIG } from "@/lib/constants";
+import type {
+  JournalPromotion,
+  ResolvedJournalSettings,
+} from "@/lib/journal-settings";
+import { getJournalSettings } from "@/lib/journal-settings";
 
 /**
  * llms.txt — follows the llmstxt.org convention (distinct from ai.txt):
@@ -11,13 +16,74 @@ import { SITE_CONFIG } from "@/lib/constants";
  *   4. H2 sections whose body is a bulleted list of markdown links with
  *      short descriptions
  *
- * Served at /llms.txt so crawlers like Perplexity, ChatGPT Search, and
- * Anthropic Web can discover the canonical entry points without having
- * to parse full HTML pages. Paired with ai.txt (richer, prose-oriented)
- * at /ai.txt for crawlers that prefer that format.
+ * Buyer-guide links resolve from Sanity → Journal settings (GROQ), so adding
+ * a new Journal post requires no codebase change.
  */
+
+function markdownBuyerGuideSection(
+  baseUrl: string,
+  journal: ResolvedJournalSettings,
+): string {
+  type Line = string;
+  const lines: Line[] = [];
+
+  const push = (
+    fallbackTitle: string,
+    entry: JournalPromotion | null | undefined,
+    blurb: string,
+  ) => {
+    if (!entry) return;
+    const title =
+      typeof entry.title === "string" && entry.title.trim().length > 0
+        ? entry.title.trim()
+        : fallbackTitle;
+    lines.push(`- [${title}](${baseUrl}${entry.href}): ${blurb}`);
+  };
+
+  push(
+    "Kashmiri Saffron Price in India (2026)",
+    journal.price,
+    "Rates, packs, fake-price thresholds, market context.",
+  );
+  push(
+    "Kashmiri vs Iranian Saffron",
+    journal.pillarKashmiriVsIranian,
+    "Lab and price comparison (Kashmiri Mongra vs Iranian Sargol/Negin).",
+  );
+  push(
+    "Mongra vs Lacha Saffron Grades",
+    journal.pillarMongraVsLacha,
+    "Traditional Kashmiri grades explained.",
+  );
+  push(
+    "Identify fake vs real saffron",
+    journal.fakeSaffron,
+    "Home checks and label cues for purity.",
+  );
+  push(
+    "Kesar for pregnancy",
+    journal.pregnancy,
+    "Timing, cautious use, recipes — GI-tagged context.",
+  );
+
+  if (!lines.length) {
+    lines.push(
+      `- [Saffron Town Journal](${baseUrl}/blog): All buying guides; link featured guides in Sanity Studio → Journal settings.`,
+    );
+  }
+
+  return `## Buyer Guides (Journal)\n\n${lines.join("\n")}\n`;
+}
+
 export async function GET() {
   const u = SITE_CONFIG.url;
+
+  let journalSection: string;
+  try {
+    journalSection = markdownBuyerGuideSection(u, await getJournalSettings());
+  } catch {
+    journalSection = `## Buyer Guides (Journal)\n\n- [Saffron Town Journal](${u}/blog)\n`;
+  }
 
   const content = `# Saffron Town
 
@@ -29,14 +95,7 @@ export async function GET() {
 - [Pre-book 2026 Harvest](${u}/prebook-2026-harvest): Reserve the current-year harvest before it ships.
 - [Gifting](${u}/gifting): Ready-to-gift saffron sets.
 
-## Buyer Guides
-
-- [Kashmiri Saffron Price in India (2026)](${u}/kashmiri-saffron-price): Live rate card per gram, pack-size pricing, and market-rate context.
-- [Kashmiri vs Iranian Saffron](${u}/kashmiri-saffron-vs-iranian): Side-by-side lab and price comparison between Kashmiri Mongra and Iranian Sargol/Negin.
-- [Mongra vs Lacha Saffron Grades](${u}/mongra-vs-lacha-saffron): The difference between Mongra, Lacha and Gucchi — the three traditional Kashmiri saffron grades.
-- [Real vs Fake Saffron Test](${u}/real-vs-fake-saffron-test): Five at-home tests (warm milk, cold water, rub, taste, baking soda) to verify saffron purity.
-- [Kesar for Pregnancy](${u}/kesar-for-pregnancy): Safe dosage, timing, and kesar-milk recipe for expecting mothers.
-
+${journalSection}
 ## Proof & Provenance
 
 - [ISO 3632 Lab Reports](${u}/lab-reports): Downloadable lab certificates per harvest batch (crocin, picrocrocin, safranal).

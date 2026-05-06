@@ -7,6 +7,11 @@ import {
   POST_SLUGS_QUERY,
   POSTS_QUERY,
 } from "@/sanity/queries";
+import {
+  type InternalLinkRule,
+  injectInternalLinks,
+} from "./blog-internal-links";
+import { getJournalPillarInjectRules } from "./journal-settings";
 
 export type BlogPost = {
   id: string;
@@ -58,7 +63,7 @@ function formatDate(iso: string) {
   });
 }
 
-function toBlogPost(p: SanityPost): BlogPost {
+function toBlogPost(p: SanityPost, pillarRules: InternalLinkRule[]): BlogPost {
   const imageUrl = p.mainImage
     ? urlFor(p.mainImage)
         .width(1200)
@@ -75,7 +80,8 @@ function toBlogPost(p: SanityPost): BlogPost {
     title: p.title,
     slug: p.slug,
     excerpt: p.seoDescription || "",
-    content: p.body,
+    // Pillar hrefs come from Studio → Journal settings (GROQ in journal-settings).
+    content: injectInternalLinks(p.body, p.slug, pillarRules),
     date: formatDate(p.publishedAt),
     publishedAt: p.publishedAt,
     updatedAt: p.updatedAt,
@@ -100,8 +106,11 @@ function toBlogPost(p: SanityPost): BlogPost {
 
 export async function getAllPosts(): Promise<BlogPost[]> {
   try {
-    const posts = await client.fetch<SanityPost[]>(POSTS_QUERY);
-    return (posts || []).map(toBlogPost);
+    const [posts, pillarRules] = await Promise.all([
+      client.fetch<SanityPost[]>(POSTS_QUERY),
+      getJournalPillarInjectRules(),
+    ]);
+    return (posts || []).map((p) => toBlogPost(p, pillarRules));
   } catch {
     return [];
   }
@@ -109,10 +118,13 @@ export async function getAllPosts(): Promise<BlogPost[]> {
 
 export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
   try {
-    const post = await client.fetch<SanityPost | null>(POST_BY_SLUG_QUERY, {
-      slug,
-    });
-    return post ? toBlogPost(post) : null;
+    const [post, pillarRules] = await Promise.all([
+      client.fetch<SanityPost | null>(POST_BY_SLUG_QUERY, {
+        slug,
+      }),
+      getJournalPillarInjectRules(),
+    ]);
+    return post ? toBlogPost(post, pillarRules) : null;
   } catch {
     return null;
   }

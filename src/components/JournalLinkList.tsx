@@ -2,9 +2,7 @@ import Link from "next/link";
 
 /**
  * Compact "Further reading on the Journal" block. Used at the bottom of
- * the AI-overview landing pages (`/real-vs-fake-saffron-test`, etc.) to
- * pass crawl signal from those high-priority pages down into the blog
- * posts that GSC currently lists as "Discovered – currently not indexed".
+ * high-intent marketing pages to pass crawl signal into Sanity posts.
  *
  * Each entry should be an evergreen blog post; pages own their own copy
  * so the surrounding section reads in context.

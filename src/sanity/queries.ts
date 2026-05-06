@@ -2,6 +2,11 @@
 
 import { groq } from "next-sanity";
 
+/**
+ * Singleton Sanity document (`structure.ts` Structure Builder uses this id).
+ */
+export const JOURNAL_SETTINGS_DOCUMENT_ID = "journalSettings";
+
 /** Fetch all post slugs for generateStaticParams */
 export const ALL_POST_SLUGS_QUERY = groq`
   *[_type == "post" && !noIndex && defined(slug.current)]{
@@ -47,7 +52,21 @@ export const ALL_POSTS_QUERY = groq`
 export const POSTS_QUERY = ALL_POSTS_QUERY;
 export const POST_SLUGS_QUERY = ALL_POST_SLUGS_QUERY;
 
-/** Sitemap: slugs + lastModified */
+/** Site-wide Journal promotion + pillar posts (singleton) */
+export const JOURNAL_SETTINGS_QUERY = groq`
+  *[_id == $docId][0]{
+    "pregnancySlug": pregnancyGuide->slug.current,
+    "pregnancyTitle": pregnancyGuide->title,
+    "priceSlug": priceGuide->slug.current,
+    "priceTitle": priceGuide->title,
+    "fakeSlug": fakeSaffronGuide->slug.current,
+    "fakeTitle": fakeSaffronGuide->title,
+    "kashmiriVsIranianSlug": pillarKashmiriVsIranian->slug.current,
+    "kashmiriVsIranianTitle": pillarKashmiriVsIranian->title,
+    "mongraVsLachaSlug": pillarMongraVsLacha->slug.current,
+    "mongraVsLachaTitle": pillarMongraVsLacha->title
+  }
+`;
 export const SITEMAP_POSTS_QUERY = groq`
   *[_type == "post" && !noIndex && defined(slug.current)]{
     "slug": slug.current,

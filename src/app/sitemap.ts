@@ -83,38 +83,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.85,
     },
     {
-      url: `${baseUrl}/kesar-for-pregnancy`,
-      lastModified: new Date("2026-04-20"),
-      changeFrequency: "monthly" as const,
-      priority: 0.85,
-    },
-    // AI-Overview landing pages — each targets a high-intent phrase Google's
-    // AI Mode tends to cite. Refreshed monthly so lastModified stays honest.
-    {
-      url: `${baseUrl}/kashmiri-saffron-price`,
-      lastModified: monthAnchor,
-      changeFrequency: "monthly" as const,
-      priority: 0.85,
-    },
-    {
-      url: `${baseUrl}/kashmiri-saffron-vs-iranian`,
-      lastModified: monthAnchor,
-      changeFrequency: "monthly" as const,
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/mongra-vs-lacha-saffron`,
-      lastModified: monthAnchor,
-      changeFrequency: "monthly" as const,
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/real-vs-fake-saffron-test`,
-      lastModified: monthAnchor,
-      changeFrequency: "monthly" as const,
-      priority: 0.85,
-    },
-    {
       url: `${baseUrl}/authors`,
       lastModified: monthAnchor,
       changeFrequency: "monthly" as const,
