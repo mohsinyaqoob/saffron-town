@@ -59,7 +59,10 @@ export default async function DashboardBulkEnquiriesPage() {
         </h1>
         <p className="text-sm text-secondary font-body">
           No wholesale enquiries yet. Submissions from{" "}
-          <Link href="/bulk-orders" className="text-primary underline-offset-2 hover:underline">
+          <Link
+            href="/bulk-orders"
+            className="text-primary underline-offset-2 hover:underline"
+          >
             /bulk-orders
           </Link>{" "}
           appear here after they are saved.

@@ -54,7 +54,9 @@ export async function POST(request: Request) {
 
   const dbUrl = process.env.DATABASE_URL?.trim() ?? "";
   if (!dbUrl || !isDirectPostgresUrl(dbUrl)) {
-    console.warn(`${ROUTE_TAG} DATABASE_URL missing or not a direct Postgres URL`);
+    console.warn(
+      `${ROUTE_TAG} DATABASE_URL missing or not a direct Postgres URL`,
+    );
     return NextResponse.json(
       {
         ok: false,

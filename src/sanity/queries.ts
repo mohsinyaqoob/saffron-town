@@ -48,6 +48,25 @@ export const ALL_POSTS_QUERY = groq`
   }
 `;
 
+/** Total indexable posts (matches listing filter) — for pagination */
+export const POSTS_INDEXABLE_COUNT_QUERY = groq`
+  count(*[_type == "post" && !noIndex])
+`;
+
+/** One page of posts for /blog (slice is end-exclusive in GROQ) */
+export const POSTS_PAGED_QUERY = groq`
+  *[_type == "post" && !noIndex] | order(publishedAt desc) [$start...$end]{
+    _id,
+    title,
+    "slug": slug.current,
+    publishedAt,
+    seoDescription,
+    mainImage{ ..., "alt": alt },
+    category,
+    "author": author->name
+  }
+`;
+
 // Legacy aliases for backward compatibility during migration
 export const POSTS_QUERY = ALL_POSTS_QUERY;
 export const POST_SLUGS_QUERY = ALL_POST_SLUGS_QUERY;

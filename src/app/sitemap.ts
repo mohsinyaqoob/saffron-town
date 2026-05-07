@@ -2,11 +2,15 @@
 
 import type { MetadataRoute } from "next";
 import { getAllAuthors } from "@/lib/authors-data";
+import { BLOG_LIST_PAGE_SIZE } from "@/lib/blog-data";
 import { REDIRECTED_BLOG_SLUGS } from "@/lib/blog-redirects";
 import { SITE_CONFIG } from "@/lib/constants";
 import { getAllProducts, PRODUCT_PAGE_URL } from "@/lib/product-data";
 import { client } from "@/sanity/client";
-import { SITEMAP_POSTS_QUERY } from "@/sanity/queries";
+import {
+  POSTS_INDEXABLE_COUNT_QUERY,
+  SITEMAP_POSTS_QUERY,
+} from "@/sanity/queries";
 
 /** Sitemap refreshes every hour so new posts appear without redeploy */
 export const revalidate = 3600;
@@ -124,6 +128,26 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         ]
       : [];
 
+  /** Paginated blog index (/blog/page/2+) — crawlable archive URLs */
+  let blogArchiveUrls: MetadataRoute.Sitemap = [];
+  try {
+    const indexableCount = await client.fetch<number>(
+      POSTS_INDEXABLE_COUNT_QUERY,
+    );
+    const total = typeof indexableCount === "number" ? indexableCount : 0;
+    const totalPages = Math.max(1, Math.ceil(total / BLOG_LIST_PAGE_SIZE));
+    if (totalPages > 1) {
+      blogArchiveUrls = Array.from({ length: totalPages - 1 }, (_, i) => ({
+        url: `${baseUrl}/blog/page/${i + 2}`,
+        lastModified: now,
+        changeFrequency: "weekly" as const,
+        priority: 0.72,
+      }));
+    }
+  } catch {
+    // Sanity may not be configured yet
+  }
+
   /** Blog posts — fetch slugs from Sanity, drop any that we 308-redirect away
    * from (those would only ever resolve to "Page with redirect" in GSC). */
   let blogPosts: MetadataRoute.Sitemap = [];
@@ -144,5 +168,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Sanity may not be configured yet
   }
 
-  return [...staticRoutes, ...productUrls, ...blogPosts];
+  return [...staticRoutes, ...productUrls, ...blogArchiveUrls, ...blogPosts];
 }

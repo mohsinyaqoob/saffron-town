@@ -6,6 +6,8 @@ import { urlFor } from "@/sanity/image";
 import {
   POST_BY_SLUG_QUERY,
   POST_SLUGS_QUERY,
+  POSTS_INDEXABLE_COUNT_QUERY,
+  POSTS_PAGED_QUERY,
   POSTS_QUERY,
 } from "@/sanity/queries";
 import {
@@ -119,6 +121,49 @@ export async function getAllPosts(): Promise<BlogPost[]> {
     return (posts || []).map((p) => toBlogPost(p, pillarRules));
   } catch {
     return [];
+  }
+}
+
+/** Posts per page on `/blog` (SEO-friendly paginated URLs). */
+export const BLOG_LIST_PAGE_SIZE = 12;
+
+export async function getBlogPostsPage(page: number): Promise<{
+  posts: BlogPost[];
+  total: number;
+  pageSize: number;
+  totalPages: number;
+  page: number;
+}> {
+  const safePage = Number.isFinite(page) ? Math.max(1, Math.floor(page)) : 1;
+  try {
+    const start = (safePage - 1) * BLOG_LIST_PAGE_SIZE;
+    const end = safePage * BLOG_LIST_PAGE_SIZE;
+
+    const [totalRaw, posts, pillarRules] = await Promise.all([
+      client.fetch<number>(POSTS_INDEXABLE_COUNT_QUERY),
+      client.fetch<SanityPost[]>(POSTS_PAGED_QUERY, { start, end }),
+      getJournalPillarInjectRules(),
+    ]);
+
+    const total = typeof totalRaw === "number" ? totalRaw : 0;
+    const pageSize = BLOG_LIST_PAGE_SIZE;
+    const totalPages = Math.max(1, Math.ceil(total / pageSize));
+
+    return {
+      posts: (posts || []).map((p) => toBlogPost(p, pillarRules)),
+      total,
+      pageSize,
+      totalPages,
+      page: safePage,
+    };
+  } catch {
+    return {
+      posts: [],
+      total: 0,
+      pageSize: BLOG_LIST_PAGE_SIZE,
+      totalPages: 1,
+      page: safePage,
+    };
   }
 }
 
