@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useTransition } from "react";
 import { useShop } from "@/context/ShopContext";
 import { trackAddToCart } from "@/lib/analytics";
 import { checkoutHref } from "@/lib/checkout-line";
@@ -43,6 +43,7 @@ export function ProductBuyBox({ product }: ProductBuyBoxProps) {
     return c ? c.minGrams : 2;
   });
   const router = useRouter();
+  const [isBuyNowPending, startBuyNowTransition] = useTransition();
   const { toggleFavorite, isFavorite } = useShop();
 
   const bulkPriced = useMemo(() => {
@@ -117,7 +118,9 @@ export function ProductBuyBox({ product }: ProductBuyBoxProps) {
         quantity: g,
         currency: product.currency,
       });
-      router.push(checkoutHref(product.id, CUSTOM_SAFFRON_VARIANT_ID, 1, g));
+      startBuyNowTransition(() => {
+        router.push(checkoutHref(product.id, CUSTOM_SAFFRON_VARIANT_ID, 1, g));
+      });
       return;
     }
     trackAddToCart({
@@ -128,7 +131,9 @@ export function ProductBuyBox({ product }: ProductBuyBoxProps) {
       quantity,
       currency: product.currency,
     });
-    router.push(checkoutHref(product.id, selectedVariant.id, quantity));
+    startBuyNowTransition(() => {
+      router.push(checkoutHref(product.id, selectedVariant.id, quantity));
+    });
   };
 
   const discountPercent =
@@ -530,13 +535,26 @@ export function ProductBuyBox({ product }: ProductBuyBoxProps) {
         <button
           type="button"
           onClick={goCheckout}
-          disabled={shopMode === "bulk" && !bulkPriced}
-          className="w-full py-3 px-4 rounded-full bg-primary hover:bg-primary-hover text-white text-sm font-bold mb-4 transition-colors font-body shadow-md shadow-primary/20 disabled:opacity-50 disabled:pointer-events-none"
+          disabled={(shopMode === "bulk" && !bulkPriced) || isBuyNowPending}
+          aria-busy={isBuyNowPending}
+          className="flex w-full items-center justify-center gap-3 py-3 px-4 rounded-full bg-primary hover:bg-primary-hover text-white text-sm font-bold mb-4 transition-colors font-body shadow-md shadow-primary/20 disabled:opacity-50 disabled:pointer-events-none"
         >
-          Buy now —{" "}
-          {shopMode === "bulk" && bulkPriced
-            ? formatPrice(bulkPriced.lineTotalRupees)
-            : formatPrice(selectedVariant.price * quantity)}
+          {isBuyNowPending ? (
+            <>
+              <span
+                className="h-5 w-5 shrink-0 animate-spin rounded-full border-2 border-white/35 border-t-white"
+                aria-hidden
+              />
+              <span>Opening checkout…</span>
+            </>
+          ) : (
+            <>
+              Buy now —{" "}
+              {shopMode === "bulk" && bulkPriced
+                ? formatPrice(bulkPriced.lineTotalRupees)
+                : formatPrice(selectedVariant.price * quantity)}
+            </>
+          )}
         </button>
 
         {/* Secure transaction */}

@@ -1,4 +1,4 @@
-import { Footer } from "@/components/layout/Footer";
+import type { ReactNode } from "react";
 import { Header } from "@/components/layout/Header";
 import { cn } from "@/lib/utils";
 
@@ -19,9 +19,11 @@ function Spinner({ className }: { className?: string }) {
 export function CheckoutLoadingShell({
   title = "Loading checkout",
   description = "One moment…",
+  footer,
 }: {
   title?: string;
   description?: string;
+  footer: ReactNode;
 }) {
   return (
     <div className="flex min-h-screen flex-col bg-background text-text-primary">
@@ -35,13 +37,13 @@ export function CheckoutLoadingShell({
           {description}
         </p>
       </main>
-      <Footer />
+      {footer}
     </div>
   );
 }
 
 /** Full-screen state after order succeeds, until navigation to the confirmation page. */
-export function CheckoutOrderRedirectLayout() {
+export function CheckoutOrderRedirectLayout({ footer }: { footer: ReactNode }) {
   return (
     <div className="flex min-h-screen flex-col bg-background text-text-primary">
       <Header />
@@ -56,7 +58,7 @@ export function CheckoutOrderRedirectLayout() {
           </p>
         </div>
       </main>
-      <Footer />
+      {footer}
     </div>
   );
 }
