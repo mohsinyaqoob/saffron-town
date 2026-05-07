@@ -32,9 +32,7 @@ export const bulkEnquiryFormSchema = z.object({
     .max(5000, "Message is too long."),
 });
 
-export const bulkLeadFormClientSchema = bulkEnquiryFormSchema.extend({
-  /** Honeypot — must stay empty; avoid `name="company"` (browser autofill fills it). */
-  hpFieldK8m: z.string().max(120).optional().or(z.literal("")),
-});
+/** Client + API body (no honeypot — hidden fields caused false positives with password managers). */
+export const bulkLeadFormClientSchema = bulkEnquiryFormSchema;
 
 export type BulkLeadFormClientValues = z.infer<typeof bulkLeadFormClientSchema>;

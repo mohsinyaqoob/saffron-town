@@ -1,35 +1,12 @@
-import nodemailer, { type Transporter } from "nodemailer";
-
-let cachedTransporter: Transporter | null = null;
-
-function getTransporter(): Transporter | null {
-  if (cachedTransporter) return cachedTransporter;
-
-  const host = process.env.SMTP_HOST?.trim() || "smtp.zoho.in";
-  const portRaw = process.env.SMTP_PORT?.trim();
-  const port = portRaw ? Number(portRaw) : 465;
-  const user = process.env.SMTP_USER?.trim();
-  const pass = process.env.SMTP_PASSWORD?.trim();
-
-  if (!user || !pass || !Number.isFinite(port)) return null;
-
-  cachedTransporter = nodemailer.createTransport({
-    host,
-    port,
-    secure: port === 465,
-    auth: { user, pass },
-  });
-
-  return cachedTransporter;
-}
+import { resolveSmtpFrom, sendSmtpMail } from "@/lib/email/smtp-send";
 
 /**
- * Sends a bulk / wholesale lead to operations. Mirrors order-admin-notify SMTP setup.
- * Uses BULK_ENQUIRY_NOTIFY_EMAIL if set, else ORDER_NOTIFY_EMAIL, else orders@saffron.town.
- * Optional comma-separated BULK_ENQUIRY_BCC for backups.
- * No-ops when SMTP is not configured (same as order notifications).
+ * Sends a bulk / wholesale lead to operations.
+ * `to`: BULK_ENQUIRY_NOTIFY_EMAIL → ORDER_NOTIFY_EMAIL → default inbox.
+ * `from`: BULK_ENQUIRY_FROM → ORDER_NOTIFY_FROM → SMTP mailbox (see smtp-send).
  */
 export async function sendBulkEnquiryNotification(payload: {
+  enquiryId?: string;
   name: string;
   phone: string;
   email: string | null;
@@ -43,15 +20,6 @@ export async function sendBulkEnquiryNotification(payload: {
     process.env.BULK_ENQUIRY_NOTIFY_EMAIL?.trim() ||
     process.env.ORDER_NOTIFY_EMAIL?.trim() ||
     "orders@saffron.town";
-  const transporter = getTransporter();
-  if (!transporter) return false;
-
-  const smtpUser = process.env.SMTP_USER?.trim();
-  const from =
-    process.env.BULK_ENQUIRY_FROM?.trim() ||
-    process.env.ORDER_NOTIFY_FROM?.trim() ||
-    (smtpUser ? `Saffron Town <${smtpUser}>` : undefined);
-  if (!from) return false;
 
   const bccRaw = process.env.BULK_ENQUIRY_BCC?.trim();
   const bcc =
@@ -63,6 +31,9 @@ export async function sendBulkEnquiryNotification(payload: {
       : undefined;
 
   const text = [
+    ...(payload.enquiryId
+      ? [`Saved as BulkEnquiry ${payload.enquiryId}`, ""]
+      : []),
     "New bulk / wholesale enquiry — saffron.town/bulk-orders",
     "",
     `Name: ${payload.name}`,
@@ -81,32 +52,15 @@ export async function sendBulkEnquiryNotification(payload: {
     .filter((line) => line !== null)
     .join("\n");
 
-  try {
-    const info = await transporter.sendMail({
-      from,
-      to,
-      ...(bcc?.length ? { bcc } : {}),
-      ...(payload.email
-        ? {
-            replyTo: payload.email,
-          }
-        : {}),
-      subject: `[Bulk enquiry] ${payload.name} — ${payload.phone}`,
-      text,
-    });
-    console.info("[bulk-enquiry-notify] sent", {
-      to,
-      messageId: info.messageId,
-    });
-    return true;
-  } catch (e) {
-    console.error("[bulk-enquiry-notify] SMTP send failed", e);
-    const msg = e instanceof Error ? e.message : String(e);
-    if (msg.includes("Invalid login") || msg.includes("535")) {
-      console.error(
-        "[bulk-enquiry-notify] Zoho rejected SMTP credentials — use a Zoho mailbox for SMTP_USER and an app password.",
-      );
-    }
-    return false;
-  }
+  const result = await sendSmtpMail({
+    kind: "bulk-enquiry",
+    to,
+    from: resolveSmtpFrom({ preferBulkAlias: true }),
+    subject: `[Bulk enquiry] ${payload.name} — ${payload.phone}${payload.enquiryId ? ` (${payload.enquiryId})` : ""}`,
+    text,
+    ...(payload.email ? { replyTo: payload.email } : {}),
+    ...(bcc?.length ? { bcc } : {}),
+  });
+
+  return result.ok;
 }

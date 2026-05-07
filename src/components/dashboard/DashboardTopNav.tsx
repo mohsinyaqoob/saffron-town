@@ -41,6 +41,7 @@ export function DashboardTopNav() {
     >
       <NavLink href="/dashboard">Orders</NavLink>
       <NavLink href="/dashboard/customers">Customers</NavLink>
+      <NavLink href="/dashboard/bulk-enquiries">Bulk leads</NavLink>
       <details className="relative">
         <summary
           className={[

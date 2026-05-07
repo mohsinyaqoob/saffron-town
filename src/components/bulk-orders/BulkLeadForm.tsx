@@ -45,7 +45,6 @@ const defaultValues: BulkLeadFormClientValues = {
   approxGrams: "",
   timeline: "",
   message: "",
-  hpFieldK8m: "",
 };
 
 export function BulkLeadForm() {
@@ -64,8 +63,6 @@ export function BulkLeadForm() {
     defaultValues,
   });
 
-  const trap = register("hpFieldK8m");
-
   async function onSubmit(values: BulkLeadFormClientValues) {
     setSubmitState("loading");
     setSubmitMessage(null);
@@ -79,7 +76,6 @@ export function BulkLeadForm() {
       approxGrams: values.approxGrams?.trim() || "",
       timeline: values.timeline?.trim() || "",
       message: values.message.trim(),
-      hpFieldK8m: values.hpFieldK8m?.trim() || "",
     };
 
     try {
@@ -118,22 +114,10 @@ export function BulkLeadForm() {
   return (
     <form
       id="bulk-lead-form"
-      className="relative space-y-5"
+      className="space-y-5"
       noValidate
       onSubmit={handleSubmit(onSubmit)}
     >
-      <div className="absolute -left-[9999px] h-1 w-1 overflow-hidden opacity-0 pointer-events-none">
-        <label htmlFor="bulk-trap-hpFieldK8m">
-          Internal reference (leave blank)
-        </label>
-        <input
-          id="bulk-trap-hpFieldK8m"
-          tabIndex={-1}
-          autoComplete="off"
-          {...trap}
-        />
-      </div>
-
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="sm:col-span-2">
           <span className="text-sm font-semibold text-text-primary font-body">

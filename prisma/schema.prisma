@@ -43,3 +43,24 @@ model OrderItem {
   unitPriceRupees Int
   lineTotalRupees Int
 }
+
+/// Bulk / wholesale lead from `/bulk-orders`. Persisted before SMTP notify.
+model BulkEnquiry {
+  id              String    @id @default(cuid())
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  name            String    @db.VarChar(120)
+  phone           String    @db.VarChar(22)
+  email           String?   @db.VarChar(254)
+  organization    String?   @db.VarChar(200)
+  businessType    String?   @db.VarChar(80)
+  approxGrams     String?   @db.VarChar(80)
+  timeline        String?   @db.VarChar(120)
+  message         String    @db.Text
+
+  clientIp           String?   @db.VarChar(45)
+  emailNotifiedAt    DateTime?
+
+  @@index([createdAt])
+}

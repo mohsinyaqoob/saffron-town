@@ -13,6 +13,8 @@ import {
   validateCustomGrams,
 } from "@/lib/saffron-custom-pricing";
 
+export const runtime = "nodejs";
+
 const QUERY_TIMEOUT_MS = 15_000;
 
 function withTimeout<T>(
