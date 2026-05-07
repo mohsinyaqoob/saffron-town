@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { IMAGE_QUALITY_PHOTO, IMAGE_QUALITY_THUMB } from "@/lib/constants";
 import type { ProductPageData } from "@/lib/product-data";
 
 interface AmazonProductGalleryProps {
@@ -43,7 +44,8 @@ export function AmazonProductGallery({ product }: AmazonProductGalleryProps) {
               className="object-contain rounded-2xl"
               priority={idx === 0}
               loading={idx === 0 ? undefined : "lazy"}
-              sizes="(max-width: 768px) 100vw, 50vw"
+              quality={IMAGE_QUALITY_PHOTO}
+              sizes="(max-width: 768px) 100vw, (max-width: 1920px) 50vw, 960px"
             />
           </div>
         ))}
@@ -77,6 +79,7 @@ export function AmazonProductGallery({ product }: AmazonProductGalleryProps) {
                 height={56}
                 className="object-contain p-1"
                 loading="lazy"
+                quality={IMAGE_QUALITY_THUMB}
               />
             </button>
           ))}

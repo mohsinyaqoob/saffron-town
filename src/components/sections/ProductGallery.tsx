@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import { IMAGE_QUALITY_PHOTO, IMAGE_QUALITY_THUMB } from "@/lib/constants";
 import type { ProductPageData } from "@/lib/product-data";
 
 interface ProductGalleryProps {
@@ -20,7 +21,8 @@ export function ProductGallery({ product }: ProductGalleryProps) {
           fill
           className="object-cover transition-transform duration-700 group-hover:scale-105"
           priority
-          sizes="(max-width: 1024px) 100vw, 50vw"
+          quality={IMAGE_QUALITY_PHOTO}
+          sizes="(max-width: 1024px) 100vw, (max-width: 1920px) 50vw, 960px"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-dark/20 to-transparent pointer-events-none" />
       </div>
@@ -42,6 +44,8 @@ export function ProductGallery({ product }: ProductGalleryProps) {
                 alt={img.alt}
                 fill
                 className="object-cover"
+                quality={IMAGE_QUALITY_THUMB}
+                sizes="96px"
               />
             </button>
           ))}

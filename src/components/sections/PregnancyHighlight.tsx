@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
+import { IMAGE_QUALITY_PHOTO } from "@/lib/constants";
 import { getJournalSettings } from "@/lib/journal-settings";
 
 /**
@@ -27,6 +28,7 @@ export async function PregnancyHighlight() {
             className="object-cover"
             sizes="(max-width: 1024px) 100vw, 480px"
             loading="lazy"
+            quality={IMAGE_QUALITY_PHOTO}
           />
         </div>
         <div>

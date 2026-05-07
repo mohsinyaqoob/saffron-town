@@ -2,17 +2,19 @@ import Image from "next/image";
 import Link from "next/link";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
+import { IMAGE_QUALITY_PHOTO } from "@/lib/constants";
 
 export function Hero() {
   return (
     <section className="relative min-h-dvh w-full overflow-hidden bg-background">
       <Image
-        src="/images/hero-v3.png"
+        src="/images/hero-v3.webp"
         alt="Hands cradling fresh-harvest Kashmiri Mongra kesar threads from Pampore"
         fill
         priority
+        quality={IMAGE_QUALITY_PHOTO}
         className="object-cover"
-        sizes="100vw"
+        sizes="(max-width: 750px) 100vw, (max-width: 1920px) 100vw, 1920px"
       />
       <div
         className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/65 via-black/55 to-black/70"

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
+import { IMAGE_QUALITY_PHOTO } from "@/lib/constants";
 import {
   getCategoryDisplayName,
   PRODUCT_PAGE_URL,
@@ -35,7 +36,8 @@ export function ProductCard({ product }: ProductCardProps) {
           alt={product.images[0].alt}
           fill
           className="object-cover transition-transform duration-700 group-hover:scale-110"
-          sizes="(max-width: 768px) 100vw, 320px"
+          sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 400px"
+          quality={IMAGE_QUALITY_PHOTO}
         />
         <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-dark/40 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
         <div className="absolute top-4 left-4">

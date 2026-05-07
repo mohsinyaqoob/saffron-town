@@ -15,7 +15,7 @@ import { PortableText } from "@/components/PortableText";
 import { Badge } from "@/components/ui/Badge";
 import { getAuthorByName } from "@/lib/authors-data";
 import { getAllPosts, getPostBySlug } from "@/lib/blog-data";
-import { SITE_CONFIG } from "@/lib/constants";
+import { IMAGE_QUALITY_PHOTO, SITE_CONFIG } from "@/lib/constants";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -181,7 +181,8 @@ export default async function BlogPostPage({ params }: Props) {
               fill
               className="object-cover"
               priority
-              sizes="100vw"
+              quality={IMAGE_QUALITY_PHOTO}
+              sizes="(max-width: 750px) 100vw, (max-width: 1920px) 100vw, 1920px"
             />
             <div className="absolute inset-0 bg-black/40 z-10" />
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/60 z-10" />
@@ -333,7 +334,9 @@ export default async function BlogPostPage({ params }: Props) {
                           alt={rp.title}
                           fill
                           className="object-cover group-hover:scale-110 transition-transform duration-700"
+                          sizes="280px"
                           loading="lazy"
+                          quality={IMAGE_QUALITY_PHOTO}
                         />
                       </div>
                       <h5 className="font-display font-bold text-lg text-text-primary group-hover:text-primary transition-colors leading-snug">

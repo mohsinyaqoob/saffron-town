@@ -37,6 +37,15 @@ export const SITE_CONFIG = {
   ],
 } as const;
 
+/** `next/image` quality for hero, product photos, and blog cards (default is 75). */
+export const IMAGE_QUALITY_PHOTO = 68;
+
+/** Inline article / thumbnail imagery — slightly higher than hero for text-adjacent photos. */
+export const IMAGE_QUALITY_CONTENT = 70;
+
+/** Product gallery thumbnails and small previews. */
+export const IMAGE_QUALITY_THUMB = 65;
+
 /* Main nav: Home | Shop | Our Story | Reviews | Blog | Contact */
 export const NAV_LINKS = [
   { href: "/", label: "Home" },

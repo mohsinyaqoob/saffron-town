@@ -2,6 +2,7 @@ import { PortableText as PortableTextReact } from "@portabletext/react";
 import type { PortableTextBlock } from "@portabletext/types";
 import Image from "next/image";
 import Link from "next/link";
+import { IMAGE_QUALITY_CONTENT } from "@/lib/constants";
 import { urlFor } from "@/sanity/image";
 
 function isExternalUrl(href: string) {
@@ -51,7 +52,7 @@ const components = {
         .width(1200)
         .height(675)
         .format("webp")
-        .quality(80)
+        .quality(IMAGE_QUALITY_CONTENT)
         .url();
       return (
         <figure className="my-12">
@@ -62,6 +63,7 @@ const components = {
               fill
               className="object-cover"
               sizes="(max-width: 768px) 100vw, 720px"
+              quality={IMAGE_QUALITY_CONTENT}
             />
           </div>
           {value.caption && (

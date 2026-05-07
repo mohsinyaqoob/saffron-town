@@ -1,5 +1,6 @@
 // src/lib/blog-data.ts
 
+import { IMAGE_QUALITY_CONTENT, IMAGE_QUALITY_PHOTO } from "@/lib/constants";
 import { client } from "@/sanity/client";
 import { urlFor } from "@/sanity/image";
 import {
@@ -69,11 +70,16 @@ function toBlogPost(p: SanityPost, pillarRules: InternalLinkRule[]): BlogPost {
         .width(1200)
         .height(630)
         .format("webp")
-        .quality(80)
+        .quality(IMAGE_QUALITY_PHOTO)
         .url()
     : "";
   const ogImage = p.ogImage
-    ? urlFor(p.ogImage).width(1200).height(630).format("webp").quality(80).url()
+    ? urlFor(p.ogImage)
+        .width(1200)
+        .height(630)
+        .format("webp")
+        .quality(IMAGE_QUALITY_CONTENT)
+        .url()
     : undefined;
   return {
     id: p._id,

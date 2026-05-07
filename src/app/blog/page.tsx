@@ -7,7 +7,7 @@ import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { PageHeader } from "@/components/sections";
 import { getAllPosts } from "@/lib/blog-data";
-import { SITE_CONFIG } from "@/lib/constants";
+import { IMAGE_QUALITY_PHOTO, SITE_CONFIG } from "@/lib/constants";
 
 /** Blog listing — ISR: re-generates every 60s so new posts go live without full rebuild */
 export const revalidate = 60;
@@ -91,8 +91,9 @@ export default async function BlogListPage() {
                       alt={post.imageAlt ?? post.title}
                       fill
                       className="object-cover transition-transform duration-700 group-hover:scale-110"
-                      sizes="(max-width: 768px) 100vw, 400px"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1920px) 50vw, 900px"
                       loading="lazy"
+                      quality={IMAGE_QUALITY_PHOTO}
                     />
                     {post.category && (
                       <div className="absolute top-4 left-4">

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { getAllPosts } from "@/lib/blog-data";
+import { IMAGE_QUALITY_PHOTO } from "@/lib/constants";
 
 export async function BlogSection() {
   const posts = (await getAllPosts()).slice(0, 3);
@@ -57,7 +58,9 @@ export async function BlogSection() {
                   width={600}
                   height={400}
                   className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 400px"
                   loading="lazy"
+                  quality={IMAGE_QUALITY_PHOTO}
                 />
               </Link>
               <div className="flex flex-col flex-grow p-8">

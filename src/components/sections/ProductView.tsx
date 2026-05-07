@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/Button";
 import { useShop } from "@/context/ShopContext";
 import { trackAddToCart } from "@/lib/analytics";
 import { checkoutHref } from "@/lib/checkout-line";
+import { IMAGE_QUALITY_PHOTO, IMAGE_QUALITY_THUMB } from "@/lib/constants";
 import type { ProductPageData } from "@/lib/product-data";
 
 interface ProductViewProps {
@@ -76,7 +77,8 @@ export function ProductView({ product }: ProductViewProps) {
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-105"
                 priority
-                sizes="(max-width: 1024px) 100vw, 50vw"
+                quality={IMAGE_QUALITY_PHOTO}
+                sizes="(max-width: 1024px) 100vw, (max-width: 1920px) 50vw, 960px"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-dark/20 to-transparent pointer-events-none" />
             </div>
@@ -98,6 +100,8 @@ export function ProductView({ product }: ProductViewProps) {
                       alt={img.alt}
                       fill
                       className="object-cover"
+                      quality={IMAGE_QUALITY_THUMB}
+                      sizes="96px"
                     />
                   </button>
                 ))}

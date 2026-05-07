@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { IMAGE_QUALITY_PHOTO } from "@/lib/constants";
 import { PRODUCT_PAGE_URL } from "@/lib/product-data";
 
 export function ShopBanner() {
@@ -37,8 +38,9 @@ export function ShopBanner() {
               alt="Kashmiri Mongra saffron threads in wooden bowl"
               fill
               className="object-contain drop-shadow-2xl rounded-2xl"
-              sizes="320px"
+              sizes="(max-width: 1024px) 256px, 320px"
               loading="lazy"
+              quality={IMAGE_QUALITY_PHOTO}
             />
           </div>
         </div>
