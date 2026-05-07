@@ -16,6 +16,7 @@ Use these slugs for all internal links across every blog post.
 - /blog/saffron-in-milk-benefits
 - /blog/how-to-test-saffron-at-home
 - /blog/kashmiri-saffron-vs-iranian-saffron
+- /blog/kashmir-saffron-wholesale-suppliers
 - /blog/saffron-for-pregnancy
 
 ### New Posts (slugs to create — use these in all 10 prompts)
@@ -32,6 +33,7 @@ Use these slugs for all internal links across every blog post.
 - /blog/saffron-for-hormonal-balance
 
 ### Shop & Core Pages
+- /bulk-orders
 - /shop/saffron
 - /lab-reports
 - /our-story

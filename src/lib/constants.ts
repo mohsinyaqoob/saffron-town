@@ -51,6 +51,7 @@ export const NAV_LINKS = [
   { href: "/", label: "Home" },
   { href: "/our-story", label: "Our Story" },
   { href: "/shop/saffron", label: "Shop" },
+  { href: "/bulk-orders", label: "Bulk orders" },
   { href: "/reviews", label: "Reviews" },
   { href: "/blog", label: "Blog" },
   { href: "/contact", label: "Contact" },

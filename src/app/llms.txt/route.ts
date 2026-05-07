@@ -92,6 +92,7 @@ export async function GET() {
 ## Shop
 
 - [Shop Pure Kashmiri Mongra Kesar](${u}/shop/saffron): Grade A++ Kashmiri saffron from Pampore. 1g to 50g packs. ISO 3632 Category I. Crocin >250.
+- [Bulk orders & wholesale](${u}/bulk-orders): Restaurants, sweet shops, gifting, and trade — call, WhatsApp, or request a structured quote.
 - [Pre-book 2026 Harvest](${u}/prebook-2026-harvest): Reserve the current-year harvest before it ships.
 - [Gifting](${u}/gifting): Ready-to-gift saffron sets.
 

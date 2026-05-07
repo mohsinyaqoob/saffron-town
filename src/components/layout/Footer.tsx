@@ -6,6 +6,7 @@ import { FooterJournalLinks } from "./FooterJournalLinks";
 const FOOTER_LINKS = [
   { href: "/", label: "Home" },
   { href: "/shop", label: "Shop" },
+  { href: "/bulk-orders", label: "Bulk orders" },
   { href: "/prebook-2026-harvest", label: "Prebook" },
   { href: "/shop/saffron", label: "Mongra Saffron" },
   { href: "/gifting", label: "Gifting" },

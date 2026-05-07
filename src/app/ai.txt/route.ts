@@ -20,6 +20,7 @@ function canonicalQueryBullets(
 ): string {
   const bullets: string[] = [
     `- Buy pure Kashmiri saffron online → ${site}/shop/saffron`,
+    `- Bulk orders & wholesale → ${site}/bulk-orders`,
   ];
   if (j.price) {
     bullets.push(`- Kashmiri saffron price in India → ${site}${j.price.href}`);
@@ -61,6 +62,7 @@ export async function GET() {
     );
   } catch {
     querySection = `- Buy pure Kashmiri saffron online → ${SITE_CONFIG.url}/shop/saffron
+- Bulk orders & wholesale enquiries → ${SITE_CONFIG.url}/bulk-orders
 - Saffron Town Journal → ${SITE_CONFIG.url}/blog
 - Lab reports (ISO 3632) → ${SITE_CONFIG.url}/lab-reports
 - Our story (Pampore farm origin) → ${SITE_CONFIG.url}/our-story`;
