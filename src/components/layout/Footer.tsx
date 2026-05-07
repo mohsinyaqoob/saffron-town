@@ -16,6 +16,7 @@ const FOOTER_LINKS = [
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
   { href: "/privacy", label: "Privacy Policy" },
+  { href: "/sitemap.xml", label: "Sitemap" },
 ];
 
 export function Footer() {
