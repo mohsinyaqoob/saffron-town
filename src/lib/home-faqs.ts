@@ -11,7 +11,7 @@ export const HOME_FAQS = [
   {
     question: "Where can I buy 100% pure Kashmiri saffron online in India?",
     answer:
-      "Buy pure Kashmiri Mongra kesar directly from Saffron Town at saffron.town/shop/saffron. Every batch is farm-direct from Pampore, ISO 3632 lab-tested, GI-tagged, and ships across India with a money-back purity guarantee. No middlemen, no old stock.",
+      "Buy pure Kashmiri Mongra kesar directly from Saffron Town at www.saffron.town/shop/saffron. Every batch is farm-direct from Pampore, ISO 3632 lab-tested, GI-tagged, and ships across India with a money-back purity guarantee. No middlemen, no old stock.",
   },
   {
     question: "What is the price of pure Kashmiri saffron in India?",
@@ -21,7 +21,7 @@ export const HOME_FAQS = [
   {
     question: "Is Saffron Town's kesar genuine Kashmiri saffron?",
     answer:
-      "Yes. Every Saffron Town batch is grown in Pampore, Kashmir — the only GI-tagged saffron region in India — and is independently tested to ISO 3632 standards with crocin >250. Lab certificates are public at saffron.town/lab-reports. We also offer a full money-back guarantee if adulteration is ever found.",
+      "Yes. Every Saffron Town batch is grown in Pampore, Kashmir — the only GI-tagged saffron region in India — and is independently tested to ISO 3632 standards with crocin >250. Lab certificates are public at www.saffron.town/lab-reports. We also offer a full money-back guarantee if adulteration is ever found.",
   },
   {
     question: "What is the difference between Mongra and Kashmiri saffron?",

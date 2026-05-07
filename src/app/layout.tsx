@@ -22,12 +22,14 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_CONFIG.url),
   title: {
     default:
-      "Buy Pure Kashmiri Kesar Online | Mongra Saffron | Saffron Town India",
+      "Buy Pure Kashmiri Kesar Online | Pampore Saffron Town | Saffron Town",
     template: "%s | Saffron Town",
   },
   description:
-    "Buy 100% pure Kashmiri Mongra kesar online. Grade A++ saffron, ISO lab-tested, farm-direct from Pampore. Fresh harvest only. Free delivery above ₹499.",
+    "Buy 100% pure Kashmiri Mongra kesar online—farm-direct from Pampore (Kashmir's saffron town). Grade A++ saffron, ISO lab-tested, GI-tagged. Fresh harvest only. Free delivery above ₹499.",
   keywords: [
+    "pampore saffron town",
+    "pampore saffron town kashmir",
     "buy kesar online",
     "buy saffron online india",
     "kashmiri saffron",

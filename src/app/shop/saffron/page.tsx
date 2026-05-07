@@ -23,7 +23,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const url = `${SITE_CONFIG.url}/shop/saffron`;
   const title = "Buy Kashmiri Mongra Kesar Online — Grade A++ | Saffron Town";
   const description =
-    "Buy original Kashmiri Mongra kesar online. Grade A++ saffron with crocin >250. ISO 3632 certified, GI-tagged. 1,240+ reviews. Ships across India. Money-back guarantee.";
+    "Buy original Pampore Kashmiri Mongra kesar online (Kashmir's saffron town). Grade A++ crocin >250, ISO 3632 certified, GI-tagged. 1,240+ reviews. Ships across India. Money-back guarantee.";
   const ogImage = product.images?.[0]?.url?.startsWith("http")
     ? product.images[0].url
     : `${SITE_CONFIG.url}${product.images?.[0]?.url || "/images/products/mongra-saffron-1.png"}`;

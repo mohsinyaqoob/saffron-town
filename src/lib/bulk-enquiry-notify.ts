@@ -34,7 +34,7 @@ export async function sendBulkEnquiryNotification(payload: {
     ...(payload.enquiryId
       ? [`Saved as BulkEnquiry ${payload.enquiryId}`, ""]
       : []),
-    "New bulk / wholesale enquiry — saffron.town/bulk-orders",
+    "New bulk / wholesale enquiry — www.saffron.town/bulk-orders",
     "",
     `Name: ${payload.name}`,
     `Phone: ${payload.phone}`,

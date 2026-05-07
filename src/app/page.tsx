@@ -22,9 +22,9 @@ import { HOME_FAQS } from "@/lib/home-faqs";
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: "Buy Pure Kashmiri Kesar Online | Mongra Saffron | Saffron Town India",
+  title: "Buy Pure Kashmiri Kesar Online | Pampore Saffron Town | Saffron Town",
   description:
-    "Buy 100% pure Kashmiri Mongra kesar online. Grade A++ saffron, ISO lab-tested, farm-direct from Pampore. Fresh harvest only. Free delivery above ₹499.",
+    "Buy 100% pure Kashmiri Mongra kesar online—farm-direct from Pampore (Kashmir's saffron town). Grade A++ saffron, ISO lab-tested, GI-tagged. Fresh harvest only. Free delivery above ₹499.",
   alternates: {
     canonical: SITE_CONFIG.url,
     languages: {
@@ -34,9 +34,9 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title:
-      "Buy Pure Kashmiri Kesar Online | Mongra Saffron | Saffron Town India",
+      "Buy Pure Kashmiri Kesar Online | Pampore Saffron Town | Saffron Town",
     description:
-      "Buy 100% pure Kashmiri Mongra kesar online. Grade A++ saffron, ISO lab-tested, farm-direct from Pampore. Fresh harvest only. Free delivery above ₹499.",
+      "Buy 100% pure Kashmiri Mongra kesar online—farm-direct from Pampore (Kashmir's saffron town). Grade A++ saffron, ISO lab-tested, GI-tagged. Fresh harvest only. Free delivery above ₹499.",
     url: SITE_CONFIG.url,
     type: "website",
     images: [
@@ -51,9 +51,9 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title:
-      "Buy Pure Kashmiri Kesar Online | Mongra Saffron | Saffron Town India",
+      "Buy Pure Kashmiri Kesar Online | Pampore Saffron Town | Saffron Town",
     description:
-      "Buy 100% pure Kashmiri Mongra kesar online. Grade A++ saffron, ISO lab-tested, farm-direct from Pampore. Free delivery above ₹499.",
+      "Buy 100% pure Kashmiri Mongra kesar—farm-direct from Pampore (Kashmir's saffron town). ISO lab-tested, GI-tagged. Free delivery above ₹499.",
     images: [`${SITE_CONFIG.url}/products-grid.png`],
   },
 };

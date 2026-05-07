@@ -1,6 +1,15 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  async redirects() {
+    return [
+      {
+        source: "/blog/kesar-during-pregnancy",
+        destination: "/blog/saffron-for-pregnancy",
+        permanent: true,
+      },
+    ];
+  },
   serverExternalPackages: ["pdfkit"],
   images: {
     // Cap generated widths so ultra-wide viewports don’t pull 3840px assets (see deviceSizes).

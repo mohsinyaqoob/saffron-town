@@ -14,10 +14,13 @@ const PAGE_URL = `${SITE_CONFIG.url}/our-story`;
 const OG_IMAGE = `${SITE_CONFIG.url}/products-grid.png`;
 
 export const metadata: Metadata = {
-  title: "About Saffron Town — From Pampore to Your Table",
+  title: "Pampore — Kashmir's Saffron Town | About Saffron Town",
   description:
-    "Saffron Town takes its name from Pampore, Kashmir—the true Saffron Town. Farm-direct, 100% pure Kashmiri Mongra saffron. Lab-tested, fresh harvest only. Discover our story.",
+    "Pampore is India's GI-tagged saffron town in Kashmir—this is why we're named Saffron Town. Farm-direct Mongra kesar, ISO 3632 lab-tested, fresh harvest. Read the origin story; shop pure Kashmiri saffron.",
   keywords: [
+    "pampore saffron town kashmir",
+    "pampore known as saffron town",
+    "saffron town of kashmir",
     "Saffron Town story",
     "Pampore saffron",
     "Kashmir saffron origin",
@@ -31,9 +34,9 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: PAGE_URL },
   openGraph: {
-    title: "About Saffron Town — From Pampore to Your Table",
+    title: "Pampore — Kashmir's Saffron Town | About Saffron Town",
     description:
-      "Named after Pampore, the real Saffron Town. Farm-direct, lab-tested, fresh harvest. 100% pure Kashmiri saffron. Zero compromise.",
+      "Pampore is Kashmir's official saffron belt—our namesake. Farm-direct Mongra, ISO-tested, fresh harvest. Shop genuine kesar from the fields that define Saffron Town.",
     url: PAGE_URL,
     type: "website",
     images: [
@@ -47,9 +50,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "About Saffron Town — From Pampore to Your Table",
+    title: "Pampore — Kashmir's Saffron Town | About Saffron Town",
     description:
-      "Farm-direct Kashmiri saffron from Pampore. Lab-tested. Fresh harvest only. Zero compromise.",
+      "Why we're called Saffron Town: Pampore, Kashmir's GI-tagged saffron town. Farm-direct, lab-tested Mongra kesar.",
     images: [OG_IMAGE],
   },
   robots: {
@@ -63,9 +66,9 @@ export const metadata: Metadata = {
 const webPageSchema = {
   "@context": "https://schema.org",
   "@type": "WebPage",
-  name: "About Saffron Town — From Pampore to Your Table",
+  name: "Pampore — Kashmir's Saffron Town | About Saffron Town",
   description:
-    "Saffron Town takes its name from Pampore, Kashmir—the true Saffron Town. Farm-direct, 100% pure Kashmiri Mongra saffron. Lab-tested, fresh harvest only.",
+    "Pampore, Kashmir is the saffron town that named our brand. Farm-direct Mongra kesar, ISO lab-tested, fresh harvest only.",
   url: PAGE_URL,
   publisher: {
     "@type": "Organization",
@@ -96,11 +99,11 @@ export default function OurStoryPage() {
             { label: "Our Story", href: "/our-story" },
           ]}
           title="About Saffron Town"
-          description="We took our name from a place: Pampore, Kashmir. The real Saffron Town. Where the world's finest saffron has been grown for centuries."
+          description="Pampore is the saffron town of Kashmir—India's GI-tagged kesar belt. Saffron Town is named for this place: farm-direct Mongra, lab-tested, fresh harvest."
           cta={{ href: "/shop/saffron", label: "Explore our saffron" }}
         />
 
-        <article aria-label="About Saffron Town — From Pampore to Your Table">
+        <article aria-label="Pampore — Kashmir's Saffron Town | About Saffron Town">
           {/* The place: Pampore heritage */}
           <section
             className="py-12 sm:py-16 lg:py-24"
@@ -111,15 +114,17 @@ export default function OurStoryPage() {
                 id="section-pampore"
                 className="font-display text-2xl font-bold text-text-primary sm:text-3xl tracking-tight"
               >
-                The Place That Named Us
+                The Place That Named Us: Pampore, the Saffron Town of Kashmir
               </h2>
               <div className="mt-6 space-y-6 text-secondary font-body">
                 <p className="text-base sm:text-lg leading-relaxed">
-                  In the foothills of the Himalayas, a small town called Pampore
-                  wakes up each autumn to a sea of purple crocus blossoms. For
-                  generations, families here have cultivated saffron—thread by
-                  thread, flower by flower. Locals don&apos;t call it Kashmir;
-                  they call it the Saffron Town.
+                  Pampore—often called the saffron town of Kashmir—is where
+                  India&apos;s GI-tagged Kashmiri kesar is grown. In the
+                  foothills of the Himalayas, this belt wakes up each autumn to
+                  a sea of purple crocus blossoms. For generations, families
+                  here have cultivated saffron thread by thread, flower by
+                  flower. Locals don&apos;t only say Kashmir; they call this
+                  place the saffron town.
                 </p>
                 <p className="text-base sm:text-lg leading-relaxed">
                   That name stuck with us. Not as a marketing gimmick, but as a
