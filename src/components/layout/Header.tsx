@@ -31,17 +31,27 @@ export function Header() {
 
   const transparentMode = isHome && isAtTop && !mobileMenuOpen;
 
+  /** Height of main header row (must match Hero top inset). */
+  const headerBarH = "5rem";
+
   return (
     <header
       className={cn(
         "z-50 w-full max-w-full min-w-0 overflow-x-hidden transition-all duration-300",
+        "pt-[env(safe-area-inset-top,0px)]",
         isHome ? "fixed left-0 right-0 top-0" : "sticky top-0 left-0 right-0",
         transparentMode
           ? "bg-transparent border-b border-transparent shadow-none"
           : "bg-background border-b-2 border-secondary-border/50 shadow-sm shadow-dark/5",
       )}
     >
-      <div className="mx-auto flex h-20 min-w-0 w-full max-w-7xl items-center justify-between gap-1.5 px-3 sm:gap-2 sm:px-6 lg:px-20">
+      <div
+        className={cn(
+          "mx-auto flex min-w-0 w-full max-w-7xl items-center justify-between gap-1.5 sm:gap-2",
+          "h-20 pl-[max(0.75rem,env(safe-area-inset-left,0px))] pr-[max(0.75rem,env(safe-area-inset-right,0px))]",
+          "sm:pl-6 sm:pr-6 lg:pl-20 lg:pr-20",
+        )}
+      >
         <Link
           href="/"
           className="flex min-w-0 flex-1 items-center overflow-hidden pr-1"
@@ -169,7 +179,8 @@ export function Header() {
         type="button"
         onClick={() => setMobileMenuOpen(false)}
         className={cn(
-          "lg:hidden fixed inset-0 top-20 bg-dark/40 z-30 transition-opacity duration-300",
+          "lg:hidden fixed inset-0 z-30 bg-dark/40 transition-opacity duration-300",
+          `top-[calc(env(safe-area-inset-top,0px)+${headerBarH})]`,
           mobileMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none",
         )}
         aria-label="Close menu"
@@ -177,7 +188,10 @@ export function Header() {
 
       <div
         className={cn(
-          "lg:hidden fixed inset-x-0 top-20 z-40 max-w-[100vw] pt-2 px-3 pointer-events-none sm:px-4",
+          "lg:hidden fixed inset-x-0 z-40 max-w-[100vw] pt-2 pointer-events-none",
+          "pl-[max(0.75rem,env(safe-area-inset-left,0px))] pr-[max(0.75rem,env(safe-area-inset-right,0px))]",
+          "sm:pl-4 sm:pr-4",
+          `top-[calc(env(safe-area-inset-top,0px)+${headerBarH})]`,
           "transition-all duration-300 ease-out",
           !mobileMenuOpen && "invisible opacity-0",
         )}
@@ -185,7 +199,8 @@ export function Header() {
       >
         <nav
           className={cn(
-            "pointer-events-auto w-full rounded-xl border border-secondary-border/30 bg-background-alt shadow-xl overflow-y-auto max-h-[calc(100vh-6rem)] px-6 py-6 space-y-1",
+            "pointer-events-auto w-full rounded-xl border border-secondary-border/30 bg-background-alt shadow-xl overflow-y-auto space-y-1 px-6 py-6",
+            "max-h-[calc(100dvh-env(safe-area-inset-top,0px)-env(safe-area-inset-bottom,0px)-5rem-3rem)]",
             "transition-all duration-300 ease-out",
             mobileMenuOpen
               ? "translate-y-0 opacity-100"

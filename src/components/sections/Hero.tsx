@@ -22,7 +22,7 @@ export function Hero() {
       />
 
       <div
-        className="relative z-10 mx-auto flex min-h-dvh w-full max-w-7xl flex-col justify-center pl-[max(1.5rem,env(safe-area-inset-left))] pr-[max(1.5rem,env(safe-area-inset-right))] pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] lg:px-20"
+        className="relative z-10 mx-auto flex min-h-dvh w-full max-w-7xl flex-col justify-center pl-[max(1.5rem,env(safe-area-inset-left,0px))] pr-[max(1.5rem,env(safe-area-inset-right,0px))] pt-[calc(env(safe-area-inset-top,0px)+5rem)] pb-[max(1.25rem,env(safe-area-inset-bottom,0px))] lg:pl-[max(5rem,env(safe-area-inset-left,0px))] lg:pr-[max(5rem,env(safe-area-inset-right,0px))]"
         data-home-hero
       >
         <div className="mx-auto flex w-full max-w-3xl flex-col items-center gap-6 text-center">
