@@ -1,6 +1,7 @@
 import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata, Viewport } from "next";
 import { Figtree, Playfair_Display } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { ShopProvider } from "@/context/ShopContext";
@@ -114,6 +115,14 @@ export default function RootLayout({
         {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
           <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
         )}
+        <Script id="zoho-salesiq-init" strategy="afterInteractive">
+          {`window.$zoho=window.$zoho || {};$zoho.salesiq=$zoho.salesiq||{ready:function(){}}`}
+        </Script>
+        <Script
+          id="zsiqscript"
+          src="https://salesiq.zohopublic.in/widget?wc=siq8fe55a541cce5f6ee2079fbcc0aaf5a80d3a712afb69a241c93f57bf18bc1b58"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );
