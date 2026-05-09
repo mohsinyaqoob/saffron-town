@@ -21,6 +21,9 @@ import { HOME_FAQS } from "@/lib/home-faqs";
 /** Home fetches blog preview from Sanity — ISR so new posts appear without full rebuild */
 export const revalidate = 60;
 
+/** “Live activity” toast on the homepage (`ActivityFeedToast`). Off by default. */
+const shopLiveFeedEnabled = process.env.SHOP_LIVE_FEED_ENABLED === "true";
+
 export const metadata: Metadata = {
   title: "Buy Pure Kashmiri Kesar Online | Pampore Saffron Town | Saffron Town",
   description:
@@ -135,7 +138,7 @@ export default function Home() {
           <CtaSection />
         </div>
       </main>
-      <ActivityFeedToast />
+      {shopLiveFeedEnabled ? <ActivityFeedToast /> : null}
       <Footer />
     </>
   );
