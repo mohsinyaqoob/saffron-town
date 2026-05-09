@@ -69,6 +69,25 @@ export type EnvRequirements = {
   needSanityWrite: boolean;
 };
 
+/** Placeholder / example IDs that still pass `opt()` but break Sanity API (e.g. undetected CI misconfiguration). */
+function assertRealSanityProjectId(projectId: string): void {
+  const id = projectId.trim();
+  const lower = id.toLowerCase();
+  const bad =
+    lower === "your-project-id" ||
+    lower === "your_project_id" ||
+    lower === "changeme" ||
+    lower === "placeholder" ||
+    /^your[-_]project/i.test(id);
+  if (bad) {
+    throw new Error(
+      `NEXT_PUBLIC_SANITY_PROJECT_ID looks like a placeholder (${JSON.stringify(id)}). ` +
+        `Set your real Sanity project ID: GitHub repo → Settings → Secrets and variables → Actions → Variables, ` +
+        `same value as NEXT_PUBLIC_SANITY_PROJECT_ID in local .env (manage.sanity.io → Project → Project ID).`,
+    );
+  }
+}
+
 export function loadAutomationEnv(reqs: EnvRequirements): AutomationEnv {
   const googleServiceAccountJson = req("GOOGLE_SERVICE_ACCOUNT_JSON");
   const spreadsheetId = opt("GOOGLE_SHEET_ID", "");
@@ -104,6 +123,10 @@ export function loadAutomationEnv(reqs: EnvRequirements): AutomationEnv {
     throw new Error(
       "Missing NEXT_PUBLIC_SANITY_PROJECT_ID (needed for internal links and/or publishing).",
     );
+  }
+
+  if (reqs.needGemini || reqs.needSanityWrite) {
+    assertRealSanityProjectId(projectIdRaw);
   }
 
   return {

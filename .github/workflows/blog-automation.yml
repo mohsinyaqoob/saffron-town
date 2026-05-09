@@ -1,4 +1,9 @@
 # Runs 09:00 Asia/Kolkata == 03:30 UTC. Adjust cron if you change AUTOMATION_TZ.
+#
+# Required GitHub configuration (Settings → Secrets and variables → Actions):
+#   Secrets: GOOGLE_SERVICE_ACCOUNT_JSON, SANITY_API_WRITE_TOKEN, GEMINI_API_KEY
+#   Variables: GOOGLE_SHEET_ID, NEXT_PUBLIC_SANITY_PROJECT_ID (real ID from sanity.io — NOT "your-project-id"),
+#              optionally NEXT_PUBLIC_SANITY_DATASET (default production), SITE_PUBLIC_URL, etc.
 name: Blog automation (Sheet → Sanity)
 
 on:

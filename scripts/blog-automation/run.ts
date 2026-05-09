@@ -176,6 +176,10 @@ async function main() {
             seoDescription: generated.seoDescription,
             keyword: r.keyword,
             mainImageAlt: generated.mainImageAlt,
+            slug,
+            category: generated.category,
+            variantAngle: variantLabel,
+            body: generated.body,
           });
           const ext =
             mimeType.includes("jpeg") || mimeType.includes("jpg")
