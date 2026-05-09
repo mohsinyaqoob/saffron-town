@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { SITE_CONFIG } from "@/lib/constants";
-import { FooterJournalLinks } from "./FooterJournalLinks";
 
 const FOOTER_LINKS = [
   { href: "/", label: "Home" },
@@ -59,7 +58,6 @@ export function Footer() {
             ))}
           </div>
         </div>
-        <FooterJournalLinks />
       </div>
     </footer>
   );

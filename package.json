@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "studio": "sanity dev",
-    "seed:blog": "npx tsx scripts/seed-blog-posts.ts",
+    "blog-automation": "tsx scripts/blog-automation/run.ts",
+    "blog-automation:dry-run": "tsx scripts/blog-automation/run.ts --dry-run",
+    "blog-automation:print-one": "tsx scripts/blog-automation/run.ts --print-only --limit 1",
     "postinstall": "prisma generate",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate deploy",
@@ -18,6 +20,8 @@
     "gsc:reauth": "bash scripts/run-gsc-auth.sh --reauth"
   },
   "dependencies": {
+    "@google/genai": "^2.0.1",
+    "@google/generative-ai": "^0.24.1",
     "@hookform/resolvers": "^5.2.2",
     "@next/third-parties": "^16.2.0",
     "@portabletext/react": "^6.0.3",
@@ -31,6 +35,7 @@
     "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",
     "clsx": "^2.1.1",
+    "googleapis": "^171.4.0",
     "gsap": "^3.15.0",
     "next": "16.1.6",
     "next-sanity": "^12.1.3",
@@ -59,6 +64,7 @@
     "eslint-config-next": "16.1.6",
     "prisma": "^7.7.0",
     "tailwindcss": "^4",
+    "tsx": "^4.21.0",
     "typescript": "5.9.3"
   }
 }

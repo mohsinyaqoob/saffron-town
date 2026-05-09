@@ -1,0 +1,53 @@
+# Runs 09:00 Asia/Kolkata == 03:30 UTC. Adjust cron if you change AUTOMATION_TZ.
+name: Blog automation (Sheet → Sanity)
+
+on:
+  schedule:
+    - cron: "30 3 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: blog-automation
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "pnpm"
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Run automation
+        env:
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+          GOOGLE_SHEET_ID: ${{ vars.GOOGLE_SHEET_ID }}
+          GOOGLE_SHEET_RANGE: ${{ vars.GOOGLE_SHEET_RANGE }}
+          SANITY_API_WRITE_TOKEN: ${{ secrets.SANITY_API_WRITE_TOKEN }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_MODEL: ${{ vars.GEMINI_MODEL }}
+          NEXT_PUBLIC_SANITY_PROJECT_ID: ${{ vars.NEXT_PUBLIC_SANITY_PROJECT_ID }}
+          NEXT_PUBLIC_SANITY_DATASET: ${{ vars.NEXT_PUBLIC_SANITY_DATASET }}
+          NEXT_PUBLIC_SANITY_API_VERSION: ${{ vars.NEXT_PUBLIC_SANITY_API_VERSION }}
+          SANITY_DEFAULT_IMAGE_ASSET_REF: ${{ vars.SANITY_DEFAULT_IMAGE_ASSET_REF }}
+          GEMINI_IMAGE_MODEL: ${{ vars.GEMINI_IMAGE_MODEL }}
+          AUTOMATION_MIN_INTERNAL_LINKS: ${{ vars.AUTOMATION_MIN_INTERNAL_LINKS }}
+          AUTOMATION_SKIP_IMAGE_GENERATION: ${{ vars.AUTOMATION_SKIP_IMAGE_GENERATION }}
+          SANITY_DEFAULT_AUTHOR_ID: ${{ vars.SANITY_DEFAULT_AUTHOR_ID }}
+          SITE_PUBLIC_URL: ${{ vars.SITE_PUBLIC_URL }}
+          AUTOMATION_TZ: ${{ vars.AUTOMATION_TZ }}
+          AUTOMATION_POSTS_PER_KEYWORD: ${{ vars.AUTOMATION_POSTS_PER_KEYWORD }}
+          AUTOMATION_MAX_POSTS_PER_RUN: ${{ vars.AUTOMATION_MAX_POSTS_PER_RUN }}
+          AUTOMATION_DEFAULT_CATEGORY: ${{ vars.AUTOMATION_DEFAULT_CATEGORY }}
+        run: pnpm blog-automation
