@@ -117,7 +117,7 @@ async function main() {
   outer: for (const r of due) {
     const ctx = await getLinks();
     const allowed = extractAllowedInternalUrls(ctx);
-    const n = r.postsPerRow ?? env.postsPerKeyword;
+    const n = r.postsForRow ?? env.postsPerKeyword;
     const categoryHint =
       r.category?.trim() && SHEET_CATEGORY.has(r.category.trim())
         ? r.category.trim()
