@@ -10,7 +10,7 @@ export function ShopBanner() {
         href={PRODUCT_PAGE_URL}
         className="block group relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary/90 via-primary to-primary/80 shadow-2xl shadow-primary/25 transition-transform duration-500 hover:scale-[1.02] hover:shadow-primary/30"
       >
-        <div className="absolute inset-0 bg-[url('/images/products/mongra-saffron-1.png')] bg-cover bg-center opacity-15 mix-blend-overlay" />
+        <div className="absolute inset-0 bg-[url('/images/products/mongra-saffron-1.webp')] bg-cover bg-center opacity-15 mix-blend-overlay" />
         <div className="absolute inset-0 bg-gradient-to-r from-dark/60 via-transparent to-transparent" />
         <div className="relative mx-auto flex max-w-7xl flex-col items-center gap-10 px-6 py-16 lg:flex-row lg:justify-between lg:px-20 lg:py-20">
           <div className="flex-1 text-center lg:text-left">
@@ -34,7 +34,7 @@ export function ShopBanner() {
           </div>
           <div className="relative h-64 w-64 flex-shrink-0 lg:h-80 lg:w-80">
             <Image
-              src="/images/harvest.png"
+              src="/images/harvest.webp"
               alt="Kashmiri Mongra saffron threads in wooden bowl"
               fill
               className="object-contain drop-shadow-2xl rounded-2xl"

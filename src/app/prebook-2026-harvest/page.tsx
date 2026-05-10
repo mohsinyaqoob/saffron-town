@@ -103,7 +103,7 @@ export default function Prebook2026HarvestPage() {
                 className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl shadow-lg ring-1 ring-secondary-border/20 lg:aspect-square lg:max-h-[420px]"
               >
                 <Image
-                  src="/images/harvest.png"
+                  src="/images/harvest.webp"
                   alt="Kashmiri saffron harvest"
                   fill
                   className="object-cover"

@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -56,7 +55,9 @@ export function Header() {
           href="/"
           className="flex min-w-0 flex-1 items-center overflow-hidden pr-1"
         >
-          <Image
+          {/* Plain img — SVGs aren't optimised by next/image, so this
+              avoids the "width or height modified" dev warning. */}
+          <img
             src="/logo-horizon.svg"
             alt={SITE_CONFIG.name}
             width={180}
@@ -65,7 +66,6 @@ export function Header() {
               "h-8 w-auto max-h-8 max-w-full object-contain object-left transition-[filter] duration-300 sm:h-10 sm:max-h-10 lg:max-w-[200px]",
               transparentMode && "brightness-0 invert",
             )}
-            priority
           />
         </Link>
 
