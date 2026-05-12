@@ -153,11 +153,36 @@ export default async function OrderSuccessPage({
                 </dd>
               </div>
               <div className="sm:col-span-2">
-                <dt className="text-text-muted">Delivery contact</dt>
+                <dt className="text-text-muted">Contact</dt>
                 <dd className="mt-0.5 font-semibold text-text-primary">
-                  {order.customerName} · {order.email} · {order.phone}
+                  {order.customerName}
                 </dd>
-                <dd className="mt-1 text-secondary">PIN {order.pincode}</dd>
+                <dd className="mt-1 text-secondary">{order.email}</dd>
+                <dd className="mt-0.5 text-secondary">{order.phone}</dd>
+              </div>
+              <div className="sm:col-span-2">
+                <dt className="text-text-muted">Delivery address</dt>
+                <dd className="mt-0.5 whitespace-pre-wrap font-semibold text-text-primary">
+                  {order.deliveryAddress ?? "—"}
+                </dd>
+              </div>
+              <div>
+                <dt className="text-text-muted">PIN code</dt>
+                <dd className="mt-0.5 font-semibold text-text-primary">
+                  {order.pincode}
+                </dd>
+              </div>
+              <div className="sm:col-span-2">
+                <dt className="text-text-muted">How did you hear about us?</dt>
+                <dd className="mt-0.5 font-semibold text-text-primary">
+                  {order.heardAboutUs?.trim() || "—"}
+                </dd>
+              </div>
+              <div className="sm:col-span-2">
+                <dt className="text-text-muted">Order notes</dt>
+                <dd className="mt-0.5 whitespace-pre-wrap text-secondary">
+                  {order.notes?.trim() || "—"}
+                </dd>
               </div>
             </dl>
 

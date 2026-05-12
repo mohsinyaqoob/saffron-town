@@ -85,22 +85,6 @@ export default async function DashboardOrdersPage() {
           <div className="flex flex-wrap items-baseline justify-between gap-2 border-b border-secondary-border/15 pb-4">
             <div>
               <p className="font-mono text-xs text-text-muted">{order.id}</p>
-              <p className="mt-1 text-sm font-semibold text-text-primary font-body">
-                {order.customerName} · {order.phone}
-              </p>
-              <p className="mt-1 text-xs text-secondary font-body">
-                {order.email} · PIN {order.pincode}
-              </p>
-              {order.heardAboutUs && (
-                <p className="mt-0.5 text-xs text-text-muted font-body">
-                  Heard about us: {order.heardAboutUs}
-                </p>
-              )}
-              {order.cityPin && (
-                <p className="text-xs text-secondary font-body">
-                  {order.cityPin}
-                </p>
-              )}
             </div>
             <div className="text-right">
               <p className="text-xs uppercase tracking-wide text-text-muted">
@@ -117,13 +101,84 @@ export default async function DashboardOrdersPage() {
               </p>
             </div>
           </div>
-          {order.notes && (
-            <p className="mt-3 text-sm text-secondary font-body">
-              <span className="font-semibold text-text-primary">Notes:</span>{" "}
-              {order.notes}
-            </p>
-          )}
-          <ul className="mt-4 space-y-2 text-sm font-body">
+
+          <div className="mt-5 grid gap-8 lg:grid-cols-3">
+            <div>
+              <h2 className="text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-text-muted font-body">
+                Contact
+              </h2>
+              <dl className="mt-3 space-y-3 text-sm font-body">
+                <div>
+                  <dt className="text-xs text-text-muted">Name</dt>
+                  <dd className="mt-0.5 font-medium text-text-primary">
+                    {order.customerName}
+                  </dd>
+                </div>
+                <div>
+                  <dt className="text-xs text-text-muted">Phone</dt>
+                  <dd className="mt-0.5 text-text-primary">{order.phone}</dd>
+                </div>
+                <div>
+                  <dt className="text-xs text-text-muted">Email</dt>
+                  <dd className="mt-0.5 break-all text-text-primary">
+                    {order.email}
+                  </dd>
+                </div>
+              </dl>
+            </div>
+
+            <div>
+              <h2 className="text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-text-muted font-body">
+                Delivery
+              </h2>
+              <dl className="mt-3 space-y-3 text-sm font-body">
+                <div>
+                  <dt className="text-xs text-text-muted">PIN code</dt>
+                  <dd className="mt-0.5 font-medium text-text-primary">
+                    {order.pincode}
+                  </dd>
+                </div>
+                <div>
+                  <dt className="text-xs text-text-muted">Address</dt>
+                  <dd className="mt-0.5 whitespace-pre-wrap text-text-primary">
+                    {order.deliveryAddress?.trim() || "—"}
+                  </dd>
+                </div>
+                {order.cityPin ? (
+                  <div>
+                    <dt className="text-xs text-text-muted">City / area</dt>
+                    <dd className="mt-0.5 whitespace-pre-wrap text-text-primary">
+                      {order.cityPin}
+                    </dd>
+                  </div>
+                ) : null}
+              </dl>
+            </div>
+
+            <div>
+              <h2 className="text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-text-muted font-body">
+                From checkout
+              </h2>
+              <dl className="mt-3 space-y-3 text-sm font-body">
+                <div>
+                  <dt className="text-xs text-text-muted">
+                    How did you hear about us?
+                  </dt>
+                  <dd className="mt-0.5 text-text-primary">
+                    {order.heardAboutUs?.trim() || "—"}
+                  </dd>
+                </div>
+                <div>
+                  <dt className="text-xs text-text-muted">Order notes</dt>
+                  <dd className="mt-0.5 whitespace-pre-wrap text-secondary">
+                    {order.notes?.trim() || "—"}
+                  </dd>
+                </div>
+              </dl>
+            </div>
+          </div>
+
+          <ul className="mt-8 space-y-2 border-t border-secondary-border/15 pt-5 text-sm font-body">
             {order.items.map((line) => (
               <li
                 key={line.id}

@@ -25,6 +25,7 @@ export async function sendOrderAdminNotification(payload: {
   customerEmail: string;
   phone: string;
   pincode: string;
+  deliveryAddress: string;
   subtotalRupees: number;
   currency: string;
   lines: Line[];
@@ -47,8 +48,9 @@ export async function sendOrderAdminNotification(payload: {
     `Email: ${payload.customerEmail}`,
     `Phone: ${payload.phone}`,
     `PIN: ${payload.pincode}`,
-    payload.heardAboutUs ? `Heard about us: ${payload.heardAboutUs}` : null,
-    payload.notes ? `Notes: ${payload.notes}` : null,
+    `Address: ${payload.deliveryAddress}`,
+    `How they heard about us: ${payload.heardAboutUs ?? "(not provided)"}`,
+    payload.notes ? `Order notes: ${payload.notes}` : null,
     "",
     "Items:",
     linesBlock,

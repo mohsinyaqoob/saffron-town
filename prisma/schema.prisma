@@ -21,13 +21,15 @@ model Order {
   status         OrderStatus @default(PENDING)
   currency       String      @default("INR")
   subtotalRupees Int
-  customerName   String
-  phone          String
-  email          String
-  pincode        String
-  heardAboutUs   String?
-  cityPin        String?
-  notes          String?
+  customerName    String
+  phone           String
+  email           String
+  pincode         String
+  /** Full postal address (building, street, area, city, state) as entered at checkout. */
+  deliveryAddress String?
+  heardAboutUs    String?
+  cityPin         String?
+  notes           String?
   items          OrderItem[]
 }
 

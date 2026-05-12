@@ -111,13 +111,28 @@ export function buildOrderPdfBuffer(order: OrderWithItems): Promise<Buffer> {
     doc.text(order.email, { width: innerW });
     doc.text(order.phone, { width: innerW });
     doc.text(`PIN ${order.pincode}`, { width: innerW });
+    if (order.deliveryAddress) {
+      doc.moveDown(0.35);
+      doc
+        .font(FONT_BODY)
+        .fontSize(10)
+        .fillColor(COLORS.body)
+        .text("Delivery address", { width: innerW });
+      doc.text(order.deliveryAddress, { width: innerW });
+    }
+    if (order.heardAboutUs) {
+      doc.moveDown(0.35);
+      doc.text(`How they heard about us  ${order.heardAboutUs}`, {
+        width: innerW,
+      });
+    }
     if (order.notes) {
       doc.moveDown(0.35);
       doc
         .font(FONT_BODY)
         .fontSize(10)
         .fillColor(COLORS.body)
-        .text(`Notes  ${order.notes}`, { width: innerW });
+        .text(`Order notes  ${order.notes}`, { width: innerW });
     }
     doc.moveDown(1.05);
 

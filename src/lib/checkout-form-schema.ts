@@ -9,6 +9,7 @@ export type CheckoutFormValues = {
   phone: string;
   email: string;
   pincode: string;
+  deliveryAddress: string;
   heardAboutUs: string;
   notes: string;
 };
@@ -34,6 +35,14 @@ export const checkoutFormSchema = z.object({
     .string()
     .trim()
     .regex(/^\d{6}$/, "Enter a valid 6-digit PIN code."),
+  deliveryAddress: z
+    .string()
+    .trim()
+    .min(
+      10,
+      "Please enter your full delivery address (building, street, area, city, state).",
+    )
+    .max(2000, "Address is too long."),
   heardAboutUs: z
     .string()
     .refine(

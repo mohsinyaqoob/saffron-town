@@ -98,6 +98,7 @@ export async function POST(request: Request) {
     phone?: string;
     email?: string;
     pincode?: string;
+    deliveryAddress?: string;
     heardAboutUs?: string;
     cityPin?: string;
     notes?: string;
@@ -108,6 +109,7 @@ export async function POST(request: Request) {
   const phoneRaw = parsed.phone?.trim().replace(/\s+/g, "") ?? "";
   const email = parsed.email?.trim().toLowerCase() ?? "";
   const pincode = parsed.pincode?.trim().replace(/\D/g, "") ?? "";
+  const deliveryAddress = parsed.deliveryAddress?.trim() ?? "";
   const heardRaw = parsed.heardAboutUs?.trim();
   const notes = parsed.notes?.trim();
   const items = Array.isArray(parsed.items) ? parsed.items : [];
@@ -134,6 +136,18 @@ export async function POST(request: Request) {
   if (!/^\d{6}$/.test(pincode)) {
     return NextResponse.json(
       { error: "Please enter a valid 6-digit PIN code." },
+      { status: 400 },
+    );
+  }
+  if (deliveryAddress.length < 10) {
+    return NextResponse.json(
+      { error: "Please enter your complete delivery address." },
+      { status: 400 },
+    );
+  }
+  if (deliveryAddress.length > 2000) {
+    return NextResponse.json(
+      { error: "Delivery address is too long." },
       { status: 400 },
     );
   }
@@ -263,6 +277,7 @@ export async function POST(request: Request) {
           phone: phoneRaw,
           email,
           pincode,
+          deliveryAddress,
           heardAboutUs: heardRaw && heardRaw.length > 0 ? heardRaw : null,
           notes: notes || null,
           items: { create: lineCreates },
@@ -279,6 +294,7 @@ export async function POST(request: Request) {
       customerEmail: email,
       phone: phoneRaw,
       pincode,
+      deliveryAddress,
       subtotalRupees,
       currency,
       lines: lineCreates.map((l) => ({

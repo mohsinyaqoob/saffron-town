@@ -70,6 +70,7 @@ export function CheckoutPageContent({ footer }: { footer: ReactNode }) {
       phone: "",
       email: "",
       pincode: "",
+      deliveryAddress: "",
       heardAboutUs: "",
       notes: "",
     },
@@ -109,6 +110,7 @@ export function CheckoutPageContent({ footer }: { footer: ReactNode }) {
         phone: data.phone,
         email: data.email.trim().toLowerCase(),
         pincode: data.pincode.trim(),
+        deliveryAddress: data.deliveryAddress.trim(),
         heardAboutUs: data.heardAboutUs || undefined,
         notes: data.notes || undefined,
         items: [
@@ -156,6 +158,7 @@ export function CheckoutPageContent({ footer }: { footer: ReactNode }) {
       "phone",
       "email",
       "pincode",
+      "deliveryAddress",
       "heardAboutUs",
       "notes",
     ];
@@ -177,6 +180,7 @@ export function CheckoutPageContent({ footer }: { footer: ReactNode }) {
     errors.phone ||
     errors.email ||
     errors.pincode ||
+    errors.deliveryAddress ||
     errors.heardAboutUs ||
     errors.notes;
 
@@ -473,6 +477,50 @@ export function CheckoutPageContent({ footer }: { footer: ReactNode }) {
                             role="alert"
                           >
                             {errors.pincode.message}
+                          </p>
+                        )}
+                      </div>
+                      <div
+                        id="checkout-field-deliveryAddress"
+                        className="sm:col-span-2"
+                      >
+                        <label
+                          className="block text-sm font-semibold text-text-primary font-body"
+                          htmlFor="checkout-input-address"
+                        >
+                          Delivery address
+                          <span className="text-red-600" aria-hidden>
+                            {" "}
+                            *
+                          </span>
+                          <textarea
+                            id="checkout-input-address"
+                            rows={3}
+                            autoComplete="street-address"
+                            aria-invalid={
+                              errors.deliveryAddress ? true : undefined
+                            }
+                            aria-describedby={
+                              errors.deliveryAddress
+                                ? "err-deliveryAddress"
+                                : undefined
+                            }
+                            className={cn(
+                              inputBaseClass,
+                              "resize-none border-secondary-border/40",
+                              errors.deliveryAddress && fieldErrorClass,
+                            )}
+                            placeholder="Building, street, area, city, state"
+                            {...register("deliveryAddress")}
+                          />
+                        </label>
+                        {errors.deliveryAddress && (
+                          <p
+                            id="err-deliveryAddress"
+                            className="mt-1.5 text-xs text-red-700 font-body"
+                            role="alert"
+                          >
+                            {errors.deliveryAddress.message}
                           </p>
                         )}
                       </div>
