@@ -1,6 +1,6 @@
 // src/lib/blog-data.ts
 
-import { IMAGE_QUALITY_CONTENT, IMAGE_QUALITY_PHOTO } from "@/lib/constants";
+import { IMAGE_QUALITY_PHOTO } from "@/lib/constants";
 import { client } from "@/sanity/client";
 import { urlFor } from "@/sanity/image";
 import {
@@ -66,23 +66,31 @@ function formatDate(iso: string) {
   });
 }
 
+/**
+ * WhatsApp, Facebook, and LinkedIn crawlers often show no preview when og:image
+ * points at WebP. Sanity JPEG at 1200×630 matches OG conventions.
+ */
+function urlForSocialPreview(source: {
+  asset?: { _ref?: string };
+  url?: string;
+}) {
+  return urlFor(source).width(1200).height(630).format("jpg").quality(88).url();
+}
+
 function toBlogPost(p: SanityPost, pillarRules: InternalLinkRule[]): BlogPost {
   const imageUrl = p.mainImage
     ? urlFor(p.mainImage)
-        .width(1200)
-        .height(630)
+        .width(1600)
+        .height(900)
         .format("webp")
         .quality(IMAGE_QUALITY_PHOTO)
         .url()
     : "";
   const ogImage = p.ogImage
-    ? urlFor(p.ogImage)
-        .width(1200)
-        .height(630)
-        .format("webp")
-        .quality(IMAGE_QUALITY_CONTENT)
-        .url()
-    : undefined;
+    ? urlForSocialPreview(p.ogImage)
+    : p.mainImage
+      ? urlForSocialPreview(p.mainImage)
+      : undefined;
   return {
     id: p._id,
     title: p.title,

@@ -44,6 +44,9 @@ export const revalidate = 60;
 /** Dynamic params: render new slugs on-demand when published after deploy */
 export const dynamicParams = true;
 
+/** Crawler-safe default when a post has no image in CMS (file must exist in /public). */
+const DEFAULT_BLOG_SHARE_IMAGE = `${SITE_CONFIG.url}/products-grid.png`;
+
 /** Dynamic metadata — pulls SEO fields directly from Sanity */
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
@@ -51,21 +54,23 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!post) return {};
 
   const canonical = post.seo?.canonicalUrl || `${SITE_CONFIG.url}/blog/${slug}`;
-  const ogImageUrl =
-    post.seo?.ogImage || post.image || `${SITE_CONFIG.url}/og-default.jpg`;
+  const ogImageUrl = post.seo?.ogImage ?? DEFAULT_BLOG_SHARE_IMAGE;
+  const description =
+    post.seo?.metaDescription?.trim() || post.excerpt?.trim() || undefined;
 
   const metadata: Metadata = {
     title: post.seo?.metaTitle || post.title,
-    description: post.seo?.metaDescription || post.excerpt,
+    description,
     alternates: { canonical },
     robots: post.seo?.noIndex
       ? { index: false, follow: false }
       : { index: true, follow: true },
     openGraph: {
       title: post.seo?.metaTitle || post.title,
-      description: post.seo?.metaDescription || post.excerpt,
+      description,
       url: canonical,
       type: "article",
+      locale: "en_IN",
       publishedTime: post.publishedAt,
       modifiedTime: post.updatedAt,
       authors: post.author ? [post.author] : undefined,
@@ -82,7 +87,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     twitter: {
       card: "summary_large_image",
       title: post.seo?.metaTitle || post.title,
-      description: post.seo?.metaDescription || post.excerpt,
+      description,
       images: [ogImageUrl],
     },
   };
@@ -96,7 +101,7 @@ export default async function BlogPostPage({ params }: Props) {
   if (!post) notFound();
 
   const canonical = post.seo?.canonicalUrl || `${SITE_CONFIG.url}/blog/${slug}`;
-  const ogImageUrl = post.seo?.ogImage || post.image;
+  const shareImageUrl = post.seo?.ogImage ?? DEFAULT_BLOG_SHARE_IMAGE;
 
   /** BlogPosting JSON-LD — more specific than Article, eligible for richer SERP cards.
    * Author is `Person` when we can match the byline to our registry; this is the
@@ -129,7 +134,7 @@ export default async function BlogPostPage({ params }: Props) {
     "@type": "BlogPosting",
     headline: post.title,
     description: post.excerpt,
-    image: ogImageUrl,
+    image: shareImageUrl,
     author: authorSchema,
     publisher: {
       "@type": "Organization",

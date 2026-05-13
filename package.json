@@ -17,7 +17,8 @@
     "lint": "biome check .",
     "lint:autofix": "biome check . --write",
     "gsc:auth": "bash scripts/run-gsc-auth.sh",
-    "gsc:reauth": "bash scripts/run-gsc-auth.sh --reauth"
+    "gsc:reauth": "bash scripts/run-gsc-auth.sh --reauth",
+    "docs:bd-playbook": "tsx scripts/generate-bd-playbook-pdf.ts"
   },
   "dependencies": {
     "@google/genai": "^2.0.1",

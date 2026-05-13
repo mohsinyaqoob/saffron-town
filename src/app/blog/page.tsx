@@ -25,6 +25,8 @@ export const metadata: Metadata = {
       "Everything you need to know about Kashmiri saffron — health, recipes, buying guides.",
     url: `${SITE_CONFIG.url}/blog`,
     type: "website",
+    locale: "en_IN",
+    siteName: SITE_CONFIG.name,
     images: [
       {
         url: OG_IMAGE,

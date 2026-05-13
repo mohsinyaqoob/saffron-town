@@ -38,6 +38,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description,
       url: canonical,
       type: "website",
+      locale: "en_IN",
+      siteName: SITE_CONFIG.name,
       images: [
         {
           url: OG_IMAGE,
