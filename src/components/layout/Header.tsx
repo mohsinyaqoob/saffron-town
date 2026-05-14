@@ -67,7 +67,6 @@ export function Header() {
               "h-8 w-auto max-h-8 max-w-full object-contain object-left transition-[filter] duration-300 sm:h-10 sm:max-h-10 lg:max-w-[200px]",
               transparentMode && "brightness-0 invert",
             )}
-            priority
           />
         </Link>
 

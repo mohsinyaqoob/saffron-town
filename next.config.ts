@@ -10,8 +10,6 @@ const nextConfig: NextConfig = {
       },
     ];
   },
-<<<<<<< Updated upstream
-=======
   async headers() {
     return [
       {
@@ -64,7 +62,6 @@ const nextConfig: NextConfig = {
       },
     ];
   },
->>>>>>> Stashed changes
   serverExternalPackages: ["pdfkit"],
   images: {
     // Cap generated widths so ultra-wide viewports don’t pull 3840px assets (see deviceSizes).
