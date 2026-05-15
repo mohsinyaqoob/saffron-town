@@ -1,7 +1,9 @@
 /**
  * Daily blog automation: reads Google Sheet, generates posts via Gemini, publishes to Sanity.
  *
- * Sheet (row 1 = headers): **Date** | **Keyword** | **Category** (optional) | **Posts** (optional).
+ * Sheet (row 1 = headers): **date** | **keyword** | **title_ideas** | **search_volume** | **type**
+ * | **published_blog_link** | **indexed** | **total_posts** (synonyms accepted; see `sheet.ts`).
+ * Legacy **category** / **published_url** columns still work. URLs append to `published_blog_link` when present.
  * Duplicate rows with the same Date + Keyword merge: if Posts is blank on all of them,
  * total articles = max(AUTOMATION_POSTS_PER_KEYWORD, number of those rows).
  *
@@ -33,7 +35,11 @@ import {
   slugExists,
   uploadImageAsset,
 } from "./publish";
-import { consolidateDuplicateDayKeywords, fetchSheetRows } from "./sheet";
+import {
+  appendPublishedUrlForRow,
+  consolidateDuplicateDayKeywords,
+  fetchSheetRows,
+} from "./sheet";
 
 const SHEET_CATEGORY = new Set([
   "health",
@@ -74,8 +80,8 @@ async function main() {
       ? env.forceDate
       : ymdInTimeZone(env.timeZone);
 
-  const rows = await fetchSheetRows(env);
-  const dueRaw = rows.filter((r) => r.scheduledOn === today);
+  const sheetFetch = await fetchSheetRows(env);
+  const dueRaw = sheetFetch.rows.filter((r) => r.scheduledOn === today);
   const due = consolidateDuplicateDayKeywords(dueRaw, env.postsPerKeyword);
 
   console.log(
@@ -86,7 +92,7 @@ async function main() {
     for (const r of due) {
       const n = r.postsForRow ?? env.postsPerKeyword;
       console.log(
-        `  - keyword=${JSON.stringify(r.keyword)} posts=${n} category=${r.category ?? "(default)"}`,
+        `  - keyword=${JSON.stringify(r.keyword)} posts=${n} category=${r.category ?? "(default)"} type=${r.intentType ?? "—"}`,
       );
     }
     console.log(
@@ -205,9 +211,14 @@ async function main() {
       }
 
       const { documentId } = await publishPost(env, generated, slug, imageRef);
-      console.log(
-        `[blog-automation] Published ${env.sitePublicUrl}/blog/${slug} _id=${documentId}`,
-      );
+      const liveUrl = `${env.sitePublicUrl}/blog/${slug}`;
+      console.log(`[blog-automation] Published ${liveUrl} _id=${documentId}`);
+
+      const rowsForKeyword = r.sourceSheetRows;
+      const rowIdx = Math.min(v, Math.max(0, rowsForKeyword.length - 1));
+      const sheetRowNumber = rowsForKeyword[rowIdx];
+      await appendPublishedUrlForRow(env, sheetFetch, sheetRowNumber, liveUrl);
+
       created++;
     }
   }

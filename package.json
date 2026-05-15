@@ -7,6 +7,8 @@
     "blog-automation": "tsx scripts/blog-automation/run.ts",
     "blog-automation:dry-run": "tsx scripts/blog-automation/run.ts --dry-run",
     "blog-automation:print-one": "tsx scripts/blog-automation/run.ts --print-only --limit 1",
+    "blog-automation:sheet-today": "tsx scripts/blog-automation/print-sheet-today.ts",
+    "blog-automation:record-url": "tsx scripts/blog-automation/record-published-url.ts",
     "postinstall": "prisma generate",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate deploy",
