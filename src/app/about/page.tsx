@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import { SITE_CONFIG } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: "About Saffron Town | The Purists of Premium Kashmiri Saffron",
   description:
     "Discover the story of Saffron Town. We are disrupting the market by delivering only the freshest, pure Premium Mongra Saffron straight from Kashmiri harvesters to your home. No old stocks. Just unmatched quality.",
+  alternates: { canonical: `${SITE_CONFIG.url}/about` },
   openGraph: {
     title: "About Saffron Town | The Purists of Premium Kashmiri Saffron",
     description:

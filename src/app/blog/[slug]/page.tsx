@@ -15,6 +15,7 @@ import { PortableText } from "@/components/PortableText";
 import { Badge } from "@/components/ui/Badge";
 import { getAuthorByName } from "@/lib/authors-data";
 import { getAllPosts, getPostBySlug } from "@/lib/blog-data";
+import { resolveBlogCanonical } from "@/lib/canonical-url";
 import { IMAGE_QUALITY_PHOTO, SITE_CONFIG } from "@/lib/constants";
 
 type Props = {
@@ -53,7 +54,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const post = await getPostBySlug(slug);
   if (!post) return {};
 
-  const canonical = post.seo?.canonicalUrl || `${SITE_CONFIG.url}/blog/${slug}`;
+  const canonical = resolveBlogCanonical(slug, post.seo?.canonicalUrl);
   const ogImageUrl = post.seo?.ogImage ?? DEFAULT_BLOG_SHARE_IMAGE;
   const description =
     post.seo?.metaDescription?.trim() || post.excerpt?.trim() || undefined;
@@ -100,7 +101,7 @@ export default async function BlogPostPage({ params }: Props) {
   const post = await getPostBySlug(slug);
   if (!post) notFound();
 
-  const canonical = post.seo?.canonicalUrl || `${SITE_CONFIG.url}/blog/${slug}`;
+  const canonical = resolveBlogCanonical(slug, post.seo?.canonicalUrl);
   const shareImageUrl = post.seo?.ogImage ?? DEFAULT_BLOG_SHARE_IMAGE;
 
   /** BlogPosting JSON-LD — more specific than Article, eligible for richer SERP cards.

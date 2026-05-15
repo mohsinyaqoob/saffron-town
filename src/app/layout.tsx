@@ -67,9 +67,6 @@ export const metadata: Metadata = {
     "max-image-preview": "large",
     "max-video-preview": -1,
   },
-  alternates: {
-    canonical: SITE_CONFIG.url,
-  },
 };
 
 export const viewport: Viewport = {
