@@ -7,7 +7,7 @@ export const MONGRA_SAFFRON_SLUG = "mongra-saffron" as const;
  * Pack weights shown in the shop buy box and the prebook grid, in display order.
  * Both surfaces resolve prices from `products.json` variants that match these grams.
  */
-export const SHOP_PACK_GRID_GRAMS = [2, 5, 10, 20, 50] as const;
+export const SHOP_PACK_GRID_GRAMS = [2, 5, 10, 20, 30, 50] as const;
 
 export type ShopPackGrams = (typeof SHOP_PACK_GRID_GRAMS)[number];
 
