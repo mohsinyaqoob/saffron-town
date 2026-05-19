@@ -16,7 +16,7 @@ export const HOME_FAQS = [
   {
     question: "What is the price of pure Kashmiri saffron in India?",
     answer:
-      "Pure Kashmiri Mongra saffron from Saffron Town starts at ₹499 for a 1g tester pack and scales to ₹19,999 for 50g. Current rate in India for Grade A++ GI-tagged Kashmiri saffron is roughly ₹400–₹500 per gram; anything priced well below that is almost certainly adulterated or re-packaged Iranian saffron.",
+      "Pure Kashmiri Mongra saffron from Saffron Town starts at ₹650 for a 1g tester pack (2g at ₹1,299) and scales to ₹26,499 for 50g. Effective rates reflect premium Grade A++ GI-tagged Kashmiri Mongra—typically roughly ₹530–₹650 per gram depending on pack size; anything priced far below authentic Kashmir benchmarks is almost certainly adulterated or re-packaged non-Kashmir saffron.",
   },
   {
     question: "Is Saffron Town's kesar genuine Kashmiri saffron?",

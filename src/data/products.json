@@ -10,18 +10,18 @@
     "heroBadge": "Pampore Grade A++",
     "description": "100% pure Kashmiri Mongra kesar, handpicked from Pampore. ISO 3632 lab-tested, GI-tagged, farm-direct. Grade A++ with crocin >250. Available in 1g, 2g, 5g, 10g, 20g and 50g packs. Trusted by thousands of Indian families for cooking, kesar milk and pregnancy.",
     "description2": "Each strand of our kashmiri saffron is hand-separated and sun-dried using traditional methods passed down through generations. Perfect for biryani, kesar milk, pregnancy nutrition, traditional Ayurvedic use, and ceremonial rituals.",
-    "price": 499,
+    "price": 650,
     "currency": "INR",
     "unit": "1g",
     "stock": 50,
     "mpn": "ST-MONGRA-A++",
     "variants": [
-      { "id": "mongra-1g", "size": "1g Tester", "price": 499, "mrp": 599 },
-      { "id": "mongra-2g", "size": "2g", "price": 999, "mrp": 1199 },
-      { "id": "mongra-5g", "size": "5g", "price": 2300, "mrp": 2699 },
-      { "id": "mongra-10g", "size": "10g", "price": 4500, "mrp": 5299 },
-      { "id": "mongra-20g", "size": "20g", "price": 8500, "mrp": 9999 },
-      { "id": "mongra-50g", "size": "50g", "price": 19999, "mrp": 22999 }
+      { "id": "mongra-1g", "size": "1g Tester", "price": 650, "mrp": 799 },
+      { "id": "mongra-2g", "size": "2g", "price": 1299, "mrp": 1599 },
+      { "id": "mongra-5g", "size": "5g", "price": 3049, "mrp": 3699 },
+      { "id": "mongra-10g", "size": "10g", "price": 5899, "mrp": 7199 },
+      { "id": "mongra-20g", "size": "20g", "price": 11299, "mrp": 13799 },
+      { "id": "mongra-50g", "size": "50g", "price": 26499, "mrp": 32499 }
     ],
     "rating": 0,
     "reviewCount": 0,
@@ -61,21 +61,6 @@
       "Purity": "100% Pure Kashmiri Saffron (Kesar)",
       "Certification": "ISO 3632, GI Tag"
     },
-    "origin": "Pampore, Kashmir · Harvest: Nov 2025 · Shelf Life: 36 Months",
-    "customWeight": {
-      "minGrams": 2,
-      "maxGrams": 2000,
-      "tiers": [
-        { "uptoGrams": 4, "perGramRupees": 500 },
-        { "uptoGrams": 9, "perGramRupees": 460 },
-        { "uptoGrams": 19, "perGramRupees": 450 },
-        { "uptoGrams": 49, "perGramRupees": 425 },
-        { "uptoGrams": 99, "perGramRupees": 400 },
-        { "uptoGrams": 249, "perGramRupees": 385 },
-        { "uptoGrams": 499, "perGramRupees": 370 },
-        { "uptoGrams": 999, "perGramRupees": 355 },
-        { "uptoGrams": 2000, "perGramRupees": 345 }
-      ]
-    }
+    "origin": "Pampore, Kashmir · Harvest: Nov 2025 · Shelf Life: 36 Months"
   }
 ]

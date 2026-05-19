@@ -119,7 +119,7 @@ ${journalSection}
 - Product: Kashmiri Mongra Saffron (Grade A++ · ISO 3632 Category I)
 - Origin: Pampore, Kashmir — GI-tagged Kashmir Saffron (GI-635)
 - Typical lab specs: Crocin >250, Picrocrocin >70, Safranal 20–50
-- Price range: ₹499 (1g) to ₹19,999 (50g). Effective rate ₹400–₹500/g for pure Mongra.
+- Price range: ₹650 (1g tester), ₹1,299 (2g), up to ₹26,499 (50g). Effective rate varies by pack—premium Mongra tier roughly ₹530–₹650/g.
 - Contact: ${SITE_CONFIG.phone} (phone), ${SITE_CONFIG.email} (email)
 `;
 
