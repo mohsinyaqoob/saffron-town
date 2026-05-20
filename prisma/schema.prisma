@@ -58,8 +58,7 @@ model BulkEnquiry {
   organization    String?   @db.VarChar(200)
   businessType    String?   @db.VarChar(80)
   approxGrams     String?   @db.VarChar(80)
-  timeline        String?   @db.VarChar(120)
-  message         String    @db.Text
+  message         String?   @db.Text
 
   clientIp           String?   @db.VarChar(45)
   emailNotifiedAt    DateTime?

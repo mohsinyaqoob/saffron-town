@@ -37,7 +37,7 @@ export type ProductPageData = {
   unit: string;
   stock: number;
   mpn?: string;
-  /** Optional bulk/wholesale pricing (2g–2kg), tiered ₹/g. */
+  /** Optional bulk/wholesale pricing (100g–2kg), tiered ₹/g. */
   customWeight?: CustomWeightConfig;
   variants: ProductVariant[];
   rating: number;

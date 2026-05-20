@@ -22,7 +22,6 @@ type Line = {
 export async function sendOrderAdminNotification(payload: {
   orderId: string;
   customerName: string;
-  customerEmail: string;
   phone: string;
   pincode: string;
   deliveryAddress: string;
@@ -45,7 +44,6 @@ export async function sendOrderAdminNotification(payload: {
     `New order: ${payload.orderId}`,
     "",
     `Customer: ${payload.customerName}`,
-    `Email: ${payload.customerEmail}`,
     `Phone: ${payload.phone}`,
     `PIN: ${payload.pincode}`,
     `Address: ${payload.deliveryAddress}`,
@@ -65,6 +63,5 @@ export async function sendOrderAdminNotification(payload: {
     to,
     subject: `New order ${payload.orderId}`,
     text,
-    replyTo: payload.customerEmail,
   });
 }

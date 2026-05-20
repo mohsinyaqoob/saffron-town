@@ -91,7 +91,7 @@ export function ProductJsonLd({ product }: ProductJsonLdProps) {
       ? {
           "@type": "Offer",
           sku: `${product.id}-bulk-weight`,
-          name: `${product.name} — custom weight (2g – ${cw.maxGrams}g, bulk)`,
+          name: `${product.name} — custom weight (${cw.minGrams}g – ${cw.maxGrams}g, bulk)`,
           url: productUrl,
           priceCurrency: product.currency,
           price: (cw.minGrams * bulkFirstTier.perGramRupees).toString(),

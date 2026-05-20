@@ -1,15 +1,8 @@
 import Link from "next/link";
+import { DashboardOrderAccordion } from "@/components/dashboard/DashboardOrderAccordion";
 import { getPrisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
-
-function formatInr(amount: number, currency = "INR") {
-  return new Intl.NumberFormat("en-IN", {
-    style: "currency",
-    currency,
-    maximumFractionDigits: 0,
-  }).format(amount);
-}
 
 async function fetchOrders() {
   const prisma = getPrisma();
@@ -73,131 +66,18 @@ export default async function DashboardOrdersPage() {
   }
 
   return (
-    <div className="space-y-8">
-      <h1 className="font-display text-2xl font-bold text-text-primary">
-        Orders
-      </h1>
-      {orders.map((order) => (
-        <article
-          key={order.id}
-          className="rounded-2xl border border-secondary-border/20 bg-background-alt p-5 shadow-sm sm:p-6"
-        >
-          <div className="flex flex-wrap items-baseline justify-between gap-2 border-b border-secondary-border/15 pb-4">
-            <div>
-              <p className="font-mono text-xs text-text-muted">{order.id}</p>
-            </div>
-            <div className="text-right">
-              <p className="text-xs uppercase tracking-wide text-text-muted">
-                {order.status}
-              </p>
-              <p className="font-display text-lg font-bold text-primary">
-                {formatInr(order.subtotalRupees, order.currency)}
-              </p>
-              <p className="text-xs text-text-muted font-body">
-                {new Intl.DateTimeFormat("en-IN", {
-                  dateStyle: "medium",
-                  timeStyle: "short",
-                }).format(order.createdAt)}
-              </p>
-            </div>
-          </div>
-
-          <div className="mt-5 grid gap-8 lg:grid-cols-3">
-            <div>
-              <h2 className="text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-text-muted font-body">
-                Contact
-              </h2>
-              <dl className="mt-3 space-y-3 text-sm font-body">
-                <div>
-                  <dt className="text-xs text-text-muted">Name</dt>
-                  <dd className="mt-0.5 font-medium text-text-primary">
-                    {order.customerName}
-                  </dd>
-                </div>
-                <div>
-                  <dt className="text-xs text-text-muted">Phone</dt>
-                  <dd className="mt-0.5 text-text-primary">{order.phone}</dd>
-                </div>
-                <div>
-                  <dt className="text-xs text-text-muted">Email</dt>
-                  <dd className="mt-0.5 break-all text-text-primary">
-                    {order.email}
-                  </dd>
-                </div>
-              </dl>
-            </div>
-
-            <div>
-              <h2 className="text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-text-muted font-body">
-                Delivery
-              </h2>
-              <dl className="mt-3 space-y-3 text-sm font-body">
-                <div>
-                  <dt className="text-xs text-text-muted">PIN code</dt>
-                  <dd className="mt-0.5 font-medium text-text-primary">
-                    {order.pincode}
-                  </dd>
-                </div>
-                <div>
-                  <dt className="text-xs text-text-muted">Address</dt>
-                  <dd className="mt-0.5 whitespace-pre-wrap text-text-primary">
-                    {order.deliveryAddress?.trim() || "—"}
-                  </dd>
-                </div>
-                {order.cityPin ? (
-                  <div>
-                    <dt className="text-xs text-text-muted">City / area</dt>
-                    <dd className="mt-0.5 whitespace-pre-wrap text-text-primary">
-                      {order.cityPin}
-                    </dd>
-                  </div>
-                ) : null}
-              </dl>
-            </div>
-
-            <div>
-              <h2 className="text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-text-muted font-body">
-                From checkout
-              </h2>
-              <dl className="mt-3 space-y-3 text-sm font-body">
-                <div>
-                  <dt className="text-xs text-text-muted">
-                    How did you hear about us?
-                  </dt>
-                  <dd className="mt-0.5 text-text-primary">
-                    {order.heardAboutUs?.trim() || "—"}
-                  </dd>
-                </div>
-                <div>
-                  <dt className="text-xs text-text-muted">Order notes</dt>
-                  <dd className="mt-0.5 whitespace-pre-wrap text-secondary">
-                    {order.notes?.trim() || "—"}
-                  </dd>
-                </div>
-              </dl>
-            </div>
-          </div>
-
-          <ul className="mt-8 space-y-2 border-t border-secondary-border/15 pt-5 text-sm font-body">
-            {order.items.map((line) => (
-              <li
-                key={line.id}
-                className="flex flex-wrap justify-between gap-2 text-secondary"
-              >
-                <span>
-                  {line.productName}{" "}
-                  <span className="text-text-muted">({line.variantLabel})</span>{" "}
-                  × {line.quantity}
-                </span>
-                <span className="font-semibold text-text-primary">
-                  {formatInr(line.lineTotalRupees, order.currency)}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </article>
-      ))}
-      <div className="text-center">
+    <div className="space-y-6">
+      <div>
+        <h1 className="font-display text-2xl font-bold text-text-primary">
+          Orders
+        </h1>
+        <p className="mt-1 text-sm text-secondary font-body">
+          Retail checkout leads — tap a row to expand contact, delivery, and
+          line items.
+        </p>
+      </div>
+      <DashboardOrderAccordion orders={orders} />
+      <div className="text-center pt-2">
         <Link
           href="/"
           className="text-sm text-primary underline-offset-2 hover:underline"

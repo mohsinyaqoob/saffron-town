@@ -1,17 +1,20 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { type ReactNode, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/Button";
 import {
   type BulkLeadFormClientValues,
   bulkLeadFormClientSchema,
 } from "@/lib/bulk-enquiry-schema";
+import { randomBulkEnquiryTatHours } from "@/lib/bulk-enquiry-tat";
 import { cn } from "@/lib/utils";
+import { WHOLESALE_MIN_GRAMS_LABEL } from "@/lib/wholesale-constants";
 
 const BUSINESS_TYPES = [
-  { value: "", label: "Select one (optional)" },
+  { value: "", label: "Choose your business type" },
   { value: "restaurant", label: "Restaurant / cloud kitchen" },
   { value: "sweet-shop", label: "Mithai / sweet shop" },
   { value: "hotel", label: "Hotel / catering" },
@@ -22,12 +25,11 @@ const BUSINESS_TYPES = [
 ] as const;
 
 const QUANTITY_BUCKETS = [
-  { value: "", label: "Rough quantity (optional)" },
-  { value: "20-50g", label: "20g – 50g" },
-  { value: "50-100g", label: "50g – 100g" },
-  { value: "100g-500g", label: "100g – 500g" },
-  { value: "500g+", label: "500g+" },
-  { value: "custom", label: "Custom / recurring" },
+  { value: "", label: "Select approximate quantity" },
+  { value: "100-250g", label: "100g – 250g (minimum order)" },
+  { value: "250-500g", label: "250g – 500g" },
+  { value: "500g+", label: "500g or more" },
+  { value: "custom", label: "Larger volume / recurring supply" },
 ] as const;
 
 const inputBaseClass =
@@ -39,24 +41,74 @@ const fieldErrorClass =
 const defaultValues: BulkLeadFormClientValues = {
   name: "",
   phone: "",
-  email: "",
   organization: "",
   businessType: "",
   approxGrams: "",
-  timeline: "",
   message: "",
 };
 
+function FormSection({
+  title,
+  description,
+  children,
+}: {
+  title: string;
+  description?: string;
+  children: ReactNode;
+}) {
+  return (
+    <fieldset className="space-y-4 border-0 p-0">
+      <legend className="w-full">
+        <span className="font-display text-lg font-semibold text-text-primary">
+          {title}
+        </span>
+        {description ? (
+          <p className="mt-1 text-sm text-text-muted font-body leading-relaxed">
+            {description}
+          </p>
+        ) : null}
+      </legend>
+      <div className="grid gap-4 sm:grid-cols-2">{children}</div>
+    </fieldset>
+  );
+}
+
+function FieldLabel({
+  htmlFor,
+  title,
+  hint,
+  required,
+}: {
+  htmlFor?: string;
+  title: string;
+  hint?: string;
+  required?: boolean;
+}) {
+  return (
+    <span className="block" id={htmlFor ? `${htmlFor}-label` : undefined}>
+      <span className="text-sm font-semibold text-text-primary font-body">
+        {title}
+        {required ? <span className="text-red-600"> *</span> : null}
+      </span>
+      {hint ? (
+        <span className="mt-0.5 block text-xs text-text-muted font-body leading-snug">
+          {hint}
+        </span>
+      ) : null}
+    </span>
+  );
+}
+
 export function BulkLeadForm() {
-  const [submitState, setSubmitState] = useState<
-    "idle" | "loading" | "success" | "error"
-  >("idle");
+  const router = useRouter();
+  const [submitState, setSubmitState] = useState<"idle" | "loading" | "error">(
+    "idle",
+  );
   const [submitMessage, setSubmitMessage] = useState<string | null>(null);
 
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm<BulkLeadFormClientValues>({
     resolver: zodResolver(bulkLeadFormClientSchema),
@@ -70,12 +122,10 @@ export function BulkLeadForm() {
     const payload = {
       name: values.name.trim(),
       phone: values.phone.trim(),
-      email: values.email.trim(),
       organization: values.organization?.trim() || "",
       businessType: values.businessType?.trim() || "",
       approxGrams: values.approxGrams?.trim() || "",
-      timeline: values.timeline?.trim() || "",
-      message: values.message.trim(),
+      message: values.message?.trim() || "",
     };
 
     try {
@@ -90,11 +140,8 @@ export function BulkLeadForm() {
       };
 
       if (res.ok && data.ok) {
-        setSubmitState("success");
-        setSubmitMessage(
-          "Thank you—we will call or reply shortly. Prefer faster? Tap Call or WhatsApp below.",
-        );
-        reset(defaultValues);
+        const tatHours = randomBulkEnquiryTatHours();
+        router.push(`/bulk-orders/thank-you?hours=${tatHours}`);
         return;
       }
 
@@ -103,6 +150,7 @@ export function BulkLeadForm() {
         data.message ||
           "Something went wrong. Please call us—our team responds fastest on phone.",
       );
+      return;
     } catch {
       setSubmitState("error");
       setSubmitMessage(
@@ -114,21 +162,28 @@ export function BulkLeadForm() {
   return (
     <form
       id="bulk-lead-form"
-      className="space-y-5"
+      className="space-y-8"
       noValidate
       onSubmit={handleSubmit(onSubmit)}
     >
-      <div className="grid gap-4 sm:grid-cols-2">
+      <FormSection
+        title="Your contact details"
+        description="We reply by phone or WhatsApp—no waiting on email threads."
+      >
         <label className="sm:col-span-2">
-          <span className="text-sm font-semibold text-text-primary font-body">
-            Your name<span className="text-red-600"> *</span>
-          </span>
+          <FieldLabel
+            htmlFor="bulk-name"
+            title="Full name"
+            hint="As it should appear on your quote or invoice"
+            required
+          />
           <input
+            id="bulk-name"
             type="text"
             autoComplete="name"
             aria-invalid={errors.name ? true : undefined}
             className={cn(inputBaseClass, errors.name && fieldErrorClass)}
-            placeholder="Who should we greet?"
+            placeholder="e.g. Rajesh Kumar"
             {...register("name")}
           />
           {errors.name && (
@@ -138,17 +193,21 @@ export function BulkLeadForm() {
           )}
         </label>
 
-        <label>
-          <span className="text-sm font-semibold text-text-primary font-body">
-            Phone<span className="text-red-600"> *</span>
-          </span>
+        <label className="sm:col-span-2">
+          <FieldLabel
+            htmlFor="bulk-phone"
+            title="WhatsApp / mobile number"
+            hint="Active number—we usually call or message here first"
+            required
+          />
           <input
+            id="bulk-phone"
             type="tel"
             autoComplete="tel"
             inputMode="tel"
             aria-invalid={errors.phone ? true : undefined}
             className={cn(inputBaseClass, errors.phone && fieldErrorClass)}
-            placeholder="Mobile you answer"
+            placeholder="10-digit mobile with country code if outside India"
             {...register("phone")}
           />
           {errors.phone && (
@@ -157,44 +216,35 @@ export function BulkLeadForm() {
             </p>
           )}
         </label>
+      </FormSection>
 
-        <label>
-          <span className="text-sm font-semibold text-text-primary font-body">
-            Email
-          </span>
-          <input
-            type="email"
-            autoComplete="email"
-            aria-invalid={errors.email ? true : undefined}
-            className={cn(inputBaseClass, errors.email && fieldErrorClass)}
-            placeholder="Optional — helpful for quotations"
-            {...register("email")}
-          />
-          {errors.email && (
-            <p className="mt-1 text-xs text-red-700 font-body" role="alert">
-              {errors.email.message}
-            </p>
-          )}
-        </label>
-
+      <FormSection
+        title="About your business"
+        description="Optional, but helps us tailor pricing and packaging."
+      >
         <label className="sm:col-span-2">
-          <span className="text-sm font-semibold text-text-primary font-body">
-            Business / outlet name
-          </span>
+          <FieldLabel
+            htmlFor="bulk-organization"
+            title="Company, brand, or kitchen name"
+            hint="Leave blank if you are buying for personal use"
+          />
           <input
+            id="bulk-organization"
             type="text"
             autoComplete="organization"
             className={inputBaseClass}
-            placeholder="Optional"
+            placeholder="e.g. Spice Route Kitchens Pvt Ltd"
             {...register("organization")}
           />
         </label>
 
-        <label>
-          <span className="text-sm font-semibold text-text-primary font-body">
-            You represent
-          </span>
+        <label className="sm:col-span-2">
+          <FieldLabel
+            htmlFor="bulk-business-type"
+            title="What best describes you?"
+          />
           <select
+            id="bulk-business-type"
             className={cn(inputBaseClass, "appearance-auto")}
             {...register("businessType")}
           >
@@ -205,12 +255,20 @@ export function BulkLeadForm() {
             ))}
           </select>
         </label>
+      </FormSection>
 
-        <label>
-          <span className="text-sm font-semibold text-text-primary font-body">
-            Quantity hint
-          </span>
+      <FormSection
+        title="What you need"
+        description={`Wholesale minimum is ${WHOLESALE_MIN_GRAMS_LABEL}. Rough numbers are fine—we confirm exact grams and pricing on call.`}
+      >
+        <label className="sm:col-span-2">
+          <FieldLabel
+            htmlFor="bulk-quantity"
+            title="How much saffron do you need?"
+            hint={`Minimum ${WHOLESALE_MIN_GRAMS_LABEL} for wholesale`}
+          />
           <select
+            id="bulk-quantity"
             className={cn(inputBaseClass, "appearance-auto")}
             {...register("approxGrams")}
           >
@@ -223,30 +281,21 @@ export function BulkLeadForm() {
         </label>
 
         <label className="sm:col-span-2">
-          <span className="text-sm font-semibold text-text-primary font-body">
-            When do you need it?
-          </span>
-          <input
-            type="text"
-            className={inputBaseClass}
-            placeholder="e.g. before Diwali · ongoing monthly · ASAP"
-            {...register("timeline")}
+          <FieldLabel
+            htmlFor="bulk-message"
+            title="Anything else you want to tell us?"
+            hint="Optional — delivery city, GSTIN, grade preference, or special instructions"
           />
-        </label>
-
-        <label className="sm:col-span-2">
-          <span className="text-sm font-semibold text-text-primary font-body">
-            What should we arrange?<span className="text-red-600"> *</span>
-          </span>
           <textarea
-            rows={5}
+            id="bulk-message"
+            rows={4}
             aria-invalid={errors.message ? true : undefined}
             className={cn(
               inputBaseClass,
-              "min-h-[132px] resize-y",
+              "min-h-[112px] resize-y",
               errors.message && fieldErrorClass,
             )}
-            placeholder="Grades you want (e.g. Mongra), destination city, invoicing GSTIN, recurring or one-off—we read every enquiry."
+            placeholder="e.g. Need GST invoice, deliver to Hyderabad, prefer Mongra Grade A++ only…"
             {...register("message")}
           />
           {errors.message && (
@@ -255,44 +304,42 @@ export function BulkLeadForm() {
             </p>
           )}
         </label>
-      </div>
+      </FormSection>
 
-      {submitMessage && (
+      {submitMessage && submitState === "error" && (
         <p
-          role="status"
-          className={cn(
-            "rounded-xl border px-3 py-2.5 text-sm font-body",
-            submitState === "success"
-              ? "border-green-600/35 bg-green-50 text-green-950"
-              : "border-amber-300 bg-amber-50 text-amber-950",
-          )}
+          role="alert"
+          className="rounded-xl border border-amber-300 bg-amber-50 px-3 py-2.5 text-sm text-amber-950 font-body"
         >
           {submitMessage}
         </p>
       )}
 
-      <Button
-        type="submit"
-        disabled={submitState === "loading"}
-        size="lg"
-        className="relative w-full min-h-[52px] rounded-2xl text-base shadow-md shadow-primary/20 sm:w-auto sm:min-w-[220px]"
-      >
-        {submitState === "loading" ? (
-          <span className="inline-flex items-center gap-2">
-            <span
-              className="h-5 w-5 shrink-0 animate-spin rounded-full border-2 border-white/35 border-t-white"
-              aria-hidden
-            />
-            Sending…
-          </span>
-        ) : (
-          "Send my enquiry"
-        )}
-      </Button>
-      <p className="text-xs text-text-muted font-body leading-relaxed">
-        By submitting you agree we may phone or WhatsApp you about this enquiry.
-        We never sell wholesale lists—we only reply to genuine bulk needs.
-      </p>
+      <div className="space-y-3 border-t border-secondary-border/20 pt-6">
+        <Button
+          type="submit"
+          disabled={submitState === "loading"}
+          size="lg"
+          className="relative w-full min-h-[52px] rounded-2xl text-base shadow-md shadow-primary/20 sm:w-auto sm:min-w-[260px]"
+        >
+          {submitState === "loading" ? (
+            <span className="inline-flex items-center gap-2">
+              <span
+                className="h-5 w-5 shrink-0 animate-spin rounded-full border-2 border-white/35 border-t-white"
+                aria-hidden
+              />
+              Sending enquiry…
+            </span>
+          ) : (
+            "Submit wholesale enquiry"
+          )}
+        </Button>
+        <p className="text-xs text-text-muted font-body leading-relaxed">
+          By submitting, you agree we may contact you on the phone number above.
+          We only use your details for this enquiry—we never sell wholesale
+          contact lists.
+        </p>
+      </div>
     </form>
   );
 }

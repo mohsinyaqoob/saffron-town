@@ -113,8 +113,9 @@ export const HearAboutCombobox = forwardRef<HTMLInputElement, Props>(
           htmlFor={id}
         >
           How did you hear about us?
-          <span className="ml-1 text-xs font-normal text-text-muted">
-            (optional)
+          <span className="text-red-600" aria-hidden>
+            {" "}
+            *
           </span>
           <input
             ref={ref}

@@ -9,12 +9,10 @@ export async function sendBulkEnquiryNotification(payload: {
   enquiryId?: string;
   name: string;
   phone: string;
-  email: string | null;
   organization: string | null;
   businessType: string | null;
   approxGrams: string | null;
-  timeline: string | null;
-  message: string;
+  message: string | null;
 }): Promise<boolean> {
   const to =
     process.env.BULK_ENQUIRY_NOTIFY_EMAIL?.trim() ||
@@ -38,16 +36,14 @@ export async function sendBulkEnquiryNotification(payload: {
     "",
     `Name: ${payload.name}`,
     `Phone: ${payload.phone}`,
-    payload.email ? `Email: ${payload.email}` : null,
     payload.organization ? `Organisation: ${payload.organization}` : null,
     payload.businessType ? `Type: ${payload.businessType}` : null,
     payload.approxGrams ? `Approx. quantity: ${payload.approxGrams}` : null,
-    payload.timeline ? `Timeline: ${payload.timeline}` : null,
     "",
-    "Requirements / message:",
-    payload.message,
+    payload.message ? "Additional notes:" : null,
+    payload.message ?? null,
     "",
-    `Reply-To should be set to ${payload.email || "customer email not provided — use phone"}`,
+    "Follow up by phone or WhatsApp.",
   ]
     .filter((line) => line !== null)
     .join("\n");
@@ -58,7 +54,6 @@ export async function sendBulkEnquiryNotification(payload: {
     from: resolveSmtpFrom({ preferBulkAlias: true }),
     subject: `[Bulk enquiry] ${payload.name} — ${payload.phone}${payload.enquiryId ? ` (${payload.enquiryId})` : ""}`,
     text,
-    ...(payload.email ? { replyTo: payload.email } : {}),
     ...(bcc?.length ? { bcc } : {}),
   });
 

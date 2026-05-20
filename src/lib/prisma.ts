@@ -7,6 +7,22 @@ const globalFor = globalThis as unknown as {
   pgPool?: Pool;
 };
 
+function hasBulkEnquiryDelegate(client: PrismaClient): boolean {
+  return (
+    typeof (client as { bulkEnquiry?: { findMany?: unknown } }).bulkEnquiry
+      ?.findMany === "function"
+  );
+}
+
+function disposeCachedPrisma(): void {
+  const client = globalFor.prisma;
+  const pool = globalFor.pgPool;
+  globalFor.prisma = undefined;
+  globalFor.pgPool = undefined;
+  void client?.$disconnect().catch(() => {});
+  void pool?.end().catch(() => {});
+}
+
 const CONNECT_MS = 10_000;
 
 /** `prisma+` / Accelerate URLs are not valid for `pg` + driver adapter. */
@@ -46,6 +62,10 @@ export function getPrisma(): PrismaClient {
     throw new Error(
       "DATABASE_URL must be a direct Postgres URL (postgresql:// or postgres://). Prisma Accelerate (prisma+…) URLs do not work with the server-side PostgreSQL driver.",
     );
+  }
+
+  if (globalFor.prisma && !hasBulkEnquiryDelegate(globalFor.prisma)) {
+    disposeCachedPrisma();
   }
 
   if (!globalFor.prisma) {

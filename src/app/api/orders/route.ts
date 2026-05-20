@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { isValidHearAboutChannel } from "@/data/heard-about-channels";
-import { sendOrderAdminNotification } from "@/lib/order-admin-notify";
 import { limitOrderPostInMemory } from "@/lib/order-rate-limit-memory";
 import { signOrderReceiptToken } from "@/lib/order-receipt-token";
 import { getOrderRequestClientIp } from "@/lib/order-request-ip";
@@ -12,6 +11,7 @@ import {
   priceCustomGrams,
   validateCustomGrams,
 } from "@/lib/saffron-custom-pricing";
+import { WHOLESALE_MIN_GRAMS_LABEL } from "@/lib/wholesale-constants";
 
 export const runtime = "nodejs";
 
@@ -39,6 +39,9 @@ function withTimeout<T>(
   });
 }
 
+const emailOk = (s: string) =>
+  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s) && s.length <= 254;
+
 type IncomingItem = {
   productId?: string;
   variantId?: string;
@@ -46,9 +49,6 @@ type IncomingItem = {
   /** Required when `variantId` is bulk/wholesale custom. */
   grams?: number;
 };
-
-const emailOk = (s: string) =>
-  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s) && s.length <= 254;
 
 export async function POST(request: Request) {
   const dbUrl = process.env.DATABASE_URL?.trim() ?? "";
@@ -151,9 +151,9 @@ export async function POST(request: Request) {
       { status: 400 },
     );
   }
-  if (heardRaw && heardRaw.length > 0 && !isValidHearAboutChannel(heardRaw)) {
+  if (!heardRaw || !isValidHearAboutChannel(heardRaw)) {
     return NextResponse.json(
-      { error: "Please choose a valid “how you heard about us” option." },
+      { error: "Please choose how you heard about us." },
       { status: 400 },
     );
   }
@@ -216,7 +216,9 @@ export async function POST(request: Request) {
       const gramsCheck = validateCustomGrams(product, line.grams);
       if (!gramsCheck.ok) {
         return NextResponse.json(
-          { error: "Invalid bulk weight." },
+          {
+            error: `Invalid bulk weight. Minimum wholesale order is ${WHOLESALE_MIN_GRAMS_LABEL}.`,
+          },
           { status: 400 },
         );
       }
@@ -278,7 +280,7 @@ export async function POST(request: Request) {
           email,
           pincode,
           deliveryAddress,
-          heardAboutUs: heardRaw && heardRaw.length > 0 ? heardRaw : null,
+          heardAboutUs: heardRaw,
           notes: notes || null,
           items: { create: lineCreates },
         },
@@ -287,25 +289,6 @@ export async function POST(request: Request) {
       QUERY_TIMEOUT_MS,
       "Database",
     );
-
-    void sendOrderAdminNotification({
-      orderId: order.id,
-      customerName,
-      customerEmail: email,
-      phone: phoneRaw,
-      pincode,
-      deliveryAddress,
-      subtotalRupees,
-      currency,
-      lines: lineCreates.map((l) => ({
-        productName: l.productName,
-        variantLabel: l.variantLabel,
-        quantity: l.quantity,
-        lineTotalRupees: l.lineTotalRupees,
-      })),
-      heardAboutUs: heardRaw && heardRaw.length > 0 ? heardRaw : null,
-      notes: notes ?? null,
-    });
 
     const receipt = signOrderReceiptToken(order.id);
     return NextResponse.json({ id: order.id, receipt });

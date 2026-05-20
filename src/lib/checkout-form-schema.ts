@@ -45,9 +45,11 @@ export const checkoutFormSchema = z.object({
     .max(2000, "Address is too long."),
   heardAboutUs: z
     .string()
+    .trim()
+    .min(1, "Please tell us how you heard about Saffron Town.")
     .refine(
-      (s) => s === "" || isValidHearAboutChannel(s),
-      `Pick one of the ${HEARD_ABOUT_CHANNELS.length} options or leave blank.`,
+      isValidHearAboutChannel,
+      `Pick one of the ${HEARD_ABOUT_CHANNELS.length} options from the list.`,
     ),
   notes: z.string().trim(),
 });

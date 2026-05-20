@@ -1,55 +1,45 @@
 import Link from "next/link";
-import { getPrisma } from "@/lib/prisma";
+import { DashboardBulkLeadAccordion } from "@/components/dashboard/DashboardBulkLeadAccordion";
+import { listBulkEnquiriesForDashboard } from "@/lib/bulk-enquiry-queries";
+import {
+  formatDashboardDbIssue,
+  withDashboardPrisma,
+} from "@/lib/dashboard-db";
 
 export const dynamic = "force-dynamic";
-
-async function fetchBulkEnquiries() {
-  const prisma = getPrisma();
-  return prisma.bulkEnquiry.findMany({
-    orderBy: { createdAt: "desc" },
-    take: 200,
-  });
-}
+export const runtime = "nodejs";
 
 export default async function DashboardBulkEnquiriesPage() {
-  if (!process.env.DATABASE_URL?.trim()) {
+  const result = await withDashboardPrisma("bulk-enquiries", (prisma) =>
+    listBulkEnquiriesForDashboard(prisma),
+  );
+
+  if (!result.ok) {
     return (
       <div className="space-y-4">
         <h1 className="font-display text-2xl font-bold text-text-primary">
           Bulk leads
         </h1>
         <p className="text-sm text-secondary font-body">
-          Set{" "}
-          <code className="rounded bg-surface-muted px-1.5 py-0.5 text-text-primary">
-            DATABASE_URL
-          </code>{" "}
-          to load wholesale enquiries from Postgres.
+          Could not load wholesale enquiries.
         </p>
+        <p className="rounded-xl border border-amber-300/80 bg-amber-50 px-3 py-2.5 text-sm text-amber-950 font-body">
+          {formatDashboardDbIssue(result.issue)}
+        </p>
+        {result.issue.code === "query_failed" ? (
+          <p className="text-xs text-text-muted font-body leading-relaxed">
+            After migrating, restart{" "}
+            <code className="rounded bg-surface-muted px-1 py-0.5">
+              pnpm dev
+            </code>{" "}
+            so Prisma picks up the latest schema.
+          </p>
+        ) : null}
       </div>
     );
   }
 
-  let rows: Awaited<ReturnType<typeof fetchBulkEnquiries>>;
-  try {
-    rows = await fetchBulkEnquiries();
-  } catch {
-    return (
-      <div className="space-y-4">
-        <h1 className="font-display text-2xl font-bold text-text-primary">
-          Bulk leads
-        </h1>
-        <p className="text-sm text-secondary font-body">
-          Could not read bulk enquiries. Confirm{" "}
-          <code className="rounded bg-surface-muted px-1.5 py-0.5 text-text-primary">
-            DATABASE_URL
-          </code>{" "}
-          and that migrations include the{" "}
-          <span className="font-semibold text-text-primary">BulkEnquiry</span>{" "}
-          table.
-        </p>
-      </div>
-    );
-  }
+  const rows = result.data;
 
   if (rows.length === 0) {
     return (
@@ -72,15 +62,15 @@ export default async function DashboardBulkEnquiriesPage() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <h1 className="font-display text-2xl font-bold text-text-primary">
             Bulk leads
           </h1>
           <p className="mt-1 max-w-xl text-sm text-secondary font-body">
-            Wholesale / bulk form submissions (most recent first). Email badge
-            reflects operator SMTP notify only.
+            Wholesale enquiries (most recent first) — tap a row to expand full
+            details.
           </p>
         </div>
         <Link
@@ -91,92 +81,9 @@ export default async function DashboardBulkEnquiriesPage() {
         </Link>
       </div>
 
-      {rows.map((row) => (
-        <article
-          key={row.id}
-          className="rounded-2xl border border-secondary-border/20 bg-background-alt p-5 shadow-sm sm:p-6"
-        >
-          <div className="flex flex-wrap items-start justify-between gap-3 border-b border-secondary-border/15 pb-4">
-            <div className="min-w-0 flex-1">
-              <p className="font-mono text-xs text-text-muted">{row.id}</p>
-              <p className="mt-1 text-sm font-semibold text-text-primary font-body">
-                {row.name} · {row.phone}
-              </p>
-              <p className="mt-1 text-xs text-secondary font-body">
-                {row.email ?? "No email"} ·{" "}
-                {row.organization ?? "No organisation"}
-              </p>
-              <div className="mt-2 flex flex-wrap gap-2">
-                <span
-                  className={
-                    row.emailNotifiedAt
-                      ? "rounded-full bg-green-100 px-2.5 py-0.5 text-[11px] font-semibold text-green-900 font-body"
-                      : "rounded-full bg-amber-100 px-2.5 py-0.5 text-[11px] font-semibold text-amber-950 font-body"
-                  }
-                >
-                  {row.emailNotifiedAt
-                    ? `Email sent · ${new Intl.DateTimeFormat("en-IN", {
-                        dateStyle: "short",
-                        timeStyle: "short",
-                      }).format(row.emailNotifiedAt)}`
-                    : "Email notify pending / failed"}
-                </span>
-              </div>
-            </div>
-            <div className="text-right">
-              <p className="text-xs text-text-muted font-body">
-                {new Intl.DateTimeFormat("en-IN", {
-                  dateStyle: "medium",
-                  timeStyle: "short",
-                }).format(row.createdAt)}
-              </p>
-              {row.clientIp && (
-                <p className="mt-1 text-[11px] text-text-muted font-mono">
-                  IP {row.clientIp}
-                </p>
-              )}
-            </div>
-          </div>
+      <DashboardBulkLeadAccordion rows={rows} />
 
-          <dl className="mt-4 grid gap-2 text-sm font-body sm:grid-cols-2">
-            {row.businessType ? (
-              <div>
-                <dt className="text-xs font-semibold uppercase tracking-wide text-text-muted">
-                  Represents
-                </dt>
-                <dd className="text-text-primary">{row.businessType}</dd>
-              </div>
-            ) : null}
-            {row.approxGrams ? (
-              <div>
-                <dt className="text-xs font-semibold uppercase tracking-wide text-text-muted">
-                  Quantity hint
-                </dt>
-                <dd className="text-text-primary">{row.approxGrams}</dd>
-              </div>
-            ) : null}
-            {row.timeline ? (
-              <div className="sm:col-span-2">
-                <dt className="text-xs font-semibold uppercase tracking-wide text-text-muted">
-                  Timeline
-                </dt>
-                <dd className="text-text-primary">{row.timeline}</dd>
-              </div>
-            ) : null}
-          </dl>
-
-          <div className="mt-4">
-            <p className="text-xs font-semibold uppercase tracking-wide text-text-muted font-body">
-              Message
-            </p>
-            <p className="mt-1 whitespace-pre-wrap break-words text-sm text-secondary font-body">
-              {row.message}
-            </p>
-          </div>
-        </article>
-      ))}
-
-      <div className="text-center">
+      <div className="text-center pt-2">
         <Link
           href="/dashboard"
           className="text-sm text-primary underline-offset-2 hover:underline"

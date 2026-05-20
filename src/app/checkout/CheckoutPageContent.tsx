@@ -111,7 +111,7 @@ export function CheckoutPageContent({ footer }: { footer: ReactNode }) {
         email: data.email.trim().toLowerCase(),
         pincode: data.pincode.trim(),
         deliveryAddress: data.deliveryAddress.trim(),
-        heardAboutUs: data.heardAboutUs || undefined,
+        heardAboutUs: data.heardAboutUs,
         notes: data.notes || undefined,
         items: [
           {

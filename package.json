@@ -13,7 +13,7 @@
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate deploy",
     "db:push": "prisma db push",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "dev": "next dev --port 6600",
     "start": "next start --port 6600",
     "lint": "biome check .",

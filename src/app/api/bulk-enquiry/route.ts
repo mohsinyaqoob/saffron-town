@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { sendBulkEnquiryNotification } from "@/lib/bulk-enquiry-notify";
 import { bulkLeadFormClientSchema } from "@/lib/bulk-enquiry-schema";
 import { limitBulkEnquiryPostInMemory } from "@/lib/order-rate-limit-memory";
 import { getOrderRequestClientIp } from "@/lib/order-request-ip";
@@ -68,9 +67,6 @@ export async function POST(request: Request) {
     );
   }
 
-  const email =
-    body.email && body.email.trim().length > 0 ? body.email.trim() : null;
-
   let enquiryId: string;
   try {
     const prisma = getPrisma();
@@ -78,12 +74,10 @@ export async function POST(request: Request) {
       data: {
         name: body.name,
         phone: body.phone,
-        email,
         organization: body.organization?.trim() || null,
         businessType: body.businessType?.trim() || null,
         approxGrams: body.approxGrams?.trim() || null,
-        timeline: body.timeline?.trim() || null,
-        message: body.message,
+        message: body.message?.trim() || null,
         clientIp: clientIp !== "unknown" ? clientIp : null,
       },
       select: { id: true },
@@ -102,36 +96,6 @@ export async function POST(request: Request) {
     );
   }
 
-  console.warn(`${ROUTE_TAG} saved enquiry ${enquiryId}, sending SMTP`);
-
-  const sent = await sendBulkEnquiryNotification({
-    enquiryId,
-    name: body.name,
-    phone: body.phone,
-    email,
-    organization: body.organization?.trim() || null,
-    businessType: body.businessType?.trim() || null,
-    approxGrams: body.approxGrams?.trim() || null,
-    timeline: body.timeline?.trim() || null,
-    message: body.message,
-  });
-
-  if (sent) {
-    try {
-      const prisma = getPrisma();
-      await prisma.bulkEnquiry.update({
-        where: { id: enquiryId },
-        data: { emailNotifiedAt: new Date() },
-      });
-    } catch (e) {
-      console.error(`${ROUTE_TAG} failed to set emailNotifiedAt`, e);
-    }
-  } else {
-    console.warn(
-      `${ROUTE_TAG} SMTP failed; enquiry ${enquiryId} retained without emailNotifiedAt`,
-    );
-  }
-
-  console.warn(`${ROUTE_TAG} completed OK`);
+  console.warn(`${ROUTE_TAG} saved enquiry ${enquiryId}`);
   return NextResponse.json({ ok: true });
 }

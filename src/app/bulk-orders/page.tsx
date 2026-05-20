@@ -11,6 +11,7 @@ import {
   telHref,
   whatsappChatUrl,
 } from "@/lib/phone";
+import { WHOLESALE_MIN_GRAMS_LABEL } from "@/lib/wholesale-constants";
 
 export const dynamic = "force-static";
 
@@ -61,7 +62,7 @@ export default function BulkOrdersPage() {
             { label: "Bulk orders", href: "/bulk-orders" },
           ]}
           title="Bulk orders & wholesale Kashmiri saffron"
-          description="Restaurants, sweet shops, gifting teams, and serious home kitchens—get farm-direct Grade A++ Mongra from Pampore with the same no-compromise standard as our retail tins. Call or WhatsApp for the fastest answer, or send your brief below."
+          description={`Restaurants, sweet shops, gifting teams, and trade buyers—get farm-direct Grade A++ Mongra from Pampore. Minimum wholesale order ${WHOLESALE_MIN_GRAMS_LABEL}. Call or WhatsApp for the fastest answer, or send your brief below.`}
           maxWidth="wide"
           cta={{ href: "#request-quote", label: "Request a quote" }}
         />
@@ -256,15 +257,26 @@ export default function BulkOrdersPage() {
             <div className="grid items-start gap-10 lg:grid-cols-12 lg:gap-14">
               <div className="lg:col-span-5 space-y-4">
                 <h2 className="font-display text-2xl font-bold text-text-primary md:text-3xl">
-                  Tell us what you need
+                  Request a wholesale quote
                 </h2>
                 <p className="text-base leading-relaxed text-secondary font-body">
-                  Give us gram targets, timelines, invoicing hints, dispatch
-                  cities—anything your procurement lead would share in a serious
-                  vendor call. We read every enquiry;{" "}
+                  Fill in the form in three short steps—contact, business, and
+                  what you need. Wholesale starts at{" "}
                   <strong className="text-text-primary">
-                    bulky briefs beat silent forms.
+                    {WHOLESALE_MIN_GRAMS_LABEL}
                   </strong>
+                  . We read every enquiry and usually reply by phone or WhatsApp
+                  within a few hours on working days.
+                </p>
+                <p className="text-sm text-text-muted font-body leading-relaxed">
+                  Need less than {WHOLESALE_MIN_GRAMS_LABEL}?{" "}
+                  <Link
+                    href="/shop/saffron"
+                    className="font-semibold text-primary underline-offset-2 hover:underline"
+                  >
+                    Shop retail packs
+                  </Link>{" "}
+                  (1g–50g).
                 </p>
                 <p className="text-sm text-text-muted font-body leading-relaxed">
                   We do not operate anonymous commodity desks—responses come
