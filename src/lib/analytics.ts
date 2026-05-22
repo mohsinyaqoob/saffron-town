@@ -4,8 +4,8 @@ import { sendGAEvent } from "@next/third-parties/google";
 import type { CheckoutLineItem } from "@/lib/checkout-line";
 
 /**
- * GA4 e-commerce events. Requires NEXT_PUBLIC_GA_MEASUREMENT_ID to be set.
- * Events are no-ops if GA is not initialized.
+ * GA4 e-commerce events via gtag (see `Gtag` in root layout).
+ * Requires `NEXT_PUBLIC_GA_MEASUREMENT_ID` and/or `NEXT_PUBLIC_GOOGLE_ADS_ID`.
  */
 
 export function trackAddToCart(item: {

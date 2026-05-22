@@ -1,8 +1,8 @@
-import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata, Viewport } from "next";
 import { Figtree, Playfair_Display } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
+import { Gtag } from "@/components/analytics/Gtag";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { ShopProvider } from "@/context/ShopContext";
 import { SITE_CONFIG } from "@/lib/constants";
@@ -85,6 +85,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
+        <Gtag />
         <JsonLd />
         {process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION && (
           <meta
@@ -109,9 +110,6 @@ export default function RootLayout({
       </head>
       <body className="min-h-screen overflow-x-hidden font-body antialiased">
         <ShopProvider>{children}</ShopProvider>
-        {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
-          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
-        )}
         <Script id="zoho-salesiq-init" strategy="afterInteractive">
           {`window.$zoho=window.$zoho || {};$zoho.salesiq=$zoho.salesiq||{ready:function(){}}`}
         </Script>

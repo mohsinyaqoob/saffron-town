@@ -27,16 +27,16 @@ const nextConfig: NextConfig = {
             key: "Content-Security-Policy",
             value: `
               default-src 'self';
-              script-src 'self' 'unsafe-eval' 'unsafe-inline' https://salesiq.zohopublic.in https://*.zohocdn.com https://www.googletagmanager.com https://www.google-analytics.com;
+              script-src 'self' 'unsafe-eval' 'unsafe-inline' https://salesiq.zohopublic.in https://*.zohocdn.com https://www.googletagmanager.com https://www.google-analytics.com https://www.googleadservices.com https://googleads.g.doubleclick.net;
               style-src 'self' 'unsafe-inline' https://*.zohocdn.com;
-              img-src 'self' blob: data: https://cdn.sanity.io https://images.unsplash.com https://plus.unsplash.com https://*.zohocdn.com https://www.googletagmanager.com https://www.google-analytics.com;
+              img-src 'self' blob: data: https://cdn.sanity.io https://images.unsplash.com https://plus.unsplash.com https://*.zohocdn.com https://www.googletagmanager.com https://www.google-analytics.com https://www.googleadservices.com https://googleads.g.doubleclick.net;
               font-src 'self' data: https://*.zohocdn.com;
               object-src 'none';
               base-uri 'self';
               form-action 'self';
               frame-ancestors 'none';
               frame-src 'self' https://salesiq.zohopublic.in;
-              connect-src 'self' https://salesiq.zohopublic.in https://*.zohocdn.com https://www.google-analytics.com https://cdn.sanity.io https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com;
+              connect-src 'self' https://salesiq.zohopublic.in https://*.zohocdn.com https://www.google-analytics.com https://cdn.sanity.io https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://www.google.com https://www.googleadservices.com https://googleads.g.doubleclick.net;
               upgrade-insecure-requests;
             `
               .replace(/\s{2,}/g, " ")
