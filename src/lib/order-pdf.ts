@@ -34,6 +34,11 @@ function formatDate(d: Date) {
 
 type PdfDoc = InstanceType<typeof PDFDocument>;
 
+function cleanText(str: string | null | undefined): string {
+  if (!str) return "";
+  return str.replace(/[\u200e\u200f\u200b-\u200d\ufeff\u202a-\u202e]/g, "");
+}
+
 function drawRule(doc: PdfDoc, y: number, left: number, right: number) {
   doc.save();
   doc
@@ -95,7 +100,7 @@ export function buildOrderPdfBuffer(order: OrderWithItems): Promise<Buffer> {
     doc.moveDown(0.65);
 
     doc.font(FONT_BODY).fontSize(10).fillColor(COLORS.body);
-    doc.text(`Order number  ${order.id}`, { width: innerW });
+    doc.text(`Order number  ${cleanText(order.id)}`, { width: innerW });
     doc.text(`Placed  ${formatDate(order.createdAt)}`, { width: innerW });
     doc.text(`Status  ${order.status}`, { width: innerW });
     doc.moveDown(1.1);
@@ -107,10 +112,10 @@ export function buildOrderPdfBuffer(order: OrderWithItems): Promise<Buffer> {
       .text("Bill to", { width: innerW });
     doc.moveDown(0.4);
     doc.font(FONT_BODY).fontSize(10).fillColor(COLORS.body);
-    doc.text(order.customerName, { width: innerW });
-    doc.text(order.email, { width: innerW });
-    doc.text(order.phone, { width: innerW });
-    doc.text(`PIN ${order.pincode}`, { width: innerW });
+    doc.text(cleanText(order.customerName), { width: innerW });
+    doc.text(cleanText(order.email), { width: innerW });
+    doc.text(cleanText(order.phone), { width: innerW });
+    doc.text(`PIN ${cleanText(order.pincode)}`, { width: innerW });
     if (order.deliveryAddress) {
       doc.moveDown(0.35);
       doc
@@ -118,11 +123,11 @@ export function buildOrderPdfBuffer(order: OrderWithItems): Promise<Buffer> {
         .fontSize(10)
         .fillColor(COLORS.body)
         .text("Delivery address", { width: innerW });
-      doc.text(order.deliveryAddress, { width: innerW });
+      doc.text(cleanText(order.deliveryAddress), { width: innerW });
     }
     if (order.heardAboutUs) {
       doc.moveDown(0.35);
-      doc.text(`How they heard about us  ${order.heardAboutUs}`, {
+      doc.text(`How they heard about us  ${cleanText(order.heardAboutUs)}`, {
         width: innerW,
       });
     }
@@ -132,7 +137,7 @@ export function buildOrderPdfBuffer(order: OrderWithItems): Promise<Buffer> {
         .font(FONT_BODY)
         .fontSize(10)
         .fillColor(COLORS.body)
-        .text(`Order notes  ${order.notes}`, { width: innerW });
+        .text(`Order notes  ${cleanText(order.notes)}`, { width: innerW });
     }
     doc.moveDown(1.05);
 
@@ -155,7 +160,7 @@ export function buildOrderPdfBuffer(order: OrderWithItems): Promise<Buffer> {
     doc.font(FONT_BODY).fontSize(10).fillColor(COLORS.body);
 
     for (const line of order.items) {
-      const title = `${line.productName} (${line.variantLabel})`;
+      const title = `${cleanText(line.productName)} (${cleanText(line.variantLabel)})`;
       const detail = `${formatMoney(line.unitPriceRupees, order.currency)} each`;
       const amount = formatMoney(line.lineTotalRupees, order.currency);
 

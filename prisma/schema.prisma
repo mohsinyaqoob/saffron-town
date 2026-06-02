@@ -14,6 +14,14 @@ enum OrderStatus {
   CANCELLED
 }
 
+enum InvoiceStatus {
+  DRAFT
+  SENT
+  PAID
+  OVERDUE
+  CANCELLED
+}
+
 model Order {
   id             String      @id @default(cuid())
   createdAt      DateTime    @default(now())
@@ -31,6 +39,82 @@ model Order {
   cityPin         String?
   notes           String?
   items          OrderItem[]
+}
+
+model Customer {
+  id             String    @id @default(cuid())
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  name           String    @db.VarChar(120)
+  email          String?   @db.VarChar(254)
+  phone          String?   @db.VarChar(22)
+  companyName    String?   @db.VarChar(160)
+  taxId          String?   @db.VarChar(80)
+  billingAddress String?   @db.Text
+  city           String?   @db.VarChar(100)
+  state          String?   @db.VarChar(100)
+  postalCode     String?   @db.VarChar(30)
+  country        String?   @db.VarChar(100)
+  notes          String?   @db.Text
+  deletedAt      DateTime?
+  invoices       Invoice[]
+
+  @@index([name])
+  @@index([email])
+  @@index([createdAt])
+  @@index([deletedAt])
+}
+
+model Invoice {
+  id                        String        @id @default(cuid())
+  createdAt                 DateTime      @default(now())
+  updatedAt                 DateTime      @updatedAt
+  invoiceNumber             String        @unique @db.VarChar(64)
+  status                    InvoiceStatus @default(DRAFT)
+  issueDate                 DateTime
+  dueDate                   DateTime?
+  currency                  String        @default("INR") @db.VarChar(8)
+  customerId                String
+  customer                  Customer      @relation(fields: [customerId], references: [id], onDelete: Restrict)
+  customerName              String        @db.VarChar(120)
+  customerEmail             String?       @db.VarChar(254)
+  customerPhone             String?       @db.VarChar(22)
+  customerCompanyName       String?       @db.VarChar(160)
+  billingAddress            String?       @db.Text
+  billingCity               String?       @db.VarChar(100)
+  billingState              String?       @db.VarChar(100)
+  billingPostalCode         String?       @db.VarChar(30)
+  billingCountry            String?       @db.VarChar(100)
+  subtotalPaise             Int
+  taxTotalPaise             Int           @default(0)
+  discountTotalPaise        Int           @default(0)
+  totalPaise                Int
+  notes                     String?       @db.Text
+  paymentTerms              String?       @db.Text
+  lineItems                 InvoiceLineItem[]
+
+  @@index([customerId])
+  @@index([status, createdAt])
+  @@index([issueDate])
+  @@index([dueDate])
+  @@index([createdAt])
+}
+
+model InvoiceLineItem {
+  id               String  @id @default(cuid())
+  invoiceId        String
+  invoice          Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  sortOrder        Int     @default(0)
+  description      String  @db.VarChar(300)
+  quantity         Int
+  unitPricePaise   Int
+  taxRatePercent   Int     @default(0)
+  discountPaise    Int     @default(0)
+  lineSubtotalPaise Int
+  lineTaxPaise     Int     @default(0)
+  lineTotalPaise   Int
+
+  @@index([invoiceId, sortOrder])
 }
 
 model OrderItem {

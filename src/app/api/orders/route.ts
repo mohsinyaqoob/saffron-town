@@ -271,20 +271,58 @@ export async function POST(request: Request) {
   try {
     const prisma = getPrisma();
     const order = await withTimeout(
-      prisma.order.create({
-        data: {
-          currency,
-          subtotalRupees,
-          customerName,
-          phone: phoneRaw,
-          email,
-          pincode,
-          deliveryAddress,
-          heardAboutUs: heardRaw,
-          notes: notes || null,
-          items: { create: lineCreates },
-        },
-        select: { id: true },
+      prisma.$transaction(async (tx) => {
+        const existingCustomer =
+          email.length > 0
+            ? await tx.customer.findFirst({
+                where: { email: { equals: email, mode: "insensitive" } },
+                select: { id: true },
+              })
+            : phoneRaw.length > 0
+              ? await tx.customer.findFirst({
+                  where: { phone: phoneRaw },
+                  select: { id: true },
+                })
+              : null;
+
+        if (existingCustomer) {
+          await tx.customer.update({
+            where: { id: existingCustomer.id },
+            data: {
+              name: customerName,
+              email: email || null,
+              phone: phoneRaw || null,
+              billingAddress: deliveryAddress || null,
+              postalCode: pincode || null,
+            },
+          });
+        } else {
+          await tx.customer.create({
+            data: {
+              name: customerName,
+              email: email || null,
+              phone: phoneRaw || null,
+              billingAddress: deliveryAddress || null,
+              postalCode: pincode || null,
+            },
+          });
+        }
+
+        return tx.order.create({
+          data: {
+            currency,
+            subtotalRupees,
+            customerName,
+            phone: phoneRaw,
+            email,
+            pincode,
+            deliveryAddress,
+            heardAboutUs: heardRaw,
+            notes: notes || null,
+            items: { create: lineCreates },
+          },
+          select: { id: true },
+        });
       }),
       QUERY_TIMEOUT_MS,
       "Database",

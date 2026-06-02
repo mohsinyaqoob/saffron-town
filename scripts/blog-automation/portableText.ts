@@ -1,10 +1,27 @@
 import type { PortableTextBlock } from "@portabletext/types";
 
-type SpanIn = { text: string; href?: string };
+export type SpanIn = {
+  text: string;
+  href?: string;
+  strong?: boolean;
+  em?: boolean;
+};
 
 export type ContentBlockIn =
   | { type: "h2" | "h3"; text: string }
   | { type: "p"; spans: SpanIn[] };
+
+function spanDecoratorMarks(span: SpanIn, linkMark?: string): string[] {
+  const marks: string[] = [];
+  if (span.strong) marks.push("strong");
+  if (span.em) marks.push("em");
+  if (linkMark) marks.push(linkMark);
+  return marks;
+}
+
+function spanKey() {
+  return `s_${globalThis.crypto?.randomUUID?.() ?? Math.random().toString(36).slice(2)}`;
+}
 
 function blockKey() {
   return `b_${globalThis.crypto?.randomUUID?.() ?? Math.random().toString(36).slice(2)}`;
@@ -21,24 +38,34 @@ function buildParagraphBlock(spans: SpanIn[]): PortableTextBlock {
     href: string;
   }> = [];
   const children: Array<{
+    _key: string;
     _type: "span";
     text: string;
-    marks?: string[];
+    marks: string[];
   }> = [];
 
   for (const span of spans) {
     if (!span.text && !span.href) continue;
+    let linkMark: string | undefined;
     if (span.href) {
-      const mk = markKey();
-      markDefs.push({ _type: "link", _key: mk, href: span.href });
-      children.push({ _type: "span", text: span.text, marks: [mk] });
-    } else {
-      children.push({ _type: "span", text: span.text });
+      linkMark = markKey();
+      markDefs.push({ _type: "link", _key: linkMark, href: span.href });
     }
+    children.push({
+      _key: spanKey(),
+      _type: "span",
+      text: span.text,
+      marks: spanDecoratorMarks(span, linkMark),
+    });
   }
 
   if (children.length === 0) {
-    children.push({ _type: "span", text: "\u00a0" });
+    children.push({
+      _key: spanKey(),
+      _type: "span",
+      text: "\u00a0",
+      marks: [],
+    });
   }
 
   return {
@@ -63,7 +90,7 @@ export function blocksToPortableText(
         _key: blockKey(),
         style: b.type,
         markDefs: [],
-        children: [{ _type: "span", text }],
+        children: [{ _key: spanKey(), _type: "span", text, marks: [] }],
       } as unknown as PortableTextBlock);
       continue;
     }

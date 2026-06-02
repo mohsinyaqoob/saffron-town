@@ -4,12 +4,14 @@ import { DASHBOARD_COOKIE_NAME } from "@/lib/dashboard-session";
 
 export async function POST() {
   const jar = await cookies();
-  jar.set(DASHBOARD_COOKIE_NAME, "", {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
-    path: "/dashboard",
-    maxAge: 0,
-  });
+  for (const path of ["/", "/dashboard"] as const) {
+    jar.set(DASHBOARD_COOKIE_NAME, "", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path,
+      maxAge: 0,
+    });
+  }
   return NextResponse.json({ ok: true });
 }
