@@ -49,33 +49,41 @@ export function TestimonialsWidget({
     (variant === "recent"
       ? "Latest Reviews"
       : variant === "top"
-        ? "Top Reviews"
+        ? "What customers say"
         : "What Our Customers Say");
 
   return (
     <section
       aria-labelledby="testimonials-widget-heading"
-      className="py-12 lg:py-16"
+      className="bg-background py-14 lg:py-18"
     >
-      <div className="mx-auto max-w-7xl px-6 lg:px-20">
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <h2
-            id="testimonials-widget-heading"
-            className="font-display text-2xl font-bold tracking-tight text-text-primary lg:text-3xl"
-          >
-            {displayTitle}
-          </h2>
+      <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-20">
+        {/* Header */}
+        <div className="mb-10 flex flex-col items-start gap-1 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">
+              Verified Reviews
+            </p>
+            <h2
+              id="testimonials-widget-heading"
+              className="mt-1 font-display text-2xl font-bold text-text-primary sm:text-3xl"
+            >
+              {displayTitle}
+            </h2>
+          </div>
           {showViewAll && (
             <Link
               href="/reviews"
               className="text-sm font-semibold text-primary hover:underline focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded"
             >
-              View all reviews
+              View all reviews →
             </Link>
           )}
         </div>
+
+        {/* Mobile marquee */}
         {marqueeLoop.length > 0 ? (
-          <div className="testimonial-marquee-outer relative mt-8 md:hidden">
+          <div className="testimonial-marquee-outer relative md:hidden">
             <div className="testimonial-marquee-track">
               {marqueeLoop.map((t, i) => (
                 <div
@@ -89,7 +97,8 @@ export function TestimonialsWidget({
           </div>
         ) : null}
 
-        <ul className="mt-8 hidden gap-6 md:grid md:grid-cols-2 lg:grid-cols-3">
+        {/* Desktop grid */}
+        <ul className="hidden gap-5 md:grid md:grid-cols-2 lg:grid-cols-3">
           {textReviews.map((t) => (
             <li key={t.id}>
               <TestimonialCard testimonial={t} />

@@ -68,6 +68,22 @@
   }
 }
 
+/* ── Zoho SalesIQ widget positioning ── */
+/* On mobile: hide the default float button (replaced by the header "Live Chat" button) */
+@media (max-width: 1023px) {
+  #zsiq_float,
+  .zsiq_flt_rel {
+    display: none !important;
+  }
+}
+/* On desktop: push the button up so it doesn't overlap page content */
+@media (min-width: 1024px) {
+  #zsiq_float {
+    bottom: 28px !important;
+    right: 24px !important;
+  }
+}
+
 @layer base {
   body {
     @apply bg-background text-text-primary;

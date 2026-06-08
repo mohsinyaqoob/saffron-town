@@ -3,7 +3,6 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "@/components/ui/Button";
-import { useShop } from "@/context/ShopContext";
 import { trackAddToCart } from "@/lib/analytics";
 import { checkoutHref } from "@/lib/checkout-line";
 import type { ProductPageData } from "@/lib/product-data";
@@ -16,7 +15,6 @@ export function ProductActions({ product }: ProductActionsProps) {
   const [selectedVariant, setSelectedVariant] = useState(product.variants[0]);
   const [quantity, setQuantity] = useState(1);
   const router = useRouter();
-  const { toggleFavorite, isFavorite } = useShop();
 
   const goCheckout = () => {
     trackAddToCart({
@@ -143,29 +141,6 @@ export function ProductActions({ product }: ProductActionsProps) {
             currency: product.currency,
             maximumFractionDigits: 0,
           }).format(selectedVariant.price * quantity)}
-        </Button>
-        <Button
-          onClick={() => toggleFavorite(product)}
-          variant="outline"
-          className={`flex-none aspect-square p-0 w-[4.5rem] h-[4.5rem] rounded-full transition-all ${
-            isFavorite(product.id)
-              ? "border-primary bg-primary/5 text-primary"
-              : "border-secondary-border/30 text-secondary hover:bg-surface-muted hover:text-primary"
-          }`}
-        >
-          <svg
-            className="h-6 w-6"
-            fill={isFavorite(product.id) ? "currentColor" : "none"}
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-            />
-          </svg>
         </Button>
       </div>
 

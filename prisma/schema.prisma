@@ -38,6 +38,12 @@ model Order {
   heardAboutUs    String?
   cityPin         String?
   notes           String?
+  /** "ONLINE" | "COD" */
+  paymentMethod     String   @default("ONLINE")
+  /** "PENDING" | "PAID" | "FAILED" */
+  paymentStatus     String   @default("PENDING")
+  razorpayOrderId   String?
+  razorpayPaymentId String?
   items          OrderItem[]
 }
 

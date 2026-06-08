@@ -7,39 +7,25 @@ export async function BlogSection() {
   const posts = (await getAllPosts()).slice(0, 3);
 
   return (
-    <section className="bg-background-alt py-24" aria-labelledby="blog-heading">
+    <section className="bg-background py-14 lg:py-18" aria-labelledby="blog-heading">
       <div className="mx-auto max-w-7xl px-6 lg:px-20">
-        <div className="mb-12 flex flex-col items-center justify-between gap-6 md:flex-row md:items-end">
-          <div className="text-center md:text-left">
+        <div className="mb-10 flex flex-col gap-1 md:flex-row md:items-end md:justify-between">
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">
+              The Saffron Journal
+            </p>
             <h2
               id="blog-heading"
-              className="font-display text-4xl font-bold text-text-primary mb-4"
+              className="mt-1 font-display text-2xl font-bold text-text-primary sm:text-3xl"
             >
-              The Saffron Journal
+              Insights &amp; Stories
             </h2>
-            <p className="text-lg text-secondary font-body max-w-xl">
-              Insights into Himalayan heritage, sustainable farming, and natural
-              wellness.
-            </p>
           </div>
           <Link
             href="/blog"
-            className="group inline-flex items-center gap-2 px-6 py-3 rounded-full border border-primary/20 bg-primary/5 text-sm font-bold text-primary hover:bg-primary hover:text-white transition-all duration-300 font-body uppercase tracking-widest"
+            className="mt-3 text-sm font-semibold text-primary hover:underline md:mt-0"
           >
-            Explore Journal
-            <svg
-              className="h-4 w-4 transition-transform group-hover:translate-x-1"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M17 8l4 4m0 0l-4 4m4-4H3"
-              />
-            </svg>
+            Explore journal →
           </Link>
         </div>
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">

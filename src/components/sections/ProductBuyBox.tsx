@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMemo, useState, useTransition } from "react";
-import { useShop } from "@/context/ShopContext";
 import { trackAddToCart } from "@/lib/analytics";
 import { checkoutHref } from "@/lib/checkout-line";
 import type { ProductPageData, ProductVariant } from "@/lib/product-data";
@@ -28,7 +27,6 @@ export function ProductBuyBox({ product }: ProductBuyBoxProps) {
   const [quantity, setQuantity] = useState(1);
   const router = useRouter();
   const [isBuyNowPending, startBuyNowTransition] = useTransition();
-  const { toggleFavorite, isFavorite } = useShop();
 
   const formatPrice = (n: number) =>
     new Intl.NumberFormat("en-IN", {
@@ -356,40 +354,6 @@ export function ProductBuyBox({ product }: ProductBuyBoxProps) {
           Secure transaction. Ships from Saffron Town.
         </p>
 
-        {/* Wishlist */}
-        <div className="mt-4 pt-4 border-t border-secondary-border">
-          <button
-            type="button"
-            onClick={() => toggleFavorite(product)}
-            className="text-sm text-primary hover:underline hover:text-primary-hover flex items-center gap-2 font-body"
-          >
-            {isFavorite(product.id) ? (
-              <svg
-                className="w-4 h-4 fill-current text-primary"
-                viewBox="0 0 24 24"
-              >
-                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-              </svg>
-            ) : (
-              <svg
-                className="w-4 h-4 text-primary"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                />
-              </svg>
-            )}
-            {isFavorite(product.id)
-              ? "Remove from Wish List"
-              : "Add to Wish List"}
-          </button>
-        </div>
       </div>
     </div>
   );

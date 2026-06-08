@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import { SITE_CONFIG } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  // Brand suffix is added by the title.template in app/layout.tsx — don't
-  // append it here, or the rendered <title> ends up "… | Saffron Town | Saffron Town".
   title: "Checkout",
   description:
     "Review your order and send your Kashmiri saffron request to our team.",
@@ -22,5 +20,5 @@ export default function CheckoutLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return children;
+  return <>{children}</>;
 }

@@ -13,6 +13,7 @@ import {
   PregnancyHighlight,
   ShopBanner,
   TrustBadges,
+  UseCasesSection,
 } from "@/components/sections";
 import { TestimonialsWidget } from "@/components/testimonials";
 import { SITE_CONFIG } from "@/lib/constants";
@@ -100,15 +101,18 @@ export default function Home() {
       <JsonLd schema={[websiteSchema, homepageOrganizationSchema]} />
       <HomePageMotion />
       <Header />
-      <main className="space-y-8">
+      <main>
         <Hero />
         <div data-home-fade-up>
           <TrustBadges />
         </div>
-        <div data-home-fade-up>
+        <div data-home-fade-up className="py-10 sm:py-14">
           <ShopBanner />
         </div>
         <div data-home-fade-up>
+          <UseCasesSection />
+        </div>
+        <div data-home-fade-up className="py-10 sm:py-14">
           <HomePrebookSection />
         </div>
         <div data-home-fade-up>
@@ -124,8 +128,8 @@ export default function Home() {
           <GuaranteeSection />
         </div>
         {/* Homepage FAQ — brand/commercial intent; FAQSection auto-injects FAQPage JSON-LD */}
-        <div data-home-fade-up>
-          <div className="mx-auto max-w-4xl px-6 lg:px-20">
+        <div data-home-fade-up className="py-10">
+          <div className="mx-auto max-w-4xl px-5 sm:px-6 lg:px-20">
             <FAQSection
               faqs={HOME_FAQS.map((f) => ({
                 question: f.question,

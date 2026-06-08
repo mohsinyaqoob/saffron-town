@@ -19,6 +19,7 @@ import { CheckoutOrderRedirectLayout } from "@/components/shop/ShopPageLoaders";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { trackBeginCheckout } from "@/lib/analytics";
+import { loadRazorpay } from "@/lib/razorpay-loader";
 import {
   type CheckoutFormValues,
   checkoutFormSchema,
@@ -53,6 +54,9 @@ export function CheckoutPageContent({ footer }: { footer: ReactNode }) {
     : 0; /* bulk: price is line total, quantity 1 */
 
   const [redirectingAfterOrder, setRedirectingAfterOrder] = useState(false);
+  const [paymentStep, setPaymentStep] = useState<
+    "idle" | "creating" | "modal" | "verifying"
+  >("idle");
   const lastBeginCheckoutSig = useRef("");
 
   const {
@@ -102,54 +106,126 @@ export function CheckoutPageContent({ footer }: { footer: ReactNode }) {
       });
       return;
     }
-    const res = await fetch("/api/orders", {
+
+    const orderItems = [
+      {
+        productId: line.id,
+        variantId: line.variant.id,
+        quantity: line.quantity,
+        ...(line.variant.grams != null ? { grams: line.variant.grams } : {}),
+      },
+    ];
+
+    // ── Step 1: Create Razorpay order ──
+    setPaymentStep("creating");
+    const createRes = await fetch("/api/razorpay/create-order", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        customerName: data.name,
-        phone: data.phone,
-        email: data.email.trim().toLowerCase(),
-        pincode: data.pincode.trim(),
-        deliveryAddress: data.deliveryAddress.trim(),
-        heardAboutUs: data.heardAboutUs,
-        notes: data.notes || undefined,
-        items: [
-          {
-            productId: line.id,
-            variantId: line.variant.id,
-            quantity: line.quantity,
-            ...(line.variant.grams != null
-              ? { grams: line.variant.grams }
-              : {}),
-          },
-        ],
-      }),
+      body: JSON.stringify({ amountRupees: cartTotal }),
     });
-    const payload = (await res.json().catch(() => ({}))) as {
+    const createPayload = (await createRes.json().catch(() => ({}))) as {
       error?: string;
-      id?: string;
-      receipt?: string;
+      razorpayOrderId?: string;
+      amount?: number;
+      currency?: string;
     };
-    if (!res.ok) {
+    if (!createRes.ok || !createPayload.razorpayOrderId) {
+      setPaymentStep("idle");
       setError("root", {
-        message: payload.error ?? "Something went wrong. Please try again.",
+        message:
+          createPayload.error ?? "Could not initiate payment. Please try again.",
       });
       return;
     }
-    if (!payload.id) {
+
+    const keyId = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID;
+
+    // ── Step 2: Ensure Razorpay SDK is loaded, then open modal ──
+    try {
+      await loadRazorpay();
+    } catch {
+      setPaymentStep("idle");
       setError("root", {
-        message: "Order was not saved. Please try again.",
+        message:
+          "Could not load the payment window. Please check your internet connection and try again.",
       });
       return;
     }
-    const receipt = payload.receipt ?? "";
-    setRedirectingAfterOrder(true);
-    const q = new URLSearchParams();
-    if (receipt) q.set("receipt", receipt);
-    const successPath = `/orders/${encodeURIComponent(payload.id)}/success${q.toString() ? `?${q}` : ""}`;
-    window.setTimeout(() => {
-      router.replace(successPath);
-    }, 0);
+    setPaymentStep("modal");
+
+    const rzp = new window.Razorpay({
+      key: keyId ?? "",
+      amount: createPayload.amount ?? cartTotal * 100,
+      currency: createPayload.currency ?? "INR",
+      name: "Saffron Town",
+      description: "Grade A++ Kashmiri Mongra Kesar",
+      image: "/logo-horizon.svg",
+      order_id: createPayload.razorpayOrderId,
+      prefill: {
+        name: data.name,
+        email: data.email.trim().toLowerCase(),
+        contact: data.phone,
+      },
+      theme: { color: "#9a2425" },
+      modal: {
+        ondismiss: () => {
+          setPaymentStep("idle");
+        },
+      },
+      handler: async (response) => {
+        // ── Step 3: Verify payment + save order ──
+        setPaymentStep("verifying");
+        const verifyRes = await fetch("/api/razorpay/verify-payment", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            razorpayOrderId: response.razorpay_order_id,
+            razorpayPaymentId: response.razorpay_payment_id,
+            razorpaySignature: response.razorpay_signature,
+            customerName: data.name,
+            phone: data.phone,
+            email: data.email.trim().toLowerCase(),
+            pincode: data.pincode.trim(),
+            deliveryAddress: data.deliveryAddress.trim(),
+            heardAboutUs: data.heardAboutUs,
+            notes: data.notes || undefined,
+            items: orderItems,
+          }),
+        });
+        const verifyPayload = (await verifyRes.json().catch(() => ({}))) as {
+          error?: string;
+          id?: string;
+          receipt?: string;
+        };
+        if (!verifyRes.ok || !verifyPayload.id) {
+          setPaymentStep("idle");
+          setError("root", {
+            message:
+              verifyPayload.error ??
+              "Payment received but order could not be saved. Please contact support with your Razorpay payment ID.",
+          });
+          return;
+        }
+        const receipt = verifyPayload.receipt ?? "";
+        setRedirectingAfterOrder(true);
+        const q = new URLSearchParams();
+        if (receipt) q.set("receipt", receipt);
+        router.replace(
+          `/orders/${encodeURIComponent(verifyPayload.id)}/success${q.toString() ? `?${q}` : ""}`,
+        );
+      },
+    });
+
+    rzp.on("payment.failed", (response) => {
+      setPaymentStep("idle");
+      setError("root", {
+        message:
+          response.error?.description ??
+          "Payment failed. Please try again or use a different payment method.",
+      });
+    });
+
+    rzp.open();
   }
 
   const onInvalidSubmit = (submitErrors: FieldErrors<CheckoutFormValues>) => {
@@ -240,8 +316,7 @@ export function CheckoutPageContent({ footer }: { footer: ReactNode }) {
                   Checkout
                 </h1>
                 <p className="mt-2 max-w-2xl text-sm leading-relaxed text-secondary font-body sm:text-base">
-                  Review your order, add delivery details, then place the order.
-                  We will reach out with payment and dispatch options.
+                  Fill in your delivery details and pay securely online. Your order is confirmed instantly after payment.
                 </p>
               </div>
 
@@ -581,17 +656,48 @@ export function CheckoutPageContent({ footer }: { footer: ReactNode }) {
                 </section>
 
                 <aside className="lg:col-span-5">
-                  <div className="sticky top-28 space-y-6 rounded-3xl border border-secondary-border/20 bg-background-alt p-6 shadow-lg shadow-dark/5 sm:p-8">
+                  <div className="sticky top-28 space-y-5 rounded-3xl border border-secondary-border/20 bg-background-alt p-6 shadow-lg shadow-dark/5 sm:p-8">
                     <h2 className="font-display text-xl font-bold text-text-primary">
-                      Payment & next steps
+                      Payment
                     </h2>
-                    <p className="text-sm leading-relaxed text-secondary font-body">
-                      We confirm every order manually. After you place this
-                      order, our team will reply with an invoice or UPI details
-                      and expected dispatch date.
+
+                    {/* Payment method selector */}
+                    <div className="grid grid-cols-2 gap-3">
+                      {/* Pay Online — active */}
+                      <div className="flex items-center gap-3 rounded-xl border-2 border-primary bg-primary/5 p-4">
+                        <div className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full border-2 border-primary">
+                          <div className="h-2 w-2 rounded-full bg-primary" />
+                        </div>
+                        <div>
+                          <p className="text-sm font-bold text-text-primary">
+                            Pay Online
+                          </p>
+                          <p className="text-[10px] text-secondary font-body">
+                            Cards, UPI, Netbanking
+                          </p>
+                        </div>
+                      </div>
+                      {/* COD — disabled */}
+                      <div className="flex items-center gap-3 rounded-xl border border-secondary-border/20 bg-surface-muted/40 p-4 opacity-60">
+                        <div className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full border-2 border-secondary-border/40">
+                          <div className="h-2 w-2 rounded-full bg-transparent" />
+                        </div>
+                        <div>
+                          <p className="text-sm font-bold text-text-primary">
+                            Cash on Delivery
+                          </p>
+                          <p className="text-[10px] text-secondary font-body">
+                            Not available
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <p className="rounded-lg bg-amber-50 px-3 py-2 text-[11px] leading-relaxed text-amber-800 font-body border border-amber-100">
+                      We are currently accepting <strong>prepaid orders only</strong>. COD is not available at this time.
                     </p>
 
-                    <div className="space-y-2 border-t border-secondary-border/15 pt-6 text-sm font-body">
+                    {/* Order summary */}
+                    <div className="space-y-2 border-t border-secondary-border/15 pt-4 text-sm font-body">
                       <div className="flex justify-between text-secondary">
                         <span>Subtotal ({subtotalSummary})</span>
                         <span className="font-semibold text-text-primary">
@@ -606,7 +712,7 @@ export function CheckoutPageContent({ footer }: { footer: ReactNode }) {
                       </div>
                     </div>
 
-                    <div className="flex items-center justify-between border-t border-secondary-border/15 pt-6">
+                    <div className="flex items-center justify-between border-t border-secondary-border/15 pt-4">
                       <span className="font-display text-lg font-bold">
                         Total
                       </span>
@@ -617,8 +723,8 @@ export function CheckoutPageContent({ footer }: { footer: ReactNode }) {
 
                     {(errors.root || hasFieldErrors) && (
                       <div
-                        className="rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-950 font-body"
-                        role="status"
+                        className="rounded-xl border border-red-200 bg-red-50 px-3 py-2.5 text-sm text-red-900 font-body"
+                        role="alert"
                       >
                         {errors.root ? (
                           <p>{errors.root.message}</p>
@@ -635,32 +741,48 @@ export function CheckoutPageContent({ footer }: { footer: ReactNode }) {
                       type="submit"
                       size="lg"
                       className="w-full gap-3 rounded-2xl shadow-md shadow-primary/20"
-                      disabled={isSubmitting}
-                      aria-busy={isSubmitting}
+                      disabled={paymentStep !== "idle"}
+                      aria-busy={paymentStep !== "idle"}
                     >
-                      {isSubmitting ? (
+                      {paymentStep === "creating" ? (
                         <>
-                          <span
-                            className="h-5 w-5 shrink-0 animate-spin rounded-full border-2 border-white/35 border-t-white"
-                            aria-hidden
-                          />
-                          <span>Placing order…</span>
+                          <span className="h-4 w-4 shrink-0 animate-spin rounded-full border-2 border-white/35 border-t-white" aria-hidden />
+                          <span>Preparing payment…</span>
+                        </>
+                      ) : paymentStep === "modal" ? (
+                        <>
+                          <span className="h-4 w-4 shrink-0 animate-spin rounded-full border-2 border-white/35 border-t-white" aria-hidden />
+                          <span>Payment window open…</span>
+                        </>
+                      ) : paymentStep === "verifying" ? (
+                        <>
+                          <span className="h-4 w-4 shrink-0 animate-spin rounded-full border-2 border-white/35 border-t-white" aria-hidden />
+                          <span>Confirming payment…</span>
                         </>
                       ) : (
-                        "Place order"
+                        <>
+                          <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                            <rect width="20" height="14" x="2" y="5" rx="2" />
+                            <path d="M2 10h20" />
+                          </svg>
+                          Pay {formattedTotal} now
+                        </>
                       )}
                     </Button>
 
                     <Link
                       href={PRODUCT_PAGE_URL}
-                      className="flex min-h-11 w-full items-center justify-center rounded-2xl border border-secondary-border/40 text-sm font-semibold text-secondary transition-colors hover:bg-surface-muted"
+                      className="flex min-h-10 w-full items-center justify-center rounded-2xl border border-secondary-border/40 text-sm font-semibold text-secondary transition-colors hover:bg-surface-muted"
                     >
                       Back to shop
                     </Link>
 
-                    <p className="text-center text-[11px] leading-relaxed text-text-muted font-body">
-                      No payment is taken on this website. Prices are confirmed
-                      from our catalog when you submit.
+                    <p className="flex items-center justify-center gap-1.5 text-center text-[11px] leading-relaxed text-text-muted font-body">
+                      <svg className="h-3 w-3 shrink-0 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                        <rect width="11" height="11" x="3" y="11" rx="2" />
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                      </svg>
+                      Secured by Razorpay — 256-bit SSL encryption
                     </p>
                   </div>
                 </aside>

@@ -4,7 +4,6 @@ import Script from "next/script";
 import "./globals.css";
 import { Gtag } from "@/components/analytics/Gtag";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { ShopProvider } from "@/context/ShopContext";
 import { SITE_CONFIG } from "@/lib/constants";
 
 const playfair = Playfair_Display({
@@ -109,7 +108,7 @@ export default function RootLayout({
         <link rel="prefetch" href="/llms.txt" />
       </head>
       <body className="min-h-screen overflow-x-hidden font-body antialiased">
-        <ShopProvider>{children}</ShopProvider>
+        {children}
         <Script id="zoho-salesiq-init" strategy="afterInteractive">
           {`window.$zoho=window.$zoho || {};$zoho.salesiq=$zoho.salesiq||{ready:function(){}}`}
         </Script>

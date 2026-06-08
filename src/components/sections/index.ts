@@ -16,3 +16,4 @@ export { ProductSeoContent } from "./ProductSeoContent";
 export { ProductView } from "./ProductView";
 export { ShopBanner } from "./ShopBanner";
 export { TrustBadges } from "./TrustBadges";
+export { UseCasesSection } from "./UseCasesSection";

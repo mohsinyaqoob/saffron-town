@@ -46,27 +46,29 @@ function TrustBadgeIcon({ id }: { id: BadgeId }) {
 
 export function TrustBadges() {
   return (
-    <section className="bg-background-alt py-10">
-      <div className="mx-auto flex max-w-7xl flex-col items-center justify-center gap-12 px-6 lg:flex-row lg:gap-12 lg:px-20">
-        {TRUST_BADGES.map((badge) => (
-          <div
-            key={badge.id}
-            className="flex flex-col items-center gap-3 text-center"
-          >
+    <section className="bg-background py-10 border-b border-secondary-border/10">
+      <div className="mx-auto max-w-7xl px-6 lg:px-20">
+        <div className="grid grid-cols-3 gap-4 lg:gap-0 lg:divide-x lg:divide-secondary-border/15">
+          {TRUST_BADGES.map((badge) => (
             <div
-              className="flex h-12 w-12 items-center justify-center rounded-full bg-primary-muted"
-              aria-hidden
+              key={badge.id}
+              className="flex flex-col items-center gap-2.5 text-center lg:px-10"
             >
-              <TrustBadgeIcon id={badge.id} />
+              <div
+                className="flex h-11 w-11 items-center justify-center rounded-full bg-primary-muted"
+                aria-hidden
+              >
+                <TrustBadgeIcon id={badge.id} />
+              </div>
+              <h3 className="font-display text-sm font-semibold text-text-primary sm:text-base">
+                {badge.title}
+              </h3>
+              <p className="hidden text-xs leading-snug text-secondary font-body sm:block max-w-[200px]">
+                {badge.description}
+              </p>
             </div>
-            <h3 className="font-display text-base font-semibold text-text-primary">
-              {badge.title}
-            </h3>
-            <p className="max-w-[240px] text-sm leading-snug text-secondary font-body">
-              {badge.description}
-            </p>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </section>
   );

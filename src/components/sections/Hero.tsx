@@ -1,94 +1,147 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Badge } from "@/components/ui/Badge";
-import { Button } from "@/components/ui/Button";
 import { IMAGE_QUALITY_PHOTO } from "@/lib/constants";
+
+/**
+ * Each proof point is a short, factual claim backed by lab/origin data.
+ * Rendered as a visible list so screen readers and crawlers see the full trust signal set.
+ */
+const PROOF_POINTS = [
+  { icon: "✓", label: "No mislabeling — Mongra sold as Mongra" },
+  { icon: "✓", label: "ISO 3632 lab-tested, every batch" },
+  { icon: "✓", label: "Farm-direct · Zero middlemen" },
+  { icon: "✓", label: "GI-tagged Pampore origin" },
+  { icon: "✓", label: "Organic · No adulteration" },
+  { icon: "✓", label: "Fresh harvest only · Never old stock" },
+] as const;
+
+const STATS = [
+  { value: "Grade A++", label: "Purity grade" },
+  { value: "ISO 3632", label: "Lab certified" },
+  { value: "GI-Tagged", label: "Kashmir origin" },
+  { value: "0% Old stock", label: "Fresh harvest only" },
+] as const;
 
 export function Hero() {
   return (
-    <section className="relative min-h-dvh w-full overflow-hidden bg-background">
+    <section
+      className="relative flex min-h-dvh w-full flex-col overflow-hidden bg-dark"
+      aria-label="Saffron Town — Pure Kashmiri Mongra Kesar"
+    >
+      {/* Hero image */}
       <Image
         src="/images/hero-v3.webp"
-        alt="Hands cradling fresh-harvest Kashmiri Mongra kesar threads from Pampore"
+        alt="Hands gently holding fresh-harvest Kashmiri Mongra kesar threads from Pampore fields"
         fill
         priority
+        fetchPriority="high"
         quality={IMAGE_QUALITY_PHOTO}
-        className="object-cover"
-        sizes="(max-width: 750px) 100vw, (max-width: 1920px) 100vw, 1920px"
-      />
-      <div
-        className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/65 via-black/55 to-black/70"
-        aria-hidden
+        className="object-cover object-center"
+        sizes="100vw"
       />
 
+      {/* Layered gradient — stronger at top (nav legibility) and bottom (text legibility) */}
       <div
-        className="relative z-10 mx-auto flex min-h-dvh w-full max-w-7xl flex-col justify-center pl-[max(1.5rem,env(safe-area-inset-left,0px))] pr-[max(1.5rem,env(safe-area-inset-right,0px))] pt-[calc(env(safe-area-inset-top,0px)+5rem)] pb-[max(1.25rem,env(safe-area-inset-bottom,0px))] lg:pl-[max(5rem,env(safe-area-inset-left,0px))] lg:pr-[max(5rem,env(safe-area-inset-right,0px))]"
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(to bottom, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.42) 38%, rgba(0,0,0,0.62) 72%, rgba(0,0,0,0.82) 100%)",
+        }}
+        aria-hidden="true"
+      />
+
+      {/* ── Main content ── */}
+      <div
+        className="relative z-10 mx-auto flex w-full max-w-3xl flex-1 flex-col items-center justify-center px-5 pb-6 pt-[calc(env(safe-area-inset-top,0px)+5rem)] text-center sm:px-8"
         data-home-hero
       >
-        <div className="mx-auto flex w-full max-w-3xl flex-col items-center gap-6 text-center">
-          <Badge
-            variant="outline"
-            className="border-white/30 bg-white/10 text-white"
-          >
-            THIS SEASON&apos;S HARVEST
-          </Badge>
-          <h1 className="font-display text-4xl font-normal leading-tight text-white sm:text-5xl lg:text-6xl">
-            Fresh Harvest Only. Pure Kashmiri Kesar, Farm Direct.
-          </h1>
-          <p className="text-base leading-relaxed text-white/90 font-body sm:text-lg">
-            Grade A++ Pampore Mongra kesar, farm-direct and fresh harvest only.
-            Transparent sourcing, ISO 3632 lab-tested quality, and zero old
-            stock. Trusted by thousands of Indian families for cooking, kesar
-            milk and pregnancy.
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-3">
-            <Link href="/shop/saffron">
-              <Button size="md">Shop Saffron</Button>
-            </Link>
-            <Link href="/prebook-2026-harvest">
-              <Button
-                size="md"
-                variant="outline"
-                className="border-white/70 bg-white/10 text-white hover:bg-white hover:text-dark"
-              >
-                Prebook Harvest
-              </Button>
-            </Link>
-          </div>
+        {/* Eyebrow — origin signal */}
+        <p
+          className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/8 px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-white/85 backdrop-blur-sm"
+          aria-label="Pampore's Finest Kashmiri Mongra Saffron"
+        >
+          <span className="h-1.5 w-1.5 rounded-full bg-[#f0c070] animate-pulse" aria-hidden="true" />
+          Pampore&apos;s Finest Kashmiri Mongra
+        </p>
 
-          <div className="mt-1 flex flex-wrap justify-center gap-2">
-            <span className="rounded-full border border-white/30 bg-white/10 px-3 py-1 text-xs font-semibold text-white">
-              Farm Direct
-            </span>
-            <span className="rounded-full border border-white/30 bg-white/10 px-3 py-1 text-xs font-semibold text-white">
-              ISO 3632 Lab-Tested
-            </span>
-            <span className="rounded-full border border-white/30 bg-white/10 px-3 py-1 text-xs font-semibold text-white">
-              Money-back Guarantee
-            </span>
-          </div>
-          <p className="text-xs text-white/75 font-body">
-            Pure Kashmiri Mongra from Pampore
-          </p>
-          <div
-            className="mt-2 inline-flex flex-col items-center text-white/80"
-            aria-hidden
-          >
-            <span className="text-[11px] font-medium tracking-wide">
-              Scroll
-            </span>
-            <svg
-              className="mt-1 h-5 w-5 animate-bounce"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+        {/* H1 */}
+        <h1 className="mt-5 font-display text-[1.85rem] font-bold leading-[1.12] tracking-tight text-white sm:text-5xl lg:text-[3.5rem]">
+          The{" "}
+          <em className="not-italic text-[#f0c070]">Gold Standard</em>
+          {" "}of Saffron.
+        </h1>
+
+        {/* Body */}
+        <p className="mt-5 max-w-2xl text-sm leading-[1.75] text-white/80 font-body sm:text-[1rem] lg:text-[1.05rem]">
+          Cultivated in the legendary saffron fields of Kashmir and harvested
+          for exceptional color, aroma, and strength.{" "}
+          <strong className="font-semibold text-white">
+            Farm-direct, organic, and independently lab-tested
+          </strong>
+          {" "}— ensuring every strand delivers the purity and potency authentic
+          Kashmiri saffron is known for.
+        </p>
+
+        {/* Proof points — visible to crawlers and screen readers, not just icons */}
+        <ul
+          className="mt-6 flex flex-wrap justify-center gap-x-5 gap-y-2"
+          aria-label="Purity and quality guarantees"
+        >
+          {PROOF_POINTS.map((point) => (
+            <li
+              key={point.label}
+              className="flex items-center gap-1.5 text-[11px] font-semibold text-white/85 sm:text-xs"
             >
-              <path d="M6 9l6 6 6-6" />
-            </svg>
-          </div>
+              <span className="text-[#f0c070]" aria-hidden="true">
+                {point.icon}
+              </span>
+              {point.label}
+            </li>
+          ))}
+        </ul>
+
+        {/* CTAs */}
+        <div className="mt-8 flex w-full flex-col gap-3 sm:flex-row sm:justify-center">
+          <Link
+            href="/shop/saffron"
+            className="inline-flex min-h-[52px] w-full items-center justify-center rounded-2xl bg-primary px-8 text-sm font-bold text-white shadow-xl shadow-primary/35 transition-all hover:bg-primary-hover active:scale-[0.98] sm:w-auto"
+            aria-label="Shop pure Kashmiri Mongra saffron"
+          >
+            Shop pure saffron
+          </Link>
+          <Link
+            href="/lab-reports"
+            className="inline-flex min-h-[52px] w-full items-center justify-center rounded-2xl border border-white/30 bg-white/8 px-8 text-sm font-bold text-white backdrop-blur-sm transition-all hover:bg-white/15 active:scale-[0.98] sm:w-auto"
+            aria-label="View ISO 3632 lab reports for our saffron"
+          >
+            View lab reports
+          </Link>
+        </div>
+
+        <p className="mt-4 text-[11px] text-white/45 font-body">
+          Free delivery above ₹499 · Money-back guarantee · Dispatched from Kashmir
+        </p>
+      </div>
+
+      {/* ── Bottom stats strip ── */}
+      <div
+        className="relative z-10 border-t border-white/10 bg-black/55 backdrop-blur-md"
+        aria-label="Quality certifications at a glance"
+      >
+        <div className="mx-auto grid max-w-7xl grid-cols-4 divide-x divide-white/10">
+          {STATS.map((stat) => (
+            <div
+              key={stat.value}
+              className="flex flex-col items-center gap-0.5 px-2 py-3.5 text-center"
+            >
+              <span className="text-[11px] font-bold text-white sm:text-sm">
+                {stat.value}
+              </span>
+              <span className="text-[9px] uppercase tracking-wide text-white/45 sm:text-[10px]">
+                {stat.label}
+              </span>
+            </div>
+          ))}
         </div>
       </div>
     </section>
