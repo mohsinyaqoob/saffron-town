@@ -16,6 +16,11 @@ const nextConfig: NextConfig = {
         destination: "/blog/saffron-for-pregnancy",
         permanent: true,
       },
+      {
+        source: "/about",
+        destination: "/our-story",
+        permanent: true,
+      },
     ];
   },
   async headers() {

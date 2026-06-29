@@ -12,6 +12,9 @@ enum OrderStatus {
   PENDING
   CONFIRMED
   CANCELLED
+  COMPLETED
+  FAILED
+  DELIVERED
 }
 
 enum InvoiceStatus {
@@ -44,7 +47,10 @@ model Order {
   paymentStatus     String   @default("PENDING")
   razorpayOrderId   String?
   razorpayPaymentId String?
+  archivedAt        DateTime?
   items          OrderItem[]
+
+  @@index([archivedAt])
 }
 
 model Customer {
