@@ -116,15 +116,25 @@ export function CheckoutPageContent({ footer }: { footer: ReactNode }) {
       },
     ];
 
-    // ── Step 1: Create Razorpay order ──
+    // ── Step 1: Create Razorpay order + save PENDING order to DB ──
     setPaymentStep("creating");
     const createRes = await fetch("/api/razorpay/create-order", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ amountRupees: cartTotal }),
+      body: JSON.stringify({
+        customerName: data.name,
+        phone: data.phone,
+        email: data.email.trim().toLowerCase(),
+        pincode: data.pincode.trim(),
+        deliveryAddress: data.deliveryAddress.trim(),
+        heardAboutUs: data.heardAboutUs,
+        notes: data.notes || undefined,
+        items: orderItems,
+      }),
     });
     const createPayload = (await createRes.json().catch(() => ({}))) as {
       error?: string;
+      orderId?: string;
       razorpayOrderId?: string;
       amount?: number;
       currency?: string;
@@ -137,6 +147,8 @@ export function CheckoutPageContent({ footer }: { footer: ReactNode }) {
       });
       return;
     }
+
+    const pendingOrderId = createPayload.orderId; // may be undefined if DB write failed
 
     const keyId = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID;
 
@@ -173,15 +185,18 @@ export function CheckoutPageContent({ footer }: { footer: ReactNode }) {
         },
       },
       handler: async (response) => {
-        // ── Step 3: Verify payment + save order ──
+        // ── Step 3: Verify payment + mark order PAID ──
         setPaymentStep("verifying");
         const verifyRes = await fetch("/api/razorpay/verify-payment", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
+            // Fast path: orderId lets verify-payment update the PENDING order
+            ...(pendingOrderId ? { orderId: pendingOrderId } : {}),
             razorpayOrderId: response.razorpay_order_id,
             razorpayPaymentId: response.razorpay_payment_id,
             razorpaySignature: response.razorpay_signature,
+            // Fallback fields used only when no orderId (create-order DB write failed)
             customerName: data.name,
             phone: data.phone,
             email: data.email.trim().toLowerCase(),
