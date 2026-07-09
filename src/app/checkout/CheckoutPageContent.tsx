@@ -182,6 +182,14 @@ export function CheckoutPageContent({ footer }: { footer: ReactNode }) {
       modal: {
         ondismiss: () => {
           setPaymentStep("idle");
+          // Clean up the PENDING order so it doesn't appear as a ghost in the dashboard
+          if (pendingOrderId) {
+            fetch("/api/razorpay/cancel-pending", {
+              method: "DELETE",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ orderId: pendingOrderId, razorpayOrderId: createPayload.razorpayOrderId }),
+            }).catch(() => {});
+          }
         },
       },
       handler: async (response) => {
@@ -238,6 +246,14 @@ export function CheckoutPageContent({ footer }: { footer: ReactNode }) {
           response.error?.description ??
           "Payment failed. Please try again or use a different payment method.",
       });
+      // Clean up the PENDING order on payment failure too
+      if (pendingOrderId) {
+        fetch("/api/razorpay/cancel-pending", {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ orderId: pendingOrderId, razorpayOrderId: createPayload.razorpayOrderId }),
+        }).catch(() => {});
+      }
     });
 
     rzp.open();
