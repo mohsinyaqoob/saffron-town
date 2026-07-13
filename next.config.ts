@@ -41,7 +41,7 @@ const nextConfig: NextConfig = {
               form-action 'self';
               frame-ancestors 'none';
               frame-src 'self' https://salesiq.zohopublic.in https://*.razorpay.com;
-              connect-src 'self' https://salesiq.zohopublic.in https://*.zohocdn.com https://www.google-analytics.com https://cdn.sanity.io https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://www.google.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://api.razorpay.com https://*.razorpay.com https://lumberjack.razorpay.com;
+              connect-src 'self' https://salesiq.zohopublic.in https://*.zohocdn.com https://www.google-analytics.com https://cdn.sanity.io https://*.api.sanity.io wss://*.api.sanity.io https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://www.google.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://api.razorpay.com https://*.razorpay.com https://lumberjack.razorpay.com;
               upgrade-insecure-requests;
             `
               .replace(/\s{2,}/g, " ")
