@@ -62,7 +62,7 @@ export function GiftingStorySection() {
 
   return (
     <section
-      className="flex min-h-dvh flex-col bg-dark lg:flex-row"
+      className="flex flex-col bg-dark lg:min-h-dvh lg:flex-row"
       aria-label="The gifting experience — Saffron Town"
     >
       {/* ── Image panel ── */}
