@@ -14,7 +14,7 @@ const USE_CASES = [
     title: "Pregnancy & Wellness",
     description:
       "Trusted by thousands of Indian mothers. ISO 3632 lab-tested purity you can rely on for kesar milk.",
-    href: "/blog/kesar-in-pregnancy",
+    href: "/blog/saffron-for-pregnancy",
     linkLabel: "Read the guide →",
   },
   {

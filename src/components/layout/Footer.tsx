@@ -21,7 +21,7 @@ const FOOTER_COLUMNS: {
     links: [
       { href: "/blog", label: "Journal" },
       { href: "/our-story", label: "Our story" },
-      { href: "/about", label: "About" },
+      { href: "/our-story", label: "Our Story" },
       { href: "/lab-reports", label: "Lab reports" },
       { href: "/reviews", label: "Reviews" },
     ],
