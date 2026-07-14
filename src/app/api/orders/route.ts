@@ -102,6 +102,7 @@ export async function POST(request: Request) {
     heardAboutUs?: string;
     cityPin?: string;
     notes?: string;
+    source?: string;
     items?: IncomingItem[];
   };
 
@@ -112,6 +113,7 @@ export async function POST(request: Request) {
   const deliveryAddress = parsed.deliveryAddress?.trim() ?? "";
   const heardRaw = parsed.heardAboutUs?.trim();
   const notes = parsed.notes?.trim();
+  const source = parsed.source?.trim() || undefined;
   const items = Array.isArray(parsed.items) ? parsed.items : [];
 
   if (customerName.length < 2) {
@@ -319,6 +321,7 @@ export async function POST(request: Request) {
             deliveryAddress,
             heardAboutUs: heardRaw,
             notes: notes || null,
+            source: source || null,
             items: { create: lineCreates },
           },
           select: { id: true },

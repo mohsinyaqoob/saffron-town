@@ -68,7 +68,7 @@ export function GiftingStorySection() {
       onMouseLeave={() => setPaused(false)}
     >
       {/* ── Full-width image ── larger on mobile, cinematic on desktop */}
-      <div className="relative h-[62vh] w-full overflow-hidden sm:h-[60vh] lg:h-[68vh]">
+      <div className="relative w-full overflow-hidden story-img-wrap">
         {SLIDES.map((s, i) => (
           <div
             key={s.src}
@@ -176,6 +176,9 @@ export function GiftingStorySection() {
           from { opacity: 0; transform: translateY(10px); }
           to   { opacity: 1; transform: translateY(0); }
         }
+        .story-img-wrap { height: 62vh; min-height: 280px; }
+        @media (min-width: 640px) { .story-img-wrap { height: 60vh; } }
+        @media (min-width: 1024px) { .story-img-wrap { height: 68vh; } }
       `}</style>
     </section>
   );

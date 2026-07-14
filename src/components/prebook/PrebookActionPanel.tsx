@@ -61,7 +61,7 @@ export function PrebookActionPanel() {
       quantity: 1,
       currency: product.currency,
     });
-    router.push(checkoutHref(product.id, selectedPack.id, 1));
+    router.push(checkoutHref(product.id, selectedPack.id, 1, undefined, "prebook"));
   };
 
   return (

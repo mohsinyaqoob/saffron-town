@@ -22,6 +22,7 @@ export function checkoutHref(
   variantId: string,
   quantity: number,
   grams?: number,
+  source?: string,
 ) {
   const q = new URLSearchParams();
   q.set("product", productId);
@@ -30,6 +31,7 @@ export function checkoutHref(
   if (isCustomVariantId(variantId) && typeof grams === "number") {
     q.set("grams", String(grams));
   }
+  if (source) q.set("source", source);
   return `/checkout?${q.toString()}`;
 }
 

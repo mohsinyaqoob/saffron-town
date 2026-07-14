@@ -118,6 +118,7 @@ export async function POST(request: Request) {
   const deliveryAddress = String(b.deliveryAddress ?? "").trim();
   const heardRaw        = String(b.heardAboutUs    ?? "").trim();
   const notes           = String(b.notes           ?? "").trim() || undefined;
+  const source          = String(b.source          ?? "").trim() || undefined;
   const items: IncomingItem[] = Array.isArray(b.items) ? (b.items as IncomingItem[]) : [];
 
   if (customerName.length < 2)
@@ -191,7 +192,7 @@ export async function POST(request: Request) {
           await tx.customer.create({ data: { name: customerName, email, phone: phoneRaw, billingAddress: deliveryAddress, postalCode: pincode } });
         }
         return tx.order.create({
-          data: { currency, subtotalRupees, customerName, phone: phoneRaw, email, pincode, deliveryAddress, heardAboutUs: heardRaw, notes: notes || null, paymentMethod: "ONLINE", paymentStatus: "PAID", razorpayOrderId, razorpayPaymentId, items: { create: lineCreates } },
+          data: { currency, subtotalRupees, customerName, phone: phoneRaw, email, pincode, deliveryAddress, heardAboutUs: heardRaw, notes: notes || null, source: source || null, paymentMethod: "ONLINE", paymentStatus: "PAID", razorpayOrderId, razorpayPaymentId, items: { create: lineCreates } },
           select: { id: true },
         });
       }),

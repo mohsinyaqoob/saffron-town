@@ -48,6 +48,11 @@ export function CheckoutPageContent({ footer }: { footer: ReactNode }) {
     return resolveCheckoutLine(parsed);
   }, [searchParams]);
 
+  const orderSource = useMemo(
+    () => searchParams.get("source")?.trim() || undefined,
+    [searchParams],
+  );
+
   const lines = line ? [line] : [];
   const cartTotal = line
     ? line.variant.price * line.quantity
@@ -129,6 +134,7 @@ export function CheckoutPageContent({ footer }: { footer: ReactNode }) {
         deliveryAddress: data.deliveryAddress.trim(),
         heardAboutUs: data.heardAboutUs,
         notes: data.notes || undefined,
+        source: orderSource,
         items: orderItems,
       }),
     });
@@ -212,6 +218,7 @@ export function CheckoutPageContent({ footer }: { footer: ReactNode }) {
             deliveryAddress: data.deliveryAddress.trim(),
             heardAboutUs: data.heardAboutUs,
             notes: data.notes || undefined,
+            source: orderSource,
             items: orderItems,
           }),
         });

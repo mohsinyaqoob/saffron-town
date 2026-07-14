@@ -66,6 +66,7 @@ export async function POST(request: Request) {
   const deliveryAddress = String(b.deliveryAddress ?? "").trim();
   const heardRaw = String(b.heardAboutUs ?? "").trim();
   const notes = String(b.notes ?? "").trim() || undefined;
+  const source = String(b.source ?? "").trim() || undefined;
   const items: IncomingItem[] = Array.isArray(b.items) ? (b.items as IncomingItem[]) : [];
 
   if (customerName.length < 2)
@@ -226,6 +227,7 @@ export async function POST(request: Request) {
         deliveryAddress,
         heardAboutUs: heardRaw,
         notes: notes || null,
+        source: source || null,
         paymentMethod: "ONLINE",
         paymentStatus: "PENDING",
         razorpayOrderId: rzpOrder.id,

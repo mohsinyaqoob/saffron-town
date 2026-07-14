@@ -40,6 +40,7 @@ export function DashboardTopNav() {
       aria-label="Dashboard sections"
     >
       <NavLink href="/dashboard">Orders</NavLink>
+      <NavLink href="/dashboard/prebook-orders">Prebook</NavLink>
       <NavLink href="/dashboard/customers">Customers</NavLink>
       <NavLink href="/dashboard/invoices">Invoices</NavLink>
       <NavLink href="/dashboard/bulk-enquiries">Bulk leads</NavLink>
