@@ -20,7 +20,6 @@ const FOOTER_COLUMNS: {
     heading: "Discover",
     links: [
       { href: "/blog", label: "Journal" },
-      { href: "/our-story", label: "Our story" },
       { href: "/our-story", label: "Our Story" },
       { href: "/lab-reports", label: "Lab reports" },
       { href: "/reviews", label: "Reviews" },
