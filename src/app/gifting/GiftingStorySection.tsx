@@ -62,16 +62,13 @@ export function GiftingStorySection() {
 
   return (
     <section
-      className="flex flex-col bg-dark lg:min-h-dvh lg:flex-row"
+      className="flex flex-col bg-dark"
       aria-label="The gifting experience — Saffron Town"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
     >
-      {/* ── Image panel ── */}
-      <div
-        className="relative w-full overflow-hidden lg:w-[58%] lg:flex-shrink-0"
-        style={{ minHeight: "min(58vw, 62vh)" }}
-        onMouseEnter={() => setPaused(true)}
-        onMouseLeave={() => setPaused(false)}
-      >
+      {/* ── Full-width image ── larger on mobile, cinematic on desktop */}
+      <div className="relative h-[62vh] w-full overflow-hidden sm:h-[60vh] lg:h-[68vh]">
         {SLIDES.map((s, i) => (
           <div
             key={s.src}
@@ -86,93 +83,92 @@ export function GiftingStorySection() {
               fill
               quality={IMAGE_QUALITY_PHOTO}
               className="object-cover object-center"
-              sizes="(max-width: 1024px) 100vw, 58vw"
+              sizes="100vw"
               priority={i === 0}
             />
           </div>
         ))}
 
-        {/* Mobile step badge pinned bottom-left */}
-        <div className="absolute bottom-4 left-4 z-10 flex items-center gap-2 rounded-full border border-white/20 bg-black/50 px-3 py-1.5 backdrop-blur-sm lg:hidden">
+        {/* Step badge pinned bottom-left */}
+        <div className="absolute bottom-4 left-5 z-10 flex items-center gap-2 rounded-full border border-white/25 bg-black/50 px-3.5 py-1.5 backdrop-blur-sm">
           <span className="font-display text-xs font-bold text-primary">
             {slide.step}
           </span>
-          <span className="text-[10px] font-semibold uppercase tracking-widest text-white/70">
+          <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/75">
             {slide.label}
           </span>
         </div>
       </div>
 
-      {/* ── Caption panel ── */}
-      <div className="flex flex-1 flex-col justify-start gap-5 px-7 py-10 sm:px-10 lg:justify-center lg:gap-0 lg:px-14 lg:py-20">
-          {/* Step — desktop only */}
-          <div className="hidden lg:flex items-baseline gap-3 mb-1">
-            <span className="font-display text-5xl font-bold leading-none text-primary/20">
-              {slide.step}
-            </span>
-            <span className="text-[10px] font-bold uppercase tracking-[0.22em] text-dark-text-muted">
-              / 03 · {slide.label}
-            </span>
+      {/* ── Caption panel — full width, two-col on desktop ── */}
+      <div className="px-5 py-8 sm:px-10 sm:py-10 lg:px-20 lg:py-12">
+        <div className="mx-auto flex max-w-6xl flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+
+          {/* Text block */}
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary/70">
+              {slide.step} / 03 · {slide.label}
+            </p>
+            <h2
+              key={`title-${active}`}
+              className="mt-2 font-display text-2xl font-bold leading-tight text-dark-text sm:text-3xl lg:text-4xl"
+              style={{ animation: "fadeSlideUp 0.45s ease both" }}
+            >
+              {slide.title}
+            </h2>
+            <p
+              key={`caption-${active}`}
+              className="mt-3 max-w-xl font-body text-sm leading-relaxed text-dark-text-muted sm:text-base"
+              style={{ animation: "fadeSlideUp 0.45s 0.06s ease both" }}
+            >
+              {slide.caption}
+            </p>
           </div>
 
-          {/* Title */}
-          <h2
-            key={`title-${active}`}
-            className="font-display text-3xl font-bold leading-tight text-dark-text sm:text-4xl lg:mt-4 lg:text-[2.6rem]"
-            style={{ animation: "fadeSlideUp 0.5s ease both" }}
-          >
-            {slide.title}
-          </h2>
+          {/* Nav + CTAs */}
+          <div className="flex flex-col gap-4 lg:items-end lg:shrink-0">
+            {/* Dots */}
+            <div className="flex items-center gap-2.5">
+              {SLIDES.map((s, i) => (
+                <button
+                  key={s.src}
+                  type="button"
+                  onClick={() => goTo(i)}
+                  aria-label={`View ${s.label}`}
+                  className={`h-1.5 rounded-full transition-all duration-300 ${
+                    i === active
+                      ? "w-8 bg-primary"
+                      : "w-1.5 bg-dark-text/25 hover:bg-dark-text/45"
+                  }`}
+                />
+              ))}
+              <span className="ml-2 font-body text-[11px] text-dark-text/40">
+                {active + 1} / {SLIDES.length}
+              </span>
+            </div>
 
-          {/* Caption */}
-          <p
-            key={`caption-${active}`}
-            className="max-w-sm font-body text-base leading-relaxed text-dark-text-muted sm:text-lg lg:mt-4"
-            style={{ animation: "fadeSlideUp 0.5s 0.07s ease both" }}
-          >
-            {slide.caption}
-          </p>
+            {/* CTAs */}
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <Link
+                href="#gift-picker"
+                className="inline-flex items-center justify-center rounded-2xl bg-primary px-7 py-3.5 text-sm font-bold text-white shadow-lg shadow-primary/25 transition-all hover:bg-primary-hover active:scale-[0.98]"
+              >
+                Choose a Gift Size
+              </Link>
+              <Link
+                href="/shop/saffron"
+                className="inline-flex items-center justify-center rounded-2xl border border-dark-text/20 px-7 py-3.5 text-sm font-bold text-dark-text-muted transition-all hover:border-dark-text/40 hover:text-dark-text"
+              >
+                Shop all sizes
+              </Link>
+            </div>
 
-        {/* Navigation dots */}
-        <div className="flex items-center gap-2.5 lg:mt-10">
-          {SLIDES.map((s, i) => (
-            <button
-              key={s.src}
-              type="button"
-              onClick={() => goTo(i)}
-              aria-label={`View ${s.label}`}
-              className={`h-1.5 rounded-full transition-all duration-400 ${
-                i === active
-                  ? "w-8 bg-primary"
-                  : "w-1.5 bg-dark-text/25 hover:bg-dark-text/45"
-              }`}
-            />
-          ))}
-          <span className="ml-2 font-body text-[11px] text-dark-text-muted/60">
-            {active + 1} / {SLIDES.length}
-          </span>
+            <p className="font-body text-[11px] text-dark-text/30 lg:text-right">
+              20g · 30g · 50g · Free delivery · Money-back guarantee
+            </p>
+          </div>
+
         </div>
-
-        {/* CTAs */}
-        <div className="flex flex-col gap-3 sm:flex-row lg:mt-10">
-          <Link
-            href="#gift-picker"
-            className="inline-flex items-center justify-center rounded-2xl bg-primary px-7 py-3.5 text-sm font-bold text-white shadow-lg shadow-primary/25 transition-all hover:bg-primary-hover active:scale-[0.98]"
-          >
-            Choose a Gift Size
-          </Link>
-          <Link
-            href="/shop/saffron"
-            className="inline-flex items-center justify-center rounded-2xl border border-dark-text/20 px-7 py-3.5 text-sm font-bold text-dark-text-muted transition-all hover:border-dark-text/40 hover:text-dark-text"
-          >
-            Shop all sizes
-          </Link>
-        </div>
-
-        {/* Fine print */}
-        <p className="font-body text-[11px] text-dark-text/30 lg:mt-6">
-          20g · 30g · 50g · Free delivery · Money-back guarantee
-        </p>
       </div>
 
       <style>{`
