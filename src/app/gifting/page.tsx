@@ -5,6 +5,7 @@ import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { IMAGE_QUALITY_PHOTO, SITE_CONFIG } from "@/lib/constants";
 import { GiftingPickerSection } from "./GiftingPickerSection";
+import { GiftingStorySection } from "./GiftingStorySection";
 
 const OG_IMAGE = `${SITE_CONFIG.url}/products-grid.png`;
 
@@ -58,100 +59,8 @@ export default function GiftingPage() {
       <Header />
       <main className="flex-grow">
 
-        {/* Hero — full viewport height, gift box background */}
-        <section
-          className="relative flex min-h-dvh w-full flex-col overflow-hidden bg-dark"
-          aria-label="Premium Kashmiri saffron gifting — Saffron Town"
-        >
-          <Image
-            src="/images/gifting-hero.png"
-            alt="Saffron Town Mongra Saffron in a handcrafted wooden gift box with gold satin lining, saffron crocus flowers and loose kesar threads"
-            fill
-            priority
-            fetchPriority="high"
-            quality={IMAGE_QUALITY_PHOTO}
-            className="object-cover object-center"
-            sizes="100vw"
-          />
-
-          {/* Gradient overlay for text legibility */}
-          <div
-            className="pointer-events-none absolute inset-0"
-            style={{
-              background:
-                "linear-gradient(to bottom, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.35) 38%, rgba(0,0,0,0.58) 72%, rgba(0,0,0,0.80) 100%)",
-            }}
-            aria-hidden="true"
-          />
-
-          {/* Main content */}
-          <div className="relative z-10 mx-auto flex w-full max-w-3xl flex-1 flex-col items-center justify-center px-5 pb-6 pt-[calc(env(safe-area-inset-top,0px)+5rem)] text-center sm:px-8">
-            <p className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/8 px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-white/85 backdrop-blur-sm">
-              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#f0c070]" aria-hidden="true" />
-              Pure Kashmiri Saffron · Premium Gifting
-            </p>
-
-            <h1 className="mt-5 font-display text-[1.85rem] font-bold leading-[1.12] tracking-tight text-white sm:text-5xl lg:text-[3.5rem]">
-              Give the Gift of{" "}
-              <em className="not-italic text-[#f0c070]">Kashmir&apos;s Finest</em>
-            </h1>
-
-            <p className="mt-5 max-w-2xl font-body text-sm leading-[1.75] text-white/80 sm:text-base">
-              Our Grade A++ Mongra kesar makes a meaningful, lasting impression — for weddings, Diwali, baby showers, or simply to show someone you care.{" "}
-              <strong className="font-semibold text-white">Farm-direct, lab-tested, and beautifully gift-ready.</strong>
-            </p>
-
-            <ul className="mt-6 flex flex-wrap justify-center gap-x-5 gap-y-2" aria-label="Gift quality guarantees">
-              {[
-                "Grade A++ · ISO 3632 lab-tested",
-                "Airtight glass jar, gift-ready",
-                "Farm-direct from Pampore, Kashmir",
-                "Free delivery across India",
-              ].map((item) => (
-                <li key={item} className="flex items-center gap-1.5 font-body text-[11px] font-semibold text-white/85 sm:text-xs">
-                  <span className="text-[#f0c070]" aria-hidden="true">✓</span>
-                  {item}
-                </li>
-              ))}
-            </ul>
-
-            <div className="mt-8 flex w-full flex-col gap-3 sm:flex-row sm:justify-center">
-              <Link
-                href="#gift-picker"
-                className="inline-flex min-h-[52px] w-full items-center justify-center rounded-2xl bg-primary px-8 text-sm font-bold text-white shadow-xl shadow-primary/35 transition-all hover:bg-primary-hover active:scale-[0.98] sm:w-auto"
-              >
-                Choose a Gift Size
-              </Link>
-              <Link
-                href="/shop/saffron"
-                className="inline-flex min-h-[52px] w-full items-center justify-center rounded-2xl border border-white/30 bg-white/8 px-8 text-sm font-bold text-white backdrop-blur-sm transition-all hover:bg-white/15 active:scale-[0.98] sm:w-auto"
-              >
-                Shop all sizes
-              </Link>
-            </div>
-
-            <p className="mt-4 font-body text-[11px] text-white/45">
-              20g · 30g · 50g gift sizes · Money-back guarantee · Dispatched from Kashmir
-            </p>
-          </div>
-
-          {/* Bottom stats strip */}
-          <div className="relative z-10 border-t border-white/10 bg-black/55 backdrop-blur-md">
-            <div className="mx-auto grid max-w-7xl grid-cols-4 divide-x divide-white/10">
-              {[
-                { value: "Grade A++", label: "Purity grade" },
-                { value: "ISO 3632", label: "Lab certified" },
-                { value: "GI-Tagged", label: "Kashmir origin" },
-                { value: "Free Delivery", label: "Across India" },
-              ].map((stat) => (
-                <div key={stat.value} className="flex flex-col items-center gap-0.5 px-2 py-3.5 text-center">
-                  <span className="text-[11px] font-bold text-white sm:text-sm">{stat.value}</span>
-                  <span className="text-[9px] uppercase tracking-wide text-white/45 sm:text-[10px]">{stat.label}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+        {/* Story hero — 3-slide narrative: packing → delivery → unboxing */}
+        <GiftingStorySection />
 
         {/* Interactive gift size picker */}
         <GiftingPickerSection />
