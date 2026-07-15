@@ -81,20 +81,22 @@ export async function POST(request: Request) {
     try {
       const existing = await prisma.order.findUnique({
         where: { id: orderId },
-        select: { id: true, paymentStatus: true, razorpayOrderId: true },
+        select: { id: true, status: true, razorpayOrderId: true },
       });
 
       if (existing && existing.razorpayOrderId === razorpayOrderId) {
-        if (existing.paymentStatus === "PAID") {
+        if (existing.status === "PAID") {
           // Already marked paid (e.g. by webhook) — idempotent, just return
           const receipt = signOrderReceiptToken(existing.id);
           return NextResponse.json({ id: existing.id, receipt });
         }
 
+        // Signature verified => payment is real. This also corrects an order
+        // that a dismiss handler or stale sweep marked FAILED prematurely.
         const updated = await withTimeout(
           prisma.order.update({
             where: { id: orderId },
-            data: { paymentStatus: "PAID", razorpayPaymentId },
+            data: { status: "PAID", razorpayPaymentId },
             select: { id: true },
           }),
           QUERY_TIMEOUT_MS,
@@ -192,7 +194,7 @@ export async function POST(request: Request) {
           await tx.customer.create({ data: { name: customerName, email, phone: phoneRaw, billingAddress: deliveryAddress, postalCode: pincode } });
         }
         return tx.order.create({
-          data: { currency, subtotalRupees, customerName, phone: phoneRaw, email, pincode, deliveryAddress, heardAboutUs: heardRaw, notes: notes || null, source: source || null, paymentMethod: "ONLINE", paymentStatus: "PAID", razorpayOrderId, razorpayPaymentId, items: { create: lineCreates } },
+          data: { currency, subtotalRupees, customerName, phone: phoneRaw, email, pincode, deliveryAddress, heardAboutUs: heardRaw, notes: notes || null, source: source || null, paymentMethod: "ONLINE", status: "PAID", razorpayOrderId, razorpayPaymentId, items: { create: lineCreates } },
           select: { id: true },
         });
       }),

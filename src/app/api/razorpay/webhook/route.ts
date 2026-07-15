@@ -58,7 +58,7 @@ export async function POST(request: Request) {
     const prisma = getPrisma();
     const order = await prisma.order.findFirst({
       where: { razorpayOrderId },
-      select: { id: true, paymentStatus: true },
+      select: { id: true, status: true },
     });
 
     if (!order) {
@@ -68,14 +68,16 @@ export async function POST(request: Request) {
       return NextResponse.json({ received: true });
     }
 
-    if (order.paymentStatus === "PAID") {
+    if (order.status === "PAID") {
       // Already paid — idempotent
       return NextResponse.json({ received: true });
     }
 
+    // Payment captured => PAID. Also corrects an order marked FAILED
+    // prematurely (e.g. modal dismissed, then payment still went through).
     await prisma.order.update({
       where: { id: order.id },
-      data: { paymentStatus: "PAID", razorpayPaymentId },
+      data: { status: "PAID", razorpayPaymentId },
     });
 
     console.log("[razorpay/webhook] Marked order PAID via webhook", { orderId: order.id, razorpayOrderId });

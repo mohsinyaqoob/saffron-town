@@ -8,13 +8,13 @@ datasource db {
   provider = "postgresql"
 }
 
+/// Order lifecycle: created as PENDING when the customer clicks Pay now,
+/// PAID once Razorpay confirms payment, FAILED if payment fails / is
+/// dismissed / times out or the order is abandoned.
 enum OrderStatus {
   PENDING
-  CONFIRMED
-  CANCELLED
-  COMPLETED
+  PAID
   FAILED
-  DELIVERED
 }
 
 enum InvoiceStatus {
@@ -43,8 +43,6 @@ model Order {
   notes           String?
   /** "ONLINE" | "COD" */
   paymentMethod     String   @default("ONLINE")
-  /** "PENDING" | "PAID" | "FAILED" */
-  paymentStatus     String   @default("PENDING")
   razorpayOrderId   String?
   razorpayPaymentId String?
   archivedAt        DateTime?

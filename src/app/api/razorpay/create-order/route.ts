@@ -229,7 +229,7 @@ export async function POST(request: Request) {
         notes: notes || null,
         source: source || null,
         paymentMethod: "ONLINE",
-        paymentStatus: "PENDING",
+        status: "PENDING",
         razorpayOrderId: rzpOrder.id,
         items: { create: lineCreates },
       },

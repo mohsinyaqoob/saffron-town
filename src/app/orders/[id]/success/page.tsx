@@ -26,10 +26,10 @@ function statusLabel(status: string) {
   switch (status) {
     case "PENDING":
       return "Pending";
-    case "CONFIRMED":
-      return "Confirmed";
-    case "CANCELLED":
-      return "Cancelled";
+    case "PAID":
+      return "Paid";
+    case "FAILED":
+      return "Failed";
     default:
       return status;
   }
@@ -38,8 +38,8 @@ function statusLabel(status: string) {
 function statusBadgeVariant(
   status: string,
 ): "primary" | "outline" | "secondary" {
-  if (status === "CONFIRMED") return "primary";
-  if (status === "CANCELLED") return "outline";
+  if (status === "PAID") return "primary";
+  if (status === "FAILED") return "outline";
   return "secondary";
 }
 

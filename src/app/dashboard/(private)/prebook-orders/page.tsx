@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { DashboardOrderAccordion } from "@/components/dashboard/DashboardOrderAccordion";
+import { failStalePendingOrders } from "@/lib/order-stale-sweep";
 import { getPrisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
@@ -38,6 +39,8 @@ export default async function PrebookOrdersPage() {
   let orders: Awaited<ReturnType<typeof fetchPrebookOrders>>;
   let total: number;
   try {
+    // Backstop: fail PENDING orders whose payment session is long dead
+    await failStalePendingOrders();
     [orders, total] = await Promise.all([fetchPrebookOrders(), fetchPrebookCount()]);
   } catch {
     return (

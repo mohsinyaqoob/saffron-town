@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { DashboardOrderAccordion } from "@/components/dashboard/DashboardOrderAccordion";
 import { OrdersFilterToggle } from "@/components/dashboard/OrdersFilterToggle";
+import { failStalePendingOrders } from "@/lib/order-stale-sweep";
 import { getPrisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
@@ -52,6 +53,8 @@ export default async function DashboardOrdersPage({ searchParams }: Props) {
   let orders: Awaited<ReturnType<typeof fetchOrders>>;
   let counts: Awaited<ReturnType<typeof fetchCounts>>;
   try {
+    // Backstop: fail PENDING orders whose payment session is long dead
+    await failStalePendingOrders();
     [orders, counts] = await Promise.all([
       fetchOrders(showArchived),
       fetchCounts(),

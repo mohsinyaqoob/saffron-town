@@ -188,10 +188,10 @@ export function CheckoutPageContent({ footer }: { footer: ReactNode }) {
       modal: {
         ondismiss: () => {
           setPaymentStep("idle");
-          // Clean up the PENDING order so it doesn't appear as a ghost in the dashboard
+          // Customer closed the modal without paying — record the order as FAILED
           if (pendingOrderId) {
-            fetch("/api/razorpay/cancel-pending", {
-              method: "DELETE",
+            fetch("/api/razorpay/mark-failed", {
+              method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ orderId: pendingOrderId, razorpayOrderId: createPayload.razorpayOrderId }),
             }).catch(() => {});
@@ -253,10 +253,10 @@ export function CheckoutPageContent({ footer }: { footer: ReactNode }) {
           response.error?.description ??
           "Payment failed. Please try again or use a different payment method.",
       });
-      // Clean up the PENDING order on payment failure too
+      // Record the order as FAILED on payment failure too
       if (pendingOrderId) {
-        fetch("/api/razorpay/cancel-pending", {
-          method: "DELETE",
+        fetch("/api/razorpay/mark-failed", {
+          method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ orderId: pendingOrderId, razorpayOrderId: createPayload.razorpayOrderId }),
         }).catch(() => {});

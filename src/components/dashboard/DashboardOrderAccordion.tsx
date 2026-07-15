@@ -23,18 +23,15 @@ function formatWhen(date: Date) {
 function statusBadgeVariant(
   status: string,
 ): "primary" | "outline" | "secondary" {
-  if (status === "CONFIRMED" || status === "COMPLETED" || status === "DELIVERED") return "primary";
-  if (status === "CANCELLED" || status === "FAILED") return "outline";
-  return "secondary";
+  if (status === "PAID") return "primary";
+  if (status === "FAILED") return "outline";
+  return "secondary"; // PENDING
 }
 
 function statusLabel(status: string) {
   switch (status) {
     case "PENDING": return "Pending";
-    case "CONFIRMED": return "Confirmed";
-    case "CANCELLED": return "Cancelled";
-    case "COMPLETED": return "Completed";
-    case "DELIVERED": return "Delivered";
+    case "PAID": return "Paid";
     case "FAILED": return "Failed";
     default: return status;
   }

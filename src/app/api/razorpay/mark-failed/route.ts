@@ -4,16 +4,19 @@ import { getPrisma, isDirectPostgresUrl } from "@/lib/prisma";
 export const runtime = "nodejs";
 
 /**
- * DELETE /api/razorpay/cancel-pending
+ * POST /api/razorpay/mark-failed
  *
- * Deletes a PENDING order that was created by create-order but never paid
- * (user dismissed the Razorpay modal or payment failed).
+ * Marks a PENDING order as FAILED when the payment did not complete
+ * (customer dismissed the Razorpay modal, payment failed, timed out, …).
  *
  * Public endpoint — no dashboard auth. Guards:
- *  - Order must exist and be PENDING
- *  - razorpayOrderId must match the stored value (prevents random deletes)
+ *  - Order must exist and be PENDING (never downgrades a PAID order)
+ *  - razorpayOrderId must match the stored value (prevents random writes)
+ *
+ * If payment actually went through despite this (e.g. captured after the
+ * modal closed), verify-payment or the webhook flips it back to PAID.
  */
-export async function DELETE(request: Request) {
+export async function POST(request: Request) {
   const dbUrl = process.env.DATABASE_URL?.trim() ?? "";
   if (!dbUrl || !isDirectPostgresUrl(dbUrl))
     return NextResponse.json({ ok: false }, { status: 503 });
@@ -31,24 +34,18 @@ export async function DELETE(request: Request) {
 
   try {
     const prisma = getPrisma();
-    const order = await prisma.order.findUnique({
-      where: { id: orderId },
-      select: { id: true, paymentStatus: true, razorpayOrderId: true },
+    // Guarded update: only flips PENDING -> FAILED for the matching Razorpay order
+    const result = await prisma.order.updateMany({
+      where: { id: orderId, status: "PENDING", razorpayOrderId },
+      data: { status: "FAILED" },
     });
 
-    // Only delete if it's genuinely PENDING and the Razorpay IDs match
-    if (
-      !order ||
-      order.paymentStatus !== "PENDING" ||
-      order.razorpayOrderId !== razorpayOrderId
-    ) {
+    if (result.count === 0)
       return NextResponse.json({ ok: false }, { status: 404 });
-    }
 
-    await prisma.order.delete({ where: { id: orderId } });
     return NextResponse.json({ ok: true });
   } catch (e) {
-    console.error("[razorpay/cancel-pending] DB error", e);
+    console.error("[razorpay/mark-failed] DB error", e);
     return NextResponse.json({ ok: false }, { status: 500 });
   }
 }
