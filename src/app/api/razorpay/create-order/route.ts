@@ -1,5 +1,6 @@
-import { NextResponse } from "next/server";
+import { after, NextResponse } from "next/server";
 import { isValidHearAboutChannel } from "@/data/heard-about-channels";
+import { ensureServiceability } from "@/lib/delivery/serviceability";
 import { getPrisma, isDirectPostgresUrl } from "@/lib/prisma";
 import { getProductById } from "@/lib/product-data";
 import {
@@ -235,6 +236,11 @@ export async function POST(request: Request) {
       },
       select: { id: true },
     });
+
+    // Non-blocking: warm the courier serviceability cache for this pincode.
+    // Runs after the response is sent; pincode-keyed + idempotent, so it's safe
+    // to fire here (earliest point the pincode is known) and cheap to repeat.
+    after(() => ensureServiceability(pincode));
 
     return NextResponse.json({
       orderId: order.id,

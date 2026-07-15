@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { DashboardOrderAccordion } from "@/components/dashboard/DashboardOrderAccordion";
+import { getServiceabilityForPincodes } from "@/lib/delivery/serviceability";
 import { failStalePendingOrders } from "@/lib/order-stale-sweep";
 import { getPrisma } from "@/lib/prisma";
 
@@ -38,10 +39,14 @@ export default async function PrebookOrdersPage() {
 
   let orders: Awaited<ReturnType<typeof fetchPrebookOrders>>;
   let total: number;
+  let serviceability: Awaited<ReturnType<typeof getServiceabilityForPincodes>>;
   try {
     // Backstop: fail PENDING orders whose payment session is long dead
     await failStalePendingOrders();
     [orders, total] = await Promise.all([fetchPrebookOrders(), fetchPrebookCount()]);
+    serviceability = await getServiceabilityForPincodes(
+      orders.map((o) => o.pincode),
+    );
   } catch {
     return (
       <div className="space-y-4">
@@ -84,7 +89,10 @@ export default async function PrebookOrdersPage() {
           </p>
         </div>
       ) : (
-        <DashboardOrderAccordion orders={orders} />
+        <DashboardOrderAccordion
+          orders={orders}
+          serviceabilityByPincode={serviceability}
+        />
       )}
 
       <div className="text-center pt-2">

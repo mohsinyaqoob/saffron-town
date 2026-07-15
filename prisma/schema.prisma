@@ -25,6 +25,14 @@ enum InvoiceStatus {
   CANCELLED
 }
 
+/// Whether a courier partner delivers to a given pincode.
+/// UNKNOWN = we could not determine it (API error/timeout) and should retry.
+enum ServiceabilityStatus {
+  SERVICEABLE
+  NOT_SERVICEABLE
+  UNKNOWN
+}
+
 model Order {
   id             String      @id @default(cuid())
   createdAt      DateTime    @default(now())
@@ -159,4 +167,25 @@ model BulkEnquiry {
   emailNotifiedAt    DateTime?
 
   @@index([createdAt])
+}
+
+/// Courier serviceability cache, keyed by (partner, pincode).
+///
+/// Serviceability is a property of a pincode, not an order — the same answer
+/// applies to every order to that pincode, so we look it up once per partner
+/// per pincode and reuse it. Orders join to this by `pincode` at read time.
+/// Adding a delivery partner needs an adapter + registry entry only — no
+/// change to the Order table. `detail` keeps the raw partner payload (service
+/// points, area names) for display and debugging.
+model PincodeServiceability {
+  id          String               @id @default(cuid())
+  partnerCode String               @db.VarChar(60)
+  pincode     String               @db.VarChar(12)
+  status      ServiceabilityStatus
+  detail      Json?
+  checkedAt   DateTime             @default(now())
+  updatedAt   DateTime             @updatedAt
+
+  @@unique([partnerCode, pincode])
+  @@index([pincode])
 }

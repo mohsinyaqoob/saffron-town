@@ -2,6 +2,8 @@ import type { Order, OrderItem } from "@prisma/client";
 import { DashboardAccordionItem } from "@/components/dashboard/DashboardAccordionItem";
 import { OrderActions } from "@/components/dashboard/OrderActions";
 import { Badge } from "@/components/ui/Badge";
+import type { PartnerServiceability } from "@/lib/delivery/serviceability";
+import { normalizePincode } from "@/lib/delivery/serviceability";
 
 type OrderWithItems = Order & { items: OrderItem[] };
 
@@ -44,14 +46,69 @@ function lineItemsSummary(items: OrderItem[]) {
   return `${first.productName} (${first.variantLabel})${extra}`;
 }
 
+function serviceabilityLabel(status: PartnerServiceability["status"]) {
+  switch (status) {
+    case "SERVICEABLE": return "YES";
+    case "NOT_SERVICEABLE": return "NO";
+    default: return "Checking…";
+  }
+}
+
+function serviceabilityDotClass(status: PartnerServiceability["status"]) {
+  switch (status) {
+    case "SERVICEABLE": return "bg-emerald-500";
+    case "NOT_SERVICEABLE": return "bg-red-500";
+    default: return "bg-text-muted/50";
+  }
+}
+
+function DeliveryPartners({ partners }: { partners: PartnerServiceability[] }) {
+  return (
+    <div>
+      <h2 className="text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-text-muted font-body">
+        Delivery partners
+      </h2>
+      <ul className="mt-3 space-y-2 text-sm font-body">
+        {partners.map((p) => (
+          <li key={p.partnerCode} className="flex items-center justify-between gap-3">
+            <span className="text-text-primary">{p.displayName}</span>
+            <span className="flex items-center gap-1.5">
+              <span
+                className={`h-2 w-2 rounded-full ${serviceabilityDotClass(p.status)}`}
+                aria-hidden
+              />
+              <span
+                className={
+                  p.status === "SERVICEABLE"
+                    ? "font-semibold text-emerald-700"
+                    : p.status === "NOT_SERVICEABLE"
+                      ? "font-semibold text-red-700"
+                      : "text-text-muted"
+                }
+              >
+                {serviceabilityLabel(p.status)}
+              </span>
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 type Props = {
   orders: OrderWithItems[];
+  serviceabilityByPincode?: Map<string, PartnerServiceability[]>;
 };
 
-export function DashboardOrderAccordion({ orders }: Props) {
+export function DashboardOrderAccordion({ orders, serviceabilityByPincode }: Props) {
   return (
     <div className="space-y-3">
       {orders.map((order) => {
+        const normalizedPincode = normalizePincode(order.pincode);
+        const partners = normalizedPincode
+          ? serviceabilityByPincode?.get(normalizedPincode)
+          : undefined;
         return (
           <DashboardAccordionItem
             key={order.id}
@@ -135,6 +192,12 @@ export function DashboardOrderAccordion({ orders }: Props) {
                     </div>
                   ) : null}
                 </dl>
+
+                {partners && partners.length > 0 ? (
+                  <div className="mt-6 border-t border-secondary-border/15 pt-5">
+                    <DeliveryPartners partners={partners} />
+                  </div>
+                ) : null}
               </div>
 
               <div>
