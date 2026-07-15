@@ -1,37 +1,25 @@
 import Link from "next/link";
 import { DashboardOrderAccordion } from "@/components/dashboard/DashboardOrderAccordion";
-import { OrdersFilterToggle } from "@/components/dashboard/OrdersFilterToggle";
 import { failStalePendingOrders } from "@/lib/order-stale-sweep";
 import { getPrisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
 
-async function fetchOrders(showArchived: boolean) {
+async function fetchOrders() {
   const prisma = getPrisma();
   return prisma.order.findMany({
-    where: showArchived
-      ? { archivedAt: { not: null } }
-      : { archivedAt: null },
     orderBy: { createdAt: "desc" },
     take: 100,
     include: { items: true },
   });
 }
 
-async function fetchCounts() {
+async function fetchCount() {
   const prisma = getPrisma();
-  const [active, archived] = await Promise.all([
-    prisma.order.count({ where: { archivedAt: null } }),
-    prisma.order.count({ where: { archivedAt: { not: null } } }),
-  ]);
-  return { active, archived };
+  return prisma.order.count();
 }
 
-type Props = {
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
-};
-
-export default async function DashboardOrdersPage({ searchParams }: Props) {
+export default async function DashboardOrdersPage() {
   if (!process.env.DATABASE_URL?.trim()) {
     return (
       <div className="space-y-4">
@@ -47,18 +35,12 @@ export default async function DashboardOrdersPage({ searchParams }: Props) {
     );
   }
 
-  const sp = await searchParams;
-  const showArchived = sp.archived === "1";
-
   let orders: Awaited<ReturnType<typeof fetchOrders>>;
-  let counts: Awaited<ReturnType<typeof fetchCounts>>;
+  let total: number;
   try {
     // Backstop: fail PENDING orders whose payment session is long dead
     await failStalePendingOrders();
-    [orders, counts] = await Promise.all([
-      fetchOrders(showArchived),
-      fetchCounts(),
-    ]);
+    [orders, total] = await Promise.all([fetchOrders(), fetchCount()]);
   } catch {
     return (
       <div className="space-y-4">
@@ -81,19 +63,14 @@ export default async function DashboardOrdersPage({ searchParams }: Props) {
         <div>
           <h1 className="font-display text-2xl font-bold text-text-primary">Orders</h1>
           <p className="mt-1 text-sm text-secondary font-body">
-            {showArchived
-              ? `${counts.archived} archived order${counts.archived !== 1 ? "s" : ""}`
-              : `${counts.active} active order${counts.active !== 1 ? "s" : ""}${counts.archived > 0 ? ` · ${counts.archived} archived` : ""}`}
+            {total} order{total !== 1 ? "s" : ""}
           </p>
         </div>
-        <OrdersFilterToggle showArchived={showArchived} />
       </div>
 
       {orders.length === 0 ? (
         <p className="text-sm text-secondary font-body">
-          {showArchived
-            ? "No archived orders."
-            : "No orders yet. They appear here when customers complete checkout on the site."}
+          No orders yet. They appear here when customers complete checkout on the site.
         </p>
       ) : (
         <DashboardOrderAccordion orders={orders} />

@@ -52,24 +52,15 @@ export function DashboardOrderAccordion({ orders }: Props) {
   return (
     <div className="space-y-3">
       {orders.map((order) => {
-        const isArchived = !!order.archivedAt;
         return (
           <DashboardAccordionItem
             key={order.id}
-            className={isArchived ? "opacity-60" : undefined}
             summary={
               <div className="flex flex-wrap items-center justify-between gap-3 gap-y-2">
                 <div className="min-w-0">
-                  <div className="flex items-center gap-2">
-                    <p className="font-semibold text-text-primary font-body truncate">
-                      {order.customerName}
-                    </p>
-                    {isArchived && (
-                      <span className="rounded px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-surface-raised text-text-muted font-body">
-                        Archived
-                      </span>
-                    )}
-                  </div>
+                  <p className="font-semibold text-text-primary font-body truncate">
+                    {order.customerName}
+                  </p>
                   <p className="mt-0.5 text-xs text-secondary font-body truncate">
                     {lineItemsSummary(order.items)}
                   </p>
@@ -187,7 +178,7 @@ export function DashboardOrderAccordion({ orders }: Props) {
               ))}
             </ul>
 
-            <OrderActions orderId={order.id} isArchived={isArchived} />
+            <OrderActions orderId={order.id} />
           </DashboardAccordionItem>
         );
       })}

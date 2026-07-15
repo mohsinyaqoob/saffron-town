@@ -5,37 +5,19 @@ import { useState } from "react";
 
 type Props = {
   orderId: string;
-  isArchived: boolean;
 };
 
-export function OrderActions({ orderId, isArchived }: Props) {
+export function OrderActions({ orderId }: Props) {
   const router = useRouter();
-  const [busy, setBusy] = useState<"archive" | "delete" | null>(null);
+  const [busy, setBusy] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
-
-  async function handleArchive() {
-    setBusy("archive");
-    try {
-      const res = await fetch(`/api/orders/${orderId}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: isArchived ? "unarchive" : "archive" }),
-      });
-      if (!res.ok) throw new Error("Failed");
-      router.refresh();
-    } catch {
-      alert("Something went wrong. Please try again.");
-    } finally {
-      setBusy(null);
-    }
-  }
 
   async function handleDelete() {
     if (!confirmDelete) {
       setConfirmDelete(true);
       return;
     }
-    setBusy("delete");
+    setBusy(true);
     try {
       const res = await fetch(`/api/orders/${orderId}`, { method: "DELETE" });
       if (!res.ok) throw new Error("Failed");
@@ -43,7 +25,7 @@ export function OrderActions({ orderId, isArchived }: Props) {
     } catch {
       alert("Something went wrong. Please try again.");
     } finally {
-      setBusy(null);
+      setBusy(false);
       setConfirmDelete(false);
     }
   }
@@ -52,30 +34,16 @@ export function OrderActions({ orderId, isArchived }: Props) {
     <div className="mt-5 flex items-center gap-3 border-t border-border-subtle pt-4">
       <button
         type="button"
-        onClick={handleArchive}
-        disabled={busy !== null}
-        className="inline-flex items-center gap-1.5 rounded-lg border border-border-subtle bg-surface-primary px-3 py-1.5 text-xs font-semibold font-body text-text-secondary transition-colors hover:border-accent-gold/40 hover:text-accent-gold disabled:opacity-50"
-      >
-        {busy === "archive" ? (
-          <Spinner />
-        ) : (
-          <ArchiveIcon archived={isArchived} />
-        )}
-        {isArchived ? "Unarchive" : "Archive"}
-      </button>
-
-      <button
-        type="button"
         onClick={handleDelete}
         onBlur={() => setConfirmDelete(false)}
-        disabled={busy !== null}
+        disabled={busy}
         className={`inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-semibold font-body transition-colors disabled:opacity-50 ${
           confirmDelete
             ? "border-danger/60 bg-danger/10 text-danger"
             : "border-border-subtle bg-surface-primary text-text-secondary hover:border-danger/40 hover:text-danger"
         }`}
       >
-        {busy === "delete" ? <Spinner /> : <TrashIcon />}
+        {busy ? <Spinner /> : <TrashIcon />}
         {confirmDelete ? "Confirm delete?" : "Delete"}
       </button>
 
@@ -109,18 +77,6 @@ function Spinner() {
         fill="currentColor"
         d="M4 12a8 8 0 018-8v8H4z"
       />
-    </svg>
-  );
-}
-
-function ArchiveIcon({ archived }: { archived: boolean }) {
-  return archived ? (
-    <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M3 7h18M3 7l2 13h14L21 7M3 7l2-3h14l2 3M10 12l2 2 2-2" />
-    </svg>
-  ) : (
-    <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M3 7h18M3 7l2 13h14L21 7M3 7l2-3h14l2 3" />
     </svg>
   );
 }

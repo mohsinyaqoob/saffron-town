@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 async function fetchPrebookOrders() {
   const prisma = getPrisma();
   return prisma.order.findMany({
-    where: { source: "prebook", archivedAt: null },
+    where: { source: "prebook" },
     orderBy: { createdAt: "desc" },
     take: 200,
     include: { items: true },

@@ -45,12 +45,10 @@ model Order {
   paymentMethod     String   @default("ONLINE")
   razorpayOrderId   String?
   razorpayPaymentId String?
-  archivedAt        DateTime?
   /** "prebook" | "gifting" | null (regular shop order) */
   source            String?
   items          OrderItem[]
 
-  @@index([archivedAt])
   @@index([source])
 }
 
