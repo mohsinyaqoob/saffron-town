@@ -42,7 +42,7 @@ const WHY_SAFFRON = [
   },
   {
     title: "Premium & Pure",
-    body: "Grade A++ Mongra kesar, ISO 3632 lab-tested. The kind of quality that people recognize immediately and remember long after.",
+    body: "Grade A++ Mongra kesar, GI-tagged from Pampore. The kind of quality that people recognize immediately and remember long after.",
   },
 ];
 

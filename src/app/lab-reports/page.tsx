@@ -14,27 +14,25 @@ const OG_IMAGE = `${SITE_CONFIG.url}/images/hero.png`;
 const STUDY_URL = "https://pmc.ncbi.nlm.nih.gov/articles/PMC8618029/";
 
 export const metadata: Metadata = {
-  title:
-    "Saffron Purity Test Results — ISO 3632 Lab Report for Kashmiri Mongra",
+  title: "Saffron Quality & Testing — GI Tag, Grade & ISO 3632 | Saffron Town",
   description:
-    "See our Kashmiri Mongra saffron purity test results — crocin 258, picrocrocin 92, safranal 38. Every batch third-party tested to ISO 3632. Download your certificate of analysis.",
+    "How we stand behind our Kashmiri Mongra saffron: GI-tagged Pampore origin and Mongra grade. Independent ISO 3632 batch testing is available on request for bulk orders over 1 kg, at cost. Learn what a lab test of Kashmir Mongra typically shows.",
   keywords: [
-    "saffron purity test",
-    "saffron lab report",
+    "saffron quality",
     "ISO 3632 saffron test",
+    "kashmiri saffron GI tag",
     "how to check saffron quality",
-    "kashmiri saffron purity",
+    "saffron lab testing",
     "crocin content saffron",
-    "mongra saffron lab test",
-    "saffron certificate of analysis",
-    "saffron quality grade",
-    "is my saffron pure",
+    "mongra saffron grade",
+    "bulk saffron testing",
+    "saffron authenticity",
   ],
   alternates: { canonical: PAGE_URL },
   openGraph: {
-    title: "Saffron Purity Test Results — ISO 3632 Lab Report | Saffron Town",
+    title: "Saffron Quality & Testing — GI Tag, Grade & ISO 3632 | Saffron Town",
     description:
-      "Crocin 258, picrocrocin 92, safranal 38 — every batch third-party tested. Download your ISO 3632 certificate of analysis.",
+      "GI-tagged Pampore origin and Mongra grade. Independent ISO 3632 batch testing available on request for bulk orders over 1 kg. What a lab test of Kashmir Mongra typically shows.",
     url: PAGE_URL,
     type: "article",
     images: [
@@ -42,21 +40,21 @@ export const metadata: Metadata = {
         url: OG_IMAGE,
         width: 1200,
         height: 630,
-        alt: "Kashmiri Mongra saffron ISO 3632 purity test results",
+        alt: "Kashmiri Mongra saffron quality, grade and testing",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Saffron Purity Test Results — ISO 3632 Lab Report | Saffron Town",
+    title: "Saffron Quality & Testing — GI Tag, Grade & ISO 3632 | Saffron Town",
     description:
-      "Crocin 258, picrocrocin 92, safranal 38. Every batch third-party tested to ISO 3632. See the full report.",
+      "GI-tagged Pampore origin, Mongra grade, and independent ISO 3632 batch testing on request for bulk orders over 1 kg.",
     images: [OG_IMAGE],
   },
   robots: { index: true, follow: true },
 };
 
-// ─── Data for tables and charts ──────────────────────────────────────────────
+// ─── Data ─────────────────────────────────────────────────────────────────────
 
 const ISO_GRADES = [
   {
@@ -82,22 +80,45 @@ const ISO_GRADES = [
   },
 ];
 
-const BATCH_DATA = {
-  batch: "ST-2026-APR-M1",
-  date: "April 2026",
-  origin: "Pampore, Kashmir (GI-tagged)",
-  grade: "Mongra (pure stigma tips)",
-  crocin: 258,
-  picrocrocin: 92,
-  safranal: 38,
-  moisture: 8.2,
-  ash: 5.4,
-};
+/**
+ * Representative / indicative ranges for Kashmir Mongra saffron, based on
+ * occasional independent testing and published literature. These are NOT
+ * results for any specific pack, and NOT a guarantee. See disclaimer.
+ */
+const TYPICAL_RANGES = [
+  {
+    compound: "Crocin (colour)",
+    range: "≈ 200–270",
+    iso: "ISO Cat I ≥ 190",
+    max: 300,
+    lo: 200,
+    hi: 270,
+    color: "#9a2425",
+  },
+  {
+    compound: "Picrocrocin (flavour)",
+    range: "≈ 80–100",
+    iso: "ISO Cat I ≥ 70",
+    max: 120,
+    lo: 80,
+    hi: 100,
+    color: "#6b4041",
+  },
+  {
+    compound: "Safranal (aroma)",
+    range: "≈ 20–45",
+    iso: "ISO range 20–50",
+    max: 50,
+    lo: 20,
+    hi: 45,
+    color: "#5b3738",
+  },
+];
 
 const STUDY_COMPARISON = [
   {
-    origin: "Saffron Town (Pampore)",
-    crocin: 258,
+    origin: "Kashmir Mongra (representative)",
+    crocin: 255,
     picrocrocin: 92,
     safranal: 38,
     highlight: true,
@@ -125,43 +146,27 @@ const STUDY_COMPARISON = [
   },
 ];
 
-const NUTRITIONAL = [
-  { param: "Moisture", value: "8.2%", note: "Well within ISO limit of ≤12%" },
-  { param: "Ash", value: "5.4%", note: "Mineral content indicator" },
-  { param: "Proteins", value: "~14.5%", note: "Natural saffron protein range" },
-  {
-    param: "Potassium (K)",
-    value: "~13,000 mg/kg",
-    note: "Dominant microelement",
-  },
-  {
-    param: "Iron (Fe)",
-    value: "~120 mg/kg",
-    note: "Per 100g of dried stigmas",
-  },
-];
+// ─── Visual range bar ─────────────────────────────────────────────────────────
 
-// ─── Visual bar helper ───────────────────────────────────────────────────────
-
-function Bar({
-  value,
+function RangeBar({
+  lo,
+  hi,
   max,
   color,
 }: {
-  value: number;
+  lo: number;
+  hi: number;
   max: number;
   color: string;
 }) {
-  const pct = Math.min((value / max) * 100, 100);
+  const left = Math.max((lo / max) * 100, 0);
+  const width = Math.min(((hi - lo) / max) * 100, 100 - left);
   return (
     <div className="relative h-5 w-full rounded-full bg-surface-muted overflow-hidden">
       <div
-        className="absolute inset-y-0 left-0 rounded-full transition-all duration-700"
-        style={{ width: `${pct}%`, backgroundColor: color }}
+        className="absolute inset-y-0 rounded-full transition-all duration-700"
+        style={{ left: `${left}%`, width: `${width}%`, backgroundColor: color }}
       />
-      <span className="absolute inset-0 flex items-center justify-center text-[10px] font-bold text-text-primary">
-        {value}
-      </span>
     </div>
   );
 }
@@ -170,34 +175,34 @@ function Bar({
 
 const LAB_FAQS = [
   {
+    question: "Do you lab-test every pack of saffron you sell?",
+    answer:
+      "No. We do not lab-test every retail batch, and retail packs are not sold with an individual certificate of analysis. Our retail assurance is the GI-tagged origin (Pampore, Kashmir) and the Mongra grade. Independent ISO 3632 lab testing is available on request for bulk orders over 1 kg, arranged through a third-party laboratory at the customer's cost.",
+  },
+  {
+    question: "What quality assurance do I get with a retail order?",
+    answer:
+      "Retail orders are sold as GI-tagged Kashmir saffron of Mongra grade, sourced farm-direct from Pampore. The GI tag is a legal indication of geographical origin. We do not provide a per-pack ISO 3632 certificate for retail quantities.",
+  },
+  {
+    question: "Can I get a lab report for my order?",
+    answer:
+      "Independent, batch-specific ISO 3632 testing is available for bulk orders over 1 kg. It is arranged on request through a third-party laboratory, and the testing cost is paid by the customer. The certificate then reflects that specific consignment. We do not issue certificates for retail (under 1 kg) quantities.",
+  },
+  {
+    question: "What does a lab test of Kashmir Mongra saffron usually show?",
+    answer:
+      "When Kashmir Mongra saffron is tested to ISO 3632, results commonly fall within Category I, the premium band. The ranges shown on this page are representative figures for Kashmir Mongra saffron based on occasional testing and published literature. They are indicative only. They are not results for any specific pack and are not a guarantee of the values in any order.",
+  },
+  {
     question: "What is ISO 3632 and why does it matter for saffron?",
     answer:
-      "ISO 3632 is the international standard for grading saffron quality. It measures three bioactive compounds — crocin (colour), picrocrocin (flavour), and safranal (aroma) — using UV-Vis spectrophotometry. Category I is the highest grade and requires crocin ≥ 190, picrocrocin ≥ 70, and safranal between 20–50. A saffron that meets Category I is considered premium-grade worldwide.",
+      "ISO 3632 is the international standard for grading saffron quality. It measures three compounds using UV-Vis spectrophotometry: crocin (colour), picrocrocin (flavour), and safranal (aroma). Category I is the highest grade and requires crocin ≥ 190, picrocrocin ≥ 70, and safranal between 20 and 50.",
   },
   {
-    question: "How do I check if my saffron is pure?",
+    question: "How can I check saffron quality at home?",
     answer:
-      "You can perform simple home tests: place threads in cold water and wait 15 minutes — real saffron releases colour slowly and the threads stay intact. Real saffron also has a hay-like, slightly bitter aroma, never sweet. For definitive proof, look for a third-party ISO 3632 lab certificate that shows crocin, picrocrocin, and safranal values. Saffron Town includes a downloadable certificate with every order.",
-  },
-  {
-    question: "What crocin value is considered good for saffron?",
-    answer:
-      "A crocin value of 190 or above qualifies as ISO 3632 Category I (premium). Values above 250 are exceptional and indicate extremely potent colouring strength — fewer threads are needed per dish. Saffron Town's current Mongra batch tests at 258, which is 36% above the Category I minimum.",
-  },
-  {
-    question: "Is Kashmiri saffron better than Iranian saffron?",
-    answer:
-      "Both regions produce high-quality saffron, but Kashmiri Mongra saffron from Pampore is known for exceptionally high crocin content and a balanced flavour profile. The unique high-altitude terroir (1,600m), specific Crocus sativus cultivar, and traditional hand-processing methods contribute to its premium status. GI-tagging adds traceability that most imported saffron lacks.",
-  },
-  {
-    question: "What does the lab certificate include?",
-    answer:
-      "Each Saffron Town certificate of analysis includes: batch number, harvest date, origin (Pampore, Kashmir), ISO 3632 grade, crocin/picrocrocin/safranal values measured by UV-Vis spectrophotometry at 440nm/257nm/330nm, moisture content, and ash percentage. The test is conducted by an independent third-party laboratory.",
-  },
-  {
-    question: "How often do you test your saffron batches?",
-    answer:
-      "Every single batch is tested before it ships. We do not sell from any batch until the third-party lab results confirm it meets ISO 3632 Category I standards. If a batch falls below our thresholds, it is not sold under the Saffron Town label.",
+      "Place a few threads in warm water. Genuine saffron releases its colour slowly over several minutes into a warm gold, and the threads stay intact. It smells of honey and dried hay, never sweet or chemical. These simple checks are a useful indicator, though they are not a substitute for laboratory analysis.",
   },
 ];
 
@@ -216,7 +221,7 @@ const breadcrumbSchema = {
     {
       "@type": "ListItem",
       position: 2,
-      name: "Lab Reports",
+      name: "Quality & Testing",
       item: PAGE_URL,
     },
   ],
@@ -238,10 +243,9 @@ const faqSchema = {
 const articleSchema = {
   "@context": "https://schema.org",
   "@type": "Article",
-  headline:
-    "Saffron Purity Test Results — ISO 3632 Lab Report for Kashmiri Mongra",
+  headline: "Saffron Quality & Testing — GI Tag, Grade and ISO 3632",
   description:
-    "See our Kashmiri Mongra saffron purity test results — crocin 258, picrocrocin 92, safranal 38. Every batch third-party tested to ISO 3632.",
+    "How Saffron Town stands behind quality: GI-tagged Pampore origin and Mongra grade, with independent ISO 3632 batch testing available on request for bulk orders over 1 kg. Includes representative ranges for Kashmir Mongra saffron.",
   image: OG_IMAGE,
   author: {
     "@type": "Organization",
@@ -255,7 +259,7 @@ const articleSchema = {
   },
   mainEntityOfPage: PAGE_URL,
   datePublished: "2026-03-01",
-  dateModified: "2026-04-03",
+  dateModified: "2026-07-17",
 };
 
 // ─── Page ────────────────────────────────────────────────────────────────────
@@ -269,16 +273,81 @@ export default function LabReportsPage() {
         <PageHeader
           crumbs={[
             { label: "Home", href: "/" },
-            { label: "Saffron Purity Test Results", href: "/lab-reports" },
+            { label: "Quality & Testing", href: "/lab-reports" },
           ]}
-          title="Saffron Purity Test Results — ISO 3632 Certified"
-          description="How do you know your saffron is pure? We publish every batch's third-party lab results — crocin, picrocrocin, and safranal values tested to ISO 3632. No trust required, just data."
-          cta={{ href: "/shop/saffron", label: "Shop verified saffron" }}
-          badge="ISO 3632 Category I"
+          title="Saffron Quality & Testing"
+          description="How we stand behind our Kashmiri Mongra saffron: GI-tagged Pampore origin and Mongra grade. We are transparent about what we test and what we do not — including independent ISO 3632 batch testing available on request for bulk orders over 1 kg."
+          cta={{ href: "/shop/saffron", label: "Shop GI-tagged saffron" }}
+          badge="GI-Tagged Pampore Origin"
         />
 
-        {/* ── Section 1: What ISO 3632 Measures ─────────────────────────── */}
+        {/* ── Section 1: What we offer ──────────────────────────────────── */}
         <section className="py-20 lg:py-28 bg-background-alt">
+          <div className="mx-auto max-w-5xl px-6 lg:px-20">
+            <Badge variant="outline" className="mb-6">
+              Our Assurance
+            </Badge>
+            <h2 className="font-display text-3xl font-bold text-text-primary mb-4">
+              How We Stand Behind Quality
+            </h2>
+            <p className="text-lg text-secondary font-body mb-12 max-w-3xl">
+              We would rather be clear than impressive. Here is exactly what our
+              quality assurance covers, and what it does not.
+            </p>
+
+            <div className="grid gap-6 md:grid-cols-3">
+              {[
+                {
+                  title: "GI-Tagged Origin",
+                  desc: "Our saffron is sourced farm-direct from Pampore in Kashmir, the region covered by the Kashmir saffron GI (geographical indication) tag. The GI tag is a legal indication of origin.",
+                  icon: "🏔️",
+                },
+                {
+                  title: "Mongra Grade",
+                  desc: "We sell Mongra saffron: the deep-red stigma tips, hand-separated from the flower with the yellow style trimmed away. Grade describes which part of the flower is used and how clean the sort is.",
+                  icon: "🌸",
+                },
+                {
+                  title: "Bulk Lab Testing",
+                  desc: "Independent ISO 3632 testing is available on request for bulk orders over 1 kg, arranged through a third-party laboratory at the customer's cost. The certificate then reflects that specific consignment.",
+                  icon: "🔬",
+                },
+              ].map((c) => (
+                <div
+                  key={c.title}
+                  className="rounded-2xl bg-background p-8 shadow-lg shadow-dark/5 ring-1 ring-secondary-border/10"
+                >
+                  <div className="text-3xl mb-4">{c.icon}</div>
+                  <h3 className="font-display text-xl font-bold text-text-primary mb-2">
+                    {c.title}
+                  </h3>
+                  <p className="text-sm text-secondary font-body leading-relaxed">
+                    {c.desc}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            {/* Honest transparency callout */}
+            <div className="mt-10 rounded-2xl border border-primary/20 bg-primary/5 p-6 sm:p-8">
+              <h3 className="font-display text-lg font-bold text-text-primary mb-2">
+                What we do not claim
+              </h3>
+              <p className="text-sm text-secondary font-body leading-relaxed">
+                We do <strong>not</strong> lab-test every retail batch, and
+                retail packs do <strong>not</strong> ship with an individual
+                certificate of analysis. Any figures on this page are
+                representative ranges for Kashmir Mongra saffron in general, not
+                test results for a specific pack. Per-batch ISO 3632 testing is
+                offered only for bulk orders over 1 kg, on request and at the
+                customer&apos;s cost.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* ── Section 2: What ISO 3632 Measures ─────────────────────────── */}
+        <section className="py-20 lg:py-28">
           <div className="mx-auto max-w-5xl px-6 lg:px-20">
             <Badge variant="outline" className="mb-6">
               The Standard
@@ -287,9 +356,8 @@ export default function LabReportsPage() {
               What ISO 3632 Measures
             </h2>
             <p className="text-lg text-secondary font-body mb-12 max-w-3xl">
-              ISO 3632 evaluates saffron on three bioactive compounds using
-              UV-Vis spectrophotometry. Each determines a different quality
-              dimension.
+              ISO 3632 evaluates saffron on three compounds using UV-Vis
+              spectrophotometry. Each determines a different quality dimension.
             </p>
 
             <div className="grid gap-6 md:grid-cols-3">
@@ -297,28 +365,28 @@ export default function LabReportsPage() {
                 {
                   compound: "Crocin",
                   role: "Colour strength",
-                  desc: "Glycoside derivatives of crocetin — the carotenoid pigment responsible for saffron's intense golden-yellow colour in food. Higher crocin = fewer threads needed per dish.",
+                  desc: "Glycoside derivatives of crocetin — the pigment responsible for saffron's golden-yellow colour in food. Higher crocin means fewer threads needed per dish.",
                   wavelength: "λ 440 nm",
                   icon: "🔴",
                 },
                 {
                   compound: "Picrocrocin",
                   role: "Bitter flavour",
-                  desc: "The glycoside that gives saffron its characteristic bitter taste. It degrades into safranal during storage, so high picrocrocin indicates freshness.",
+                  desc: "The glycoside behind saffron's characteristic bitter taste. It degrades into safranal during storage, so high picrocrocin tends to indicate freshness.",
                   wavelength: "λ 257 nm",
                   icon: "🟡",
                 },
                 {
                   compound: "Safranal",
                   role: "Aroma intensity",
-                  desc: "A monoterpene aldehyde formed from picrocrocin — the molecule behind saffron's distinctive hay-like, honey-sweet fragrance. Too much signals over-dried saffron.",
+                  desc: "A monoterpene aldehyde formed from picrocrocin — the molecule behind saffron's hay-like, honey-sweet fragrance. Too much can signal over-dried saffron.",
                   wavelength: "λ 330 nm",
                   icon: "🟠",
                 },
               ].map((c) => (
                 <div
                   key={c.compound}
-                  className="rounded-2xl bg-background p-8 shadow-lg shadow-dark/5 ring-1 ring-secondary-border/10"
+                  className="rounded-2xl bg-background-alt p-8 shadow-lg shadow-dark/5 ring-1 ring-secondary-border/10"
                 >
                   <div className="text-3xl mb-4">{c.icon}</div>
                   <h3 className="font-display text-xl font-bold text-text-primary mb-1">
@@ -336,8 +404,8 @@ export default function LabReportsPage() {
           </div>
         </section>
 
-        {/* ── Section 2: ISO Grade Thresholds Table ─────────────────────── */}
-        <section className="py-20 lg:py-28">
+        {/* ── Section 3: ISO Grade Thresholds Table ─────────────────────── */}
+        <section className="py-20 lg:py-28 bg-background-alt">
           <div className="mx-auto max-w-5xl px-6 lg:px-20">
             <Badge variant="outline" className="mb-6">
               Grading Scale
@@ -346,8 +414,8 @@ export default function LabReportsPage() {
               ISO 3632 Grade Thresholds
             </h2>
             <p className="text-lg text-secondary font-body mb-10 max-w-3xl">
-              Saffron is classified into three categories. Our Mongra saffron
-              consistently exceeds Category I minimums.
+              The international standard classifies saffron into three
+              categories by measured colour, flavour, and aroma.
             </p>
 
             <div className="overflow-x-auto rounded-2xl ring-1 ring-secondary-border/10 shadow-lg shadow-dark/5">
@@ -399,168 +467,86 @@ export default function LabReportsPage() {
           </div>
         </section>
 
-        {/* ── Section 3: Our Batch Results ───────────────────────────────── */}
-        <section className="py-20 lg:py-28 bg-background-alt">
+        {/* ── Section 4: What a lab test typically shows ────────────────── */}
+        <section className="py-20 lg:py-28">
           <div className="mx-auto max-w-5xl px-6 lg:px-20">
-            <Badge variant="primary" className="mb-6">
-              Latest Batch
+            <Badge variant="outline" className="mb-6">
+              Representative Ranges
             </Badge>
             <h2 className="font-display text-3xl font-bold text-text-primary mb-4">
-              Batch {BATCH_DATA.batch} — Lab Results
+              What a Lab Test of Kashmir Mongra Typically Shows
             </h2>
-            <p className="text-lg text-secondary font-body mb-12 max-w-3xl">
-              Tested {BATCH_DATA.date}. Origin: {BATCH_DATA.origin}. Grade:{" "}
-              {BATCH_DATA.grade}.
+            <p className="text-lg text-secondary font-body mb-4 max-w-3xl">
+              When Kashmir Mongra saffron is tested to ISO 3632, results
+              commonly land in Category I, the premium band. The ranges below
+              are representative figures for Kashmir Mongra saffron in general,
+              drawn from occasional independent testing and published
+              literature.
+            </p>
+            <p className="text-sm text-text-muted font-body mb-12 max-w-3xl">
+              These are indicative ranges only. They are not test results for
+              any specific pack, and they are not a guarantee of the values in
+              any particular order.
             </p>
 
-            <div className="grid gap-8 lg:grid-cols-2">
-              {/* Key metrics card */}
-              <div className="rounded-2xl bg-background p-8 shadow-lg shadow-dark/5 ring-1 ring-secondary-border/10">
-                <h3 className="font-display text-lg font-bold text-text-primary mb-6">
-                  Bioactive Compound Analysis
-                </h3>
-                <div className="space-y-5">
-                  <div>
+            <div className="rounded-2xl bg-background-alt p-8 shadow-lg shadow-dark/5 ring-1 ring-secondary-border/10 max-w-2xl">
+              <h3 className="font-display text-lg font-bold text-text-primary mb-6">
+                Typical Compound Ranges (indicative)
+              </h3>
+              <div className="space-y-5">
+                {TYPICAL_RANGES.map((r) => (
+                  <div key={r.compound}>
                     <div className="flex justify-between text-sm font-body mb-1">
                       <span className="text-text-primary font-semibold">
-                        Crocin (colour)
+                        {r.compound}
                       </span>
-                      <span className="text-primary font-bold">
-                        {BATCH_DATA.crocin}
-                      </span>
+                      <span className="text-primary font-bold">{r.range}</span>
                     </div>
-                    <Bar value={BATCH_DATA.crocin} max={300} color="#9a2425" />
-                    <p className="text-[10px] text-text-muted mt-1">
-                      ISO Cat I minimum: 190 · Our value: {BATCH_DATA.crocin} (+
-                      {Math.round(((BATCH_DATA.crocin - 190) / 190) * 100)}%
-                      above threshold)
-                    </p>
+                    <RangeBar lo={r.lo} hi={r.hi} max={r.max} color={r.color} />
+                    <p className="text-[10px] text-text-muted mt-1">{r.iso}</p>
                   </div>
-                  <div>
-                    <div className="flex justify-between text-sm font-body mb-1">
-                      <span className="text-text-primary font-semibold">
-                        Picrocrocin (flavour)
-                      </span>
-                      <span className="text-primary font-bold">
-                        {BATCH_DATA.picrocrocin}
-                      </span>
-                    </div>
-                    <Bar
-                      value={BATCH_DATA.picrocrocin}
-                      max={120}
-                      color="#6b4041"
-                    />
-                    <p className="text-[10px] text-text-muted mt-1">
-                      ISO Cat I minimum: 70 · Our value:{" "}
-                      {BATCH_DATA.picrocrocin} (+
-                      {Math.round(((BATCH_DATA.picrocrocin - 70) / 70) * 100)}%
-                      above threshold)
-                    </p>
-                  </div>
-                  <div>
-                    <div className="flex justify-between text-sm font-body mb-1">
-                      <span className="text-text-primary font-semibold">
-                        Safranal (aroma)
-                      </span>
-                      <span className="text-primary font-bold">
-                        {BATCH_DATA.safranal}
-                      </span>
-                    </div>
-                    <Bar value={BATCH_DATA.safranal} max={50} color="#5b3738" />
-                    <p className="text-[10px] text-text-muted mt-1">
-                      ISO range: 20–50 · Our value: {BATCH_DATA.safranal}{" "}
-                      (optimal mid-range)
-                    </p>
-                  </div>
-                </div>
+                ))}
               </div>
-
-              {/* Physical & nutritional card */}
-              <div className="rounded-2xl bg-background p-8 shadow-lg shadow-dark/5 ring-1 ring-secondary-border/10">
-                <h3 className="font-display text-lg font-bold text-text-primary mb-6">
-                  Physical &amp; Nutritional Parameters
-                </h3>
-                <div className="overflow-x-auto">
-                  <table className="w-full text-sm font-body">
-                    <thead>
-                      <tr className="border-b border-secondary-border/20">
-                        <th className="py-3 text-left font-bold text-text-primary">
-                          Parameter
-                        </th>
-                        <th className="py-3 text-left font-bold text-text-primary">
-                          Value
-                        </th>
-                        <th className="py-3 text-left font-bold text-text-primary">
-                          Note
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {NUTRITIONAL.map((n) => (
-                        <tr
-                          key={n.param}
-                          className="border-b border-secondary-border/10"
-                        >
-                          <td className="py-3 text-text-primary">{n.param}</td>
-                          <td className="py-3 font-semibold text-primary">
-                            {n.value}
-                          </td>
-                          <td className="py-3 text-text-muted text-xs">
-                            {n.note}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-                <p className="text-[10px] text-text-muted mt-4">
-                  Nutritional reference values from Predieri et al. (2021).{" "}
-                  <a
-                    href={STUDY_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-primary underline"
-                  >
-                    View study →
-                  </a>
-                </p>
-              </div>
+              <p className="text-[11px] text-text-muted mt-6 leading-relaxed">
+                Values are representative for Kashmir Mongra saffron and vary by
+                harvest year, terroir, and processing. Not a certificate of
+                analysis.
+              </p>
             </div>
           </div>
         </section>
 
-        {/* ── Section 4: Comparative Analysis (Study Data) ──────────────── */}
-        <section className="py-20 lg:py-28">
+        {/* ── Section 5: Comparison with published study ────────────────── */}
+        <section className="py-20 lg:py-28 bg-background-alt">
           <div className="mx-auto max-w-5xl px-6 lg:px-20">
             <Badge variant="outline" className="mb-6">
-              Independent Comparison
+              Scientific Context
             </Badge>
             <h2 className="font-display text-3xl font-bold text-text-primary mb-4">
-              How Does Kashmiri Mongra Saffron Compare?
+              How Kashmir Mongra Compares in the Literature
             </h2>
             <p className="text-lg text-secondary font-body mb-4 max-w-3xl">
-              To put our numbers in perspective, we compared our batch results
-              against published, peer-reviewed data. A 2021 study in{" "}
-              <em>Foods</em> (MDPI) analysed saffron from multiple Italian
-              growing regions using HPLC-DAD. Below is our editorial comparison
-              — our own first-party lab values alongside their published
-              findings.
+              For context, a representative Kashmir Mongra profile is shown
+              alongside peer-reviewed data. A 2021 study in <em>Foods</em> (MDPI)
+              analysed saffron from several Italian growing regions using
+              HPLC-DAD.
             </p>
             <p className="text-sm text-text-muted font-body mb-12 max-w-3xl">
-              Source: Predieri, S. et al. &ldquo;Chemical Composition and
-              Sensory Evaluation of Saffron.&rdquo;
-              <em> Foods</em> 10(11):2604, 2021. Open-access (CC BY 4.0).{" "}
+              The Kashmir Mongra row is a representative, indicative figure, not
+              a certified result for any product we sell. Source: Predieri, S. et
+              al. &ldquo;Chemical Composition and Sensory Evaluation of
+              Saffron.&rdquo; <em>Foods</em> 10(11):2604, 2021. Open-access (CC
+              BY 4.0).{" "}
               <a
                 href={STUDY_URL}
                 target="_blank"
                 rel="nofollow noopener noreferrer"
                 className="text-primary underline"
               >
-                View original study on PubMed Central&nbsp;&rarr;
+                View original study&nbsp;&rarr;
               </a>
             </p>
 
-            {/* Comparison table */}
             <div className="overflow-x-auto rounded-2xl ring-1 ring-secondary-border/10 shadow-lg shadow-dark/5 mb-12">
               <table className="w-full text-sm font-body">
                 <thead>
@@ -583,7 +569,7 @@ export default function LabReportsPage() {
                         {row.origin}
                         {row.highlight && (
                           <span className="ml-2 inline-block px-2 py-0.5 rounded-full bg-primary text-white text-[9px] font-bold uppercase">
-                            Our batch
+                            Representative
                           </span>
                         )}
                       </td>
@@ -600,225 +586,64 @@ export default function LabReportsPage() {
               </table>
             </div>
 
-            {/* Visual bar chart comparison */}
-            <h3 className="font-display text-xl font-bold text-text-primary mb-6">
-              Crocin Content Comparison (mg/g dried stigma)
-            </h3>
-            <div className="space-y-4 mb-12">
-              {STUDY_COMPARISON.map((row) => (
-                <div key={row.origin} className="flex items-center gap-4">
-                  <span
-                    className={`w-48 shrink-0 text-sm font-body ${row.highlight ? "font-bold text-primary" : "text-secondary"}`}
-                  >
-                    {row.origin.split("(")[0].trim()}
-                  </span>
-                  <div className="flex-1">
-                    <div className="relative h-8 w-full rounded-lg bg-surface-muted overflow-hidden">
-                      <div
-                        className={`absolute inset-y-0 left-0 rounded-lg transition-all duration-700 ${row.highlight ? "bg-primary" : "bg-secondary/40"}`}
-                        style={{ width: `${(row.crocin / 650) * 100}%` }}
-                      />
-                      <span className="absolute inset-0 flex items-center pl-3 text-xs font-bold text-text-primary">
-                        {row.crocin}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <h3 className="font-display text-xl font-bold text-text-primary mb-6">
-              Safranal Content Comparison (mg/g dried stigma)
-            </h3>
-            <div className="space-y-4 mb-12">
-              {STUDY_COMPARISON.map((row) => (
-                <div key={row.origin} className="flex items-center gap-4">
-                  <span
-                    className={`w-48 shrink-0 text-sm font-body ${row.highlight ? "font-bold text-primary" : "text-secondary"}`}
-                  >
-                    {row.origin.split("(")[0].trim()}
-                  </span>
-                  <div className="flex-1">
-                    <div className="relative h-8 w-full rounded-lg bg-surface-muted overflow-hidden">
-                      <div
-                        className={`absolute inset-y-0 left-0 rounded-lg transition-all duration-700 ${row.highlight ? "bg-primary" : "bg-secondary/40"}`}
-                        style={{ width: `${(row.safranal / 40) * 100}%` }}
-                      />
-                      <span className="absolute inset-0 flex items-center pl-3 text-xs font-bold text-text-primary">
-                        {row.safranal}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="rounded-2xl bg-surface-muted/30 border border-secondary-border/10 p-8">
+            <div className="rounded-2xl bg-background border border-secondary-border/10 p-8 shadow-lg shadow-dark/5">
               <h3 className="font-display text-lg font-bold text-text-primary mb-3">
-                Our Analysis: Why These Numbers Matter for Your Kitchen
+                Why These Numbers Matter in the Kitchen
               </h3>
               <p className="text-secondary font-body leading-relaxed mb-4">
-                Peer-reviewed data confirms that{" "}
-                <strong>
-                  safranal concentration correlates with perceived aroma
-                  intensity
-                </strong>
-                , while crocin drives colour and astringency. Our Pampore Mongra
-                saffron records <strong>safranal at 38 mg/g</strong> — the
-                highest in this comparison — which means fewer threads are
-                needed to achieve the distinctive saffron fragrance in biryani,
-                risotto, or kesar milk. If you&apos;ve ever used saffron and
-                couldn&apos;t smell it, safranal is what was missing.
-              </p>
-              <p className="text-secondary font-body leading-relaxed mb-4">
-                The balance between crocin and picrocrocin is equally important.
-                Separate research by Chrysanthou et al. (2016) demonstrated that
-                high crocin can <strong>mask bitter perception</strong>. Our
-                profile — crocin 258 with picrocrocin 92 — delivers{" "}
-                <strong>
-                  intense golden colour and a clean, pleasant bitterness
-                </strong>{" "}
-                without either overpowering the dish.
+                Peer-reviewed data shows that safranal concentration correlates
+                with perceived aroma intensity, while crocin drives colour.
+                Kashmir Mongra saffron is known for a high safranal profile,
+                which is why a few threads can carry the distinctive saffron
+                fragrance in biryani, risotto, or kesar milk.
               </p>
               <p className="text-secondary font-body leading-relaxed">
-                <strong>Practical tip:</strong> For everyday cooking, 4–6
-                threads of Mongra saffron with crocin above 250 is enough for
-                one litre of liquid. Lower-crocin saffron may need 10–15 threads
-                for the same colour depth — making high-crocin saffron more
-                economical per dish despite the higher price per gram.
+                <strong>Practical tip:</strong> for everyday cooking, 4 to 6
+                threads of high-crocin Mongra saffron is usually enough for one
+                litre of liquid. Lower-crocin saffron can need two to three
+                times as much for the same colour, which makes high-crocin
+                saffron more economical per dish despite the higher price per
+                gram.
               </p>
             </div>
           </div>
         </section>
 
-        {/* ── Section 5: Sensory Perception Table (from study) ──────────── */}
-        <section className="py-20 lg:py-28 bg-background-alt">
-          <div className="mx-auto max-w-5xl px-6 lg:px-20">
-            <Badge variant="outline" className="mb-6">
-              Sensory Science
-            </Badge>
-            <h2 className="font-display text-3xl font-bold text-text-primary mb-4">
-              Crocin Concentration vs. Sensory Perception
-            </h2>
-            <p className="text-lg text-secondary font-body mb-10 max-w-3xl">
-              The study measured bitterness and astringency perception at
-              increasing crocin concentrations using a trained 12-member sensory
-              panel (9-point scale).
-            </p>
-
-            <div className="overflow-x-auto rounded-2xl ring-1 ring-secondary-border/10 shadow-lg shadow-dark/5 mb-8">
-              <table className="w-full text-sm font-body">
-                <thead>
-                  <tr className="bg-dark text-dark-text text-left">
-                    <th className="px-6 py-4 font-bold">Crocin (ppm)</th>
-                    <th className="px-6 py-4 font-bold">Bitterness Score</th>
-                    <th className="px-6 py-4 font-bold">Astringency Score</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {[
-                    { ppm: 0.94, bitter: 1.9, astringent: 2.6 },
-                    { ppm: 1.87, bitter: 2.4, astringent: 2.6 },
-                    { ppm: 3.75, bitter: 2.2, astringent: 3.0 },
-                    { ppm: 7.5, bitter: 3.0, astringent: 3.2 },
-                    { ppm: 15, bitter: 2.8, astringent: 3.1 },
-                    { ppm: 30, bitter: 2.8, astringent: 3.2 },
-                    { ppm: 60, bitter: 3.2, astringent: 3.5 },
-                  ].map((row, i) => (
-                    <tr
-                      key={row.ppm}
-                      className={
-                        i % 2 === 0 ? "bg-background-alt" : "bg-background"
-                      }
-                    >
-                      <td className="px-6 py-3 text-text-primary font-semibold">
-                        {row.ppm}
-                      </td>
-                      <td className="px-6 py-3 text-secondary">
-                        {row.bitter} / 9
-                      </td>
-                      <td className="px-6 py-3 text-secondary">
-                        {row.astringent} / 9
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-
-            <p className="text-xs text-text-muted font-body mb-8">
-              Data reference: Predieri et al. (2021), Table 3. Our
-              interpretation reflects how these findings apply to Kashmiri
-              Mongra-grade saffron in cooking.{" "}
-              <a
-                href={STUDY_URL}
-                target="_blank"
-                rel="nofollow noopener noreferrer"
-                className="text-primary underline"
-              >
-                View original study&nbsp;&rarr;
-              </a>
-            </p>
-
-            <div className="rounded-2xl bg-background p-8 shadow-lg shadow-dark/5 ring-1 ring-secondary-border/10">
-              <h3 className="font-display text-lg font-bold text-text-primary mb-3">
-                What This Means When You Cook with Our Saffron
-              </h3>
-              <p className="text-secondary font-body leading-relaxed mb-4">
-                The data shows that even at trace concentrations (0.94 ppm),
-                crocin produces detectable bitterness and astringency. But here
-                is the insight: at higher concentrations, astringency rises
-                linearly while <strong>bitterness plateaus</strong>. In
-                practice, this means high-crocin saffron delivers dramatically
-                deeper colour without making your food taste proportionally more
-                bitter.
-              </p>
-              <p className="text-secondary font-body leading-relaxed">
-                This is exactly why professional chefs prefer Mongra-grade
-                saffron with high crocin values:{" "}
-                <strong>
-                  maximum visual impact with balanced, pleasant flavour
-                </strong>
-                . Whether you are making Persian tahdig, Kashmiri yakhni, or a
-                simple kesar milk before bed, our batch&apos;s crocin level of
-                258 puts you in the sweet spot — rich golden colour without
-                harsh bitterness.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* ── Section 6: How We Test ────────────────────────────────────── */}
+        {/* ── Section 6: Bulk order testing ─────────────────────────────── */}
         <section className="py-20 lg:py-28">
           <div className="mx-auto max-w-5xl px-6 lg:px-20">
-            <Badge variant="outline" className="mb-6">
-              Our Process
+            <Badge variant="primary" className="mb-6">
+              For Bulk Orders (1 kg+)
             </Badge>
-            <h2 className="font-display text-3xl font-bold text-text-primary mb-10">
-              How Every Batch Is Tested
+            <h2 className="font-display text-3xl font-bold text-text-primary mb-4">
+              Batch-Wise Lab Testing for Bulk Orders
             </h2>
+            <p className="text-lg text-secondary font-body mb-12 max-w-3xl">
+              If you are ordering more than 1 kg, you can request an independent
+              ISO 3632 test for your specific consignment. Here is how it works.
+            </p>
 
             <div className="grid gap-6 md:grid-cols-4">
               {[
                 {
                   step: "01",
-                  title: "Harvest",
-                  desc: "Hand-picked crocus flowers from GI-tagged Pampore farms. Only the crimson stigma tips are separated (Mongra cut).",
+                  title: "Request",
+                  desc: "Tell us you want batch testing when you enquire about a bulk order over 1 kg.",
                 },
                 {
                   step: "02",
-                  title: "Drying",
-                  desc: "Traditional low-heat drying to preserve crocin and safranal. Moisture brought below 12% per ISO spec.",
+                  title: "Independent Lab",
+                  desc: "The consignment is sampled and sent to a third-party laboratory for ISO 3632 analysis.",
                 },
                 {
                   step: "03",
-                  title: "Lab Analysis",
-                  desc: "UV-Vis spectrophotometry at 440nm (crocin), 257nm (picrocrocin), 330nm (safranal). ISO 3632 protocol.",
+                  title: "You Pay the Test",
+                  desc: "The laboratory testing cost is paid by you, the customer, on top of the order.",
                 },
                 {
                   step: "04",
                   title: "Certificate",
-                  desc: "Results documented in a downloadable certificate of analysis included with every order.",
+                  desc: "The lab issues a certificate of analysis for that specific consignment, shared with you.",
                 },
               ].map((s) => (
                 <div key={s.step} className="relative">
@@ -834,6 +659,28 @@ export default function LabReportsPage() {
                 </div>
               ))}
             </div>
+
+            <div className="mt-10">
+              <Link
+                href="/bulk-orders"
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-8 py-4 font-semibold text-white transition-colors hover:bg-primary-hover"
+              >
+                Enquire about bulk orders
+                <svg
+                  className="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M17 8l4 4m0 0l-4 4m4-4H3"
+                  />
+                </svg>
+              </Link>
+            </div>
           </div>
         </section>
 
@@ -844,7 +691,7 @@ export default function LabReportsPage() {
               Common Questions
             </Badge>
             <h2 className="font-display text-3xl font-bold text-text-primary mb-10">
-              Saffron Purity &amp; Lab Testing FAQ
+              Saffron Quality &amp; Testing FAQ
             </h2>
             <div className="space-y-6">
               {LAB_FAQS.map((faq) => (
@@ -887,8 +734,8 @@ export default function LabReportsPage() {
               <li>
                 Predieri, S.; Magli, M.; Gatti, E.; Camilli, F.; Vignolini, P.;
                 Romani, A. &ldquo;Chemical Composition and Sensory Evaluation of
-                Saffron.&rdquo;
-                <em> Foods</em> 2021, 10, 2604. PMCID: PMC8618029.{" "}
+                Saffron.&rdquo; <em>Foods</em> 2021, 10, 2604. PMCID:
+                PMC8618029.{" "}
                 <a
                   href={STUDY_URL}
                   target="_blank"
@@ -899,34 +746,34 @@ export default function LabReportsPage() {
                 </a>
               </li>
               <li>
-                Chrysanthou, A.; Pouliou, E.; Kyriakoudi, A.; Tsimidou, M.Z.
-                &ldquo;Sensory Threshold Studies of Picrocrocin.&rdquo;
-                <em> J. Food Sci.</em> 2016, 81, 189–198. DOI:
-                10.1111/1750-3841.13152.
-              </li>
-              <li>
                 ISO/TS 3632-2:2003 — Saffron (<em>Crocus sativus</em> L.) — Test
                 methods. International Organization for Standardization.
               </li>
             </ol>
             <div className="rounded-xl bg-background p-6 ring-1 ring-secondary-border/10">
               <p className="text-xs text-text-muted font-body leading-relaxed mb-3">
-                <strong>Disclaimer:</strong> All Saffron Town batch results on
-                this page are from our own independent, third-party laboratory
-                testing and represent our specific product. Comparative values
-                from Italian origins are cited from Predieri et al. (2021), a
-                peer-reviewed, open-access study published under a CC BY 4.0
-                licence, and represent their specific samples — not commercial
-                averages. We present this data to provide scientific context for
-                understanding saffron quality, not to imply equivalence or
-                direct superiority.
+                <strong>Disclaimer:</strong> The compound ranges and comparison
+                figures on this page are representative, indicative values for
+                Kashmir Mongra saffron in general. They are based on occasional
+                independent testing and published literature. They are{" "}
+                <strong>not</strong> test results for any specific pack, and they
+                are <strong>not</strong> a guarantee of the values in any order.
+                Retail saffron is sold on the basis of its GI-tagged origin and
+                Mongra grade, not an individual per-pack laboratory certificate.
+              </p>
+              <p className="text-xs text-text-muted font-body leading-relaxed mb-3">
+                Independent, batch-specific ISO 3632 testing is available only
+                for bulk orders over 1 kg, arranged on request through a
+                third-party laboratory, with the testing cost paid by the
+                customer. Comparative Italian values are cited from Predieri et
+                al. (2021) and represent their specific samples, not commercial
+                averages.
               </p>
               <p className="text-xs text-text-muted font-body leading-relaxed">
                 Saffron quality varies by harvest year, terroir, cultivar, and
                 post-harvest processing. This page is for educational and
                 informational purposes only and does not constitute a medical,
-                nutritional, or therapeutic claim. The editorial analysis and
-                interpretation on this page is original work by Saffron Town.
+                nutritional, or therapeutic claim.
               </p>
             </div>
           </div>
@@ -936,19 +783,19 @@ export default function LabReportsPage() {
         <section className="py-20 lg:py-28 bg-dark text-center">
           <div className="mx-auto max-w-3xl px-6 lg:px-20">
             <h2 className="font-display text-3xl font-bold text-dark-text mb-4">
-              Saffron You Can Verify Before You Buy
+              GI-Tagged Kashmiri Mongra Saffron
             </h2>
             <p className="text-dark-text-muted font-body mb-8">
-              Every jar of Saffron Town Mongra saffron ships with a downloadable
-              ISO 3632 certificate of analysis. No trust required — just data.
-              See for yourself why 500+ customers trust our lab-tested saffron.
+              Farm-direct from Pampore, sold on the strength of its GI-tagged
+              origin and Mongra grade. Ordering more than 1 kg? Ask us about
+              independent batch testing for your consignment.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 href="/shop/saffron"
                 className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-8 py-4 font-semibold text-white transition-colors hover:bg-primary-hover"
               >
-                Shop Lab-Tested Saffron
+                Shop Mongra Saffron
                 <svg
                   className="h-4 w-4"
                   fill="none"
@@ -964,15 +811,12 @@ export default function LabReportsPage() {
                 </svg>
               </Link>
               <Link
-                href="/contact"
+                href="/bulk-orders"
                 className="inline-flex items-center justify-center gap-2 rounded-xl border border-dark-text/20 px-8 py-4 font-semibold text-dark-text transition-colors hover:bg-dark-text/10"
               >
-                Request Lab Certificate
+                Bulk orders & testing
               </Link>
             </div>
-            <p className="mt-8 text-xs text-dark-text-muted">
-              Page last updated: April 2026 · Batch ST-2026-APR-M1
-            </p>
           </div>
         </section>
       </main>

@@ -89,7 +89,7 @@ export function ProductCard({ product }: ProductCardProps) {
             </div>
           ) : (
             <span className="text-[10px] font-bold uppercase tracking-wider text-primary bg-primary/5 px-2 py-1 rounded-lg">
-              Lab-tested
+              GI-tagged
             </span>
           )}
         </div>

@@ -28,8 +28,8 @@ const PROMISES = [
         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2" />
       </svg>
     ),
-    title: "ISO 3632 Lab-Tested",
-    description: "Every batch is independently tested. Download your purity certificate before you buy.",
+    title: "GI-Tagged Origin",
+    description: "GI-tagged Mongra saffron, farm-direct from Pampore. Independent ISO 3632 batch testing is available on request for bulk orders over 1 kg.",
   },
 ] as const;
 

@@ -28,7 +28,7 @@ const shopLiveFeedEnabled = process.env.SHOP_LIVE_FEED_ENABLED === "true";
 export const metadata: Metadata = {
   title: "Buy Pure Kashmiri Kesar Online | Pampore Saffron Town | Saffron Town",
   description:
-    "Buy 100% pure Kashmiri Mongra kesar online—farm-direct from Pampore (Kashmir's saffron town). Grade A++ saffron, ISO lab-tested, GI-tagged. Fresh harvest only. Free delivery above ₹499.",
+    "Buy 100% pure Kashmiri Mongra kesar online—farm-direct from Pampore (Kashmir's saffron town). Grade A++ saffron, GI-tagged. Fresh harvest only. Free delivery above ₹499.",
   alternates: {
     canonical: SITE_CONFIG.url,
     languages: {
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     title:
       "Buy Pure Kashmiri Kesar Online | Pampore Saffron Town | Saffron Town",
     description:
-      "Buy 100% pure Kashmiri Mongra kesar online—farm-direct from Pampore (Kashmir's saffron town). Grade A++ saffron, ISO lab-tested, GI-tagged. Fresh harvest only. Free delivery above ₹499.",
+      "Buy 100% pure Kashmiri Mongra kesar online—farm-direct from Pampore (Kashmir's saffron town). Grade A++ saffron, GI-tagged. Fresh harvest only. Free delivery above ₹499.",
     url: SITE_CONFIG.url,
     type: "website",
     images: [
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
     title:
       "Buy Pure Kashmiri Kesar Online | Pampore Saffron Town | Saffron Town",
     description:
-      "Buy 100% pure Kashmiri Mongra kesar—farm-direct from Pampore (Kashmir's saffron town). ISO lab-tested, GI-tagged. Free delivery above ₹499.",
+      "Buy 100% pure Kashmiri Mongra kesar—farm-direct from Pampore (Kashmir's saffron town). GI-tagged. Free delivery above ₹499.",
     images: [`${SITE_CONFIG.url}/products-grid.png`],
   },
 };
@@ -84,7 +84,7 @@ const homepageOrganizationSchema = {
   logo: SITE_CONFIG.logo,
   telephone: SITE_CONFIG.phone,
   description:
-    "Premium Kashmiri Mongra Kesar (Saffron) — farm-direct from Pampore. ISO lab-tested, GI-tagged, fresh harvest only.",
+    "Premium Kashmiri Mongra Kesar (Saffron) — farm-direct from Pampore. GI-tagged, fresh harvest only.",
   contactPoint: {
     "@type": "ContactPoint",
     contactType: "customer service",

@@ -38,8 +38,8 @@ export function ShopBanner() {
               </h2>
               <p className="mt-3 text-sm leading-relaxed text-dark-text-muted font-body sm:text-base">
                 The crown jewel of Kashmir — handpicked from Pampore&apos;s
-                sun-drenched fields. Only the deepest crimson tips, ISO 3632
-                lab-tested and farm-direct.
+                sun-drenched fields. Only the deepest crimson tips, GI-tagged
+                and farm-direct.
               </p>
             </div>
 

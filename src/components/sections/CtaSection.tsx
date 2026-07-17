@@ -3,7 +3,7 @@ import { SITE_CONFIG } from "@/lib/constants";
 
 const TRUST_CHIPS = [
   "Farm Direct",
-  "ISO 3632 Certified",
+  "Grade A++ Mongra",
   "GI-Tagged Kashmir",
   "Free Delivery ₹499+",
   "Money-back Guarantee",

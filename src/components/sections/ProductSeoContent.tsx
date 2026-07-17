@@ -40,15 +40,15 @@ export async function ProductSeoContent() {
           shaped with a deep crimson colour and a thin orange style at the base;
           a single strand released into warm milk slowly bleeds a soft golden
           colour (never an instant neon yellow, which signals dye); and
-          authentic kesar carries a honey-hay aroma, not a chemical one. We
-          independently test every harvest to ISO 3632 — you can{" "}
+          authentic kesar carries a honey-hay aroma, not a chemical one. Our
+          saffron is GI-tagged Mongra from Pampore — see{" "}
           <Link
             href="/lab-reports"
             className="text-primary font-semibold hover:underline"
           >
-            download the lab report for your batch
-          </Link>{" "}
-          before you even open the jar.
+            what a lab test of Kashmir Mongra typically shows
+          </Link>
+          , and the batch testing we offer for bulk orders.
         </p>
       </div>
 
@@ -61,7 +61,7 @@ export async function ProductSeoContent() {
           most important moments. A few strands colour a biryani or pulao, lift
           a kheer, and turn plain milk into the traditional kesar doodh served
           to expecting mothers from the second trimester. Because purity matters
-          most during pregnancy, we recommend only lab-tested Mongra grade —{" "}
+          most during pregnancy, we recommend only GI-tagged Mongra grade —{" "}
           {journal.pregnancy ? (
             <>
               read{" "}

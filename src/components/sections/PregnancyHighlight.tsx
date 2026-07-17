@@ -4,8 +4,8 @@ import { IMAGE_QUALITY_PHOTO } from "@/lib/constants";
 import { getJournalSettings } from "@/lib/journal-settings";
 
 const BENEFITS = [
-  "ISO 3632 lab-tested — downloadable purity certificate",
-  "Farm-direct from Pampore, no middlemen",
+  "GI-tagged Mongra, farm-direct from Pampore",
+  "Grade A++ — hand-sorted stigma tips",
   "Only the current harvest — never old stock",
   "Trusted by thousands of Indian mothers",
 ] as const;
@@ -72,7 +72,7 @@ export async function PregnancyHighlight() {
           <div className="relative mx-auto aspect-square w-full max-w-sm overflow-hidden rounded-[2rem] shadow-xl shadow-dark/10 lg:max-w-none">
             <Image
               src="/images/products/mongra-saffron-1.png"
-              alt="Pure Kashmiri Mongra saffron threads — ISO 3632 lab-tested grade recommended for pregnancy kesar milk"
+              alt="Pure Kashmiri Mongra saffron threads — GI-tagged Grade A++ kesar for pregnancy kesar milk"
               fill
               className="object-cover"
               sizes="(max-width: 1024px) 384px, 50vw"

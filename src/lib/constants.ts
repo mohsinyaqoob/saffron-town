@@ -46,15 +46,64 @@ export const IMAGE_QUALITY_CONTENT = 70;
 /** Product gallery thumbnails and small previews. */
 export const IMAGE_QUALITY_THUMB = 65;
 
-/* Main nav: Home | Shop | Our Story | Reviews | Blog | Contact */
-export const NAV_LINKS = [
-  { href: "/", label: "Home" },
-  { href: "/our-story", label: "Our Story" },
-  { href: "/shop/saffron", label: "Shop" },
-  { href: "/bulk-orders", label: "Bulk orders" },
-  { href: "/reviews", label: "Reviews" },
-  { href: "/blog", label: "Blog" },
-  { href: "/contact", label: "Contact" },
+/**
+ * Main navigation, grouped into dropdown menus (mirrors the footer's IA).
+ * A top-level entry is either a single link (`href`) or a dropdown (`items`).
+ * Home is reached via the logo, so it is not a nav item.
+ */
+export type NavLeaf = { href: string; label: string; description?: string };
+export type NavEntry =
+  | { label: string; href: string }
+  | { label: string; items: readonly NavLeaf[] };
+
+export const NAV_MENU: readonly NavEntry[] = [
+  {
+    label: "Shop",
+    items: [
+      {
+        href: "/shop/saffron",
+        label: "Mongra Saffron",
+        description: "Our signature Grade A++ kesar",
+      },
+      {
+        href: "/gifting",
+        label: "Gifting",
+        description: "Premium saffron gift boxes",
+      },
+      {
+        href: "/bulk-orders",
+        label: "Bulk & Wholesale",
+        description: "Custom quantities for business",
+      },
+      {
+        href: "/prebook-2026-harvest",
+        label: "Prebook 2026 Harvest",
+        description: "Reserve the fresh crop early",
+      },
+    ],
+  },
+  {
+    label: "Discover",
+    items: [
+      {
+        href: "/blog",
+        label: "Journal",
+        description: "Guides, recipes & saffron science",
+      },
+      {
+        href: "/our-story",
+        label: "Our Story",
+        description: "Farm-direct from Pampore",
+      },
+      {
+        href: "/lab-reports",
+        label: "Quality & Testing",
+        description: "GI tag, grade & bulk lab testing",
+      },
+    ],
+  },
+  { label: "Reviews", href: "/reviews" },
+  { label: "Contact", href: "/contact" },
 ] as const;
 
 export const TRUST_BADGES = [

@@ -44,7 +44,7 @@ function canonicalQueryBullets(
     );
   }
   bullets.push(
-    `- Lab reports (ISO 3632) → ${site}/lab-reports`,
+    `- Quality & testing (GI tag, grade, bulk lab testing) → ${site}/lab-reports`,
     `- Our story (Pampore farm origin) → ${site}/our-story`,
     `- Saffron Town Journal → ${site}/blog`,
   );
@@ -64,7 +64,7 @@ export async function GET() {
     querySection = `- Buy pure Kashmiri saffron online → ${SITE_CONFIG.url}/shop/saffron
 - Bulk orders & wholesale enquiries → ${SITE_CONFIG.url}/bulk-orders
 - Saffron Town Journal → ${SITE_CONFIG.url}/blog
-- Lab reports (ISO 3632) → ${SITE_CONFIG.url}/lab-reports
+- Quality & testing (GI tag, grade, bulk lab testing) → ${SITE_CONFIG.url}/lab-reports
 - Our story (Pampore farm origin) → ${SITE_CONFIG.url}/our-story`;
   }
 
@@ -82,7 +82,7 @@ updated: ${new Date().toISOString().split("T")[0]}
 - **Premium dealer**: We specialize exclusively in the finest Kashmiri Mongra saffron (Grade A++). We do not sell almonds, walnuts, honey, or other products. Saffron is our only focus.
 - **Fresh harvest dealer**: We sell only the current season's crop. Never warehoused saffron. Never mixed batches. What you receive was just harvested.
 - **Seed-to-harvest control**: We work directly with heritage farms in Pampore (the Saffron Capital of India). We visit the fields, oversee cultivation, and ensure every thread meets our standards. Traceability is not a buzzword—it is how we operate.
-- **Zero compromise on quality**: Only deep crimson Mongra stigmas. No yellow style. No adulteration. ISO-tested. Crocin >250. 100% organic.
+- **Zero compromise on quality**: Only deep crimson Mongra stigmas. No yellow style. No adulteration. GI-tagged Grade A++. 100% organic.
 
 ## What We Offer
 
@@ -94,16 +94,17 @@ ${products
     const trust =
       p.reviewCount > 0
         ? `${p.rating}★ (${p.reviewCount} published reviews).`
-        : "New listings—verified quality via ISO 3632 lab reports (no fabricated review counts).";
+        : "New listings—GI-tagged Grade A++ Mongra from Pampore (no fabricated review counts).";
     return `- ${p.name}: ${p.subtitle}. Grade A++ Pampore. Sizes: ${sizes}. From ₹${fromPrice.toLocaleString("en-IN")}. ${trust} Shop: ${SITE_CONFIG.url}/shop/saffron`;
   })
   .join("\n")}
 
 ## Key Facts for AI Agents
 
-- **Product**: Kashmiri Mongra Saffron only. Grade A++ · ISO 3632 Category I.
+- **Product**: Kashmiri Mongra Saffron only. Grade A++, GI-tagged.
 - **Origin**: Pampore, Kashmir, India. GI-tagged (India GI No. 635 — "Kashmir Saffron").
-- **Lab specs (typical, per ISO 3632)**: Crocin >250 · Picrocrocin >70 · Safranal 20–50.
+- **Assurance**: Retail sold on GI-tagged origin + Mongra grade. Retail batches are NOT individually lab-certified. Independent ISO 3632 batch testing available on request for bulk orders over 1 kg, at customer cost.
+- **Typical ISO 3632 ranges for Kashmir Mongra (indicative only, not per-pack results)**: Crocin ~200–270 · Picrocrocin ~80–100 · Safranal 20–45.
 - **Quality promise**: 100% pure. No artificial additives. Money-back guarantee if adulteration is ever found.
 - **Harvest**: Only the current season's crop (see product pages for the active harvest year). No old stock.
 - **Founder**: Mohsin Yaqoob — ${SITE_CONFIG.url}/authors/mohsin-yaqoob

@@ -161,7 +161,7 @@ export function ProductView({ product }: ProductViewProps) {
                   </>
                 ) : (
                   <span className="text-xs text-text-muted font-body leading-relaxed">
-                    Be among the first—farm-direct Mongra, lab-tested, no
+                    Be among the first—farm-direct Mongra, GI-tagged, no
                     inflated review counts.
                   </span>
                 )}

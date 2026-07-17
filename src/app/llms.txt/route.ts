@@ -87,11 +87,11 @@ export async function GET() {
 
   const content = `# Saffron Town
 
-> Premium Kashmiri Mongra Kesar (Saffron) dealer — farm-direct from Pampore, ISO 3632 lab-tested, GI-tagged (Kashmir Saffron, GI-635). Fresh harvest only, no old stock. Ships across India with a money-back purity guarantee.
+> Premium Kashmiri Mongra Kesar (Saffron) dealer — farm-direct from Pampore, GI-tagged (Kashmir Saffron, GI-635). Fresh harvest only, no old stock. Ships across India with a money-back purity guarantee.
 
 ## Shop
 
-- [Shop Pure Kashmiri Mongra Kesar](${u}/shop/saffron): Grade A++ Kashmiri saffron from Pampore. 1g to 50g packs. ISO 3632 Category I. Crocin >250.
+- [Shop Pure Kashmiri Mongra Kesar](${u}/shop/saffron): Grade A++ GI-tagged Kashmiri Mongra saffron from Pampore. 1g to 50g packs.
 - [Bulk orders & wholesale](${u}/bulk-orders): Restaurants, sweet shops, gifting, and trade — call, WhatsApp, or request a structured quote.
 - [Pre-book 2026 Harvest](${u}/prebook-2026-harvest): Reserve the current-year harvest before it ships.
 - [Gifting](${u}/gifting): Ready-to-gift saffron sets.
@@ -99,7 +99,7 @@ export async function GET() {
 ${journalSection}
 ## Proof & Provenance
 
-- [ISO 3632 Lab Reports](${u}/lab-reports): Downloadable lab certificates per harvest batch (crocin, picrocrocin, safranal).
+- [Quality & Testing](${u}/lab-reports): GI-tagged origin, Mongra grade, and independent ISO 3632 batch testing available on request for bulk orders over 1 kg (retail batches are not individually certified).
 - [Our Story](${u}/our-story): Farm-direct origin story from the Pampore saffron belt.
 - [Customer Reviews](${u}/reviews): Verified buyer reviews.
 
@@ -116,9 +116,10 @@ ${journalSection}
 
 ## Key Facts
 
-- Product: Kashmiri Mongra Saffron (Grade A++ · ISO 3632 Category I)
+- Product: Kashmiri Mongra Saffron (Grade A++, GI-tagged)
 - Origin: Pampore, Kashmir — GI-tagged Kashmir Saffron (GI-635)
-- Typical lab specs: Crocin >250, Picrocrocin >70, Safranal 20–50
+- Assurance: retail sold on GI-tagged origin + Mongra grade; retail batches not individually lab-certified. Independent ISO 3632 batch testing available on request for bulk orders over 1 kg (customer pays for the test).
+- Typical ISO 3632 ranges for Kashmir Mongra (indicative, not per-pack results): Crocin ~200–270, Picrocrocin ~80–100, Safranal 20–45
 - Price range: ₹650 (1g tester), ₹1,299 (2g), up to ₹26,499 (50g). Effective rate varies by pack—premium Mongra tier roughly ₹530–₹650/g.
 - Contact: ${SITE_CONFIG.phone} (phone), ${SITE_CONFIG.email} (email)
 `;

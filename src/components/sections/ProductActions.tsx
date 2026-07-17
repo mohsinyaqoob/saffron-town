@@ -71,7 +71,7 @@ export function ProductActions({ product }: ProductActionsProps) {
             </>
           ) : (
             <span className="text-xs text-text-muted font-body leading-relaxed">
-              Be among the first—farm-direct Mongra, lab-tested, no inflated
+              Be among the first—farm-direct Mongra, GI-tagged, no inflated
               review counts.
             </span>
           )}

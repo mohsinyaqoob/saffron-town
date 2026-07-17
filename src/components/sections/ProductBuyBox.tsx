@@ -204,7 +204,7 @@ export function ProductBuyBox({ product }: ProductBuyBoxProps) {
       ) : (
         <p className="text-sm text-secondary font-body leading-relaxed">
           Be among the first to try this harvest—farm-direct Mongra from
-          Pampore, lab-tested to ISO 3632. No inflated claims; just traceable
+          Pampore, GI-tagged Grade A++. No inflated claims; just traceable
           quality.
         </p>
       )}

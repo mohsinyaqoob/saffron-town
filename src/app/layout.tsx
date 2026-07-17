@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     template: "%s | Saffron Town",
   },
   description:
-    "Buy 100% pure Kashmiri Mongra kesar online—farm-direct from Pampore (Kashmir's saffron town). Grade A++ saffron, ISO lab-tested, GI-tagged. Fresh harvest only. Free delivery above ₹499.",
+    "Buy 100% pure Kashmiri Mongra kesar online—farm-direct from Pampore (Kashmir's saffron town). Grade A++ saffron, GI-tagged. Fresh harvest only. Free delivery above ₹499.",
   keywords: [
     "pampore saffron town",
     "pampore saffron town kashmir",

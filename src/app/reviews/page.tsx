@@ -20,12 +20,12 @@ export const metadata: Metadata = {
   // append it here, or the rendered <title> ends up "… | Saffron Town | Saffron Town".
   title: "Customer Reviews",
   description:
-    "50+ real customer reviews of Saffron Town's pure Kashmiri Mongra saffron. Pregnancy, post-partum, immunity, skin. Lab-tested, farm-direct from Pampore. Read what our customers say.",
+    "50+ real customer reviews of Saffron Town's pure Kashmiri Mongra saffron. Pregnancy, post-partum, immunity, skin. GI-tagged, farm-direct from Pampore. Read what our customers say.",
   alternates: { canonical: `${SITE_CONFIG.url}/reviews` },
   openGraph: {
     title: "Customer Reviews | Saffron Town",
     description:
-      "50+ real customer reviews of pure Kashmiri saffron. Pregnancy, immunity, skin glow. Lab-tested, farm-direct from Pampore.",
+      "50+ real customer reviews of pure Kashmiri saffron. Pregnancy, immunity, skin glow. GI-tagged, farm-direct from Pampore.",
     url: `${SITE_CONFIG.url}/reviews`,
     type: "website",
     images: [
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Customer Reviews | Saffron Town",
     description:
-      "50+ real customer reviews of pure Kashmiri saffron. Lab-tested, farm-direct.",
+      "50+ real customer reviews of pure Kashmiri saffron. GI-tagged, farm-direct.",
     images: [OG_IMAGE],
   },
   robots: {

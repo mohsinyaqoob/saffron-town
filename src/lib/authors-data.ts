@@ -26,11 +26,11 @@ export const AUTHORS: Record<string, AuthorProfile> = {
     shortBio:
       "Founder of Saffron Town. Works directly with heritage saffron growers in Pampore to bring single-origin Mongra kesar from farm to table.",
     longBio:
-      "Mohsin founded Saffron Town to give Indian homes honest, lab-verified Kashmiri Mongra kesar with zero middlemen. He works on the ground with heritage saffron-growing families in Pampore — the GI-tagged saffron belt of Kashmir — and personally oversees the harvest, ISO 3632 testing, and fulfilment for every batch. Before Saffron Town, Mohsin spent a decade in software engineering; today that same rigour shows up in the traceability and lab evidence behind every gram we ship.",
+      "Mohsin founded Saffron Town to give Indian homes honest, single-origin Kashmiri Mongra kesar with zero middlemen. He works on the ground with heritage saffron-growing families in Pampore — the GI-tagged saffron belt of Kashmir — and personally oversees sourcing, grading, and fulfilment. Before Saffron Town, Mohsin spent a decade in software engineering; today that same rigour shows up in the traceability behind every gram we ship.",
     credentials: [
       "Works directly with GI-tagged Pampore saffron growers",
       "Oversees every harvest from seeding to packing",
-      "Commissions ISO 3632 lab testing on every batch",
+      "Arranges independent ISO 3632 testing for bulk orders",
     ],
     sameAs: [
       "https://instagram.com/saffrontown",
@@ -42,12 +42,12 @@ export const AUTHORS: Record<string, AuthorProfile> = {
     name: "Saffron Town Editorial",
     jobTitle: "Editorial Team, Saffron Town",
     shortBio:
-      "The Saffron Town editorial team — saffron growers, food writers and lab technicians writing together on Kashmiri kesar, Ayurveda and cooking.",
+      "The Saffron Town editorial team — saffron growers, food writers and sourcing specialists writing together on Kashmiri kesar, Ayurveda and cooking.",
     longBio:
-      "Our editorial team combines voices from the field (Pampore growers), the lab (ISO 3632 testing partners), and the kitchen (food writers) so every article on saffron.town reflects first-hand experience, not rewritten content.",
+      "Our editorial team combines voices from the field (Pampore growers), sourcing and independent testing partners, and the kitchen (food writers) so every article on saffron.town reflects first-hand experience, not rewritten content.",
     credentials: [
       "First-hand access to heritage Pampore saffron farms",
-      "ISO 3632 lab-verified claims",
+      "Grounded in GI-tag origin and published research",
       "Reviewed by the Saffron Town founder before publication",
     ],
     sameAs: [

@@ -13,14 +13,14 @@ import { SHOP_FAQS } from "@/lib/shop-faqs";
 const OG_IMAGE = `${SITE_CONFIG.url}/products-grid.png`;
 
 export const metadata: Metadata = {
-  title: "Shop Pure Kashmiri Saffron | Lab-Tested, GI-Tagged",
+  title: "Shop Pure Kashmiri Saffron | GI-Tagged Mongra",
   description:
-    "Buy lab-tested, GI-tagged Kashmiri Mongra saffron from farm-direct sources. ISO 3632 certified. 1g to 50g. Fresh harvest only. Money-back guarantee.",
+    "Buy GI-tagged Kashmiri Mongra saffron from farm-direct sources. Grade A++, 1g to 50g. Fresh harvest only. Money-back guarantee.",
   alternates: { canonical: `${SITE_CONFIG.url}/shop` },
   openGraph: {
     title: "Shop Pure Kashmiri Saffron | Saffron Town",
     description:
-      "Lab-tested, GI-tagged Mongra saffron. Farm-direct from Pampore. Fresh harvest only.",
+      "GI-tagged Grade A++ Mongra saffron. Farm-direct from Pampore. Fresh harvest only.",
     url: `${SITE_CONFIG.url}/shop`,
     type: "website",
     images: [
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Shop Pure Kashmiri Saffron | Saffron Town",
     description:
-      "Lab-tested, GI-tagged Mongra saffron. Farm-direct from Pampore. Fresh harvest only.",
+      "GI-tagged Grade A++ Mongra saffron. Farm-direct from Pampore. Fresh harvest only.",
     images: [OG_IMAGE],
   },
 };
@@ -57,7 +57,7 @@ export default function ShopPage() {
             { label: "Shop", href: "/shop" },
           ]}
           title="Shop Pure Kashmiri Saffron"
-          description="Lab-tested to ISO 3632, GI-tagged, and farm-direct from Pampore. Every batch comes with a downloadable certificate of analysis. No middlemen, no compromise — just the current harvest, delivered to your door."
+          description="GI-tagged and farm-direct from Pampore, Grade A++ Mongra. Independent ISO 3632 batch testing is available on request for bulk orders over 1 kg. No middlemen, no compromise — just the current harvest, delivered to your door."
           cta={{
             href: PRODUCT_PAGE_URL,
             label: "Buy verified Kashmiri Mongra saffron",
@@ -94,14 +94,15 @@ export default function ShopPage() {
               adulterated or mislabelled. Common fakes include dyed corn silk,
               safflower petals, or turmeric mixed with real threads. You can run
               home tests — the water test, rub test, and smell test — but the
-              only way to verify crocin content and purity is professional ISO
-              3632 laboratory analysis. Every Saffron Town batch is
-              third-party-tested. Download the lab report for your order at{" "}
+              only way to measure crocin content precisely is professional ISO
+              3632 laboratory analysis. We explain what a lab test of Kashmir
+              Mongra typically shows, and offer independent ISO 3632 batch
+              testing for bulk orders over 1 kg, on{" "}
               <Link
                 href="/lab-reports"
                 className="text-primary font-semibold hover:underline"
               >
-                our Lab Reports page
+                our Quality &amp; Testing page
               </Link>
               .
             </p>

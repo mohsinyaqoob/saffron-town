@@ -36,7 +36,7 @@ export default function AuthorsIndexPage() {
           </h1>
           <p className="mt-4 text-lg text-secondary font-body max-w-2xl">
             Every article on Saffron Town is written by someone who has stood in
-            the saffron field, run the lab test, or cooked the recipe.
+            the saffron field, worked with the growers, or cooked the recipe.
           </p>
 
           <div className="mt-12 grid gap-8 sm:grid-cols-2">

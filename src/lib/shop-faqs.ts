@@ -11,7 +11,7 @@ export const SHOP_FAQS = [
   {
     question: "How do I know your saffron is genuine?",
     answer:
-      "Every batch of Saffron Town saffron is independently tested to ISO 3632 standards. You can view our saffron purity test results and download the lab report for your batch directly from our Lab Reports page at www.saffron.town/lab-reports.",
+      "Our saffron is GI-tagged Kashmir Mongra, sourced farm-direct from Pampore. The GI tag is a legal indication of origin. We do not lab-test every retail batch, but independent ISO 3632 testing is available on request for bulk orders over 1 kg, at the customer's cost. See our Quality & Testing page at www.saffron.town/lab-reports.",
   },
   {
     question: "How to store saffron?",

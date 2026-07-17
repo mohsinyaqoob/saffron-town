@@ -13,7 +13,7 @@ const organizationSchema = {
   logo: SITE_CONFIG.logo,
   telephone: SITE_CONFIG.phone,
   description:
-    "Premium Kashmiri Mongra Kesar (Saffron) — farm-direct from Pampore. ISO lab-tested, GI-tagged, fresh harvest only.",
+    "Premium Kashmiri Mongra Kesar (Saffron) — farm-direct from Pampore. GI-tagged, fresh harvest only.",
   sameAs: SITE_CONFIG.sameAs,
   contactPoint: {
     "@type": "ContactPoint",

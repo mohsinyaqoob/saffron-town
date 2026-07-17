@@ -16,9 +16,9 @@ interface ProductJsonLdProps {
  * - shippingDetails, hasMerchantReturnPolicy include every field Google's
  *   Merchant Listings validator requires (shippingDestination, applicableCountry,
  *   returnMethod, returnFees). Missing any of these drops you from rich results.
- * - additionalProperty carries the ISO 3632 lab numbers (crocin, picrocrocin,
- *   safranal) + GI tag number — AI Overviews quote these verbatim when users
- *   ask about purity / grade.
+ * - additionalProperty carries the grade, GI tag origin, and indicative
+ *   (typical, not per-pack certified) crocin range for Kashmir Mongra — so AI
+ *   Overviews have accurate context when users ask about grade / origin.
  */
 export function ProductJsonLd({ product }: ProductJsonLdProps) {
   const productUrl = `${SITE_CONFIG.url}/shop/saffron`;
@@ -180,18 +180,13 @@ export function ProductJsonLd({ product }: ProductJsonLdProps) {
     },
     {
       "@type": "PropertyValue",
-      name: "Crocin (Colour Strength)",
-      value: ">250 (ISO 3632 Category I)",
+      name: "Grade",
+      value: "Mongra (Grade A++) — deep-red stigma tips",
     },
     {
       "@type": "PropertyValue",
-      name: "Picrocrocin (Flavour Strength)",
-      value: ">70 (ISO 3632 Category I)",
-    },
-    {
-      "@type": "PropertyValue",
-      name: "Safranal (Aroma Strength)",
-      value: "20–50 (ISO 3632 Category I)",
+      name: "Crocin (typical for Kashmir Mongra, indicative)",
+      value: "≈ 200–270",
     },
     {
       "@type": "PropertyValue",
@@ -200,8 +195,8 @@ export function ProductJsonLd({ product }: ProductJsonLdProps) {
     },
     {
       "@type": "PropertyValue",
-      name: "Certification",
-      value: "ISO 3632 Category I, GI-Tagged Kashmir Saffron",
+      name: "Origin",
+      value: "GI-Tagged Kashmir Saffron (GI No. 635), Pampore",
     },
   ];
 

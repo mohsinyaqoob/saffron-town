@@ -8,16 +8,16 @@ import { IMAGE_QUALITY_PHOTO } from "@/lib/constants";
  */
 const PROOF_POINTS = [
   { icon: "✓", label: "No mislabeling — Mongra sold as Mongra" },
-  { icon: "✓", label: "ISO 3632 lab-tested, every batch" },
+  { icon: "✓", label: "Hand-sorted Mongra stigma tips" },
   { icon: "✓", label: "Farm-direct · Zero middlemen" },
   { icon: "✓", label: "GI-tagged Pampore origin" },
-  { icon: "✓", label: "Organic · No adulteration" },
+  { icon: "✓", label: "No adulteration" },
   { icon: "✓", label: "Fresh harvest only · Never old stock" },
 ] as const;
 
 const STATS = [
-  { value: "Grade A++", label: "Purity grade" },
-  { value: "ISO 3632", label: "Lab certified" },
+  { value: "Grade A++", label: "Mongra grade" },
+  { value: "Pampore", label: "Single origin" },
   { value: "GI-Tagged", label: "Kashmir origin" },
   { value: "0% Old stock", label: "Fresh harvest only" },
 ] as const;
@@ -76,7 +76,7 @@ export function Hero() {
           Cultivated in the legendary saffron fields of Kashmir and harvested
           for exceptional color, aroma, and strength.{" "}
           <strong className="font-semibold text-white">
-            Farm-direct, organic, and independently lab-tested
+            Farm-direct from Pampore and GI-tagged
           </strong>
           {" "}— ensuring every strand delivers the purity and potency authentic
           Kashmiri saffron is known for.
@@ -112,9 +112,9 @@ export function Hero() {
           <Link
             href="/lab-reports"
             className="inline-flex min-h-[52px] w-full items-center justify-center rounded-2xl border border-white/30 bg-white/8 px-8 text-sm font-bold text-white backdrop-blur-sm transition-all hover:bg-white/15 active:scale-[0.98] sm:w-auto"
-            aria-label="View ISO 3632 lab reports for our saffron"
+            aria-label="View saffron quality and testing information"
           >
-            View lab reports
+            Quality &amp; testing
           </Link>
         </div>
 

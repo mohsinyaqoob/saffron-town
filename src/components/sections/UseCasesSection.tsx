@@ -13,7 +13,7 @@ const USE_CASES = [
     emoji: "🤰",
     title: "Pregnancy & Wellness",
     description:
-      "Trusted by thousands of Indian mothers. ISO 3632 lab-tested purity you can rely on for kesar milk.",
+      "Trusted by thousands of Indian mothers. GI-tagged Grade A++ Mongra kesar, farm-direct from Pampore.",
     href: "/blog/saffron-for-pregnancy",
     linkLabel: "Read the guide →",
   },

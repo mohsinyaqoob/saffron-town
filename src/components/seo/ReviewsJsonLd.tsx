@@ -71,7 +71,7 @@ export function ReviewsJsonLd({ testimonials }: ReviewsJsonLdProps) {
       url: REVIEWS_URL,
       name: "Customer Reviews | Saffron Town",
       description:
-        "Real customer reviews of Saffron Town's pure Kashmiri Mongra saffron. Pregnancy, post-partum, immunity, skin. Lab-tested, farm-direct from Pampore.",
+        "Real customer reviews of Saffron Town's pure Kashmiri Mongra saffron. Pregnancy, post-partum, immunity, skin. GI-tagged, farm-direct from Pampore.",
       mainEntity: { "@id": `${PRODUCT_URL}#product` },
     },
   ];

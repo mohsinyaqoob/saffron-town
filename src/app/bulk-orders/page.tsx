@@ -41,7 +41,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Bulk Orders & Wholesale Kashmiri Saffron | Saffron Town",
     description:
-      "Call +91 70068 46538 or WhatsApp. Farm-direct Mongra, lab-tested, heritage Pampore sourcing.",
+      "Call +91 70068 46538 or WhatsApp. Farm-direct Mongra, GI-tagged, heritage Pampore sourcing. Optional ISO 3632 batch testing for orders over 1 kg.",
     images: [OG_IMAGE],
   },
 };
