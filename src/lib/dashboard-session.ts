@@ -9,15 +9,50 @@ export function getDashboardAuthSecret(): string | null {
   return s && s.length >= 16 ? s : null;
 }
 
-export function signDashboardToken(): string {
+/** Configured admin username; defaults to "admin" if not set. */
+export function getDashboardUsername(): string {
+  return process.env.DASHBOARD_USERNAME?.trim() || "admin";
+}
+
+/** Fixed-length HMAC digest so comparisons are constant-time and leak no length. */
+function hmacDigest(value: string, secret: string): Buffer {
+  return createHmac("sha256", secret).update(value).digest();
+}
+
+/**
+ * Constant-time verification of BOTH username and password. Always computes
+ * both digests and both comparisons so timing does not reveal which field was
+ * wrong. Returns false (not an error) when the dashboard is not configured.
+ */
+export function verifyDashboardCredentials(
+  username: string,
+  password: string,
+): boolean {
+  const secret = getDashboardAuthSecret();
+  const expectedPassword = process.env.DASHBOARD_PASSWORD?.trim() ?? "";
+  if (!secret || !expectedPassword) return false;
+
+  const userOk = timingSafeEqual(
+    hmacDigest(username, secret),
+    hmacDigest(getDashboardUsername(), secret),
+  );
+  const passOk = timingSafeEqual(
+    hmacDigest(password, secret),
+    hmacDigest(expectedPassword, secret),
+  );
+  return userOk && passOk;
+}
+
+export function signDashboardToken(sub?: string): string {
   const secret = getDashboardAuthSecret();
   if (!secret) {
     throw new Error("DASHBOARD_AUTH_SECRET is missing or too short (min 16).");
   }
   const exp = Math.floor(Date.now() / 1000) + MAX_AGE_SEC;
-  const payload = Buffer.from(JSON.stringify({ exp }), "utf8").toString(
-    "base64url",
-  );
+  const payload = Buffer.from(
+    JSON.stringify(sub ? { exp, sub } : { exp }),
+    "utf8",
+  ).toString("base64url");
   const sig = createHmac("sha256", secret).update(payload).digest("base64url");
   return `${payload}.${sig}`;
 }

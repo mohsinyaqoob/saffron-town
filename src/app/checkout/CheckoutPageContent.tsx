@@ -25,6 +25,7 @@ import {
   checkoutFormSchema,
 } from "@/lib/checkout-form-schema";
 import { parseCheckoutQuery, resolveCheckoutLine } from "@/lib/checkout-line";
+import { GIFT_BOX_PRICE_RUPEES, isGiftingSource } from "@/lib/gifting";
 import { PRODUCT_PAGE_URL } from "@/lib/product-data";
 import { cn } from "@/lib/utils";
 
@@ -58,6 +59,13 @@ export function CheckoutPageContent({ footer }: { footer: ReactNode }) {
     ? line.variant.price * line.quantity
     : 0; /* bulk: price is line total, quantity 1 */
 
+  // Gift orders add a fixed gift-box surcharge on top of the saffron. The
+  // server (create-order) re-adds this authoritatively; this only mirrors it
+  // for the on-page total the customer sees.
+  const isGift = isGiftingSource(orderSource);
+  const giftBoxRupees = isGift && line ? GIFT_BOX_PRICE_RUPEES : 0;
+  const orderTotal = cartTotal + giftBoxRupees;
+
   const [redirectingAfterOrder, setRedirectingAfterOrder] = useState(false);
   const [paymentStep, setPaymentStep] = useState<
     "idle" | "creating" | "modal" | "verifying"
@@ -85,10 +93,12 @@ export function CheckoutPageContent({ footer }: { footer: ReactNode }) {
     },
   });
 
-  const formattedTotal = formatInr(cartTotal);
+  const formattedSubtotal = formatInr(cartTotal);
+  const formattedTotal = formatInr(orderTotal);
   const itemCount = line ? line.quantity : 0;
-  const subtotalSummary =
-    line && line.variant.grams != null
+  const subtotalSummary = isGift
+    ? "1 gift"
+    : line && line.variant.grams != null
       ? `1 line · ${line.variant.grams}g saffron`
       : itemCount === 1
         ? "1 item"
@@ -96,11 +106,11 @@ export function CheckoutPageContent({ footer }: { footer: ReactNode }) {
 
   useEffect(() => {
     if (!line) return;
-    const sig = `${cartTotal}|${line.cartItemId}:${line.quantity}`;
+    const sig = `${orderTotal}|${line.cartItemId}:${line.quantity}`;
     if (lastBeginCheckoutSig.current === sig) return;
     lastBeginCheckoutSig.current = sig;
-    trackBeginCheckout([line], cartTotal, "INR");
-  }, [line, cartTotal]);
+    trackBeginCheckout([line], orderTotal, "INR");
+  }, [line, orderTotal]);
 
   async function onSubmit(data: CheckoutFormValues) {
     clearErrors("root");
@@ -173,7 +183,7 @@ export function CheckoutPageContent({ footer }: { footer: ReactNode }) {
 
     const rzp = new window.Razorpay({
       key: keyId ?? "",
-      amount: createPayload.amount ?? cartTotal * 100,
+      amount: createPayload.amount ?? orderTotal * 100,
       currency: createPayload.currency ?? "INR",
       name: "Saffron Town",
       description: "Grade A++ Kashmiri Mongra Kesar",
@@ -739,9 +749,17 @@ export function CheckoutPageContent({ footer }: { footer: ReactNode }) {
                       <div className="flex justify-between text-secondary">
                         <span>Subtotal ({subtotalSummary})</span>
                         <span className="font-semibold text-text-primary">
-                          {formattedTotal}
+                          {formattedSubtotal}
                         </span>
                       </div>
+                      {giftBoxRupees > 0 && (
+                        <div className="flex justify-between text-secondary">
+                          <span>Signature gift box</span>
+                          <span className="font-semibold text-text-primary">
+                            {formatInr(giftBoxRupees)}
+                          </span>
+                        </div>
+                      )}
                       <div className="flex justify-between text-secondary">
                         <span>Shipping</span>
                         <span className="font-semibold text-primary">

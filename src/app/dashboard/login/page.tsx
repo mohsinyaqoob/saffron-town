@@ -1,12 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "@/components/ui/Button";
 
 export default function DashboardLoginPage() {
-  const router = useRouter();
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
@@ -19,16 +18,21 @@ export default function DashboardLoginPage() {
       const res = await fetch("/api/dashboard/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password }),
+        body: JSON.stringify({ username, password }),
       });
       const data = (await res.json().catch(() => ({}))) as { error?: string };
       if (!res.ok) {
         setError(data.error ?? "Could not sign in.");
+        setPending(false);
         return;
       }
-      router.replace("/dashboard");
-      router.refresh();
-    } finally {
+      // Hard navigation guarantees the freshly-set auth cookie is sent with the
+      // request for /dashboard, and bypasses the client router cache. Using
+      // router.replace()+refresh() here raced the cookie/RSC cache and
+      // occasionally bounced back to the login page.
+      window.location.replace("/dashboard");
+    } catch {
+      setError("Could not sign in. Please try again.");
       setPending(false);
     }
   }
@@ -39,9 +43,24 @@ export default function DashboardLoginPage() {
         Dashboard
       </h1>
       <p className="mt-2 text-sm text-secondary font-body">
-        Sign in with the password configured for this environment.
+        Sign in with your dashboard username and password.
       </p>
       <form onSubmit={onSubmit} className="mt-8 space-y-4">
+        <label className="block text-sm font-semibold text-text-primary font-body">
+          Username
+          <input
+            type="text"
+            name="username"
+            autoComplete="username"
+            autoCapitalize="none"
+            autoCorrect="off"
+            spellCheck={false}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            className="mt-1.5 w-full rounded-xl border border-secondary-border/40 bg-background px-3 py-2.5 text-sm text-text-primary outline-none ring-primary/30 focus:ring-2"
+            required
+          />
+        </label>
         <label className="block text-sm font-semibold text-text-primary font-body">
           Password
           <input

@@ -1,5 +1,10 @@
 import { NextResponse } from "next/server";
 import { isValidHearAboutChannel } from "@/data/heard-about-channels";
+import {
+  GIFT_BOX_PRICE_RUPEES,
+  giftBoxLineCreate,
+  isGiftingSource,
+} from "@/lib/gifting";
 import { limitOrderPostInMemory } from "@/lib/order-rate-limit-memory";
 import { signOrderReceiptToken } from "@/lib/order-receipt-token";
 import { getOrderRequestClientIp } from "@/lib/order-request-ip";
@@ -268,6 +273,12 @@ export async function POST(request: Request) {
       unitPriceRupees,
       lineTotalRupees,
     });
+  }
+
+  // Gift orders add the fixed gift-box surcharge (authoritative, server-side).
+  if (isGiftingSource(source)) {
+    lineCreates.push(giftBoxLineCreate());
+    subtotalRupees += GIFT_BOX_PRICE_RUPEES;
   }
 
   try {

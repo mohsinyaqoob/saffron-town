@@ -2,42 +2,34 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { checkoutHref } from "@/lib/checkout-line";
+import {
+  GIFT_BOX_PRICE_RUPEES,
+  GIFT_PRODUCT_ID,
+  GIFTING_SOURCE,
+  type GiftOption,
+} from "@/lib/gifting";
 
-const GIFT_SIZES = [
-  {
-    id: "mongra-20g",
-    grams: "20g",
-    occasion: "Family Gift",
-    tagline: "Close friends & family",
-    price: 11299,
-    mrp: 13799,
-    popular: false,
-  },
-  {
-    id: "mongra-30g",
-    grams: "30g",
-    occasion: "Wedding Gift",
-    tagline: "Weddings, Diwali & baby showers",
-    price: 16999,
-    mrp: 20499,
-    popular: true,
-  },
-  {
-    id: "mongra-50g",
-    grams: "50g",
-    occasion: "Grand Gift",
-    tagline: "VIPs, corporates & grand occasions",
-    price: 26499,
-    mrp: 32499,
-    popular: false,
-  },
-] as const;
+function inr(value: number) {
+  return `₹${value.toLocaleString("en-IN")}`;
+}
 
-export function GiftingPickerSection() {
-  const [selected, setSelected] = useState<string>("mongra-30g");
-  const variant = GIFT_SIZES.find((s) => s.id === selected)!;
+export function GiftingPickerSection({ options }: { options: GiftOption[] }) {
+  const defaultId =
+    options.find((o) => o.popular)?.variantId ?? options[0]?.variantId ?? "";
+  const [selected, setSelected] = useState<string>(defaultId);
+
+  if (options.length === 0) return null;
+
+  const variant = options.find((o) => o.variantId === selected) ?? options[0];
   const savings = variant.mrp - variant.price;
-  const checkoutUrl = `/checkout?pid=mongra-saffron&vid=${selected}&qty=1`;
+  const checkoutUrl = checkoutHref(
+    GIFT_PRODUCT_ID,
+    variant.variantId,
+    1,
+    undefined,
+    GIFTING_SOURCE,
+  );
 
   return (
     <section id="gift-picker" className="bg-background py-16 lg:py-20">
@@ -50,18 +42,21 @@ export function GiftingPickerSection() {
             Select a Gift Size
           </h2>
           <p className="mt-3 text-sm leading-relaxed text-secondary font-body">
-            Each gift comes in our signature airtight glass jar, ready to give.
+            Every gift includes our hand-crafted wooden gift box
+            {" ("}
+            {inr(GIFT_BOX_PRICE_RUPEES)}
+            {"), ready to give."}
           </p>
         </div>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-          {GIFT_SIZES.map((size) => (
+          {options.map((size) => (
             <button
-              key={size.id}
+              key={size.variantId}
               type="button"
-              onClick={() => setSelected(size.id)}
+              onClick={() => setSelected(size.variantId)}
               className={`relative rounded-2xl border-2 p-6 text-left transition-all duration-200 ${
-                selected === size.id
+                selected === size.variantId
                   ? "border-primary bg-primary/5 shadow-md shadow-primary/10"
                   : "border-secondary-border/20 bg-background hover:border-primary/30"
               }`}
@@ -83,12 +78,12 @@ export function GiftingPickerSection() {
                 </div>
                 <div
                   className={`mt-1 h-5 w-5 flex-shrink-0 rounded-full border-2 transition-colors ${
-                    selected === size.id
+                    selected === size.variantId
                       ? "border-primary bg-primary"
                       : "border-secondary-border/40"
                   }`}
                 >
-                  {selected === size.id && (
+                  {selected === size.variantId && (
                     <svg
                       className="h-full w-full p-0.5 text-white"
                       fill="none"
@@ -113,12 +108,15 @@ export function GiftingPickerSection() {
 
               <div className="mt-4 flex items-baseline gap-2">
                 <span className="font-display text-xl font-bold text-text-primary">
-                  ₹{size.price.toLocaleString("en-IN")}
+                  {inr(size.price)}
                 </span>
                 <span className="text-xs text-secondary line-through font-body">
-                  ₹{size.mrp.toLocaleString("en-IN")}
+                  {inr(size.mrp)}
                 </span>
               </div>
+              <p className="mt-1 text-[11px] text-text-muted font-body">
+                {inr(size.saffronPrice)} saffron + {inr(size.boxPrice)} gift box
+              </p>
             </button>
           ))}
         </div>
@@ -126,18 +124,18 @@ export function GiftingPickerSection() {
         <div className="mt-10 flex flex-col items-center gap-3">
           <p className="text-sm text-secondary font-body">
             <span className="font-semibold text-text-primary">
-              {variant.grams} Kashmiri Mongra Saffron
+              {variant.grams} Kashmiri Mongra Saffron + gift box
             </span>
             {" · "}
             <span className="font-semibold text-primary">
-              Save ₹{savings.toLocaleString("en-IN")}
+              Save {inr(savings)}
             </span>
           </p>
           <Link
             href={checkoutUrl}
             className="inline-flex items-center gap-3 rounded-2xl bg-primary px-10 py-4 text-base font-bold text-white shadow-xl shadow-primary/25 transition-all hover:bg-primary-hover hover:shadow-primary/35 active:scale-[0.98]"
           >
-            Gift This Now — ₹{variant.price.toLocaleString("en-IN")}
+            Gift This Now — {inr(variant.price)}
             <svg
               className="h-5 w-5"
               fill="none"

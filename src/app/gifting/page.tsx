@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { IMAGE_QUALITY_PHOTO, SITE_CONFIG } from "@/lib/constants";
+import { getGiftOptions } from "@/lib/gifting";
 import { GiftingPickerSection } from "./GiftingPickerSection";
 import { GiftingStorySection } from "./GiftingStorySection";
 
@@ -63,7 +64,7 @@ export default function GiftingPage() {
         <GiftingStorySection />
 
         {/* Interactive gift size picker */}
-        <GiftingPickerSection />
+        <GiftingPickerSection options={getGiftOptions()} />
 
         {/* Why saffron as a gift */}
         <section className="bg-background-alt py-16 lg:py-20">
