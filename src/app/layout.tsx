@@ -3,6 +3,7 @@ import { Figtree, Playfair_Display } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import { Gtag } from "@/components/analytics/Gtag";
+import { MetaPixel } from "@/components/analytics/MetaPixel";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { SITE_CONFIG } from "@/lib/constants";
 
@@ -108,6 +109,7 @@ export default function RootLayout({
         <link rel="prefetch" href="/llms.txt" />
       </head>
       <body className="min-h-screen overflow-x-hidden font-body antialiased">
+        <MetaPixel />
         {children}
         <Script id="zoho-salesiq-init" strategy="afterInteractive">
           {`window.$zoho=window.$zoho || {};$zoho.salesiq=$zoho.salesiq||{ready:function(){}}`}
