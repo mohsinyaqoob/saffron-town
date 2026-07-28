@@ -1,6 +1,10 @@
-import type { DeliveryPartnerAdapter, PincodeCheckResult } from "@/lib/delivery/types";
+import type {
+  DeliveryPartnerAdapter,
+  PincodeCheckResult,
+} from "@/lib/delivery/types";
 
-const ENDPOINT = "https://api.shreemaruti.com/api/v1/lov/network-search-detail/";
+const ENDPOINT =
+  "https://api.shreemaruti.com/api/v1/lov/network-search-detail/";
 const TIMEOUT_MS = 8000;
 
 type NetworkSearchResponse = {

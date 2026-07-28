@@ -96,7 +96,10 @@ async function main() {
       if (!Array.isArray(block.children)) return block;
       const labKeys = new Set(
         (block.markDefs || [])
-          .filter((m) => m._type === "link" && (m.href || "").includes("/lab-reports"))
+          .filter(
+            (m) =>
+              m._type === "link" && (m.href || "").includes("/lab-reports"),
+          )
           .map((m) => m._key),
       );
       const children = block.children.map((span) => {

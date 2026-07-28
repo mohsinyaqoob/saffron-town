@@ -19,7 +19,6 @@ import { CheckoutOrderRedirectLayout } from "@/components/shop/ShopPageLoaders";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { trackBeginCheckout } from "@/lib/analytics";
-import { loadRazorpay } from "@/lib/razorpay-loader";
 import {
   type CheckoutFormValues,
   checkoutFormSchema,
@@ -27,6 +26,7 @@ import {
 import { parseCheckoutQuery, resolveCheckoutLine } from "@/lib/checkout-line";
 import { GIFT_BOX_PRICE_RUPEES, isGiftingSource } from "@/lib/gifting";
 import { PRODUCT_PAGE_URL } from "@/lib/product-data";
+import { loadRazorpay } from "@/lib/razorpay-loader";
 import { cn } from "@/lib/utils";
 
 function formatInr(amount: number, currency = "INR") {
@@ -159,7 +159,8 @@ export function CheckoutPageContent({ footer }: { footer: ReactNode }) {
       setPaymentStep("idle");
       setError("root", {
         message:
-          createPayload.error ?? "Could not initiate payment. Please try again.",
+          createPayload.error ??
+          "Could not initiate payment. Please try again.",
       });
       return;
     }
@@ -203,7 +204,10 @@ export function CheckoutPageContent({ footer }: { footer: ReactNode }) {
             fetch("/api/razorpay/mark-failed", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ orderId: pendingOrderId, razorpayOrderId: createPayload.razorpayOrderId }),
+              body: JSON.stringify({
+                orderId: pendingOrderId,
+                razorpayOrderId: createPayload.razorpayOrderId,
+              }),
             }).catch(() => {});
           }
         },
@@ -268,7 +272,10 @@ export function CheckoutPageContent({ footer }: { footer: ReactNode }) {
         fetch("/api/razorpay/mark-failed", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ orderId: pendingOrderId, razorpayOrderId: createPayload.razorpayOrderId }),
+          body: JSON.stringify({
+            orderId: pendingOrderId,
+            razorpayOrderId: createPayload.razorpayOrderId,
+          }),
         }).catch(() => {});
       }
     });
@@ -364,7 +371,8 @@ export function CheckoutPageContent({ footer }: { footer: ReactNode }) {
                   Checkout
                 </h1>
                 <p className="mt-2 max-w-2xl text-sm leading-relaxed text-secondary font-body sm:text-base">
-                  Fill in your delivery details and pay securely online. Your order is confirmed instantly after payment.
+                  Fill in your delivery details and pay securely online. Your
+                  order is confirmed instantly after payment.
                 </p>
               </div>
 
@@ -741,7 +749,9 @@ export function CheckoutPageContent({ footer }: { footer: ReactNode }) {
                       </div>
                     </div>
                     <p className="rounded-lg bg-amber-50 px-3 py-2 text-[11px] leading-relaxed text-amber-800 font-body border border-amber-100">
-                      We are currently accepting <strong>prepaid orders only</strong>. COD is not available at this time.
+                      We are currently accepting{" "}
+                      <strong>prepaid orders only</strong>. COD is not available
+                      at this time.
                     </p>
 
                     {/* Order summary */}
@@ -802,22 +812,40 @@ export function CheckoutPageContent({ footer }: { footer: ReactNode }) {
                     >
                       {paymentStep === "creating" ? (
                         <>
-                          <span className="h-4 w-4 shrink-0 animate-spin rounded-full border-2 border-white/35 border-t-white" aria-hidden />
+                          <span
+                            className="h-4 w-4 shrink-0 animate-spin rounded-full border-2 border-white/35 border-t-white"
+                            aria-hidden
+                          />
                           <span>Preparing payment…</span>
                         </>
                       ) : paymentStep === "modal" ? (
                         <>
-                          <span className="h-4 w-4 shrink-0 animate-spin rounded-full border-2 border-white/35 border-t-white" aria-hidden />
+                          <span
+                            className="h-4 w-4 shrink-0 animate-spin rounded-full border-2 border-white/35 border-t-white"
+                            aria-hidden
+                          />
                           <span>Payment window open…</span>
                         </>
                       ) : paymentStep === "verifying" ? (
                         <>
-                          <span className="h-4 w-4 shrink-0 animate-spin rounded-full border-2 border-white/35 border-t-white" aria-hidden />
+                          <span
+                            className="h-4 w-4 shrink-0 animate-spin rounded-full border-2 border-white/35 border-t-white"
+                            aria-hidden
+                          />
                           <span>Confirming payment…</span>
                         </>
                       ) : (
                         <>
-                          <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                          <svg
+                            className="h-4 w-4 shrink-0"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth={2.5}
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            aria-hidden
+                          >
                             <rect width="20" height="14" x="2" y="5" rx="2" />
                             <path d="M2 10h20" />
                           </svg>
@@ -834,7 +862,16 @@ export function CheckoutPageContent({ footer }: { footer: ReactNode }) {
                     </Link>
 
                     <p className="flex items-center justify-center gap-1.5 text-center text-[11px] leading-relaxed text-text-muted font-body">
-                      <svg className="h-3 w-3 shrink-0 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                      <svg
+                        className="h-3 w-3 shrink-0 text-primary"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth={2}
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        aria-hidden
+                      >
                         <rect width="11" height="11" x="3" y="11" rx="2" />
                         <path d="M7 11V7a5 5 0 0 1 10 0v4" />
                       </svg>

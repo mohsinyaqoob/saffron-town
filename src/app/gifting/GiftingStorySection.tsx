@@ -103,7 +103,6 @@ export function GiftingStorySection() {
       {/* ── Caption panel — full width, two-col on desktop ── */}
       <div className="px-5 py-8 sm:px-10 sm:py-10 lg:px-20 lg:py-12">
         <div className="mx-auto flex max-w-6xl flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-
           {/* Text block */}
           <div>
             <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary/70">
@@ -167,7 +166,6 @@ export function GiftingStorySection() {
               20g · 30g · 50g · Free delivery · Money-back guarantee
             </p>
           </div>
-
         </div>
       </div>
 

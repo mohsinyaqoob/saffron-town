@@ -22,7 +22,14 @@ export const metadata: Metadata = {
       "Premium Kashmiri Mongra kesar gift — Grade A++, farm-direct from Pampore. Perfect for weddings, Diwali, baby showers and birthdays.",
     url: `${SITE_CONFIG.url}/gifting`,
     type: "website",
-    images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: "Kashmiri saffron gifting from Saffron Town" }],
+    images: [
+      {
+        url: OG_IMAGE,
+        width: 1200,
+        height: 630,
+        alt: "Kashmiri saffron gifting from Saffron Town",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
@@ -60,7 +67,6 @@ export default function GiftingPage() {
     <div className="flex min-h-screen flex-col bg-background">
       <Header />
       <main className="flex-grow">
-
         {/* Story hero — 3-slide narrative: packing → delivery → unboxing */}
         <GiftingStorySection />
 
@@ -92,7 +98,9 @@ export default function GiftingPage() {
                 <div className="mt-6 flex flex-col gap-6">
                   {WHY_SAFFRON.map((item) => (
                     <div key={item.title} className="flex gap-4">
-                      <span className="mt-0.5 flex-shrink-0 text-lg text-primary">✦</span>
+                      <span className="mt-0.5 flex-shrink-0 text-lg text-primary">
+                        ✦
+                      </span>
                       <div>
                         <h3 className="font-display text-base font-bold text-text-primary">
                           {item.title}
@@ -119,7 +127,11 @@ export default function GiftingPage() {
               {OCCASIONS.map((occasion) => {
                 const inner = (
                   <>
-                    <span className="text-3xl" role="img" aria-label={occasion.label}>
+                    <span
+                      className="text-3xl"
+                      role="img"
+                      aria-label={occasion.label}
+                    >
                       {occasion.emoji}
                     </span>
                     <span className="font-display text-base font-semibold text-text-primary">
@@ -159,7 +171,8 @@ export default function GiftingPage() {
               Ready to Gift Pure Kashmir?
             </h2>
             <p className="mt-4 font-body text-sm leading-relaxed text-dark-text-muted sm:text-base">
-              Select your preferred size above and check out in minutes. We pack every gift order with care — sealed to impress.
+              Select your preferred size above and check out in minutes. We pack
+              every gift order with care — sealed to impress.
             </p>
             <Link
               href="#gift-picker"
@@ -169,7 +182,6 @@ export default function GiftingPage() {
             </Link>
           </div>
         </section>
-
       </main>
       <Footer />
     </div>

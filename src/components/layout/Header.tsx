@@ -5,9 +5,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
+  NAV_MENU,
   type NavEntry,
   type NavLeaf,
-  NAV_MENU,
   SITE_CONFIG,
 } from "@/lib/constants";
 import { cn } from "@/lib/utils";
@@ -91,7 +91,7 @@ export function Header() {
   // Close drawer on route change
   useEffect(() => {
     setDrawerOpen(false);
-  }, [pathname]);
+  }, []);
 
   const transparentMode = isHome && isAtTop && !drawerOpen;
 
@@ -183,9 +183,7 @@ export function Header() {
                 >
                   <button
                     type="button"
-                    onClick={() =>
-                      setOpenMenu(open ? null : entry.label)
-                    }
+                    onClick={() => setOpenMenu(open ? null : entry.label)}
                     className={cn(
                       "inline-flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-body transition-colors",
                       transparentMode

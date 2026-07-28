@@ -56,19 +56,18 @@ export function Hero() {
         data-home-hero
       >
         {/* Eyebrow — origin signal */}
-        <p
-          className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/8 px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-white/85 backdrop-blur-sm"
-          aria-label="Pampore's Finest Kashmiri Mongra Saffron"
-        >
-          <span className="h-1.5 w-1.5 rounded-full bg-[#f0c070] animate-pulse" aria-hidden="true" />
+        <p className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/8 px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-white/85 backdrop-blur-sm">
+          <span
+            className="h-1.5 w-1.5 rounded-full bg-[#f0c070] animate-pulse"
+            aria-hidden="true"
+          />
           Pampore&apos;s Finest Kashmiri Mongra
         </p>
 
         {/* H1 */}
         <h1 className="mt-5 font-display text-[1.85rem] font-bold leading-[1.12] tracking-tight text-white sm:text-5xl lg:text-[3.5rem]">
-          The{" "}
-          <em className="not-italic text-[#f0c070]">Gold Standard</em>
-          {" "}of Saffron.
+          The <em className="not-italic text-[#f0c070]">Gold Standard</em> of
+          Saffron.
         </h1>
 
         {/* Body */}
@@ -77,8 +76,8 @@ export function Hero() {
           for exceptional color, aroma, and strength.{" "}
           <strong className="font-semibold text-white">
             Farm-direct from Pampore and GI-tagged
-          </strong>
-          {" "}— ensuring every strand delivers the purity and potency authentic
+          </strong>{" "}
+          — ensuring every strand delivers the purity and potency authentic
           Kashmiri saffron is known for.
         </p>
 
@@ -119,15 +118,13 @@ export function Hero() {
         </div>
 
         <p className="mt-4 text-[11px] text-white/45 font-body">
-          Free delivery above ₹499 · Money-back guarantee · Dispatched from Kashmir
+          Free delivery above ₹499 · Money-back guarantee · Dispatched from
+          Kashmir
         </p>
       </div>
 
       {/* ── Bottom stats strip ── */}
-      <div
-        className="relative z-10 border-t border-white/10 bg-black/55 backdrop-blur-md"
-        aria-label="Quality certifications at a glance"
-      >
+      <div className="relative z-10 border-t border-white/10 bg-black/55 backdrop-blur-md">
         <div className="mx-auto grid max-w-7xl grid-cols-4 divide-x divide-white/10">
           {STATS.map((stat) => (
             <div

@@ -32,10 +32,14 @@ function statusBadgeVariant(
 
 function statusLabel(status: string) {
   switch (status) {
-    case "PENDING": return "Pending";
-    case "PAID": return "Paid";
-    case "FAILED": return "Failed";
-    default: return status;
+    case "PENDING":
+      return "Pending";
+    case "PAID":
+      return "Paid";
+    case "FAILED":
+      return "Failed";
+    default:
+      return status;
   }
 }
 
@@ -48,17 +52,23 @@ function lineItemsSummary(items: OrderItem[]) {
 
 function serviceabilityLabel(status: PartnerServiceability["status"]) {
   switch (status) {
-    case "SERVICEABLE": return "YES";
-    case "NOT_SERVICEABLE": return "NO";
-    default: return "Checking…";
+    case "SERVICEABLE":
+      return "YES";
+    case "NOT_SERVICEABLE":
+      return "NO";
+    default:
+      return "Checking…";
   }
 }
 
 function serviceabilityDotClass(status: PartnerServiceability["status"]) {
   switch (status) {
-    case "SERVICEABLE": return "bg-emerald-500";
-    case "NOT_SERVICEABLE": return "bg-red-500";
-    default: return "bg-text-muted/50";
+    case "SERVICEABLE":
+      return "bg-emerald-500";
+    case "NOT_SERVICEABLE":
+      return "bg-red-500";
+    default:
+      return "bg-text-muted/50";
   }
 }
 
@@ -70,7 +80,10 @@ function DeliveryPartners({ partners }: { partners: PartnerServiceability[] }) {
       </h2>
       <ul className="mt-3 space-y-2 text-sm font-body">
         {partners.map((p) => (
-          <li key={p.partnerCode} className="flex items-center justify-between gap-3">
+          <li
+            key={p.partnerCode}
+            className="flex items-center justify-between gap-3"
+          >
             <span className="text-text-primary">{p.displayName}</span>
             <span className="flex items-center gap-1.5">
               <span
@@ -101,7 +114,10 @@ type Props = {
   serviceabilityByPincode?: Map<string, PartnerServiceability[]>;
 };
 
-export function DashboardOrderAccordion({ orders, serviceabilityByPincode }: Props) {
+export function DashboardOrderAccordion({
+  orders,
+  serviceabilityByPincode,
+}: Props) {
   return (
     <div className="space-y-3">
       {orders.map((order) => {
@@ -231,7 +247,9 @@ export function DashboardOrderAccordion({ orders, serviceabilityByPincode }: Pro
                 >
                   <span>
                     {line.productName}{" "}
-                    <span className="text-text-muted">({line.variantLabel})</span>{" "}
+                    <span className="text-text-muted">
+                      ({line.variantLabel})
+                    </span>{" "}
                     × {line.quantity}
                   </span>
                   <span className="font-semibold text-text-primary">

@@ -632,8 +632,7 @@ export const GIFT_OCCASIONS: GiftOccasion[] = [
       },
       {
         question: "Which size should I gift for a housewarming?",
-        answer:
-          "A 20g or 30g box is a warm, generous housewarming gift.",
+        answer: "A 20g or 30g box is a warm, generous housewarming gift.",
       },
       {
         question: "Can it be delivered in time?",

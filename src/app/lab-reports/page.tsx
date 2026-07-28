@@ -30,7 +30,8 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: PAGE_URL },
   openGraph: {
-    title: "Saffron Quality & Testing — GI Tag, Grade & ISO 3632 | Saffron Town",
+    title:
+      "Saffron Quality & Testing — GI Tag, Grade & ISO 3632 | Saffron Town",
     description:
       "GI-tagged Pampore origin and Mongra grade. Independent ISO 3632 batch testing available on request for bulk orders over 1 kg. What a lab test of Kashmir Mongra typically shows.",
     url: PAGE_URL,
@@ -46,7 +47,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Saffron Quality & Testing — GI Tag, Grade & ISO 3632 | Saffron Town",
+    title:
+      "Saffron Quality & Testing — GI Tag, Grade & ISO 3632 | Saffron Town",
     description:
       "GI-tagged Pampore origin, Mongra grade, and independent ISO 3632 batch testing on request for bulk orders over 1 kg.",
     images: [OG_IMAGE],
@@ -527,14 +529,14 @@ export default function LabReportsPage() {
             </h2>
             <p className="text-lg text-secondary font-body mb-4 max-w-3xl">
               For context, a representative Kashmir Mongra profile is shown
-              alongside peer-reviewed data. A 2021 study in <em>Foods</em> (MDPI)
-              analysed saffron from several Italian growing regions using
+              alongside peer-reviewed data. A 2021 study in <em>Foods</em>{" "}
+              (MDPI) analysed saffron from several Italian growing regions using
               HPLC-DAD.
             </p>
             <p className="text-sm text-text-muted font-body mb-12 max-w-3xl">
               The Kashmir Mongra row is a representative, indicative figure, not
-              a certified result for any product we sell. Source: Predieri, S. et
-              al. &ldquo;Chemical Composition and Sensory Evaluation of
+              a certified result for any product we sell. Source: Predieri, S.
+              et al. &ldquo;Chemical Composition and Sensory Evaluation of
               Saffron.&rdquo; <em>Foods</em> 10(11):2604, 2021. Open-access (CC
               BY 4.0).{" "}
               <a
@@ -756,10 +758,11 @@ export default function LabReportsPage() {
                 figures on this page are representative, indicative values for
                 Kashmir Mongra saffron in general. They are based on occasional
                 independent testing and published literature. They are{" "}
-                <strong>not</strong> test results for any specific pack, and they
-                are <strong>not</strong> a guarantee of the values in any order.
-                Retail saffron is sold on the basis of its GI-tagged origin and
-                Mongra grade, not an individual per-pack laboratory certificate.
+                <strong>not</strong> test results for any specific pack, and
+                they are <strong>not</strong> a guarantee of the values in any
+                order. Retail saffron is sold on the basis of its GI-tagged
+                origin and Mongra grade, not an individual per-pack laboratory
+                certificate.
               </p>
               <p className="text-xs text-text-muted font-body leading-relaxed mb-3">
                 Independent, batch-specific ISO 3632 testing is available only

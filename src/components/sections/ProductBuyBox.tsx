@@ -353,7 +353,6 @@ export function ProductBuyBox({ product }: ProductBuyBoxProps) {
         <p className="text-xs text-text-muted text-center font-body">
           Secure transaction. Ships from Saffron Town.
         </p>
-
       </div>
     </div>
   );

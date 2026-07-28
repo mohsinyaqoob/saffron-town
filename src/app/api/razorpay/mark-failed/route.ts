@@ -22,8 +22,11 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: false }, { status: 503 });
 
   let body: unknown;
-  try { body = await request.json(); }
-  catch { return NextResponse.json({ ok: false }, { status: 400 }); }
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ ok: false }, { status: 400 });
+  }
 
   const b = body as Record<string, unknown>;
   const orderId = String(b.orderId ?? "").trim();

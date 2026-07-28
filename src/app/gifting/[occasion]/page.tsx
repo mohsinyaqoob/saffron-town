@@ -6,10 +6,7 @@ import { JsonLd } from "@/components/JsonLd";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { IMAGE_QUALITY_PHOTO, SITE_CONFIG } from "@/lib/constants";
-import {
-  getGiftOccasion,
-  GIFT_OCCASION_SLUGS,
-} from "@/lib/gift-occasions";
+import { GIFT_OCCASION_SLUGS, getGiftOccasion } from "@/lib/gift-occasions";
 import { getGiftOptions } from "@/lib/gifting";
 import { GiftingPickerSection } from "../GiftingPickerSection";
 

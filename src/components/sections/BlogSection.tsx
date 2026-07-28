@@ -7,7 +7,10 @@ export async function BlogSection() {
   const posts = (await getAllPosts()).slice(0, 3);
 
   return (
-    <section className="bg-background py-14 lg:py-18" aria-labelledby="blog-heading">
+    <section
+      className="bg-background py-14 lg:py-18"
+      aria-labelledby="blog-heading"
+    >
       <div className="mx-auto max-w-7xl px-6 lg:px-20">
         <div className="mb-10 flex flex-col gap-1 md:flex-row md:items-end md:justify-between">
           <div>

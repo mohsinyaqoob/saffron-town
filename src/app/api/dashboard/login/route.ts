@@ -31,7 +31,10 @@ export async function POST(request: Request) {
   if (!limited.ok) {
     return NextResponse.json(
       { error: "Too many attempts. Please wait and try again." },
-      { status: 429, headers: { "Retry-After": String(limited.retryAfterSec) } },
+      {
+        status: 429,
+        headers: { "Retry-After": String(limited.retryAfterSec) },
+      },
     );
   }
 

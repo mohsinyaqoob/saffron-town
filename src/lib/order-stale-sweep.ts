@@ -28,7 +28,9 @@ export async function failStalePendingOrders(): Promise<number> {
       data: { status: "FAILED" },
     });
     if (result.count > 0) {
-      console.log(`[orders] Marked ${result.count} stale pending order(s) as FAILED`);
+      console.log(
+        `[orders] Marked ${result.count} stale pending order(s) as FAILED`,
+      );
     }
     return result.count;
   } catch (e) {

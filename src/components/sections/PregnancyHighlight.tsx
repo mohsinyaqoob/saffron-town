@@ -19,7 +19,9 @@ export async function PregnancyHighlight() {
   const pregnancy = journal.pregnancy;
 
   const guideHref = pregnancy?.href ?? "/blog";
-  const guideLabel = pregnancy ? "Read the pregnancy guide" : "Browse the journal";
+  const guideLabel = pregnancy
+    ? "Read the pregnancy guide"
+    : "Browse the journal";
 
   return (
     <section className="bg-background-alt py-16 lg:py-20">
@@ -43,11 +45,22 @@ export async function PregnancyHighlight() {
               {BENEFITS.map((benefit) => (
                 <li key={benefit} className="flex items-start gap-3">
                   <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/15">
-                    <svg className="h-3 w-3 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                    <svg
+                      className="h-3 w-3 text-primary"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={3}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      aria-hidden
+                    >
                       <path d="M20 6L9 17l-5-5" />
                     </svg>
                   </span>
-                  <span className="text-sm text-secondary font-body leading-snug">{benefit}</span>
+                  <span className="text-sm text-secondary font-body leading-snug">
+                    {benefit}
+                  </span>
                 </li>
               ))}
             </ul>

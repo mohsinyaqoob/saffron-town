@@ -14,7 +14,10 @@ export async function DELETE(_request: Request, { params }: Params) {
   const { id } = await params;
 
   const prisma = getPrisma();
-  const order = await prisma.order.findUnique({ where: { id }, select: { id: true } });
+  const order = await prisma.order.findUnique({
+    where: { id },
+    select: { id: true },
+  });
   if (!order) {
     return NextResponse.json({ error: "Order not found." }, { status: 404 });
   }

@@ -25,7 +25,9 @@ export default async function PrebookOrdersPage() {
   if (!process.env.DATABASE_URL?.trim()) {
     return (
       <div className="space-y-4">
-        <h1 className="font-display text-2xl font-bold text-text-primary">Prebook Orders</h1>
+        <h1 className="font-display text-2xl font-bold text-text-primary">
+          Prebook Orders
+        </h1>
         <p className="text-sm text-secondary font-body">
           Set{" "}
           <code className="rounded bg-surface-muted px-1.5 py-0.5 text-text-primary">
@@ -43,14 +45,19 @@ export default async function PrebookOrdersPage() {
   try {
     // Backstop: fail PENDING orders whose payment session is long dead
     await failStalePendingOrders();
-    [orders, total] = await Promise.all([fetchPrebookOrders(), fetchPrebookCount()]);
+    [orders, total] = await Promise.all([
+      fetchPrebookOrders(),
+      fetchPrebookCount(),
+    ]);
     serviceability = await getServiceabilityForPincodes(
       orders.map((o) => o.pincode),
     );
   } catch {
     return (
       <div className="space-y-4">
-        <h1 className="font-display text-2xl font-bold text-text-primary">Prebook Orders</h1>
+        <h1 className="font-display text-2xl font-bold text-text-primary">
+          Prebook Orders
+        </h1>
         <p className="text-sm text-secondary font-body">
           Could not read from the database. Confirm{" "}
           <code className="rounded bg-surface-muted px-1.5 py-0.5 text-text-primary">
@@ -66,16 +73,21 @@ export default async function PrebookOrdersPage() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h1 className="font-display text-2xl font-bold text-text-primary">Prebook Orders</h1>
+          <h1 className="font-display text-2xl font-bold text-text-primary">
+            Prebook Orders
+          </h1>
           <p className="mt-1 text-sm text-secondary font-body">
-            {total} prebook order{total !== 1 ? "s" : ""} — customers who checked out from the prebook harvest page
+            {total} prebook order{total !== 1 ? "s" : ""} — customers who
+            checked out from the prebook harvest page
           </p>
         </div>
       </div>
 
       {orders.length === 0 ? (
         <div className="rounded-xl border border-secondary-border/20 bg-background-alt p-8 text-center">
-          <p className="font-display text-lg font-semibold text-text-primary">No prebook orders yet</p>
+          <p className="font-display text-lg font-semibold text-text-primary">
+            No prebook orders yet
+          </p>
           <p className="mt-2 text-sm text-secondary font-body">
             Orders placed from the{" "}
             <Link

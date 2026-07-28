@@ -33,18 +33,35 @@ export const metadata: Metadata = {
       "Direct from Kashmiri farming families. No middlemen, no old stock. Learn how Saffron Town works.",
     url: PAGE_URL,
     type: "website",
-    images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: "Saffron Town — Kashmiri Mongra saffron from Pampore" }],
+    images: [
+      {
+        url: OG_IMAGE,
+        width: 1200,
+        height: 630,
+        alt: "Saffron Town — Kashmiri Mongra saffron from Pampore",
+      },
+    ],
   },
-  robots: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large" },
+  robots: {
+    index: true,
+    follow: true,
+    "max-snippet": -1,
+    "max-image-preview": "large",
+  },
 };
 
 const webPageSchema = {
   "@context": "https://schema.org",
   "@type": "WebPage",
   name: "Our Story | Saffron Town",
-  description: "How Saffron Town sources directly from Kashmiri saffron farming families in Pampore.",
+  description:
+    "How Saffron Town sources directly from Kashmiri saffron farming families in Pampore.",
   url: PAGE_URL,
-  publisher: { "@type": "Organization", name: SITE_CONFIG.name, url: SITE_CONFIG.url },
+  publisher: {
+    "@type": "Organization",
+    name: SITE_CONFIG.name,
+    url: SITE_CONFIG.url,
+  },
 };
 
 const QUALITY_CHECKS = [
@@ -136,7 +153,6 @@ export default function OurStoryPage() {
       <JsonLd schema={webPageSchema} />
       <Header />
       <main className="flex-grow" id="main-content">
-
         <PageHeader
           crumbs={[
             { label: "Home", href: "/" },
@@ -156,18 +172,27 @@ export default function OurStoryPage() {
               { value: "Current season", sub: "Never old stock" },
               { value: "GI-tagged", sub: "Pampore, Kashmir" },
             ].map((s) => (
-              <div key={s.value} className="flex flex-col items-center gap-1 px-4 py-6 text-center">
-                <span className="font-display text-base font-bold text-text-primary sm:text-lg">{s.value}</span>
-                <span className="text-[11px] uppercase tracking-wider text-text-muted">{s.sub}</span>
+              <div
+                key={s.value}
+                className="flex flex-col items-center gap-1 px-4 py-6 text-center"
+              >
+                <span className="font-display text-base font-bold text-text-primary sm:text-lg">
+                  {s.value}
+                </span>
+                <span className="text-[11px] uppercase tracking-wider text-text-muted">
+                  {s.sub}
+                </span>
               </div>
             ))}
           </div>
         </div>
 
         <article aria-label="Our Story — Saffron Town">
-
           {/* ── THE PLACE ── */}
-          <section className="py-14 sm:py-20 lg:py-24" aria-labelledby="section-pampore">
+          <section
+            className="py-14 sm:py-20 lg:py-24"
+            aria-labelledby="section-pampore"
+          >
             <div className="mx-auto max-w-4xl px-6 lg:px-20">
               <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-primary mb-3">
                 Where it starts
@@ -180,12 +205,12 @@ export default function OurStoryPage() {
               </h2>
               <div className="mt-6 space-y-5 text-secondary font-body">
                 <p className="text-base sm:text-lg leading-relaxed">
-                  Pampore, in the foothills of the Himalayas, is India&apos;s only
-                  GI-tagged saffron-growing region. Every October, the fields wake
-                  up to a carpet of purple crocus blossoms. Generations of Kashmiri
-                  families have cultivated these flowers thread by thread, stigma by
-                  stigma. Locals don&apos;t just call it Kashmir — they call this
-                  place the saffron town.
+                  Pampore, in the foothills of the Himalayas, is India&apos;s
+                  only GI-tagged saffron-growing region. Every October, the
+                  fields wake up to a carpet of purple crocus blossoms.
+                  Generations of Kashmiri families have cultivated these flowers
+                  thread by thread, stigma by stigma. Locals don&apos;t just
+                  call it Kashmir — they call this place the saffron town.
                 </p>
                 <p className="text-base sm:text-lg leading-relaxed">
                   That name stayed with us. When we chose Saffron.Town, we were
@@ -201,10 +226,12 @@ export default function OurStoryPage() {
           </div>
 
           {/* ── SOURCING ── */}
-          <section className="py-14 sm:py-20 lg:py-24" aria-labelledby="section-sourcing">
+          <section
+            className="py-14 sm:py-20 lg:py-24"
+            aria-labelledby="section-sourcing"
+          >
             <div className="mx-auto max-w-7xl px-6 lg:px-20">
               <div className="grid gap-14 lg:grid-cols-2 lg:items-center">
-
                 {/* Image */}
                 <figure className="rounded-2xl overflow-hidden shadow-xl">
                   <div className="relative aspect-[4/3]">
@@ -217,7 +244,8 @@ export default function OurStoryPage() {
                     />
                   </div>
                   <figcaption className="bg-surface-muted px-5 py-3 text-sm text-text-muted font-body text-center">
-                    Our grower partners in Pampore — harvesting at dawn during the October bloom.
+                    Our grower partners in Pampore — harvesting at dawn during
+                    the October bloom.
                   </figcaption>
                 </figure>
 
@@ -234,23 +262,23 @@ export default function OurStoryPage() {
                   </h2>
                   <div className="space-y-4 text-secondary font-body">
                     <p className="text-base leading-relaxed">
-                      We work exclusively with generational saffron-growing families in
-                      Pampore. These are not commercial suppliers — they are families
-                      who have cultivated Crocus sativus for generations and know the
-                      land, the season, and the difference between a good bloom and a
-                      great one.
+                      We work exclusively with generational saffron-growing
+                      families in Pampore. These are not commercial suppliers —
+                      they are families who have cultivated Crocus sativus for
+                      generations and know the land, the season, and the
+                      difference between a good bloom and a great one.
                     </p>
                     <p className="text-base leading-relaxed">
-                      Between those fields and your kitchen there used to be layers of
-                      brokers, warehouses, and uncertain storage — each step adding
-                      time and stripping potency. We cut all of that out. We buy
-                      directly, we inspect every batch ourselves, and we ship to you
-                      from Kashmir.
+                      Between those fields and your kitchen there used to be
+                      layers of brokers, warehouses, and uncertain storage —
+                      each step adding time and stripping potency. We cut all of
+                      that out. We buy directly, we inspect every batch
+                      ourselves, and we ship to you from Kashmir.
                     </p>
                     <p className="text-base leading-relaxed">
-                      The result is saffron from the current season&apos;s harvest, at
-                      its peak potency, at a price that reflects the actual work of
-                      growing it.
+                      The result is saffron from the current season&apos;s
+                      harvest, at its peak potency, at a price that reflects the
+                      actual work of growing it.
                     </p>
                   </div>
 
@@ -265,8 +293,12 @@ export default function OurStoryPage() {
                         key={item.label}
                         className="rounded-xl border border-secondary-border/20 bg-background-alt p-4"
                       >
-                        <p className="text-[11px] uppercase tracking-wider text-text-muted font-body">{item.label}</p>
-                        <p className="mt-1 font-semibold text-text-primary text-sm font-body">{item.value}</p>
+                        <p className="text-[11px] uppercase tracking-wider text-text-muted font-body">
+                          {item.label}
+                        </p>
+                        <p className="mt-1 font-semibold text-text-primary text-sm font-body">
+                          {item.value}
+                        </p>
                       </div>
                     ))}
                   </div>
@@ -280,7 +312,10 @@ export default function OurStoryPage() {
           </div>
 
           {/* ── JOURNEY TIMELINE ── */}
-          <section className="py-14 sm:py-20 lg:py-24" aria-labelledby="section-journey">
+          <section
+            className="py-14 sm:py-20 lg:py-24"
+            aria-labelledby="section-journey"
+          >
             <div className="mx-auto max-w-4xl px-6 lg:px-20">
               <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-primary mb-3">
                 The process
@@ -293,7 +328,10 @@ export default function OurStoryPage() {
               </h2>
 
               <div className="relative">
-                <div className="absolute left-[19px] top-0 bottom-0 w-px bg-secondary-border/30" aria-hidden />
+                <div
+                  className="absolute left-[19px] top-0 bottom-0 w-px bg-secondary-border/30"
+                  aria-hidden
+                />
                 <div className="space-y-9">
                   {JOURNEY_STEPS.map((s) => (
                     <div key={s.step} className="relative flex gap-6">
@@ -301,8 +339,12 @@ export default function OurStoryPage() {
                         {s.step}
                       </div>
                       <div className="pt-1.5 pb-2">
-                        <h3 className="font-display text-lg font-semibold text-text-primary">{s.title}</h3>
-                        <p className="mt-2 text-sm leading-relaxed text-secondary font-body">{s.body}</p>
+                        <h3 className="font-display text-lg font-semibold text-text-primary">
+                          {s.title}
+                        </h3>
+                        <p className="mt-2 text-sm leading-relaxed text-secondary font-body">
+                          {s.body}
+                        </p>
                       </div>
                     </div>
                   ))}
@@ -318,7 +360,6 @@ export default function OurStoryPage() {
           >
             <div className="mx-auto max-w-7xl px-6 lg:px-20">
               <div className="grid gap-14 lg:grid-cols-2 lg:items-start">
-
                 <div className="space-y-5">
                   <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-primary">
                     Quality promise
@@ -331,15 +372,16 @@ export default function OurStoryPage() {
                   </h2>
                   <div className="space-y-4 text-secondary font-body">
                     <p className="text-base leading-relaxed">
-                      Every batch we receive from our grower partners goes through
-                      a structured visual and sensory inspection before it enters
-                      our inventory. Only batches that pass every point below are
-                      accepted. Those that don&apos;t are returned.
+                      Every batch we receive from our grower partners goes
+                      through a structured visual and sensory inspection before
+                      it enters our inventory. Only batches that pass every
+                      point below are accepted. Those that don&apos;t are
+                      returned.
                     </p>
                     <p className="text-base leading-relaxed">
-                      This is our first and most important line of quality control —
-                      and it happens before any of our saffron is ever packaged or
-                      dispatched.
+                      This is our first and most important line of quality
+                      control — and it happens before any of our saffron is ever
+                      packaged or dispatched.
                     </p>
                   </div>
                 </div>
@@ -354,7 +396,9 @@ export default function OurStoryPage() {
                         <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary/8 text-[11px] font-bold text-primary font-body">
                           {String(i + 1).padStart(2, "0")}
                         </span>
-                        <span className="font-semibold text-text-primary font-body">{check.label}</span>
+                        <span className="font-semibold text-text-primary font-body">
+                          {check.label}
+                        </span>
                         <svg
                           className="ml-auto h-4 w-4 shrink-0 text-text-muted transition-transform duration-200 group-open:rotate-180"
                           fill="none"
@@ -363,7 +407,11 @@ export default function OurStoryPage() {
                           strokeWidth={2}
                           aria-hidden
                         >
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M19 9l-7 7-7-7"
+                          />
                         </svg>
                       </summary>
                       <p className="border-t border-secondary-border/15 px-5 pb-4 pt-3 text-sm leading-relaxed text-secondary font-body">
@@ -377,10 +425,12 @@ export default function OurStoryPage() {
           </section>
 
           {/* ── LAB TESTING ── */}
-          <section className="py-14 sm:py-20 lg:py-24 bg-dark" aria-labelledby="section-lab">
+          <section
+            className="py-14 sm:py-20 lg:py-24 bg-dark"
+            aria-labelledby="section-lab"
+          >
             <div className="mx-auto max-w-5xl px-6 lg:px-20">
               <div className="grid gap-10 lg:grid-cols-[1fr_2fr] lg:items-start">
-
                 <div>
                   <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-dark-text/60 mb-3">
                     Lab testing
@@ -403,16 +453,27 @@ export default function OurStoryPage() {
                   <div className="rounded-xl border border-white/10 bg-white/5 p-5 space-y-2">
                     <div className="flex items-center gap-3">
                       <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white/10">
-                        <svg className="h-3.5 w-3.5 text-dark-text" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                        <svg
+                          className="h-3.5 w-3.5 text-dark-text"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={2.5}
+                          aria-hidden
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M5 13l4 4L19 7"
+                          />
                         </svg>
                       </span>
                       <p className="font-semibold text-dark-text">What we do</p>
                     </div>
                     <p className="text-sm leading-relaxed text-dark-text-muted pl-9">
                       Every batch is inspected by us against the five quality
-                      criteria above — colour, aroma, texture, bloom, and grade —
-                      before it enters our inventory.
+                      criteria above — colour, aroma, texture, bloom, and grade
+                      — before it enters our inventory.
                     </p>
                   </div>
 
@@ -420,19 +481,32 @@ export default function OurStoryPage() {
                   <div className="rounded-xl border border-white/10 bg-white/5 p-5 space-y-2">
                     <div className="flex items-center gap-3">
                       <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white/10">
-                        <svg className="h-3.5 w-3.5 text-dark-text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        <svg
+                          className="h-3.5 w-3.5 text-dark-text-muted"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={2.5}
+                          aria-hidden
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M6 18L18 6M6 6l12 12"
+                          />
                         </svg>
                       </span>
-                      <p className="font-semibold text-dark-text">What we don&apos;t do by default</p>
+                      <p className="font-semibold text-dark-text">
+                        What we don&apos;t do by default
+                      </p>
                     </div>
                     <p className="text-sm leading-relaxed text-dark-text-muted pl-9">
                       We do <strong className="text-dark-text">not</strong> run
-                      ISO 3632 laboratory tests on every retail batch. Commissioning
-                      an accredited lab test for every small order would add
-                      significant cost, and our direct-sourcing model already
-                      eliminates the adulteration risk that lab testing is designed
-                      to catch.
+                      ISO 3632 laboratory tests on every retail batch.
+                      Commissioning an accredited lab test for every small order
+                      would add significant cost, and our direct-sourcing model
+                      already eliminates the adulteration risk that lab testing
+                      is designed to catch.
                     </p>
                   </div>
 
@@ -440,19 +514,35 @@ export default function OurStoryPage() {
                   <div className="rounded-xl border border-primary/40 bg-primary/10 p-5 space-y-2">
                     <div className="flex items-center gap-3">
                       <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/20">
-                        <svg className="h-3.5 w-3.5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        <svg
+                          className="h-3.5 w-3.5 text-primary"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={2}
+                          aria-hidden
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                          />
                         </svg>
                       </span>
-                      <p className="font-semibold text-dark-text">ISO lab testing available for bulk orders</p>
+                      <p className="font-semibold text-dark-text">
+                        ISO lab testing available for bulk orders
+                      </p>
                     </div>
                     <p className="text-sm leading-relaxed text-dark-text-muted pl-9">
-                      If you are sourcing at scale and need verified documentation,
-                      we offer ISO 3632 lab testing as a paid service for{" "}
-                      <strong className="text-dark-text">bulk orders of 1 kilogram or more</strong>.
-                      Request it at enquiry and we will arrange an accredited test
-                      on your specific batch, with the certificate included in
-                      your shipment.
+                      If you are sourcing at scale and need verified
+                      documentation, we offer ISO 3632 lab testing as a paid
+                      service for{" "}
+                      <strong className="text-dark-text">
+                        bulk orders of 1 kilogram or more
+                      </strong>
+                      . Request it at enquiry and we will arrange an accredited
+                      test on your specific batch, with the certificate included
+                      in your shipment.
                     </p>
                     <div className="pl-9 pt-1">
                       <Link
@@ -460,8 +550,19 @@ export default function OurStoryPage() {
                         className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:text-primary-hover transition-colors"
                       >
                         Enquire about bulk orders
-                        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                        <svg
+                          className="h-4 w-4"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={2}
+                          aria-hidden
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M17 8l4 4m0 0l-4 4m4-4H3"
+                          />
                         </svg>
                       </Link>
                     </div>
@@ -472,7 +573,10 @@ export default function OurStoryPage() {
           </section>
 
           {/* ── WHY DIRECT MODEL ── */}
-          <section className="py-14 sm:py-20 lg:py-24" aria-labelledby="section-why">
+          <section
+            className="py-14 sm:py-20 lg:py-24"
+            aria-labelledby="section-why"
+          >
             <div className="mx-auto max-w-7xl px-6 lg:px-20">
               <div className="text-center mb-12">
                 <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-primary mb-3">
@@ -492,8 +596,12 @@ export default function OurStoryPage() {
                     key={card.title}
                     className="rounded-xl border border-secondary-border/20 bg-background p-6 space-y-2 shadow-sm"
                   >
-                    <h3 className="font-display text-base font-semibold text-text-primary">{card.title}</h3>
-                    <p className="text-sm leading-relaxed text-secondary font-body">{card.body}</p>
+                    <h3 className="font-display text-base font-semibold text-text-primary">
+                      {card.title}
+                    </h3>
+                    <p className="text-sm leading-relaxed text-secondary font-body">
+                      {card.body}
+                    </p>
                   </div>
                 ))}
               </div>
@@ -508,8 +616,8 @@ export default function OurStoryPage() {
                   Taste the difference transparency makes.
                 </h2>
                 <p className="max-w-xl text-base text-secondary font-body">
-                  Every jar ships directly from Kashmir. Fresh harvest, Mongra grade,
-                  airtight sealed. No compromises.
+                  Every jar ships directly from Kashmir. Fresh harvest, Mongra
+                  grade, airtight sealed. No compromises.
                 </p>
                 <div className="flex flex-wrap justify-center gap-4 pt-2">
                   <Link
@@ -527,8 +635,13 @@ export default function OurStoryPage() {
                 </div>
               </div>
 
-              <nav className="mt-14 pt-8 border-t border-secondary-border/20" aria-label="Related pages">
-                <p className="text-sm text-text-muted font-body mb-4">Explore more</p>
+              <nav
+                className="mt-14 pt-8 border-t border-secondary-border/20"
+                aria-label="Related pages"
+              >
+                <p className="text-sm text-text-muted font-body mb-4">
+                  Explore more
+                </p>
                 <ul className="flex flex-wrap gap-x-6 gap-y-2 text-base font-body">
                   {[
                     { href: "/shop/saffron", label: "Shop saffron" },
@@ -538,7 +651,10 @@ export default function OurStoryPage() {
                     { href: "/reviews", label: "Customer reviews" },
                   ].map((l) => (
                     <li key={l.href}>
-                      <Link href={l.href} className="text-primary hover:underline underline-offset-4 font-medium">
+                      <Link
+                        href={l.href}
+                        className="text-primary hover:underline underline-offset-4 font-medium"
+                      >
                         {l.label}
                       </Link>
                     </li>
@@ -547,7 +663,6 @@ export default function OurStoryPage() {
               </nav>
             </div>
           </section>
-
         </article>
       </main>
       <Footer />

@@ -38,7 +38,10 @@ function env(name: string, fallback?: string): string {
 const projectId = env("NEXT_PUBLIC_SANITY_PROJECT_ID");
 const dataset = env("NEXT_PUBLIC_SANITY_DATASET", "production");
 const apiVersion = env("NEXT_PUBLIC_SANITY_API_VERSION", "2026-03-19");
-const siteUrl = env("SITE_PUBLIC_URL", "https://www.saffron.town").replace(/\/$/, "");
+const siteUrl = env("SITE_PUBLIC_URL", "https://www.saffron.town").replace(
+  /\/$/,
+  "",
+);
 
 const writeToken = process.env.SANITY_API_WRITE_TOKEN?.trim() || null;
 
@@ -57,11 +60,20 @@ function validate(post: GiPost, blockCount: number): ValidationIssue[] {
   const tLen = post.seoTitle.length;
   const dLen = post.seoDescription.length;
   if (tLen < SEO_TITLE_MIN || tLen > SEO_TITLE_MAX)
-    issues.push({ slug: post.slug, problem: `seoTitle length ${tLen} outside ${SEO_TITLE_MIN}-${SEO_TITLE_MAX}` });
+    issues.push({
+      slug: post.slug,
+      problem: `seoTitle length ${tLen} outside ${SEO_TITLE_MIN}-${SEO_TITLE_MAX}`,
+    });
   if (dLen < SEO_DESC_MIN || dLen > SEO_DESC_MAX)
-    issues.push({ slug: post.slug, problem: `seoDescription length ${dLen} outside ${SEO_DESC_MIN}-${SEO_DESC_MAX}` });
+    issues.push({
+      slug: post.slug,
+      problem: `seoDescription length ${dLen} outside ${SEO_DESC_MIN}-${SEO_DESC_MAX}`,
+    });
   if (post.title.length > 80)
-    issues.push({ slug: post.slug, problem: `title length ${post.title.length} exceeds 80` });
+    issues.push({
+      slug: post.slug,
+      problem: `title length ${post.title.length} exceeds 80`,
+    });
   if (post.body.includes("—"))
     issues.push({ slug: post.slug, problem: "body contains an em dash (—)" });
   if (!post.faqItems.length)
@@ -150,7 +162,9 @@ async function main() {
     }
   }
   if (hasIssues) {
-    console.error("\nValidation failed. Fix the issues above before publishing.");
+    console.error(
+      "\nValidation failed. Fix the issues above before publishing.",
+    );
     process.exit(1);
   }
   console.log("\nAll posts valid.");
@@ -161,7 +175,9 @@ async function main() {
   }
 
   if (!writeToken) {
-    throw new Error("SANITY_API_WRITE_TOKEN is required to publish (omit --dry only when it is set).");
+    throw new Error(
+      "SANITY_API_WRITE_TOKEN is required to publish (omit --dry only when it is set).",
+    );
   }
 
   const authorRef = await ensureAuthorRef();
@@ -175,8 +191,12 @@ async function main() {
       continue;
     }
     const doc = buildDoc(post, imageAssetRef, authorRef);
-    const created = await client.create(doc as Parameters<typeof client.create>[0]);
-    console.log(`LIVE  ${post.slug} -> ${created._id}  ${siteUrl}/blog/${post.slug}`);
+    const created = await client.create(
+      doc as Parameters<typeof client.create>[0],
+    );
+    console.log(
+      `LIVE  ${post.slug} -> ${created._id}  ${siteUrl}/blog/${post.slug}`,
+    );
   }
 
   console.log("\nDone.");

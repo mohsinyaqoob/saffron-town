@@ -29,7 +29,10 @@ interface RazorpaySuccessResponse {
 
 interface RazorpayInstance {
   open(): void;
-  on(event: "payment.failed", handler: (response: { error: { description: string } }) => void): void;
+  on(
+    event: "payment.failed",
+    handler: (response: { error: { description: string } }) => void,
+  ): void;
 }
 
 declare interface Window {

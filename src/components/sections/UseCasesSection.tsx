@@ -64,7 +64,11 @@ export function UseCasesSection() {
               key={item.title}
               className="group flex flex-col rounded-2xl border border-secondary-border/15 bg-background p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md hover:shadow-primary/8 sm:p-6"
             >
-              <span className="mb-3 text-3xl" role="img" aria-label={item.title}>
+              <span
+                className="mb-3 text-3xl"
+                role="img"
+                aria-label={item.title}
+              >
                 {item.emoji}
               </span>
               <h3 className="font-display text-base font-bold text-text-primary sm:text-lg">

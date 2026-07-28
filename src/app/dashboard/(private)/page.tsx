@@ -24,7 +24,9 @@ export default async function DashboardOrdersPage() {
   if (!process.env.DATABASE_URL?.trim()) {
     return (
       <div className="space-y-4">
-        <h1 className="font-display text-2xl font-bold text-text-primary">Orders</h1>
+        <h1 className="font-display text-2xl font-bold text-text-primary">
+          Orders
+        </h1>
         <p className="text-sm text-secondary font-body">
           Set{" "}
           <code className="rounded bg-surface-muted px-1.5 py-0.5 text-text-primary">
@@ -49,7 +51,9 @@ export default async function DashboardOrdersPage() {
   } catch {
     return (
       <div className="space-y-4">
-        <h1 className="font-display text-2xl font-bold text-text-primary">Orders</h1>
+        <h1 className="font-display text-2xl font-bold text-text-primary">
+          Orders
+        </h1>
         <p className="text-sm text-secondary font-body">
           Could not read from the database. Confirm{" "}
           <code className="rounded bg-surface-muted px-1.5 py-0.5 text-text-primary">
@@ -66,7 +70,9 @@ export default async function DashboardOrdersPage() {
       {/* Header */}
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h1 className="font-display text-2xl font-bold text-text-primary">Orders</h1>
+          <h1 className="font-display text-2xl font-bold text-text-primary">
+            Orders
+          </h1>
           <p className="mt-1 text-sm text-secondary font-body">
             {total} order{total !== 1 ? "s" : ""}
           </p>
@@ -75,7 +81,8 @@ export default async function DashboardOrdersPage() {
 
       {orders.length === 0 ? (
         <p className="text-sm text-secondary font-body">
-          No orders yet. They appear here when customers complete checkout on the site.
+          No orders yet. They appear here when customers complete checkout on
+          the site.
         </p>
       ) : (
         <DashboardOrderAccordion

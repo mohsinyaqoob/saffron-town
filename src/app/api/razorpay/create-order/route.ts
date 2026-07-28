@@ -66,27 +66,53 @@ export async function POST(request: Request) {
 
   // ── 1. Validate form fields ──
   const customerName = String(b.customerName ?? "").trim();
-  const phoneRaw = String(b.phone ?? "").trim().replace(/\s+/g, "");
-  const email = String(b.email ?? "").trim().toLowerCase();
-  const pincode = String(b.pincode ?? "").trim().replace(/\D/g, "");
+  const phoneRaw = String(b.phone ?? "")
+    .trim()
+    .replace(/\s+/g, "");
+  const email = String(b.email ?? "")
+    .trim()
+    .toLowerCase();
+  const pincode = String(b.pincode ?? "")
+    .trim()
+    .replace(/\D/g, "");
   const deliveryAddress = String(b.deliveryAddress ?? "").trim();
   const heardRaw = String(b.heardAboutUs ?? "").trim();
   const notes = String(b.notes ?? "").trim() || undefined;
   const source = String(b.source ?? "").trim() || undefined;
-  const items: IncomingItem[] = Array.isArray(b.items) ? (b.items as IncomingItem[]) : [];
+  const items: IncomingItem[] = Array.isArray(b.items)
+    ? (b.items as IncomingItem[])
+    : [];
 
   if (customerName.length < 2)
-    return NextResponse.json({ error: "Please enter your full name." }, { status: 400 });
+    return NextResponse.json(
+      { error: "Please enter your full name." },
+      { status: 400 },
+    );
   if (phoneRaw.replace(/\D/g, "").length < 10)
-    return NextResponse.json({ error: "Please enter a valid phone number." }, { status: 400 });
+    return NextResponse.json(
+      { error: "Please enter a valid phone number." },
+      { status: 400 },
+    );
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > 254)
-    return NextResponse.json({ error: "Please enter a valid email address." }, { status: 400 });
+    return NextResponse.json(
+      { error: "Please enter a valid email address." },
+      { status: 400 },
+    );
   if (!/^\d{6}$/.test(pincode))
-    return NextResponse.json({ error: "Please enter a valid 6-digit PIN code." }, { status: 400 });
+    return NextResponse.json(
+      { error: "Please enter a valid 6-digit PIN code." },
+      { status: 400 },
+    );
   if (deliveryAddress.length < 10)
-    return NextResponse.json({ error: "Please enter your complete delivery address." }, { status: 400 });
+    return NextResponse.json(
+      { error: "Please enter your complete delivery address." },
+      { status: 400 },
+    );
   if (!heardRaw || !isValidHearAboutChannel(heardRaw))
-    return NextResponse.json({ error: "Please choose how you heard about us." }, { status: 400 });
+    return NextResponse.json(
+      { error: "Please choose how you heard about us." },
+      { status: 400 },
+    );
   if (items.length === 0)
     return NextResponse.json({ error: "Your cart is empty." }, { status: 400 });
 
@@ -111,7 +137,10 @@ export async function POST(request: Request) {
       typeof line?.variantId !== "string" ||
       typeof line?.quantity !== "number"
     ) {
-      return NextResponse.json({ error: "Invalid line item." }, { status: 400 });
+      return NextResponse.json(
+        { error: "Invalid line item." },
+        { status: 400 },
+      );
     }
     const qty = Math.floor(line.quantity);
     if (qty < 1 || qty > 99)
@@ -119,11 +148,17 @@ export async function POST(request: Request) {
 
     const product = getProductById(line.productId);
     if (!product)
-      return NextResponse.json({ error: "Unknown product in cart." }, { status: 400 });
+      return NextResponse.json(
+        { error: "Unknown product in cart." },
+        { status: 400 },
+      );
 
     if (isCustomVariantId(line.variantId)) {
       if (!product.customWeight || typeof line.grams !== "number")
-        return NextResponse.json({ error: "Invalid bulk order." }, { status: 400 });
+        return NextResponse.json(
+          { error: "Invalid bulk order." },
+          { status: 400 },
+        );
       const gramsCheck = validateCustomGrams(product, line.grams);
       if (!gramsCheck.ok)
         return NextResponse.json(
@@ -147,7 +182,10 @@ export async function POST(request: Request) {
 
     const variant = product.variants.find((v) => v.id === line.variantId);
     if (!variant)
-      return NextResponse.json({ error: "Unknown variant in cart." }, { status: 400 });
+      return NextResponse.json(
+        { error: "Unknown variant in cart." },
+        { status: 400 },
+      );
 
     currency = product.currency || "INR";
     const unitPriceRupees = variant.price;
@@ -172,7 +210,10 @@ export async function POST(request: Request) {
 
   const amountPaise = Math.round(subtotalRupees * 100);
   if (amountPaise < 100)
-    return NextResponse.json({ error: "Minimum order amount is ₹1." }, { status: 400 });
+    return NextResponse.json(
+      { error: "Minimum order amount is ₹1." },
+      { status: 400 },
+    );
 
   // ── 3. Create Razorpay order ──
   const auth = Buffer.from(`${keyId}:${keySecret}`).toString("base64");
@@ -181,8 +222,15 @@ export async function POST(request: Request) {
   try {
     rzpRes = await fetch("https://api.razorpay.com/v1/orders", {
       method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: `Basic ${auth}` },
-      body: JSON.stringify({ amount: amountPaise, currency, receipt: `st_${Date.now()}` }),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Basic ${auth}`,
+      },
+      body: JSON.stringify({
+        amount: amountPaise,
+        currency,
+        receipt: `st_${Date.now()}`,
+      }),
     });
   } catch (e) {
     console.error("[razorpay] create-order network error", e);
@@ -201,7 +249,11 @@ export async function POST(request: Request) {
     );
   }
 
-  const rzpOrder = (await rzpRes.json()) as { id: string; amount: number; currency: string };
+  const rzpOrder = (await rzpRes.json()) as {
+    id: string;
+    amount: number;
+    currency: string;
+  };
 
   // ── 4. Persist a PENDING order in DB before opening the modal ──
   // If the browser crashes after Razorpay captures payment but before
@@ -220,11 +272,23 @@ export async function POST(request: Request) {
     if (existingCustomer) {
       await prisma.customer.update({
         where: { id: existingCustomer.id },
-        data: { name: customerName, email, phone: phoneRaw, billingAddress: deliveryAddress, postalCode: pincode },
+        data: {
+          name: customerName,
+          email,
+          phone: phoneRaw,
+          billingAddress: deliveryAddress,
+          postalCode: pincode,
+        },
       });
     } else {
       await prisma.customer.create({
-        data: { name: customerName, email, phone: phoneRaw, billingAddress: deliveryAddress, postalCode: pincode },
+        data: {
+          name: customerName,
+          email,
+          phone: phoneRaw,
+          billingAddress: deliveryAddress,
+          postalCode: pincode,
+        },
       });
     }
 

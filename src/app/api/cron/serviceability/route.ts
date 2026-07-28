@@ -34,7 +34,10 @@ export async function GET(request: Request) {
 
   const dbUrl = process.env.DATABASE_URL?.trim() ?? "";
   if (!dbUrl || !isDirectPostgresUrl(dbUrl)) {
-    return NextResponse.json({ error: "Database not available." }, { status: 503 });
+    return NextResponse.json(
+      { error: "Database not available." },
+      { status: 503 },
+    );
   }
 
   const since = new Date(Date.now() - LOOKBACK_DAYS * 24 * 60 * 60 * 1000);

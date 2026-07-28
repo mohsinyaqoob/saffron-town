@@ -4,7 +4,11 @@ import { getPrisma } from "@/lib/prisma";
 
 export const runtime = "nodejs";
 
-function verifyWebhookSignature(body: string, signature: string, secret: string): boolean {
+function verifyWebhookSignature(
+  body: string,
+  signature: string,
+  secret: string,
+): boolean {
   const expected = createHmac("sha256", secret).update(body).digest("hex");
   try {
     const a = Buffer.from(signature, "utf8");
@@ -20,7 +24,10 @@ export async function POST(request: Request) {
   const webhookSecret = process.env.RAZORPAY_WEBHOOK_SECRET?.trim();
   if (!webhookSecret) {
     console.error("[razorpay/webhook] RAZORPAY_WEBHOOK_SECRET is not set");
-    return NextResponse.json({ error: "Webhook not configured." }, { status: 503 });
+    return NextResponse.json(
+      { error: "Webhook not configured." },
+      { status: 503 },
+    );
   }
 
   const signature = request.headers.get("x-razorpay-signature") ?? "";
@@ -50,7 +57,9 @@ export async function POST(request: Request) {
   const razorpayPaymentId = payload?.payment?.entity?.id ?? "";
 
   if (!razorpayOrderId || !razorpayPaymentId) {
-    console.warn("[razorpay/webhook] Missing order_id or payment id in payload");
+    console.warn(
+      "[razorpay/webhook] Missing order_id or payment id in payload",
+    );
     return NextResponse.json({ received: true });
   }
 
@@ -64,7 +73,10 @@ export async function POST(request: Request) {
     if (!order) {
       // Order wasn't created even by create-order — nothing we can do here.
       // The user will see an error on the verify-payment call and can contact support.
-      console.warn("[razorpay/webhook] No order found for razorpayOrderId", razorpayOrderId);
+      console.warn(
+        "[razorpay/webhook] No order found for razorpayOrderId",
+        razorpayOrderId,
+      );
       return NextResponse.json({ received: true });
     }
 
@@ -80,7 +92,10 @@ export async function POST(request: Request) {
       data: { status: "PAID", razorpayPaymentId },
     });
 
-    console.log("[razorpay/webhook] Marked order PAID via webhook", { orderId: order.id, razorpayOrderId });
+    console.log("[razorpay/webhook] Marked order PAID via webhook", {
+      orderId: order.id,
+      razorpayOrderId,
+    });
   } catch (e) {
     console.error("[razorpay/webhook] DB error", e);
     // Return 500 so Razorpay retries the webhook

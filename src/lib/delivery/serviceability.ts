@@ -17,7 +17,9 @@ export type PartnerServiceability = {
   status: ServiceabilityStatus;
 };
 
-export function normalizePincode(raw: string | null | undefined): string | null {
+export function normalizePincode(
+  raw: string | null | undefined,
+): string | null {
   const digits = (raw ?? "").replace(/\D/g, "");
   return /^\d{6}$/.test(digits) ? digits : null;
 }
@@ -45,7 +47,11 @@ export async function ensureServiceability(
 
   const cutoff = new Date(Date.now() - TTL_MS);
 
-  let existing: { partnerCode: string; status: ServiceabilityStatus; checkedAt: Date }[] = [];
+  let existing: {
+    partnerCode: string;
+    status: ServiceabilityStatus;
+    checkedAt: Date;
+  }[] = [];
   try {
     existing = await prisma.pincodeServiceability.findMany({
       where: { pincode },
@@ -110,12 +116,18 @@ export async function getServiceabilityForPincodes(
   rawPincodes: (string | null | undefined)[],
 ): Promise<Map<string, PartnerServiceability[]>> {
   const pincodes = [
-    ...new Set(rawPincodes.map(normalizePincode).filter((p): p is string => !!p)),
+    ...new Set(
+      rawPincodes.map(normalizePincode).filter((p): p is string => !!p),
+    ),
   ];
   const byPincode = new Map<string, PartnerServiceability[]>();
   if (pincodes.length === 0) return byPincode;
 
-  let rows: { partnerCode: string; pincode: string; status: ServiceabilityStatus }[] = [];
+  let rows: {
+    partnerCode: string;
+    pincode: string;
+    status: ServiceabilityStatus;
+  }[] = [];
   try {
     const prisma = getPrisma();
     rows = await prisma.pincodeServiceability.findMany({
@@ -126,7 +138,9 @@ export async function getServiceabilityForPincodes(
     console.error("[serviceability] display read failed", e);
   }
 
-  const rowByKey = new Map(rows.map((r) => [`${r.pincode}|${r.partnerCode}`, r.status]));
+  const rowByKey = new Map(
+    rows.map((r) => [`${r.pincode}|${r.partnerCode}`, r.status]),
+  );
 
   for (const pincode of pincodes) {
     byPincode.set(
