@@ -1,0 +1,63 @@
+# Saffron Town — self-hosted on the DigitalOcean droplet.
+# Manual deploy: `git pull` then `docker compose up -d --build` (see DEPLOY-DOCKER.md).
+#
+# Values come from a `.env` file next to this file (copy .env.docker.example).
+
+services:
+  db:
+    image: postgres:16-bookworm
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-saffron}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+      POSTGRES_DB: ${POSTGRES_DB:-saffron}
+    volumes:
+      - saffron_pgdata:/var/lib/postgresql/data
+    # Deliberately NOT published to the host — reachable only on the internal
+    # compose network as `db:5432`, so it can't clash with Imdaad's Postgres.
+    # To connect from the host for debugging, uncomment (pick an unused port):
+    # ports:
+    #   - "127.0.0.1:5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-saffron} -d ${POSTGRES_DB:-saffron}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  # One-shot: applies Prisma migrations, then exits. `web` waits for it.
+  migrate:
+    build:
+      context: .
+      target: migrator
+    env_file: .env
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: "no"
+
+  web:
+    build:
+      context: .
+      target: runner
+      args:
+        NEXT_PUBLIC_SANITY_PROJECT_ID: ${NEXT_PUBLIC_SANITY_PROJECT_ID}
+        NEXT_PUBLIC_SANITY_DATASET: ${NEXT_PUBLIC_SANITY_DATASET}
+        NEXT_PUBLIC_SANITY_API_VERSION: ${NEXT_PUBLIC_SANITY_API_VERSION}
+        NEXT_PUBLIC_RAZORPAY_KEY_ID: ${NEXT_PUBLIC_RAZORPAY_KEY_ID}
+        NEXT_PUBLIC_GA_MEASUREMENT_ID: ${NEXT_PUBLIC_GA_MEASUREMENT_ID}
+        NEXT_PUBLIC_GOOGLE_ADS_ID: ${NEXT_PUBLIC_GOOGLE_ADS_ID}
+        NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION: ${NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION}
+    env_file: .env
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    ports:
+      # Host WEB_PORT (default 3000) → container 3000. Put Nginx/Caddy/Cloudflare
+      # in front of this for TLS + your domain.
+      - "${WEB_PORT:-3000}:3000"
+
+volumes:
+  saffron_pgdata:

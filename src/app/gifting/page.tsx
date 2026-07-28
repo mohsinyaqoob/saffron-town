@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { IMAGE_QUALITY_PHOTO, SITE_CONFIG } from "@/lib/constants";
+import { GIFT_OCCASIONS } from "@/lib/gift-occasions";
 import { getGiftOptions } from "@/lib/gifting";
 import { GiftingPickerSection } from "./GiftingPickerSection";
 import { GiftingStorySection } from "./GiftingStorySection";
@@ -47,12 +48,12 @@ const WHY_SAFFRON = [
   },
 ];
 
-const OCCASIONS = [
-  { emoji: "💍", label: "Weddings" },
-  { emoji: "🪔", label: "Diwali" },
-  { emoji: "🤱", label: "Baby Shower" },
-  { emoji: "🎂", label: "Birthdays" },
-];
+const OCCASIONS: { emoji: string; label: string; href?: string }[] =
+  GIFT_OCCASIONS.map((o) => ({
+    emoji: o.emoji,
+    label: o.label,
+    href: `/gifting/${o.slug}`,
+  }));
 
 export default function GiftingPage() {
   return (
@@ -115,19 +116,38 @@ export default function GiftingPage() {
               Perfect for Every Occasion
             </h2>
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 lg:gap-6">
-              {OCCASIONS.map((occasion) => (
-                <div
-                  key={occasion.label}
-                  className="flex flex-col items-center gap-3 rounded-2xl border border-secondary-border/15 bg-background p-6 text-center shadow-sm"
-                >
-                  <span className="text-3xl" role="img" aria-label={occasion.label}>
-                    {occasion.emoji}
-                  </span>
-                  <span className="font-display text-base font-semibold text-text-primary">
-                    {occasion.label}
-                  </span>
-                </div>
-              ))}
+              {OCCASIONS.map((occasion) => {
+                const inner = (
+                  <>
+                    <span className="text-3xl" role="img" aria-label={occasion.label}>
+                      {occasion.emoji}
+                    </span>
+                    <span className="font-display text-base font-semibold text-text-primary">
+                      {occasion.label}
+                    </span>
+                    {occasion.href && (
+                      <span className="font-body text-xs text-primary">
+                        Shop gifts →
+                      </span>
+                    )}
+                  </>
+                );
+                const cardClass =
+                  "flex flex-col items-center gap-2 rounded-2xl border border-secondary-border/15 bg-background p-6 text-center shadow-sm";
+                return occasion.href ? (
+                  <Link
+                    key={occasion.label}
+                    href={occasion.href}
+                    className={`${cardClass} transition-colors hover:border-primary/40`}
+                  >
+                    {inner}
+                  </Link>
+                ) : (
+                  <div key={occasion.label} className={cardClass}>
+                    {inner}
+                  </div>
+                );
+              })}
             </div>
           </div>
         </section>

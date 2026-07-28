@@ -5,6 +5,7 @@ import { getAllAuthors } from "@/lib/authors-data";
 import { BLOG_LIST_PAGE_SIZE } from "@/lib/blog-data";
 import { REDIRECTED_BLOG_SLUGS } from "@/lib/blog-redirects";
 import { SITE_CONFIG } from "@/lib/constants";
+import { GIFT_OCCASION_SLUGS } from "@/lib/gift-occasions";
 import { getAllProducts, PRODUCT_PAGE_URL } from "@/lib/product-data";
 import { client } from "@/sanity/client";
 import {
@@ -75,6 +76,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "monthly" as const,
       priority: 0.6,
     },
+    ...GIFT_OCCASION_SLUGS.map((slug) => ({
+      url: `${baseUrl}/gifting/${slug}`,
+      lastModified: monthAnchor,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    })),
     {
       url: `${baseUrl}/our-story`,
       lastModified: monthAnchor,
