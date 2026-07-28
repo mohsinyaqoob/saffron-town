@@ -35,16 +35,16 @@ const nextConfig: NextConfig = {
             key: "Content-Security-Policy",
             value: `
               default-src 'self';
-              script-src 'self' 'unsafe-eval' 'unsafe-inline' https://salesiq.zohopublic.in https://*.zohocdn.com https://www.googletagmanager.com https://www.google-analytics.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://checkout.razorpay.com https://*.razorpay.com;
+              script-src 'self' 'unsafe-eval' 'unsafe-inline' https://salesiq.zohopublic.in https://*.zohocdn.com https://www.googletagmanager.com https://www.google-analytics.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://checkout.razorpay.com https://*.razorpay.com https://connect.facebook.net;
               style-src 'self' 'unsafe-inline' https://*.zohocdn.com https://*.razorpay.com;
-              img-src 'self' blob: data: https://cdn.sanity.io https://images.unsplash.com https://plus.unsplash.com https://*.zohocdn.com https://www.googletagmanager.com https://www.google-analytics.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://*.razorpay.com;
+              img-src 'self' blob: data: https://cdn.sanity.io https://images.unsplash.com https://plus.unsplash.com https://*.zohocdn.com https://www.googletagmanager.com https://www.google-analytics.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://*.razorpay.com https://www.facebook.com https://connect.facebook.net;
               font-src 'self' data: https://*.zohocdn.com https://*.razorpay.com;
               object-src 'none';
               base-uri 'self';
               form-action 'self';
               frame-ancestors 'none';
               frame-src 'self' https://salesiq.zohopublic.in https://*.razorpay.com;
-              connect-src 'self' https://salesiq.zohopublic.in https://*.zohocdn.com https://www.google-analytics.com https://cdn.sanity.io https://*.api.sanity.io wss://*.api.sanity.io https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://www.google.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://api.razorpay.com https://*.razorpay.com https://lumberjack.razorpay.com;
+              connect-src 'self' https://salesiq.zohopublic.in https://*.zohocdn.com https://www.google-analytics.com https://cdn.sanity.io https://*.api.sanity.io wss://*.api.sanity.io https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://www.google.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://api.razorpay.com https://*.razorpay.com https://lumberjack.razorpay.com https://www.facebook.com https://connect.facebook.net;
               upgrade-insecure-requests;
             `
               .replace(/\s{2,}/g, " ")
