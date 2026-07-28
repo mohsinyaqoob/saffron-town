@@ -85,6 +85,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
+        <meta name="facebook-domain-verification" content="84ll8pzkv3nta46763a650064h1uc4" />
         {/* Reloading the home page otherwise restores the previous scroll
             position (browser "auto"), landing mid-page with a solid header and
             a gap. Force the top ONLY for a home-route reload, then restore
