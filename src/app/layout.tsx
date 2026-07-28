@@ -1,12 +1,11 @@
 import type { Metadata, Viewport } from "next";
 import { Figtree, Playfair_Display } from "next/font/google";
 import Script from "next/script";
-import "./globals.css";
 import { Gtag } from "@/components/analytics/Gtag";
-import { MetaPixel } from "@/components/analytics/MetaPixel";
-import { MetaPixelRouteEvents } from "@/components/analytics/MetaPixelRouteEvents";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { SITE_CONFIG } from "@/lib/constants";
+import MetaPixel from "@/components/analytics/MetaPixel";
+import "./globals.css"
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -95,7 +94,6 @@ export default function RootLayout({
           {`(function(){try{if(!('scrollRestoration' in history))return;var e=performance.getEntriesByType('navigation')[0];var isReload=e?e.type==='reload':(performance.navigation&&performance.navigation.type===1);if(isReload&&location.pathname==='/'){history.scrollRestoration='manual';window.scrollTo(0,0);var restore=function(){history.scrollRestoration='auto';};addEventListener('load',function(){setTimeout(restore,500);});}}catch(_){}})();`}
         </Script>
         <Gtag />
-        <MetaPixel />
         <JsonLd />
         {process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION && (
           <meta
@@ -119,8 +117,8 @@ export default function RootLayout({
         <link rel="prefetch" href="/llms.txt" />
       </head>
       <body className="min-h-screen overflow-x-hidden font-body antialiased">
-        <MetaPixelRouteEvents />
         {children}
+        <MetaPixel />
         <Script id="zoho-salesiq-init" strategy="afterInteractive">
           {`window.$zoho=window.$zoho || {};$zoho.salesiq=$zoho.salesiq||{ready:function(){}}`}
         </Script>
