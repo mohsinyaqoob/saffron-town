@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { type ReactNode, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/Button";
+import { trackLead } from "@/lib/analytics";
 import {
   type BulkLeadFormClientValues,
   bulkLeadFormClientSchema,
@@ -140,6 +141,7 @@ export function BulkLeadForm() {
       };
 
       if (res.ok && data.ok) {
+        trackLead({ category: "bulk" });
         const tatHours = randomBulkEnquiryTatHours();
         router.push(`/bulk-orders/thank-you?hours=${tatHours}`);
         return;

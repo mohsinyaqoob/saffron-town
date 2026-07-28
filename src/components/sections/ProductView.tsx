@@ -28,6 +28,7 @@ export function ProductView({ product }: ProductViewProps) {
       price: selectedVariant.price,
       quantity,
       currency: product.currency,
+      category: product.category,
     });
     router.push(checkoutHref(product.id, selectedVariant.id, quantity));
   };

@@ -7,7 +7,9 @@ import { Header } from "@/components/layout/Header";
 import { Badge } from "@/components/ui/Badge";
 import { SITE_CONFIG } from "@/lib/constants";
 import { getOrderWithReceipt } from "@/lib/order-receipt";
+import { getProductById } from "@/lib/product-data";
 import { cn } from "@/lib/utils";
+import { PurchaseTracking } from "./PurchaseTracking";
 
 export const metadata: Metadata = {
   title: "Order confirmed",
@@ -60,8 +62,34 @@ export default async function OrderSuccessPage({
 
   const pdfHref = `/api/orders/${encodeURIComponent(id)}/pdf?receipt=${encodeURIComponent(receipt ?? "")}`;
 
+  // Gift/prebook orders reuse the saffron product id, so prefer the order
+  // `source` for content_category; fall back to the product's own category.
+  const orderCategory =
+    order.source === "gifting"
+      ? "gifting"
+      : order.source === "prebook"
+        ? "prebook"
+        : undefined;
+
   return (
     <div className="flex min-h-screen flex-col bg-background text-text-primary">
+      {order.status === "PAID" && (
+        <PurchaseTracking
+          orderId={order.id}
+          total={order.subtotalRupees}
+          currency={order.currency}
+          items={order.items.map((line) => ({
+            productId: line.productId,
+            variantLabel: line.variantLabel,
+            name: line.productName,
+            category: orderCategory ?? getProductById(line.productId)?.category,
+            quantity: line.quantity,
+            price: Math.round(
+              line.lineTotalRupees / Math.max(1, line.quantity),
+            ),
+          }))}
+        />
+      )}
       <Header />
       <main className="flex-grow pb-16">
         <div className="mx-auto max-w-7xl px-4 pt-5 sm:px-6 lg:px-20">

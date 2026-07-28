@@ -60,6 +60,7 @@ export function PrebookActionPanel() {
       price: selectedPack.price,
       quantity: 1,
       currency: product.currency,
+      category: product.category,
     });
     router.push(
       checkoutHref(product.id, selectedPack.id, 1, undefined, "prebook"),

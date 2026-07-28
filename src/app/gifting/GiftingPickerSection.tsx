@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { trackAddToCart } from "@/lib/analytics";
 import { checkoutHref } from "@/lib/checkout-line";
 import {
   GIFT_BOX_PRICE_RUPEES,
@@ -133,6 +134,17 @@ export function GiftingPickerSection({ options }: { options: GiftOption[] }) {
           </p>
           <Link
             href={checkoutUrl}
+            onClick={() =>
+              trackAddToCart({
+                id: GIFT_PRODUCT_ID,
+                name: `Saffron Gift Box (${variant.grams})`,
+                variant: variant.grams,
+                price: variant.price,
+                quantity: 1,
+                currency: "INR",
+                category: "gifting",
+              })
+            }
             className="inline-flex items-center gap-3 rounded-2xl bg-primary px-10 py-4 text-base font-bold text-white shadow-xl shadow-primary/25 transition-all hover:bg-primary-hover hover:shadow-primary/35 active:scale-[0.98]"
           >
             Gift This Now — {inr(variant.price)}

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ViewContentTracking } from "@/components/analytics/ViewContentTracking";
 import { JsonLd } from "@/components/JsonLd";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
@@ -103,6 +104,14 @@ export default async function OccasionGiftingPage({ params }: Params) {
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
+      <ViewContentTracking
+        id={`gift-${occasion.slug}`}
+        name={`Saffron Gift Box — ${occasion.label}`}
+        variant=""
+        price={lowPrice}
+        currency="INR"
+        category="gifting"
+      />
       <Header />
       <JsonLd schema={[breadcrumbSchema, productSchema, faqSchema]} />
       <main className="flex-grow">

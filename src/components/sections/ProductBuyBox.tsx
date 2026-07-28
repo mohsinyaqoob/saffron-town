@@ -43,6 +43,7 @@ export function ProductBuyBox({ product }: ProductBuyBoxProps) {
       price: selectedVariant.price,
       quantity,
       currency: product.currency,
+      category: product.category,
     });
     startBuyNowTransition(() => {
       router.push(checkoutHref(product.id, selectedVariant.id, quantity));

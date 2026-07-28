@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ViewContentTracking } from "@/components/analytics/ViewContentTracking";
 import { BreadcrumbNav } from "@/components/BreadcrumbNav";
 import { FAQSection } from "@/components/FAQSection";
 import { Footer } from "@/components/layout/Footer";
@@ -57,8 +58,20 @@ export default function SaffronProductPage() {
     answer: f.answer,
   }));
 
+  const defaultVariant = product.variants[0];
+
   return (
     <div className="flex min-h-screen flex-col bg-background">
+      {defaultVariant && (
+        <ViewContentTracking
+          id={product.id}
+          name={product.name}
+          variant={defaultVariant.size}
+          price={defaultVariant.price}
+          currency={product.currency}
+          category={product.category}
+        />
+      )}
       <ProductJsonLd product={product} />
       <Header />
       <main className="flex-grow">
