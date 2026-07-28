@@ -1,0 +1,79 @@
+# ── Build Saffron Town images and push to GHCR ───────────────────────────────
+# The droplet (1 GB RAM, no swap) can't build Next.js on-box, so we build here
+# and push two images that the droplet only PULLS:
+#   • saffron-town-web      (Dockerfile target: runner)   → the Next.js server
+#   • saffron-town-migrate  (Dockerfile target: migrator) → prisma migrate deploy
+#
+# Deploy to the droplet is intentionally MANUAL (matches Imdaad — no CD):
+#   ssh deploy@<droplet>
+#   cd /opt/saffron-town && git pull
+#   GITHUB_OWNER=mohsinyaqoob IMAGE_TAG=<sha> docker compose -f docker-compose.prod.yml pull
+#   GITHUB_OWNER=mohsinyaqoob IMAGE_TAG=<sha> docker compose -f docker-compose.prod.yml up -d
+#
+# NEXT_PUBLIC_* are inlined into the client bundle at BUILD time, so they must be
+# present here. Non-secret publishable values live in repo Variables (vars.*);
+# nothing sensitive is baked into the client bundle.
+
+name: build-and-push
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "**.md"
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # ── web image (runner target) ──────────────────────────────────────────
+      - name: Build & push web
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          target: runner
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ github.repository_owner }}/saffron-town-web:${{ github.sha }}
+            ${{ env.REGISTRY }}/${{ github.repository_owner }}/saffron-town-web:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            NEXT_PUBLIC_SANITY_PROJECT_ID=${{ vars.NEXT_PUBLIC_SANITY_PROJECT_ID }}
+            NEXT_PUBLIC_SANITY_DATASET=${{ vars.NEXT_PUBLIC_SANITY_DATASET }}
+            NEXT_PUBLIC_SANITY_API_VERSION=${{ vars.NEXT_PUBLIC_SANITY_API_VERSION }}
+            NEXT_PUBLIC_RAZORPAY_KEY_ID=${{ vars.NEXT_PUBLIC_RAZORPAY_KEY_ID }}
+            NEXT_PUBLIC_GA_MEASUREMENT_ID=${{ vars.NEXT_PUBLIC_GA_MEASUREMENT_ID }}
+            NEXT_PUBLIC_GOOGLE_ADS_ID=${{ vars.NEXT_PUBLIC_GOOGLE_ADS_ID }}
+            NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION=${{ vars.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }}
+
+      # ── migrate image (migrator target) ────────────────────────────────────
+      - name: Build & push migrate
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          target: migrator
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ github.repository_owner }}/saffron-town-migrate:${{ github.sha }}
+            ${{ env.REGISTRY }}/${{ github.repository_owner }}/saffron-town-migrate:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

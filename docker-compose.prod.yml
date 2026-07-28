@@ -1,0 +1,82 @@
+# ── Saffron Town — droplet stack (pulls prebuilt GHCR images) ─────────────────
+# Mirrors the Imdaad convention on the same DigitalOcean droplet:
+#   • Images are BUILT IN CI (GitHub Actions) and pushed to GHCR — never built
+#     on the box (1 GB RAM, no swap; on-box Next.js builds OOM).
+#   • The `web` service joins the shared external "web" network so the existing
+#     Traefik proxy routes to it and issues TLS automatically via labels.
+#   • Postgres stays on the private "internal" network — never exposed, so it
+#     can't collide with Imdaad's Postgres.
+#
+# Location on the droplet:  /opt/saffron-town
+# Deploy:
+#   cd /opt/saffron-town
+#   GITHUB_OWNER=mohsinyaqoob IMAGE_TAG=<sha> docker compose -f docker-compose.prod.yml pull
+#   GITHUB_OWNER=mohsinyaqoob IMAGE_TAG=<sha> docker compose -f docker-compose.prod.yml up -d
+# (values usually come from a `.env` next to this file — see .env.docker.example)
+
+services:
+  # ── PostgreSQL (private — only reachable by web + migrate) ───────────────────
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-saffron}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+      POSTGRES_DB: ${POSTGRES_DB:-saffron}
+    volumes:
+      - saffron_pgdata:/var/lib/postgresql/data
+    networks:
+      - internal
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-saffron} -d ${POSTGRES_DB:-saffron}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    security_opt:
+      - no-new-privileges:true
+
+  # ── One-shot: applies Prisma migrations, then exits. `web` waits for it. ─────
+  migrate:
+    image: ghcr.io/${GITHUB_OWNER:-mohsinyaqoob}/saffron-town-migrate:${IMAGE_TAG:-latest}
+    env_file: .env
+    networks:
+      - internal
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: "no"
+    security_opt:
+      - no-new-privileges:true
+
+  # ── Next.js standalone server → beta.saffron.town (routed by Traefik) ───────
+  web:
+    image: ghcr.io/${GITHUB_OWNER:-mohsinyaqoob}/saffron-town-web:${IMAGE_TAG:-latest}
+    restart: unless-stopped
+    env_file: .env
+    networks:
+      - web        # reachable by Traefik
+      - internal   # reaches db
+    depends_on:
+      db:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    security_opt:
+      - no-new-privileges:true
+    # No host port publish — Traefik reaches the container on the "web" network.
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=web"
+      - "traefik.http.routers.saffron-web.rule=Host(`beta.saffron.town`)"
+      - "traefik.http.routers.saffron-web.entrypoints=websecure"
+      - "traefik.http.routers.saffron-web.tls.certresolver=le"
+      - "traefik.http.services.saffron-web.loadbalancer.server.port=3000"
+
+networks:
+  web:
+    external: true    # shared Traefik proxy network (already created)
+  internal:
+    driver: bridge    # private, per-app
+
+volumes:
+  saffron_pgdata:
