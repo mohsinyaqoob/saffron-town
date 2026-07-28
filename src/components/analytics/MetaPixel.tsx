@@ -1,7 +1,7 @@
 // Publishable pixel ID (ships to the browser anyway). Override with
 // NEXT_PUBLIC_META_PIXEL_ID if it ever changes; defaults so it works without
 // wiring a new build arg through the Docker/CI pipeline.
-const PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID || "27794715380196356";
+const PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID || "1030140699881688";
 
 // Meta's standard base snippet. Kept verbatim (init + first PageView).
 const PIXEL_SNIPPET = `!function(f,b,e,v,n,t,s)
