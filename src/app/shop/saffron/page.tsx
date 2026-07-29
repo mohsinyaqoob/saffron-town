@@ -12,6 +12,7 @@ import { ProductJsonLd } from "@/components/seo/ProductJsonLd";
 import { TestimonialsWidget } from "@/components/testimonials";
 import { SITE_CONFIG } from "@/lib/constants";
 import { getDefaultProduct } from "@/lib/product-data";
+import { getGridPackVariants } from "@/lib/saffron-pack-variants";
 import { SHOP_FAQS } from "@/lib/shop-faqs";
 
 /** Static product page — built once at deploy, served from CDN */
@@ -58,7 +59,10 @@ export default function SaffronProductPage() {
     answer: f.answer,
   }));
 
-  const defaultVariant = product.variants[0];
+  // Must mirror ProductBuyBox's default selection. `product.variants[0]` is the
+  // 1g Tester, which is NOT offered in the shop grid — reporting it to Meta
+  // would send a price (₹650) for a pack customers can't actually buy.
+  const defaultVariant = getGridPackVariants(product)[0] ?? product.variants[0];
 
   return (
     <div className="flex min-h-screen flex-col bg-background">

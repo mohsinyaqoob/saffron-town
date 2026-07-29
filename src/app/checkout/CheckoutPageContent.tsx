@@ -18,7 +18,11 @@ import { Header } from "@/components/layout/Header";
 import { CheckoutOrderRedirectLayout } from "@/components/shop/ShopPageLoaders";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
-import { trackBeginCheckout } from "@/lib/analytics";
+import {
+  trackAddPaymentInfo,
+  trackBeginCheckout,
+  trackPaymentAbandoned,
+} from "@/lib/analytics";
 import {
   type CheckoutFormValues,
   checkoutFormSchema,
@@ -181,6 +185,8 @@ export function CheckoutPageContent({ footer }: { footer: ReactNode }) {
       return;
     }
     setPaymentStep("modal");
+    // Payment window is open — the customer reached the payment step.
+    trackAddPaymentInfo([line], orderTotal, "INR");
 
     const rzp = new window.Razorpay({
       key: keyId ?? "",
@@ -199,6 +205,7 @@ export function CheckoutPageContent({ footer }: { footer: ReactNode }) {
       modal: {
         ondismiss: () => {
           setPaymentStep("idle");
+          trackPaymentAbandoned([line], orderTotal, "INR");
           // Customer closed the modal without paying — record the order as FAILED
           if (pendingOrderId) {
             fetch("/api/razorpay/mark-failed", {

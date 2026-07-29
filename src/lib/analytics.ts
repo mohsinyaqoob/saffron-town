@@ -23,7 +23,8 @@ type FbqOptions = { eventID?: string };
  * `fbq`'s own queue takes over. `eventID` enables server/browser dedup when a
  * Conversions API event shares the same id (Phase 2).
  */
-function fbTrack(
+function fbSend(
+  method: "track" | "trackCustom",
   event: string,
   params?: Record<string, unknown>,
   options?: FbqOptions,
@@ -35,9 +36,9 @@ function fbTrack(
       .fbq;
     if (typeof fbq !== "function") return false;
     if (options?.eventID) {
-      fbq("track", event, params ?? {}, options);
+      fbq(method, event, params ?? {}, options);
     } else {
-      fbq("track", event, params ?? {});
+      fbq(method, event, params ?? {});
     }
     return true;
   };
@@ -49,6 +50,34 @@ function fbTrack(
   const timer = window.setInterval(() => {
     if (send() || ++tries > 50) window.clearInterval(timer);
   }, 200);
+}
+
+/** Meta *standard* event (optimizable, eligible for AEM ranking). */
+function fbTrack(
+  event: string,
+  params?: Record<string, unknown>,
+  options?: FbqOptions,
+) {
+  fbSend("track", event, params, options);
+}
+
+/**
+ * Meta *custom* event. Useful for diagnostics/audiences, but weaker for
+ * optimization than a standard event — don't optimize campaigns against these.
+ */
+function fbTrackCustom(event: string, params?: Record<string, unknown>) {
+  fbSend("trackCustom", event, params);
+}
+
+/** Shared `contents` mapping for multi-line events (bulk lines count grams). */
+function toContents(lines: CheckoutLineItem[]) {
+  return lines.map((item) => ({
+    id: toContentId(
+      item.id,
+      item.variant.grams != null ? "custom" : item.variant.size,
+    ),
+    quantity: item.variant.grams != null ? item.variant.grams : item.quantity,
+  }));
 }
 
 /**
@@ -133,18 +162,63 @@ export function trackBeginCheckout(
     }),
   });
 
-  const contents = lines.map((item) => ({
-    id: toContentId(
-      item.id,
-      item.variant.grams != null ? "custom" : item.variant.size,
-    ),
-    quantity: item.variant.grams != null ? item.variant.grams : item.quantity,
-  }));
+  const contents = toContents(lines);
   fbTrack("InitiateCheckout", {
     content_type: "product",
     content_ids: contents.map((c) => c.id),
     contents,
     num_items: contents.reduce((n, c) => n + c.quantity, 0),
+    value: total,
+    currency,
+  });
+}
+
+/**
+ * The Razorpay payment window opened — the customer reached the payment step.
+ * Standard event, so Meta can build the highest-intent retargeting audience:
+ * "AddPaymentInfo AND NOT Purchase".
+ */
+export function trackAddPaymentInfo(
+  lines: CheckoutLineItem[],
+  total: number,
+  currency = "INR",
+) {
+  const contents = toContents(lines);
+
+  sendGAEvent("event", "add_payment_info", {
+    currency,
+    value: total,
+    items: contents.map((c) => ({ item_id: c.id, quantity: c.quantity })),
+  });
+
+  fbTrack("AddPaymentInfo", {
+    content_type: "product",
+    content_ids: contents.map((c) => c.id),
+    contents,
+    num_items: contents.reduce((n, c) => n + c.quantity, 0),
+    value: total,
+    currency,
+  });
+}
+
+/**
+ * The customer closed the Razorpay window without paying. Custom event — for
+ * drop-off diagnostics in Events Manager only. Do NOT optimize campaigns
+ * against it (and don't spend an AEM slot on it): the abandoner audience is
+ * better built as "AddPaymentInfo AND NOT Purchase". Note a customer may
+ * dismiss and retry, so this can fire more than once per session.
+ */
+export function trackPaymentAbandoned(
+  lines: CheckoutLineItem[],
+  total: number,
+  currency = "INR",
+) {
+  const contents = toContents(lines);
+
+  fbTrackCustom("PaymentAbandoned", {
+    content_type: "product",
+    content_ids: contents.map((c) => c.id),
+    contents,
     value: total,
     currency,
   });
