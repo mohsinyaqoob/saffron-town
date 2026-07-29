@@ -2,6 +2,7 @@
 
 import { sendGAEvent } from "@next/third-parties/google";
 import type { CheckoutLineItem } from "@/lib/checkout-line";
+import { toContentId } from "@/lib/content-id";
 
 /**
  * GA4 e-commerce events via gtag (see `Gtag` in root layout) AND Meta Pixel
@@ -80,19 +81,8 @@ function toContents(lines: CheckoutLineItem[]) {
   }));
 }
 
-/**
- * SKU-level content id shared across ViewContent / AddToCart / InitiateCheckout
- * / Purchase (and a future product catalog). Derived from the product id + the
- * variant label, e.g. `"saffron"` + `"5g"` → `"saffron-5g"`, `"custom"` →
- * `"saffron-custom"`.
- */
-export function toContentId(productId: string, variantLabel: string): string {
-  const v = variantLabel
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "");
-  return v ? `${productId}-${v}` : productId;
-}
+// Single source of truth, shared with the server-side Conversions API.
+export { toContentId };
 
 export function trackAddToCart(item: {
   id: string;

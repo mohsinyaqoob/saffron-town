@@ -55,6 +55,20 @@ model Order {
   razorpayPaymentId String?
   /** "prebook" | "gifting" | null (regular shop order) */
   source            String?
+
+  /**
+   * Meta attribution context captured from the browser at checkout. The
+   * Razorpay webhook is a server-to-server call with no cookies, so these are
+   * persisted here for the Conversions API Purchase to reach a good Event Match
+   * Quality. Meta requires all four RAW (never hashed).
+   */
+  fbp             String?  @db.VarChar(255)
+  fbc             String?  @db.VarChar(500)
+  clientIp        String?  @db.VarChar(64)
+  clientUserAgent String?  @db.Text
+  /** Set once the CAPI Purchase has been sent, so it fires exactly once. */
+  capiPurchaseSentAt DateTime?
+
   items          OrderItem[]
 
   @@index([source])

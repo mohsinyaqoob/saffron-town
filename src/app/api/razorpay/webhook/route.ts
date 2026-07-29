@@ -1,5 +1,6 @@
 import { createHmac, timingSafeEqual } from "node:crypto";
-import { NextResponse } from "next/server";
+import { after, NextResponse } from "next/server";
+import { sendOrderPurchaseToMeta } from "@/lib/meta-capi-order";
 import { getPrisma } from "@/lib/prisma";
 
 export const runtime = "nodejs";
@@ -67,7 +68,7 @@ export async function POST(request: Request) {
     const prisma = getPrisma();
     const order = await prisma.order.findFirst({
       where: { razorpayOrderId },
-      select: { id: true, status: true },
+      select: { id: true, status: true, capiPurchaseSentAt: true },
     });
 
     if (!order) {
@@ -80,22 +81,28 @@ export async function POST(request: Request) {
       return NextResponse.json({ received: true });
     }
 
-    if (order.status === "PAID") {
-      // Already paid — idempotent
-      return NextResponse.json({ received: true });
+    if (order.status !== "PAID") {
+      // Payment captured => PAID. Also corrects an order marked FAILED
+      // prematurely (e.g. modal dismissed, then payment still went through).
+      await prisma.order.update({
+        where: { id: order.id },
+        data: { status: "PAID", razorpayPaymentId },
+      });
+
+      console.log("[razorpay/webhook] Marked order PAID via webhook", {
+        orderId: order.id,
+        razorpayOrderId,
+      });
     }
 
-    // Payment captured => PAID. Also corrects an order marked FAILED
-    // prematurely (e.g. modal dismissed, then payment still went through).
-    await prisma.order.update({
-      where: { id: order.id },
-      data: { status: "PAID", razorpayPaymentId },
-    });
-
-    console.log("[razorpay/webhook] Marked order PAID via webhook", {
-      orderId: order.id,
-      razorpayOrderId,
-    });
+    // Meta Conversions API Purchase — the authoritative server-side conversion.
+    // Runs for orders verify-payment already marked PAID too, since the browser
+    // may have closed before the success page fired the pixel. `after()` keeps
+    // Razorpay's response fast (it retries on slow/failed webhooks), and the
+    // helper is exactly-once via an atomic claim on `capiPurchaseSentAt`.
+    if (!order.capiPurchaseSentAt) {
+      after(() => sendOrderPurchaseToMeta(order.id));
+    }
   } catch (e) {
     console.error("[razorpay/webhook] DB error", e);
     // Return 500 so Razorpay retries the webhook

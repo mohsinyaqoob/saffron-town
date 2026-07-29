@@ -6,6 +6,7 @@ import {
   giftBoxLineCreate,
   isGiftingSource,
 } from "@/lib/gifting";
+import { readMetaRequestContext } from "@/lib/meta-capi";
 import { getPrisma, isDirectPostgresUrl } from "@/lib/prisma";
 import { getProductById } from "@/lib/product-data";
 import {
@@ -292,6 +293,10 @@ export async function POST(request: Request) {
       });
     }
 
+    // Meta attribution context — captured here because the Razorpay webhook
+    // that later sends the Conversions API Purchase has no browser cookies.
+    const meta = readMetaRequestContext(request);
+
     const order = await prisma.order.create({
       data: {
         currency,
@@ -307,6 +312,10 @@ export async function POST(request: Request) {
         paymentMethod: "ONLINE",
         status: "PENDING",
         razorpayOrderId: rzpOrder.id,
+        fbp: meta.fbp,
+        fbc: meta.fbc,
+        clientIp: meta.clientIp,
+        clientUserAgent: meta.clientUserAgent,
         items: { create: lineCreates },
       },
       select: { id: true },
