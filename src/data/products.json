@@ -16,12 +16,6 @@
     "stock": 50,
     "mpn": "ST-MONGRA-A++",
     "variants": [
-      {
-        "id": "mongra-1g",
-        "size": "1g Tester",
-        "price": 1,
-        "mrp": 799
-      },
       { "id": "mongra-1g", "size": "1g Tester", "price": 650, "mrp": 799 },
       { "id": "mongra-2g", "size": "2g", "price": 1299, "mrp": 1599 },
       { "id": "mongra-5g", "size": "5g", "price": 3049, "mrp": 3699 },
