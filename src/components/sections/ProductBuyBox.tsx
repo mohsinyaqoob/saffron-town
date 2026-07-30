@@ -7,6 +7,7 @@ import { trackAddToCart } from "@/lib/analytics";
 import { checkoutHref } from "@/lib/checkout-line";
 import type { ProductPageData, ProductVariant } from "@/lib/product-data";
 import {
+  getDefaultPackVariant,
   getGridPackVariants,
   parsePackGramsFromSize,
 } from "@/lib/saffron-pack-variants";
@@ -21,8 +22,10 @@ interface ProductBuyBoxProps {
  */
 export function ProductBuyBox({ product }: ProductBuyBoxProps) {
   const gridVariants = useMemo(() => getGridPackVariants(product), [product]);
+  // Pre-select the 2g pack, not the cheapest grid entry — see
+  // DEFAULT_SHOP_PACK_GRAMS.
   const [selectedVariant, setSelectedVariant] = useState<ProductVariant>(
-    () => gridVariants[0] ?? product.variants[0],
+    () => getDefaultPackVariant(product) ?? product.variants[0],
   );
   const [quantity, setQuantity] = useState(1);
   const router = useRouter();
