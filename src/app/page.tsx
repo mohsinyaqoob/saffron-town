@@ -100,7 +100,9 @@ export default function Home() {
     <>
       <JsonLd schema={[websiteSchema, homepageOrganizationSchema]} />
       <HomePageMotion />
-      <Header />
+      {/* Explicit: keeps the transparent/fixed home header correct in the
+          prerendered HTML, where usePathname() can be null. */}
+      <Header isHome />
       <main>
         <Hero />
         <div data-home-fade-up>

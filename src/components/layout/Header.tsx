@@ -51,7 +51,21 @@ function ChevronDown({ className }: { className?: string }) {
   );
 }
 
-export function Header() {
+type HeaderProps = {
+  /**
+   * Render the home variant (transparent bar overlaying the hero, `fixed` so it
+   * takes no layout space).
+   *
+   * Pass this explicitly from the home page. Deriving it from `usePathname()`
+   * alone is unsafe: during static prerendering that hook can return null, so
+   * `/` gets prerendered with the non-home header — which is `sticky` and
+   * therefore occupies ~81px of flow, pushing the `min-h-dvh` hero down and
+   * hiding its bottom stats strip until some later state update re-renders it.
+   */
+  isHome?: boolean;
+};
+
+export function Header({ isHome: isHomeProp }: HeaderProps = {}) {
   const pathname = usePathname();
   const activeGroupLabel = (() => {
     const g = NAV_MENU.find(
@@ -65,7 +79,7 @@ export function Header() {
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(
     activeGroupLabel,
   );
-  const isHome = pathname === "/";
+  const isHome = isHomeProp ?? pathname === "/";
 
   // Open the drawer with the active page's group expanded by default
   const openDrawer = () => {
