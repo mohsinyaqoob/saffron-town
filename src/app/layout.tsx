@@ -2,10 +2,10 @@ import type { Metadata, Viewport } from "next";
 import { Figtree, Playfair_Display } from "next/font/google";
 import Script from "next/script";
 import { Gtag } from "@/components/analytics/Gtag";
+import MetaPixel from "@/components/analytics/MetaPixel";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { SITE_CONFIG } from "@/lib/constants";
-import MetaPixel from "@/components/analytics/MetaPixel";
-import "./globals.css"
+import "./globals.css";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -85,7 +85,10 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
-        <meta name="facebook-domain-verification" content="84ll8pzkv3nta46763a650064h1uc4" />
+        <meta
+          name="facebook-domain-verification"
+          content="84ll8pzkv3nta46763a650064h1uc4"
+        />
         {/* Reloading the home page otherwise restores the previous scroll
             position (browser "auto"), landing mid-page with a solid header and
             a gap. Force the top ONLY for a home-route reload, then restore
