@@ -1,28 +1,33 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Footer } from "@/components/layout/Footer";
-import { Header } from "@/components/layout/Header";
-import { PageHeader } from "@/components/sections";
+import {
+  Clause,
+  ClauseCallout,
+  ClauseList,
+  LegalPageLayout,
+} from "@/components/legal/LegalPageLayout";
 import { SITE_CONFIG } from "@/lib/constants";
+import { LEGAL_CONFIG, SELLER_NAME } from "@/lib/legal";
 
 /** Static page — built once at deploy */
 export const dynamic = "force-static";
 
+const PAGE_URL = `${SITE_CONFIG.url}/privacy`;
 const OG_IMAGE = `${SITE_CONFIG.url}/products-grid.png`;
 
 export const metadata: Metadata = {
-  robots: { index: false, follow: true },
   // Brand suffix is added by the title.template in app/layout.tsx — don't
   // append it here, or the rendered <title> ends up "… | Saffron Town | Saffron Town".
   title: "Privacy Policy",
   description:
-    "Privacy Policy for Saffron Town. How we collect, use, and protect your data when you shop for premium Kashmiri saffron.",
-  alternates: { canonical: `${SITE_CONFIG.url}/privacy` },
+    "How Saffron Town collects, uses, shares and protects your personal data — including payments, delivery, analytics and advertising tools — and the rights you have under India's DPDP Act, 2023.",
+  alternates: { canonical: PAGE_URL },
+  robots: { index: true, follow: true },
   openGraph: {
     title: "Privacy Policy | Saffron Town",
     description:
-      "How we collect, use, and protect your data when you shop at Saffron Town.",
-    url: `${SITE_CONFIG.url}/privacy`,
+      "How we collect, use, share and protect your data when you shop at Saffron Town.",
+    url: PAGE_URL,
     type: "website",
     images: [
       {
@@ -43,104 +48,209 @@ export const metadata: Metadata = {
 
 export default function PrivacyPage() {
   return (
-    <div className="flex min-h-screen flex-col bg-background">
-      <Header />
-      <main className="flex-grow">
-        <PageHeader
-          crumbs={[
-            { label: "Home", href: "/" },
-            { label: "Privacy Policy", href: "/privacy" },
+    <LegalPageLayout
+      title="Privacy Policy"
+      slug="privacy"
+      intro={`This policy explains what personal data ${SELLER_NAME} collects when you use ${SITE_CONFIG.url}, why we collect it, who we share it with, and the choices you have. We are the data fiduciary for that data under India's Digital Personal Data Protection Act, 2023.`}
+    >
+      <Clause heading="What we collect">
+        <ClauseList
+          items={[
+            <>
+              <strong>Order and contact details</strong> — name, email address,
+              phone number, delivery address and PIN code, plus any note you add
+              to an order.
+            </>,
+            <>
+              <strong>Order history</strong> — what you bought, the amount paid,
+              order status, and how you told us you heard about us.
+            </>,
+            <>
+              <strong>Enquiries</strong> — anything you send us by form, email,
+              phone or the chat widget, including bulk-order enquiries.
+            </>,
+            <>
+              <strong>Technical data</strong> — IP address, browser and device
+              type, pages viewed, and referring links.
+            </>,
+            <>
+              <strong>Payment status</strong> — confirmation of whether a
+              payment succeeded, and the gateway&apos;s reference IDs.
+            </>,
           ]}
-          title="Privacy Policy"
-          description="Last updated: March 2025"
         />
+        <ClauseCallout>
+          <strong>We never see or store your full card details.</strong> Card,
+          UPI and netbanking credentials are captured directly by our payment
+          gateway on its own systems.
+        </ClauseCallout>
+      </Clause>
 
-        <section className="py-20 lg:py-28">
-          <div className="mx-auto max-w-3xl px-6 lg:px-20 prose-headings:font-display prose-headings:font-bold prose-headings:text-text-primary prose-p:text-lg prose-p:leading-relaxed prose-p:text-secondary prose-p:mb-8">
-            <h2 className="font-display text-2xl font-bold mt-16 mb-6 text-text-primary">
-              Information We Collect
-            </h2>
-            <p>
-              When you place an order or contact us, we collect your name, email
-              address, shipping address, and payment details. This information
-              is used solely to process orders, deliver your saffron, and
-              respond to your inquiries.
-            </p>
+      <Clause heading="Why we use it">
+        <ClauseList
+          items={[
+            "To process, pack, deliver and invoice your order, and to handle refunds or replacements.",
+            "To send transactional messages — order confirmation, dispatch and tracking updates.",
+            "To answer your questions and provide support.",
+            "To check whether we can deliver to your PIN code.",
+            "To detect and prevent fraud, abuse and payment disputes.",
+            "To measure how our website and advertising perform, so we can improve both.",
+            "To meet legal, tax and accounting obligations.",
+          ]}
+        />
+      </Clause>
 
-            <h2 className="font-display text-2xl font-bold mt-16 mb-6 text-text-primary">
-              How We Use Your Information
-            </h2>
-            <p>
-              We use your information to fulfil orders, send delivery updates,
-              answer questions about our products, and improve our service. We
-              do not sell or share your personal data with third parties for
-              marketing.
-            </p>
+      <Clause heading="Who we share it with">
+        <p>
+          We do not sell your personal data. We share the minimum necessary with
+          service providers who help us run the shop:
+        </p>
+        <ClauseList
+          items={[
+            <>
+              <strong>Payment gateway (Razorpay)</strong> — to take payment and
+              process refunds.
+            </>,
+            <>
+              <strong>Courier partners</strong> — name, address and phone
+              number, so your parcel can be delivered.
+            </>,
+            <>
+              <strong>Email and messaging providers</strong> — to send order
+              notifications.
+            </>,
+            <>
+              <strong>Hosting, database and content providers</strong> — to run
+              this website and store order records.
+            </>,
+            <>
+              <strong>Analytics and advertising platforms</strong> — Google and
+              Meta, as described below.
+            </>,
+            <>
+              <strong>Chat support provider</strong> — if you start a chat with
+              us on the site.
+            </>,
+          ]}
+        />
+        <p>
+          We may also disclose data where required by law, court order or a
+          lawful government request, or to establish or defend a legal claim.
+        </p>
+      </Clause>
 
-            <h2 className="font-display text-2xl font-bold mt-16 mb-6 text-text-primary">
-              Cookies & Analytics
-            </h2>
-            <p>
-              Our website uses cookies and analytics tools to improve user
-              experience and understand how visitors interact with our site. You
-              can adjust your browser settings to limit or block cookies.
-            </p>
+      <Clause heading="Advertising and measurement">
+        <p>
+          We use Google Analytics and Google Ads to understand site traffic, and
+          the Meta Pixel to measure the performance of our advertising on
+          Facebook and Instagram. These tools set cookies and collect technical
+          data about your visit.
+        </p>
+        <ClauseCallout>
+          <strong>Sharing purchase data with Meta.</strong> When an order is
+          paid, we send a server-side event to Meta&apos;s Conversions API so we
+          can measure which adverts led to sales. That event includes your
+          email, phone number, name and PIN code in{" "}
+          <strong>irreversibly hashed (SHA-256) form</strong> — never as plain
+          text — together with the order value and identifiers from Meta&apos;s
+          own cookies. Meta uses these hashes to match the purchase to an
+          account where one exists, and processes the data under its own terms.
+        </ClauseCallout>
+        <p>
+          You can limit this by blocking cookies in your browser, using your
+          device&apos;s tracking controls, or adjusting your ad preferences
+          within Facebook, Instagram and Google. Blocking these tools does not
+          affect your ability to place an order.
+        </p>
+      </Clause>
 
-            <h2 className="font-display text-2xl font-bold mt-16 mb-6 text-text-primary">
-              Data Security
-            </h2>
-            <p>
-              We take reasonable measures to protect your personal information
-              from unauthorised access, loss, or misuse. Payment processing is
-              handled by secure third-party providers.
-            </p>
+      <Clause heading="Cookies">
+        <p>
+          Cookies are small files stored by your browser. We use them to keep
+          the site working (for example, remembering your checkout selection),
+          to measure traffic, and for advertising measurement. You can delete or
+          block cookies in your browser settings; essential cookies are required
+          for checkout to function.
+        </p>
+      </Clause>
 
-            <h2 className="font-display text-2xl font-bold mt-16 mb-6 text-text-primary">
-              Contact
-            </h2>
-            <p>
-              For privacy-related questions, contact us at{" "}
-              <a
-                href={`mailto:${SITE_CONFIG.email}`}
-                className="text-primary font-semibold hover:underline"
-              >
-                {SITE_CONFIG.email}
-              </a>{" "}
-              or call{" "}
-              <a
-                href={`tel:${SITE_CONFIG.phone}`}
-                className="text-primary font-semibold hover:underline"
-              >
-                {SITE_CONFIG.phone}
-              </a>
-              .
-            </p>
+      <Clause heading="How long we keep it">
+        <p>
+          Order and invoice records are retained for as long as required by
+          Indian tax and accounting law. Enquiries and chat transcripts are kept
+          only as long as needed to deal with the matter and for a reasonable
+          period afterwards. Technical and analytics data is retained according
+          to the retention settings of the relevant platform.
+        </p>
+      </Clause>
 
-            <div className="mt-20 pt-12 border-t border-secondary-border/20 text-center">
-              <Link
-                href="/"
-                className="inline-flex items-center gap-2 text-primary font-semibold hover:underline"
-              >
-                Back to home
-                <svg
-                  className="h-4 w-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M17 8l4 4m0 0l-4 4m4-4H3"
-                  />
-                </svg>
-              </Link>
-            </div>
-          </div>
-        </section>
-      </main>
-      <Footer />
-    </div>
+      <Clause heading="Your rights">
+        <p>Under the DPDP Act, 2023 you may ask us to:</p>
+        <ClauseList
+          items={[
+            "Confirm what personal data of yours we hold, and give you access to it.",
+            "Correct or complete inaccurate or outdated data.",
+            "Erase data we no longer need for the purpose it was collected, subject to our legal retention duties.",
+            "Withdraw consent for non-essential uses such as marketing.",
+            "Nominate another person to exercise these rights on your behalf.",
+          ]}
+        />
+        <p>
+          Email{" "}
+          <a href={`mailto:${LEGAL_CONFIG.email}`}>{LEGAL_CONFIG.email}</a> and
+          we will respond within a reasonable period. We may need to verify your
+          identity before acting.
+        </p>
+      </Clause>
+
+      <Clause heading="Marketing messages">
+        <p>
+          If you opt in, we may send occasional messages about new harvests and
+          offers. You can opt out at any time using the unsubscribe link or by
+          replying to ask us to stop. Transactional messages about an order you
+          have placed are not marketing and will continue.
+        </p>
+      </Clause>
+
+      <Clause heading="Children">
+        <p>
+          This site is not directed at children, and we do not knowingly collect
+          personal data from anyone under 18. If you believe a child has given
+          us data, contact us and we will delete it.
+        </p>
+      </Clause>
+
+      <Clause heading="Security">
+        <p>
+          We use reasonable technical and organisational safeguards, including
+          encrypted connections (HTTPS), access controls on our order database,
+          and payment handling by a PCI-compliant gateway. No method of
+          transmission or storage is completely secure, and we cannot guarantee
+          absolute security.
+        </p>
+      </Clause>
+
+      <Clause heading="Changes to this policy">
+        <p>
+          We may update this policy as our practices or the law change. The
+          current version is always published here, and was last updated on{" "}
+          {LEGAL_CONFIG.lastUpdated}.
+        </p>
+      </Clause>
+
+      <Clause heading="Contact and grievances">
+        <p>
+          For any privacy question or complaint, email{" "}
+          <a href={`mailto:${LEGAL_CONFIG.email}`}>{LEGAL_CONFIG.email}</a> or
+          call <a href={`tel:${LEGAL_CONFIG.phone}`}>{LEGAL_CONFIG.phone}</a>.
+          {LEGAL_CONFIG.grievanceOfficer ? (
+            <> Our Grievance Officer is {LEGAL_CONFIG.grievanceOfficer}.</>
+          ) : null}{" "}
+          See also our <Link href="/terms">Terms of Use</Link>,{" "}
+          <Link href="/returns">Returns Policy</Link> and{" "}
+          <Link href="/shipping">Shipping Policy</Link>.
+        </p>
+      </Clause>
+    </LegalPageLayout>
   );
 }

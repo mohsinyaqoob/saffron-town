@@ -106,6 +106,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "monthly" as const,
       priority: 0.85,
     },
+    // Policy pages — low priority, but indexable so customers and payment
+    // providers can find them.
+    ...["shipping", "returns", "terms", "privacy", "disclaimer"].map(
+      (slug) => ({
+        url: `${baseUrl}/${slug}`,
+        lastModified: monthAnchor,
+        changeFrequency: "yearly" as const,
+        priority: 0.3,
+      }),
+    ),
     {
       url: `${baseUrl}/authors`,
       lastModified: monthAnchor,

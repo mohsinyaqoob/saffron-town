@@ -28,9 +28,12 @@ const FOOTER_COLUMNS: {
   {
     heading: "Help & legal",
     links: [
-      { href: "/", label: "Home" },
       { href: "/contact", label: "Contact" },
+      { href: "/shipping", label: "Shipping & delivery" },
+      { href: "/returns", label: "Returns & refunds" },
+      { href: "/terms", label: "Terms of use" },
       { href: "/privacy", label: "Privacy" },
+      { href: "/disclaimer", label: "Disclaimer" },
       { href: "/sitemap.xml", label: "Sitemap" },
     ],
   },
