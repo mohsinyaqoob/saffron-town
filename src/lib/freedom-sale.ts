@@ -39,7 +39,7 @@ const DEFAULT_ENDS_AT = "2026-08-15T23:59:59+05:30";
  */
 export function isFreedomSaleEnabled(): boolean {
   return (
-    process.env["25_PERCENT_OFFOFREEDOM_SALE_ENABLED"]?.trim().toLowerCase() ===
+    process.env["FREEDOM_SALE_ENABLED"]?.trim().toLowerCase() ===
     "true"
   );
 }
