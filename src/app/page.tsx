@@ -4,20 +4,21 @@ import { JsonLd } from "@/components/JsonLd";
 import { Footer, Header } from "@/components/layout";
 import {
   ActivityFeedToast,
-  BlogSection,
   CtaSection,
   GuaranteeSection,
   Hero,
   HomePageMotion,
   HomePrebookSection,
+  OriginProof,
   PregnancyHighlight,
   ShopBanner,
-  TrustBadges,
+  SpotFakeSaffron,
   UseCasesSection,
 } from "@/components/sections";
 import { TestimonialsWidget } from "@/components/testimonials";
 import { SITE_CONFIG } from "@/lib/constants";
 import { HOME_FAQS } from "@/lib/home-faqs";
+import { getDefaultProduct } from "@/lib/product-data";
 
 /** Home fetches blog preview from Sanity — ISR so new posts appear without full rebuild */
 export const revalidate = 60;
@@ -96,6 +97,18 @@ const homepageOrganizationSchema = {
 };
 
 export default function Home() {
+  const product = getDefaultProduct();
+  // Cheapest pack anchors the hero price — a shopper who cannot find any price
+  // above the fold assumes it is being withheld.
+  const lowestPrice = product
+    ? Math.min(...product.variants.map((v) => v.price))
+    : 0;
+  const fromPrice = new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: product?.currency ?? "INR",
+    maximumFractionDigits: 0,
+  }).format(lowestPrice);
+
   return (
     <>
       <JsonLd schema={[websiteSchema, homepageOrganizationSchema]} />
@@ -104,27 +117,40 @@ export default function Home() {
           prerendered HTML, where usePathname() can be null. */}
       <Header isHome />
       <main>
-        <Hero />
+        <Hero
+          fromPrice={fromPrice}
+          reviewCount={product?.reviewCount ?? 0}
+          rating={product?.rating ?? 5}
+        />
+        {/* TrustBadges intentionally not rendered here — the hero now carries an
+            equivalent trust bar directly under the fold, and showing both put
+            the same four claims on screen twice within one scroll. */}
+        {/* Traceability before persuasion: an unknown brand has to establish
+         *who and where* before a shopper will weigh benefits or price. */}
         <div data-home-fade-up>
-          <TrustBadges />
+          <OriginProof />
+        </div>
+        {/* The objection, answered before it is asked. Also the single best
+            reason for a cold visitor to keep reading rather than bounce. */}
+        <div data-home-fade-up>
+          <SpotFakeSaffron />
         </div>
         <div data-home-fade-up className="py-10 sm:py-14">
           <ShopBanner />
         </div>
+        {/* Reviews moved up from below the blog — proof from other buyers is
+            worth more at this point than more of our own copy. */}
+        <div data-home-fade-up>
+          <TestimonialsWidget variant="top" limit={6} />
+        </div>
         <div data-home-fade-up>
           <UseCasesSection />
-        </div>
-        <div data-home-fade-up className="py-10 sm:py-14">
-          <HomePrebookSection />
         </div>
         <div data-home-fade-up>
           <PregnancyHighlight />
         </div>
-        <div data-home-fade-up>
-          <TestimonialsWidget variant="top" limit={3} />
-        </div>
-        <div data-home-fade-up>
-          <BlogSection />
+        <div data-home-fade-up className="py-10 sm:py-14">
+          <HomePrebookSection />
         </div>
         <div data-home-fade-up>
           <GuaranteeSection />

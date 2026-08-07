@@ -1,6 +1,7 @@
 import path from "node:path";
 import PDFDocument from "pdfkit";
 import { SITE_CONFIG } from "@/lib/constants";
+import { orderPayableRupees } from "@/lib/freedom-sale";
 import type { OrderWithItems } from "@/lib/order-receipt";
 
 const FONTS_DIR = path.join(process.cwd(), "src/assets/fonts/order-pdf");
@@ -201,7 +202,7 @@ export function buildOrderPdfBuffer(order: OrderWithItems): Promise<Buffer> {
       .fontSize(13)
       .fillColor(COLORS.ink)
       .text(
-        `Total (${order.currency})  ${formatMoney(order.subtotalRupees, order.currency)}`,
+        `Total (${order.currency})  ${formatMoney(orderPayableRupees(order), order.currency)}`,
         innerLeft,
         doc.y,
         { width: innerW, align: "right" },

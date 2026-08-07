@@ -1,5 +1,6 @@
 import { SITE_CONFIG } from "@/lib/constants";
 import { toContentId } from "@/lib/content-id";
+import { orderPayableRupees } from "@/lib/freedom-sale";
 import { sendCapiPurchase } from "@/lib/meta-capi";
 import { getPrisma } from "@/lib/prisma";
 
@@ -31,6 +32,7 @@ export async function sendOrderPurchaseToMeta(orderId: string): Promise<void> {
         createdAt: true,
         currency: true,
         subtotalRupees: true,
+        discountRupees: true,
         customerName: true,
         email: true,
         phone: true,
@@ -54,7 +56,7 @@ export async function sendOrderPurchaseToMeta(orderId: string): Promise<void> {
       orderId: order.id,
       // The conversion happened now (payment captured), not at order creation.
       eventTime: new Date(),
-      value: order.subtotalRupees,
+      value: orderPayableRupees(order),
       currency: order.currency,
       contents: order.items.map((line) => ({
         id: toContentId(line.productId, line.variantLabel),

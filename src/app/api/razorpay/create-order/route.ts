@@ -2,6 +2,11 @@ import { after, NextResponse } from "next/server";
 import { isValidHearAboutChannel } from "@/data/heard-about-channels";
 import { ensureServiceability } from "@/lib/delivery/serviceability";
 import {
+  getFreedomSaleEndsAt,
+  isFreedomSaleEnabled,
+  resolveCoupon,
+} from "@/lib/freedom-sale";
+import {
   GIFT_BOX_PRICE_RUPEES,
   giftBoxLineCreate,
   isGiftingSource,
@@ -80,6 +85,7 @@ export async function POST(request: Request) {
   const heardRaw = String(b.heardAboutUs ?? "").trim();
   const notes = String(b.notes ?? "").trim() || undefined;
   const source = String(b.source ?? "").trim() || undefined;
+  const couponCodeRaw = String(b.couponCode ?? "").trim();
   const items: IncomingItem[] = Array.isArray(b.items)
     ? (b.items as IncomingItem[])
     : [];
@@ -209,7 +215,28 @@ export async function POST(request: Request) {
     subtotalRupees += GIFT_BOX_PRICE_RUPEES;
   }
 
-  const amountPaise = Math.round(subtotalRupees * 100);
+  // ── 2b. Resolve the coupon SERVER-SIDE ──
+  // The browser's discounted total is a preview only. The charge is derived
+  // here from the code plus the live feature flag, so a request carrying
+  // FREEDOM25 while the sale is switched off is billed at full price rather
+  // than rejected — the customer still checks out, just without the promotion.
+  let couponCode: string | null = null;
+  let discountRupees = 0;
+  if (couponCodeRaw) {
+    const coupon = resolveCoupon({
+      code: couponCodeRaw,
+      enabled: isFreedomSaleEnabled(),
+      subtotalRupees,
+      endsAt: getFreedomSaleEndsAt(),
+    });
+    if (coupon.ok) {
+      couponCode = coupon.code;
+      discountRupees = coupon.discountRupees;
+    }
+  }
+
+  const payableRupees = subtotalRupees - discountRupees;
+  const amountPaise = Math.round(payableRupees * 100);
   if (amountPaise < 100)
     return NextResponse.json(
       { error: "Minimum order amount is ₹1." },
@@ -301,6 +328,8 @@ export async function POST(request: Request) {
       data: {
         currency,
         subtotalRupees,
+        couponCode,
+        discountRupees,
         customerName,
         phone: phoneRaw,
         email,

@@ -4,6 +4,7 @@ import { OrderActions } from "@/components/dashboard/OrderActions";
 import { Badge } from "@/components/ui/Badge";
 import type { PartnerServiceability } from "@/lib/delivery/serviceability";
 import { normalizePincode } from "@/lib/delivery/serviceability";
+import { orderPayableRupees } from "@/lib/freedom-sale";
 
 type OrderWithItems = Order & { items: OrderItem[] };
 
@@ -147,7 +148,7 @@ export function DashboardOrderAccordion({
                   </Badge>
                   <div className="text-right">
                     <p className="font-display text-base font-bold text-accent-gold sm:text-lg">
-                      {formatInr(order.subtotalRupees, order.currency)}
+                      {formatInr(orderPayableRupees(order), order.currency)}
                     </p>
                     <p className="text-xs text-text-muted font-body">
                       {formatWhen(order.createdAt)}

@@ -6,6 +6,7 @@ import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { Badge } from "@/components/ui/Badge";
 import { SITE_CONFIG } from "@/lib/constants";
+import { orderPayableRupees } from "@/lib/freedom-sale";
 import { getOrderWithReceipt } from "@/lib/order-receipt";
 import { getProductById } from "@/lib/product-data";
 import { cn } from "@/lib/utils";
@@ -76,7 +77,7 @@ export default async function OrderSuccessPage({
       {order.status === "PAID" && (
         <PurchaseTracking
           orderId={order.id}
-          total={order.subtotalRupees}
+          total={orderPayableRupees(order)}
           currency={order.currency}
           items={order.items.map((line) => ({
             productId: line.productId,
@@ -243,7 +244,7 @@ export default async function OrderSuccessPage({
                   Total
                 </span>
                 <span className="font-display text-xl font-bold text-primary">
-                  {formatInr(order.subtotalRupees, order.currency)}
+                  {formatInr(orderPayableRupees(order), order.currency)}
                 </span>
               </div>
             </div>

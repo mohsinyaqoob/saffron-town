@@ -68,6 +68,59 @@
   }
 }
 
+/* ── Promo strip offset ──
+   The sitewide sale countdown is sticky at the top, so the sticky/fixed header
+   and the home hero's top padding both have to shift down by its height. They
+   read this variable instead of hardcoding a number, which keeps the offset
+   correct when the strip is absent (0px) and when its height changes. */
+:root {
+  --promo-h: 0px;
+}
+
+body.promo-active {
+  /* 3px tricolour hairline + h-11 bar. Must equal the strip's rendered height:
+     if it drifts, the fixed strip and the header overlap. */
+  --promo-h: 47px;
+  /* The strip is fixed, so reserve its height here or the first screen of every
+     page would start underneath it. */
+  padding-top: var(--promo-h);
+}
+
+@media (min-width: 640px) {
+  body.promo-active {
+    --promo-h: 51px; /* 3px hairline + sm:h-12 bar */
+  }
+}
+
+/* ── Homepage scroll reveal ──
+   Baseline is VISIBLE. `.will-reveal` is added by HomePageMotion only after an
+   IntersectionObserver is confirmed working, and removed again on cleanup, so a
+   failed or blocked script can never leave a section invisible. */
+.will-reveal:not(.is-revealed) {
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+.will-reveal {
+  transition:
+    opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.will-reveal.is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .will-reveal,
+  .will-reveal:not(.is-revealed) {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
 /* ── Zoho SalesIQ widget positioning ── */
 /* On mobile: hide the default float button (replaced by the header "Live Chat" button) */
 @media (max-width: 1023px) {

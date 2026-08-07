@@ -115,7 +115,15 @@ export function Header({ isHome: isHomeProp }: HeaderProps = {}) {
         className={cn(
           "z-50 w-full max-w-full min-w-0 overflow-x-clip transition-all duration-300",
           "pt-[env(safe-area-inset-top,0px)]",
-          isHome ? "fixed left-0 right-0 top-0" : "sticky top-0 left-0 right-0",
+          // The promo strip is `fixed`, and body reserves its height with
+          // `padding-top: var(--promo-h)`. The sticky header is already inside
+          // that padded box, so it must NOT add the offset again — doing so
+          // rendered it 44px below its own flow slot and pushed it over the
+          // breadcrumb. Only the `fixed` home variant, which sits outside the
+          // flow, needs the offset applied explicitly.
+          isHome
+            ? "fixed left-0 right-0 top-[var(--promo-h,0px)]"
+            : "sticky top-0 left-0 right-0",
           transparentMode
             ? "bg-transparent border-b border-transparent shadow-none"
             : "bg-background border-b border-secondary-border/30 shadow-sm shadow-dark/5",

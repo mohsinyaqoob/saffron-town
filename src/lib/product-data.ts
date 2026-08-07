@@ -1,5 +1,6 @@
 import products from "@/data/products.json";
 import testimonialsData from "@/data/testimonials.json";
+import { getCurrentHarvestSeason } from "@/lib/prebook-season";
 
 export type CustomWeightTier = {
   uptoGrams: number;
@@ -73,10 +74,19 @@ function computeReviewStats(): { rating: number; reviewCount: number } {
 const REVIEW_STATS = computeReviewStats();
 
 function hydrate(p: ProductPageData): ProductPageData {
-  // Only backfill if product didn't ship its own numbers
-  if (p.reviewCount > 0 && p.rating > 0) return p;
+  // `Harvest` is always derived, never read from JSON — a stored year goes stale
+  // silently and then contradicts the "fresh harvest only" promise on the same
+  // page. See getCurrentHarvestSeason.
+  const specifications = {
+    ...p.specifications,
+    Harvest: getCurrentHarvestSeason().harvestLabel,
+  };
+
+  // Only backfill review numbers if the product didn't ship its own
+  if (p.reviewCount > 0 && p.rating > 0) return { ...p, specifications };
   return {
     ...p,
+    specifications,
     rating: REVIEW_STATS.rating,
     reviewCount: REVIEW_STATS.reviewCount,
   };

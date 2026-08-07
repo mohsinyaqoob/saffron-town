@@ -2,9 +2,11 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useMemo, useState, useTransition } from "react";
+import { useMemo, useRef, useState, useTransition } from "react";
+import { StickyBuyBar } from "@/components/sections/StickyBuyBar";
 import { trackAddToCart } from "@/lib/analytics";
 import { checkoutHref } from "@/lib/checkout-line";
+import { getCurrentHarvestSeason } from "@/lib/prebook-season";
 import type { ProductPageData, ProductVariant } from "@/lib/product-data";
 import {
   getDefaultPackVariant,
@@ -30,6 +32,8 @@ export function ProductBuyBox({ product }: ProductBuyBoxProps) {
   const [quantity, setQuantity] = useState(1);
   const router = useRouter();
   const [isBuyNowPending, startBuyNowTransition] = useTransition();
+  const buyButtonRef = useRef<HTMLButtonElement>(null);
+  const harvest = useMemo(() => getCurrentHarvestSeason(), []);
 
   const formatPrice = (n: number) =>
     new Intl.NumberFormat("en-IN", {
@@ -161,12 +165,6 @@ export function ProductBuyBox({ product }: ProductBuyBoxProps) {
     },
   ];
 
-  const OFFERS = [
-    { title: "Free Delivery", desc: "On orders over ₹499", href: "#" },
-    { title: "Money-back", desc: "100% guarantee", href: "#" },
-    { title: "Farm Direct", desc: "Pampore heritage", href: "#" },
-  ];
-
   return (
     <div className="space-y-4">
       {/* Title — SEO H1 targets "kashmiri mongra kesar" head term */}
@@ -174,23 +172,26 @@ export function ProductBuyBox({ product }: ProductBuyBoxProps) {
         Buy Kashmiri Mongra Kesar — Grade A++ Pure Saffron Online
       </h1>
       <p className="text-sm text-secondary font-body">
-        {product.heroBadge} · {selectedVariant.size}
+        {product.heroBadge} · {harvest.harvestLabel} harvest
       </p>
 
-      {/* Visit Brand Store */}
-      <Link
-        href="/our-story"
-        className="text-sm text-primary hover:underline hover:text-primary-hover font-body"
-      >
-        Visit the Saffron Town Store
-      </Link>
-
+      {/* Rating links to the reviews below — a star row that isn't clickable
+          reads as decoration; a shopper who wants proof should reach it in one
+          tap rather than scrolling past the buy box hunting for it. */}
       {product.reviewCount > 0 ? (
-        <div className="flex flex-wrap items-center gap-2">
-          <div className="flex items-center gap-1">
+        <a
+          href="#customer-reviews"
+          className="inline-flex flex-wrap items-center gap-2 group"
+        >
+          <span
+            role="img"
+            className="flex items-center gap-0.5"
+            aria-label={`Rated ${product.rating} out of 5 from ${product.reviewCount} reviews`}
+          >
             {[...Array(5)].map((_, i) => (
               <span
                 key={i}
+                aria-hidden
                 className={
                   i < Math.floor(product.rating)
                     ? "text-primary"
@@ -200,11 +201,11 @@ export function ProductBuyBox({ product }: ProductBuyBoxProps) {
                 ★
               </span>
             ))}
-          </div>
-          <span className="text-sm text-secondary font-body">
-            ({product.reviewCount.toLocaleString()} reviews)
           </span>
-        </div>
+          <span className="text-sm text-secondary font-body group-hover:text-primary group-hover:underline">
+            {product.reviewCount} verified reviews
+          </span>
+        </a>
       ) : (
         <p className="text-sm text-secondary font-body leading-relaxed">
           Be among the first to try this harvest—farm-direct Mongra from
@@ -244,36 +245,6 @@ export function ProductBuyBox({ product }: ProductBuyBoxProps) {
           </p>
         )}
         <p className="text-sm text-primary font-medium mt-1">FREE delivery</p>
-      </div>
-
-      {/* Offers - horizontal cards */}
-      <div className="flex gap-3 overflow-x-auto pb-2">
-        {OFFERS.map((o) => (
-          <div
-            key={o.title}
-            className="flex-shrink-0 min-w-[140px] p-3 border border-secondary-border rounded-lg"
-          >
-            <p className="text-sm font-medium text-text-primary font-body">
-              {o.title}
-            </p>
-            <p className="text-xs text-secondary font-body">{o.desc}</p>
-          </div>
-        ))}
-      </div>
-
-      {/* Service icons row */}
-      <div className="grid grid-cols-3 sm:grid-cols-5 gap-3">
-        {SERVICE_ICONS.map(({ label, icon }) => (
-          <div
-            key={label}
-            className="flex flex-col items-center gap-1 text-center"
-          >
-            <span className="text-secondary">{icon}</span>
-            <span className="text-[10px] text-secondary font-body leading-tight">
-              {label}
-            </span>
-          </div>
-        ))}
       </div>
 
       {/* Buy box card */}
@@ -334,6 +305,7 @@ export function ProductBuyBox({ product }: ProductBuyBoxProps) {
         </div>
 
         <button
+          ref={buyButtonRef}
           type="button"
           onClick={goCheckout}
           disabled={isBuyNowPending}
@@ -358,6 +330,62 @@ export function ProductBuyBox({ product }: ProductBuyBoxProps) {
           Secure transaction. Ships from Saffron Town.
         </p>
       </div>
+
+      {/* Delivery expectation — answers "when will it arrive" before checkout
+          rather than after. Figures mirror /shipping so the promise here and the
+          policy page can't drift apart. */}
+      <div className="rounded-xl border border-secondary-border bg-surface-muted/40 p-4">
+        <p className="text-sm font-medium text-text-primary font-body">
+          Dispatched from Pampore in 1–2 working days
+        </p>
+        <p className="mt-1 text-xs leading-relaxed text-secondary font-body">
+          Metros &amp; major cities: 3–5 working days after dispatch. Elsewhere
+          in India: 5–8 working days.{" "}
+          <Link
+            href="/shipping"
+            className="text-primary hover:underline hover:text-primary-hover"
+          >
+            Shipping details
+          </Link>
+        </p>
+      </div>
+
+      {/* Reassurance row — placed after the CTA, not before it. Ahead of the
+          buy button these icons only delayed the decision; after it they answer
+          the hesitation of someone who has already considered buying. */}
+      <div className="grid grid-cols-3 sm:grid-cols-5 gap-3">
+        {SERVICE_ICONS.map(({ label, icon }) => (
+          <div
+            key={label}
+            className="flex flex-col items-center gap-1 text-center"
+          >
+            <span className="text-secondary">{icon}</span>
+            <span className="text-[10px] text-secondary font-body leading-tight">
+              {label}
+            </span>
+          </div>
+        ))}
+      </div>
+
+      <Link
+        href="/our-story"
+        className="block text-sm text-primary hover:underline hover:text-primary-hover font-body"
+      >
+        Meet the family that grows it
+      </Link>
+
+      <StickyBuyBar
+        packLabel={selectedVariant.size}
+        priceLabel={formatPrice(selectedVariant.price * quantity)}
+        mrpLabel={
+          selectedVariant.mrp && selectedVariant.mrp > selectedVariant.price
+            ? formatPrice(selectedVariant.mrp * quantity)
+            : null
+        }
+        pending={isBuyNowPending}
+        onBuy={goCheckout}
+        primaryCtaRef={buyButtonRef}
+      />
     </div>
   );
 }

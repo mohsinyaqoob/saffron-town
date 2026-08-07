@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { IMAGE_QUALITY_PHOTO, IMAGE_QUALITY_THUMB } from "@/lib/constants";
 import type { ProductPageData } from "@/lib/product-data";
 
@@ -10,19 +10,15 @@ interface AmazonProductGalleryProps {
 }
 
 /**
- * Borderless product gallery: main image (half width) with thumbnails below.
- * Smooth crossfade transitions, auto-advance.
+ * Borderless product gallery: main image with a thumbnail rail below.
+ *
+ * Deliberately no auto-advance. Rotating the image every 4s moved the photo the
+ * customer was actually studying — on a high-consideration purchase where the
+ * product *is* the evidence, taking control away from the buyer reads as an ad,
+ * not a shop. Image changes are now user-initiated only.
  */
 export function AmazonProductGallery({ product }: AmazonProductGalleryProps) {
   const [selectedIndex, setSelectedIndex] = useState(0);
-
-  useEffect(() => {
-    if (product.images.length <= 1) return;
-    const timer = setInterval(() => {
-      setSelectedIndex((i) => (i + 1) % product.images.length);
-    }, 4000);
-    return () => clearInterval(timer);
-  }, [product.images.length]);
 
   return (
     <div className="flex flex-col gap-4 items-center w-full lg:max-w-[50vw] lg:mx-auto">
@@ -51,38 +47,41 @@ export function AmazonProductGallery({ product }: AmazonProductGalleryProps) {
         ))}
       </div>
 
-      <button
-        type="button"
-        className="text-xs text-primary hover:underline mt-2 font-body"
-      >
-        Click to see full view
-      </button>
-
-      {/* Thumbnails below main image */}
+      {/* Thumbnails below main image.
+          `justify-center` was previously set directly on the `overflow-x-auto`
+          element: once the rail overflowed, the leading thumbnails were pushed
+          to a negative offset that cannot be scrolled back into view, so 2 of 9
+          product photos were permanently unreachable on mobile. Centring the
+          inner `w-max` track instead centres only when the rail actually fits,
+          and overflows rightward — scrollable — when it does not. */}
       {product.images.length > 1 && (
-        <div className="flex gap-3 overflow-x-auto py-2 mt-4 w-full justify-center">
-          {product.images.map((img, idx) => (
-            <button
-              key={`${img.url}-${idx}`}
-              type="button"
-              onClick={() => setSelectedIndex(idx)}
-              className={`relative w-14 h-14 flex-shrink-0 overflow-hidden rounded-lg transition-all duration-200 ${
-                selectedIndex === idx
-                  ? "ring-2 ring-primary ring-offset-2 ring-offset-background-alt"
-                  : "opacity-60 hover:opacity-100"
-              }`}
-            >
-              <Image
-                src={img.url}
-                alt={img.alt}
-                width={56}
-                height={56}
-                className="object-contain p-1"
-                loading="lazy"
-                quality={IMAGE_QUALITY_THUMB}
-              />
-            </button>
-          ))}
+        <div className="w-full overflow-x-auto py-2 mt-4 scrollbar-hide">
+          <div className="mx-auto flex w-max gap-3 px-4">
+            {product.images.map((img, idx) => (
+              <button
+                key={`${img.url}-${idx}`}
+                type="button"
+                onClick={() => setSelectedIndex(idx)}
+                aria-label={`Show image ${idx + 1} of ${product.images.length}`}
+                aria-pressed={selectedIndex === idx}
+                className={`relative w-14 h-14 flex-shrink-0 overflow-hidden rounded-lg transition-all duration-200 ${
+                  selectedIndex === idx
+                    ? "ring-2 ring-primary ring-offset-2 ring-offset-background-alt"
+                    : "opacity-60 hover:opacity-100"
+                }`}
+              >
+                <Image
+                  src={img.url}
+                  alt={img.alt}
+                  width={56}
+                  height={56}
+                  className="object-contain p-1"
+                  loading="lazy"
+                  quality={IMAGE_QUALITY_THUMB}
+                />
+              </button>
+            ))}
+          </div>
         </div>
       )}
     </div>

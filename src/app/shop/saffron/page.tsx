@@ -5,9 +5,11 @@ import { FAQSection } from "@/components/FAQSection";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { AmazonProductGallery } from "@/components/sections/AmazonProductGallery";
+import { OriginProof } from "@/components/sections/OriginProof";
 import { ProductBuyBox } from "@/components/sections/ProductBuyBox";
 import { ProductDetailsAccordion } from "@/components/sections/ProductDetailsAccordion";
 import { ProductSeoContent } from "@/components/sections/ProductSeoContent";
+import { SpotFakeSaffron } from "@/components/sections/SpotFakeSaffron";
 import { ProductJsonLd } from "@/components/seo/ProductJsonLd";
 import { TestimonialsWidget } from "@/components/testimonials";
 import { SITE_CONFIG } from "@/lib/constants";
@@ -24,8 +26,9 @@ export async function generateMetadata(): Promise<Metadata> {
 
   const url = `${SITE_CONFIG.url}/shop/saffron`;
   const title = "Buy Kashmiri Mongra Kesar Online — Grade A++ | Saffron Town";
-  const description =
-    "Buy original Pampore Kashmiri Mongra kesar online (Kashmir's saffron town). Grade A++ Mongra, high crocin, GI-tagged. 1,240+ reviews. Ships across India. Money-back guarantee.";
+  // Review count is read from the product (derived from real testimonials), not
+  // hardcoded — the previous copy claimed "1,240+ reviews" against 50 actual.
+  const description = `Buy original Pampore Kashmiri Mongra kesar online (Kashmir's saffron town). Grade A++ Mongra, high crocin, GI-tagged. ${product.reviewCount} verified reviews. Ships across India. Money-back guarantee.`;
   const ogImage = product.images?.[0]?.url?.startsWith("http")
     ? product.images[0].url
     : `${SITE_CONFIG.url}${product.images?.[0]?.url || "/images/products/mongra-saffron-1.png"}`;
@@ -101,15 +104,28 @@ export default function SaffronProductPage() {
                 <ProductDetailsAccordion product={product} />
               </div>
             </div>
-            <ProductSeoContent />
-            <FAQSection faqs={faqs} />
-            <div className="mt-16">
+            {/* Reviews sit directly under the buy area, ahead of the long-form
+                SEO copy. A shopper deciding on a ₹1,299 pack from an unknown
+                brand wants other buyers next, not product prose — and the
+                rating in the buy box links straight here. */}
+            <div id="customer-reviews" className="scroll-mt-24 mt-12">
               <TestimonialsWidget
                 variant="top"
-                limit={3}
-                title="What Customers Say"
+                limit={6}
+                title={`What ${product.reviewCount} customers say`}
               />
             </div>
+          </div>
+
+          {/* Full-bleed trust sections — deliberately outside the max-w-7xl
+              product container so the dark band spans the viewport rather than
+              floating as an inset card. */}
+          <OriginProof />
+          <SpotFakeSaffron />
+
+          <div className="mx-auto max-w-7xl px-6 lg:px-20 pb-6">
+            <ProductSeoContent />
+            <FAQSection faqs={faqs} />
           </div>
         </div>
       </main>
