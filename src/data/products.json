@@ -8,7 +8,7 @@
     "heroHeadline": "The Crown Jewel of Kashmir",
     "heroSubline": "Handpicked from the sun-drenched fields of Pampore, our Mongra kesar represents the pinnacle of purity and potency. Only the deep crimson tips are selected for our royal collection.",
     "heroBadge": "Pampore Grade A++",
-    "description": "100% pure Kashmiri Mongra kesar, handpicked from Pampore. GI-tagged, farm-direct, Grade A++ Mongra known for its high crocin colouring strength. Available in 1g, 2g, 5g, 10g, 20g, 30g and 50g packs. Trusted by thousands of Indian families for cooking, kesar milk and pregnancy.",
+    "description": "100% pure Kashmiri Mongra kesar, handpicked from Pampore. Farm-direct, Grade A++ Mongra known for its high crocin colouring strength. Available in 1g, 2g, 5g, 10g, 20g, 30g and 50g packs. Trusted by thousands of Indian families for cooking, kesar milk and pregnancy.",
     "description2": "Each strand of our kashmiri saffron is hand-separated and sun-dried using traditional methods passed down through generations. Perfect for biryani, kesar milk, pregnancy nutrition, traditional Ayurvedic use, and ceremonial rituals.",
     "price": 699,
     "currency": "INR",
@@ -65,18 +65,18 @@
       }
     ],
     "features": [
-      "Grade A++ Export Quality",
-      "No yellow style, deep red only",
+      "Grade A++ export quality",
+      "No yellow style, deep red stigma tips only",
       "High-crocin Mongra grade — deep colour",
-      "100% Pure Kashmiri Kesar — GI-Tagged Mongra",
-      "GI-Tagged Kashmir origin"
+      "100% pure Kashmiri Mongra kesar",
+      "Grown in Pampore, inside the Kashmir saffron GI area"
     ],
     "specifications": {
       "Grade": "Mongra (Grade 1 / A++)",
-      "Origin": "Pampore, Kashmir (GI-Tagged)",
+      "Origin": "Pampore, Kashmir",
       "Harvest": "Autumn 2025",
       "Purity": "100% Pure Kashmiri Saffron (Kesar)",
-      "Certification": "ISO 3632, GI Tag"
+      "Testing": "Independent lab testing available on request"
     },
     "origin": "Pampore, Kashmir · Harvest: Nov 2025 · Shelf Life: 36 Months"
   }

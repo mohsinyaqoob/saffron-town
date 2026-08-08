@@ -16,7 +16,7 @@ interface ProductJsonLdProps {
  * - shippingDetails, hasMerchantReturnPolicy include every field Google's
  *   Merchant Listings validator requires (shippingDestination, applicableCountry,
  *   returnMethod, returnFees). Missing any of these drops you from rich results.
- * - additionalProperty carries the grade, GI tag origin, and indicative
+ * - additionalProperty carries the grade, growing region, and indicative
  *   (typical, not per-pack certified) crocin range for Kashmir Mongra — so AI
  *   Overviews have accurate context when users ask about grade / origin.
  */
@@ -170,13 +170,13 @@ export function ProductJsonLd({ product }: ProductJsonLdProps) {
     {
       "@type": "PropertyValue",
       name: "Grade",
-      value:
-        product.specifications?.Grade || "Mongra / Grade 1 (A++) · ISO 3632",
+      value: product.specifications?.Grade || "Mongra / Grade 1 (A++)",
     },
     {
       "@type": "PropertyValue",
-      name: "GI Tag",
-      value: "Kashmir Saffron (GI No. 635, Govt. of India)",
+      name: "Growing region",
+      value:
+        "Pampore, Kashmir — within the area covered by the Kashmir saffron Geographical Indication",
     },
     {
       "@type": "PropertyValue",
@@ -191,12 +191,12 @@ export function ProductJsonLd({ product }: ProductJsonLdProps) {
     {
       "@type": "PropertyValue",
       name: "Harvest",
-      value: product.specifications?.Harvest || "Autumn 2024",
+      value: product.specifications?.Harvest || "Autumn 2025",
     },
     {
       "@type": "PropertyValue",
       name: "Origin",
-      value: "GI-Tagged Kashmir Saffron (GI No. 635), Pampore",
+      value: "Pampore, Kashmir, India",
     },
   ];
 
