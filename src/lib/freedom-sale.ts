@@ -7,12 +7,10 @@
  * deliberately not `NEXT_PUBLIC_`.
  *
  * ── Why the flag is server-only ──
- * The flag name the business chose starts with a digit, so it can never be a
- * `NEXT_PUBLIC_` variable that Next.js inlines into client code, and it cannot
- * be read as `process.env.NAME` — only via bracket access. Rather than mirror it
- * into a second public variable that could drift, server components read it and
- * pass the resolved boolean down as a prop. That also means the browser is never
- * the authority on whether the discount exists.
+ * It is deliberately not a `NEXT_PUBLIC_` variable. Rather than mirror the flag
+ * into a public copy that could drift out of step with the server's view, server
+ * components read it here and pass the resolved boolean down as a prop — so the
+ * browser is never the authority on whether the discount exists.
  *
  * ── Why pricing is recomputed on the server ──
  * The client shows a discounted total, but `create-order` / `verify-payment`
@@ -38,10 +36,7 @@ const DEFAULT_ENDS_AT = "2026-08-15T23:59:59+05:30";
  * misspelt value fails closed.
  */
 export function isFreedomSaleEnabled(): boolean {
-  return (
-    process.env["FREEDOM_SALE_ENABLED"]?.trim().toLowerCase() ===
-    "true"
-  );
+  return process.env.FREEDOM_SALE_ENABLED?.trim().toLowerCase() === "true";
 }
 
 /**
