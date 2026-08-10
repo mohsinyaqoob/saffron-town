@@ -14,7 +14,7 @@ import {
 } from "@/lib/bundle-offer";
 import { checkoutHref } from "@/lib/checkout-line";
 import { SITE_CONFIG } from "@/lib/constants";
-import { getCurrentHarvestSeason } from "@/lib/prebook-season";
+import { getCurrentHarvestSeason, getHarvestGap } from "@/lib/prebook-season";
 
 /**
  * Meta-ads landing page for the two-pack bundle.
@@ -89,6 +89,7 @@ export default function OfferPage() {
   if (!offer) notFound();
 
   const harvest = getCurrentHarvestSeason();
+  const gap = getHarvestGap();
   const endsAt = getOfferEndsAt();
   const href = checkoutHref(
     offer.productId,
@@ -206,12 +207,18 @@ export default function OfferPage() {
               <h2 className="font-display text-lg font-bold text-white sm:text-xl">
                 Why this does not run all year
               </h2>
+              {/* The distance to the next picking is derived, never asserted.
+                  This paragraph used to end "the next one is a year away",
+                  which is only true in the weeks after a harvest — read in
+                  August it claimed a year against a real gap of about three
+                  months. */}
               <p className="mt-2.5 text-sm leading-relaxed text-white/70 font-body">
-                Saffron is picked once a year, over about three weeks in{" "}
-                {harvest.harvestWindowLabel}. We sell that crop until it runs
-                out and then we stop — we do not buy in from traders to fill the
-                gap. When the {harvest.harvestLabel} harvest is gone, the next
-                one is a year away.
+                Saffron is picked once a year, over about three weeks. You are
+                buying the {harvest.harvestLabel} crop, and we sell it until it
+                runs out and then we stop — we do not buy in from traders to
+                fill the gap. The next picking, {gap.nextWindowLabel}, is{" "}
+                {gap.phrase}, and whatever is left of this crop has to last
+                until it lands.
               </p>
             </div>
           </div>
