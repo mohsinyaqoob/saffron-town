@@ -12,6 +12,13 @@ import { ProductSeoContent } from "@/components/sections/ProductSeoContent";
 import { SpotFakeSaffron } from "@/components/sections/SpotFakeSaffron";
 import { ProductJsonLd } from "@/components/seo/ProductJsonLd";
 import { TestimonialsWidget } from "@/components/testimonials";
+import {
+  BUNDLE_PACK_COUNT,
+  BUNDLE_PACK_SIZE,
+  formatRupees,
+  getBundleOffer,
+  isBundleOfferEnabled,
+} from "@/lib/bundle-offer";
 import { SITE_CONFIG } from "@/lib/constants";
 import { getDefaultProduct } from "@/lib/product-data";
 import { getDefaultPackVariant } from "@/lib/saffron-pack-variants";
@@ -66,6 +73,21 @@ export default function SaffronProductPage() {
   // Meta matches the price the customer actually sees.
   const defaultVariant = getDefaultPackVariant(product) ?? product.variants[0];
 
+  // Bundle promo — resolved here because the flag is server-only. Preformatted
+  // so the client component never re-derives (and never disagrees with) the
+  // numbers the /offer page shows.
+  const bundle = isBundleOfferEnabled() ? getBundleOffer() : null;
+  const bundlePromo = bundle
+    ? {
+        priceLabel: formatRupees(bundle.priceRupees, bundle.currency),
+        regularLabel: formatRupees(bundle.regularRupees, bundle.currency),
+        savingLabel: formatRupees(bundle.savingRupees, bundle.currency),
+        savingPercent: bundle.savingPercent,
+        packCount: BUNDLE_PACK_COUNT,
+        packSize: BUNDLE_PACK_SIZE,
+      }
+    : null;
+
   return (
     <div className="flex min-h-screen flex-col bg-background">
       {defaultVariant && (
@@ -98,7 +120,7 @@ export default function SaffronProductPage() {
                 <AmazonProductGallery product={product} />
               </div>
               <div className="lg:col-start-2 lg:row-start-1 lg:row-span-2 lg:sticky lg:top-24 lg:self-start">
-                <ProductBuyBox product={product} />
+                <ProductBuyBox product={product} bundlePromo={bundlePromo} />
               </div>
               <div className="lg:col-start-1 lg:row-start-2">
                 <ProductDetailsAccordion product={product} />

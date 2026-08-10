@@ -14,6 +14,23 @@ import { BUNDLE_VARIANT_ID } from "@/lib/saffron-pack-variants";
  * landing page burns paid traffic.
  */
 
+/**
+ * SERVER ONLY. Master switch for the bundle promotion.
+ *
+ * Off unless the variable is exactly "true", so a missing, empty or misspelt
+ * value fails closed. Gates the /offer page itself and the promo widget on the
+ * shop page — deliberately not a `NEXT_PUBLIC_` variable, so the browser is
+ * never the authority on whether the offer exists.
+ *
+ * NOTE: /offer and /shop/saffron are both `force-static`, so this is read at
+ * build time on those routes. Flipping it needs a redeploy to take effect.
+ * Turning it off while ads are still pointing at /offer will 404 that traffic —
+ * pause the campaign first.
+ */
+export function isBundleOfferEnabled(): boolean {
+  return process.env.BUNDLE_OFFER_ENABLED?.trim().toLowerCase() === "true";
+}
+
 /** Fallback close date — overridden by `OFFER_ENDS_AT` (ISO 8601). */
 const DEFAULT_ENDS_AT = "2026-08-31T23:59:59+05:30";
 

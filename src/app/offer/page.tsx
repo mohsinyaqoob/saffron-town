@@ -10,6 +10,7 @@ import {
   formatRupees,
   getBundleOffer,
   getOfferEndsAt,
+  isBundleOfferEnabled,
 } from "@/lib/bundle-offer";
 import { checkoutHref } from "@/lib/checkout-line";
 import { SITE_CONFIG } from "@/lib/constants";
@@ -79,6 +80,11 @@ const REASSURANCE = [
 ] as const;
 
 export default function OfferPage() {
+  // Feature-flagged off → the route does not exist. A disabled promotion that
+  // still renders is worse than a 404: it keeps taking paid traffic to a price
+  // the business has decided to stop honouring.
+  if (!isBundleOfferEnabled()) notFound();
+
   const offer = getBundleOffer();
   if (!offer) notFound();
 
