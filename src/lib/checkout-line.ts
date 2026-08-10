@@ -23,8 +23,6 @@ export function checkoutHref(
   quantity: number,
   grams?: number,
   source?: string,
-  /** Pre-applies a promo code at checkout (the "Claim offer" path). */
-  coupon?: string,
 ) {
   const q = new URLSearchParams();
   q.set("product", productId);
@@ -34,7 +32,6 @@ export function checkoutHref(
     q.set("grams", String(grams));
   }
   if (source) q.set("source", source);
-  if (coupon) q.set("coupon", coupon);
   return `/checkout?${q.toString()}`;
 }
 

@@ -39,18 +39,19 @@ model Order {
   updatedAt      DateTime    @updatedAt
   status         OrderStatus @default(PENDING)
   currency       String      @default("INR")
-  /** Sum of the line items, BEFORE any coupon discount. */
+  /** Sum of the line items, before any discount. */
   subtotalRupees Int
   /**
-   * Promotional coupon applied at checkout (e.g. "FREEDOM25"), or null.
-   * Always resolved server-side — the browser never decides this.
+   * HISTORICAL. There is no coupon system: nothing writes these fields, and
+   * both stay null/0 on every new order.
+   *
+   * They are kept because two real orders from the short window the Freedom
+   * Sale ran were charged less than their line items total, and these columns
+   * are the only record of why. Dropping them would make those receipts,
+   * invoices and the revenue reported to Meta overstate what was actually
+   * paid. Read totals via orderPayableRupees(), never subtotalRupees directly.
    */
   couponCode     String?     @db.VarChar(40)
-  /**
-   * Rupees taken off `subtotalRupees` by `couponCode`. The amount actually
-   * charged is `subtotalRupees - discountRupees`; 0 for every pre-coupon order,
-   * so existing rows keep their original totals.
-   */
   discountRupees Int         @default(0)
   customerName    String
   phone           String
