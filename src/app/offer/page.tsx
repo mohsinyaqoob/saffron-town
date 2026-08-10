@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { Footer } from "@/components/layout/Footer";
 import { OfferCta } from "@/components/offer/OfferCta";
 import {
+  BUNDLE_IMAGE_ASPECT,
   BUNDLE_PACK_COUNT,
   BUNDLE_PACK_SIZE,
   formatRupees,
@@ -62,7 +63,9 @@ export function generateMetadata(): Metadata {
       description,
       url: PAGE_URL,
       type: "website",
-      images: [`${SITE_CONFIG.url}/images/products/mongra-saffron/1.png`],
+      // The bundle creative, not a generic product shot — this is what shows
+      // when the ad link is shared, and it carries the offer.
+      images: offer ? [`${SITE_CONFIG.url}${offer.imageUrl}`] : [],
     },
     twitter: { card: "summary_large_image", title, description },
   };
@@ -151,9 +154,17 @@ export default function OfferPage() {
                 </div>
               </div>
 
-              {/* ── Right: the product ── */}
+              {/* ── Right: the bundle creative ──
+                  Framed at the artwork's own 4:5 so it fills the frame instead
+                  of letterboxing, and `object-cover` rather than `contain` for
+                  the same reason. No overlay badge: the creative already carries
+                  the offer and the prices, and stacking a second badge on top
+                  would fight it. */}
               <div className="relative mx-auto w-full max-w-sm lg:max-w-none">
-                <div className="relative aspect-square w-full overflow-hidden rounded-3xl border border-white/12 bg-white/[0.05]">
+                <div
+                  className="relative w-full overflow-hidden rounded-3xl border border-white/12 bg-white/[0.05]"
+                  style={{ aspectRatio: BUNDLE_IMAGE_ASPECT }}
+                >
                   <Image
                     src={offer.imageUrl}
                     alt={offer.imageAlt}
@@ -161,12 +172,8 @@ export default function OfferPage() {
                     priority
                     fetchPriority="high"
                     sizes="(max-width: 1024px) 90vw, 460px"
-                    className="object-contain p-4"
+                    className="object-cover"
                   />
-                  <span className="absolute left-4 top-4 rounded-full bg-[#f5c86a] px-3 py-1 text-[11px] font-extrabold text-[#5c1112]">
-                    {BUNDLE_PACK_COUNT} × {BUNDLE_PACK_SIZE} ={" "}
-                    {offer.totalGrams}g
-                  </span>
                 </div>
               </div>
             </div>

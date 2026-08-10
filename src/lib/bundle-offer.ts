@@ -17,6 +17,21 @@ import { BUNDLE_VARIANT_ID } from "@/lib/saffron-pack-variants";
 /** Fallback close date — overridden by `OFFER_ENDS_AT` (ISO 8601). */
 const DEFAULT_ENDS_AT = "2026-08-31T23:59:59+05:30";
 
+/**
+ * Bundle creative. 4:5 portrait, 1122×1402.
+ *
+ * ⚠ The prices are typeset INTO this image (₹2,598 struck through, ₹1,999,
+ * "You Save ₹599"). They currently match the variant prices in products.json,
+ * but nothing enforces that — repricing the 2g pack or the bundle will leave
+ * this artwork stating figures the checkout no longer charges. A strikethrough
+ * that does not match the real prior price is a Legal Metrology problem, not a
+ * cosmetic one, so re-export the creative whenever either price moves.
+ */
+const BUNDLE_IMAGE = "/images/products/sale-bundle-saffron/mongra-saffron.png";
+
+/** Natural aspect ratio of BUNDLE_IMAGE, so the frame never letterboxes it. */
+export const BUNDLE_IMAGE_ASPECT = "4 / 5";
+
 export const BUNDLE_PACK_COUNT = 2;
 export const BUNDLE_PACK_SIZE = "2g";
 
@@ -82,8 +97,11 @@ export function getBundleOffer(): BundleOffer | null {
     savingPercent: Math.round((savingRupees / regularRupees) * 100),
     perGramRupees: Math.round(bundle.price / totalGrams),
     totalGrams,
-    imageUrl: product.images[0]?.url ?? "/images/products/mongra-saffron/1.png",
-    imageAlt: product.images[0]?.alt ?? product.name,
+    imageUrl: BUNDLE_IMAGE,
+    // The creative has the prices typeset into it, so the alt text spells them
+    // out too — otherwise a screen reader, or anyone on a failed image load,
+    // gets none of the offer.
+    imageAlt: `Saffron Town Kashmiri Mongra saffron bundle offer — two Grade A++ jars for ${formatRupees(bundle.price, product.currency)} instead of ${formatRupees(regularRupees, product.currency)}, saving ${formatRupees(savingRupees, product.currency)}`,
   };
 }
 
