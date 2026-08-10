@@ -1,11 +1,6 @@
 import { NextResponse } from "next/server";
 import { isValidHearAboutChannel } from "@/data/heard-about-channels";
 import {
-  getFreedomSaleEndsAt,
-  isFreedomSaleEnabled,
-  resolveCoupon,
-} from "@/lib/freedom-sale";
-import {
   GIFT_BOX_PRICE_RUPEES,
   giftBoxLineCreate,
   isGiftingSource,
@@ -113,7 +108,6 @@ export async function POST(request: Request) {
     cityPin?: string;
     notes?: string;
     source?: string;
-    couponCode?: string;
     items?: IncomingItem[];
   };
 
@@ -287,23 +281,6 @@ export async function POST(request: Request) {
     subtotalRupees += GIFT_BOX_PRICE_RUPEES;
   }
 
-  // Coupon is resolved here, never taken on trust from the request body.
-  let couponCode: string | null = null;
-  let discountRupees = 0;
-  const couponCodeRaw = parsed.couponCode?.trim() ?? "";
-  if (couponCodeRaw) {
-    const coupon = resolveCoupon({
-      code: couponCodeRaw,
-      enabled: isFreedomSaleEnabled(),
-      subtotalRupees,
-      endsAt: getFreedomSaleEndsAt(),
-    });
-    if (coupon.ok) {
-      couponCode = coupon.code;
-      discountRupees = coupon.discountRupees;
-    }
-  }
-
   try {
     const prisma = getPrisma();
     const order = await withTimeout(
@@ -348,8 +325,6 @@ export async function POST(request: Request) {
           data: {
             currency,
             subtotalRupees,
-            couponCode,
-            discountRupees,
             customerName,
             phone: phoneRaw,
             email,

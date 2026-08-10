@@ -20,7 +20,12 @@ interface ProductBuyBoxProps {
 
 /**
  * Amazon-style buy box: title, trust line, price block, offers, service icons,
- * variant, quantity, CTAs, accordions, and footer links.
+ * variant, CTAs, accordions, and footer links.
+ *
+ * No quantity selector: saffron is bought by pack weight, so someone wanting
+ * more picks a bigger pack — which is also cheaper per gram. A quantity field
+ * only offered a worse way to reach the same spend, and added a decision
+ * between the price and the buy button.
  */
 export function ProductBuyBox({ product }: ProductBuyBoxProps) {
   const gridVariants = useMemo(() => getGridPackVariants(product), [product]);
@@ -29,11 +34,18 @@ export function ProductBuyBox({ product }: ProductBuyBoxProps) {
   const [selectedVariant, setSelectedVariant] = useState<ProductVariant>(
     () => getDefaultPackVariant(product) ?? product.variants[0],
   );
-  const [quantity, setQuantity] = useState(1);
   const router = useRouter();
   const [isBuyNowPending, startBuyNowTransition] = useTransition();
   const buyButtonRef = useRef<HTMLButtonElement>(null);
   const harvest = useMemo(() => getCurrentHarvestSeason(), []);
+
+  /** ₹/g of the smallest grid pack — the baseline every saving is measured from. */
+  const baseRatePerGram = useMemo(() => {
+    const smallest = gridVariants[0];
+    if (!smallest) return null;
+    const grams = parsePackGramsFromSize(smallest.size);
+    return grams ? smallest.price / grams : null;
+  }, [gridVariants]);
 
   const formatPrice = (n: number) =>
     new Intl.NumberFormat("en-IN", {
@@ -48,12 +60,12 @@ export function ProductBuyBox({ product }: ProductBuyBoxProps) {
       name: product.name,
       variant: selectedVariant.size,
       price: selectedVariant.price,
-      quantity,
+      quantity: 1,
       currency: product.currency,
       category: product.category,
     });
     startBuyNowTransition(() => {
-      router.push(checkoutHref(product.id, selectedVariant.id, quantity));
+      router.push(checkoutHref(product.id, selectedVariant.id, 1));
     });
   };
 
@@ -258,51 +270,50 @@ export function ProductBuyBox({ product }: ProductBuyBoxProps) {
                 {selectedVariant.size}
               </span>
             </p>
+            {/* Each tile shows its per-gram rate and the saving against the 2g
+                entry price. The ladder only tempts anyone if the maths is on
+                screen — "₹24,999" alone reads as expensive, "₹500/g · save 23%"
+                reads as the better buy. */}
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3">
-              {gridVariants.map((v) => (
-                <button
-                  key={v.id}
-                  type="button"
-                  onClick={() => setSelectedVariant(v)}
-                  className={`rounded-xl border px-3 py-3 text-left text-sm transition-colors font-body ${
-                    selectedVariant.id === v.id
-                      ? "border-primary bg-primary/10 ring-1 ring-primary/30 text-primary"
-                      : "border-secondary-border hover:border-primary/50 bg-background"
-                  }`}
-                >
-                  <span className="block font-bold text-text-primary">
-                    {v.size}
-                  </span>
-                  <span className="mt-1 block text-xs text-secondary">
-                    {formatPrice(v.price)}
-                  </span>
-                </button>
-              ))}
+              {gridVariants.map((v) => {
+                const grams = parsePackGramsFromSize(v.size) || 1;
+                const perGram = Math.round(v.price / grams);
+                const savePercent = baseRatePerGram
+                  ? Math.round((1 - perGram / baseRatePerGram) * 100)
+                  : 0;
+                const isSelected = selectedVariant.id === v.id;
+                return (
+                  <button
+                    key={v.id}
+                    type="button"
+                    onClick={() => setSelectedVariant(v)}
+                    aria-pressed={isSelected}
+                    className={`relative rounded-xl border px-3 py-3 text-left text-sm transition-colors font-body ${
+                      isSelected
+                        ? "border-primary bg-primary/10 ring-1 ring-primary/30"
+                        : "border-secondary-border hover:border-primary/50 bg-background"
+                    }`}
+                  >
+                    {savePercent >= 5 && (
+                      <span className="absolute right-1.5 top-1.5 rounded bg-primary px-1.5 py-0.5 text-[9px] font-bold leading-none text-white">
+                        −{savePercent}%
+                      </span>
+                    )}
+                    <span className="block font-bold text-text-primary">
+                      {v.size}
+                    </span>
+                    <span className="mt-1 block text-xs font-semibold text-text-primary">
+                      {formatPrice(v.price)}
+                    </span>
+                    <span className="mt-0.5 block text-[11px] text-secondary">
+                      {formatPrice(perGram)}/g
+                    </span>
+                  </button>
+                );
+              })}
             </div>
           </div>
         )}
-
-        {/* Quantity */}
-        <div className="mb-4">
-          <label
-            htmlFor="product-quantity"
-            className="text-sm font-medium text-text-primary mb-2 block font-body"
-          >
-            Quantity:
-          </label>
-          <select
-            id="product-quantity"
-            value={quantity}
-            onChange={(e) => setQuantity(Number(e.target.value))}
-            className="border border-secondary-border rounded-lg px-3 py-2 text-sm bg-surface-muted hover:bg-surface/50 cursor-pointer w-20 font-body"
-          >
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (
-              <option key={n} value={n}>
-                {n}
-              </option>
-            ))}
-          </select>
-        </div>
 
         <button
           ref={buyButtonRef}
@@ -321,7 +332,7 @@ export function ProductBuyBox({ product }: ProductBuyBoxProps) {
               <span>Opening checkout…</span>
             </>
           ) : (
-            <>Buy now — {formatPrice(selectedVariant.price * quantity)}</>
+            <>Buy now — {formatPrice(selectedVariant.price)}</>
           )}
         </button>
 
@@ -376,10 +387,10 @@ export function ProductBuyBox({ product }: ProductBuyBoxProps) {
 
       <StickyBuyBar
         packLabel={selectedVariant.size}
-        priceLabel={formatPrice(selectedVariant.price * quantity)}
+        priceLabel={formatPrice(selectedVariant.price)}
         mrpLabel={
           selectedVariant.mrp && selectedVariant.mrp > selectedVariant.price
-            ? formatPrice(selectedVariant.mrp * quantity)
+            ? formatPrice(selectedVariant.mrp)
             : null
         }
         pending={isBuyNowPending}

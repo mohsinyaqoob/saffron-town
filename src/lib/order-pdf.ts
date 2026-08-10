@@ -1,7 +1,7 @@
 import path from "node:path";
 import PDFDocument from "pdfkit";
 import { SITE_CONFIG } from "@/lib/constants";
-import { orderPayableRupees } from "@/lib/freedom-sale";
+import { orderPayableRupees } from "@/lib/order-totals";
 import type { OrderWithItems } from "@/lib/order-receipt";
 
 const FONTS_DIR = path.join(process.cwd(), "src/assets/fonts/order-pdf");

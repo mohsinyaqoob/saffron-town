@@ -1,6 +1,6 @@
 import { SITE_CONFIG } from "@/lib/constants";
 import { toContentId } from "@/lib/content-id";
-import { orderPayableRupees } from "@/lib/freedom-sale";
+import { orderPayableRupees } from "@/lib/order-totals";
 import { sendCapiPurchase } from "@/lib/meta-capi";
 import { getPrisma } from "@/lib/prisma";
 

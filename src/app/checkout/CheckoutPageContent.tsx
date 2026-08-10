@@ -13,7 +13,6 @@ import {
   useForm,
 } from "react-hook-form";
 import { BreadcrumbNav } from "@/components/BreadcrumbNav";
-import { CouponField } from "@/components/checkout/CouponField";
 import { HearAboutCombobox } from "@/components/checkout/HearAboutCombobox";
 import { Header } from "@/components/layout/Header";
 import { CheckoutOrderRedirectLayout } from "@/components/shop/ShopPageLoaders";
@@ -29,7 +28,6 @@ import {
   checkoutFormSchema,
 } from "@/lib/checkout-form-schema";
 import { parseCheckoutQuery, resolveCheckoutLine } from "@/lib/checkout-line";
-import { normalizeCouponCode, resolveCoupon } from "@/lib/freedom-sale";
 import { GIFT_BOX_PRICE_RUPEES, isGiftingSource } from "@/lib/gifting";
 import { PRODUCT_PAGE_URL } from "@/lib/product-data";
 import { loadRazorpay } from "@/lib/razorpay-loader";
@@ -46,16 +44,7 @@ function formatInr(amount: number, currency = "INR") {
 const fieldErrorClass =
   "border-red-400/80 ring-2 ring-red-200/60 focus:border-red-400 focus:ring-red-200/80";
 
-export function CheckoutPageContent({
-  footer,
-  saleEnabled = false,
-  saleEndsAt = null,
-}: {
-  footer: ReactNode;
-  /** Server-resolved Freedom Sale flag. Defaults off so nothing leaks. */
-  saleEnabled?: boolean;
-  saleEndsAt?: string | null;
-}) {
+export function CheckoutPageContent({ footer }: { footer: ReactNode }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const line = useMemo(() => {
@@ -81,43 +70,7 @@ export function CheckoutPageContent({
   const giftBoxRupees = isGift && line ? GIFT_BOX_PRICE_RUPEES : 0;
   const orderSubtotal = cartTotal + giftBoxRupees;
 
-  // ── Coupon ──
-  // `?coupon=` arrives from the product page's "Claim offer" button. It is only
-  // honoured while the sale is on: with the flag off the param is ignored here
-  // and the code would resolve to no discount server-side anyway.
-  const couponFromUrl = useMemo(
-    () => (saleEnabled ? normalizeCouponCode(searchParams.get("coupon")) : ""),
-    [searchParams, saleEnabled],
-  );
-  const [couponCode, setCouponCode] = useState<string | null>(null);
-  const [couponTouched, setCouponTouched] = useState(false);
-
-  // Adopt the URL coupon once, then leave the field under the customer's
-  // control — re-applying on every render would make Remove impossible.
-  useEffect(() => {
-    if (couponTouched || !couponFromUrl) return;
-    setCouponCode(couponFromUrl);
-  }, [couponFromUrl, couponTouched]);
-
-  const autoAppliedCoupon =
-    couponFromUrl.length > 0 && couponCode === couponFromUrl && !couponTouched;
-
-  const couponResult = useMemo(
-    () =>
-      couponCode
-        ? resolveCoupon({
-            code: couponCode,
-            enabled: saleEnabled,
-            subtotalRupees: orderSubtotal,
-            endsAt: saleEndsAt,
-          })
-        : null,
-    [couponCode, saleEnabled, orderSubtotal, saleEndsAt],
-  );
-
-  const discountRupees = couponResult?.ok ? couponResult.discountRupees : 0;
-  const appliedCouponCode = couponResult?.ok ? couponResult.code : null;
-  const orderTotal = orderSubtotal - discountRupees;
+  const orderTotal = orderSubtotal;
 
   const [redirectingAfterOrder, setRedirectingAfterOrder] = useState(false);
   const [paymentStep, setPaymentStep] = useState<
@@ -198,9 +151,6 @@ export function CheckoutPageContent({
         heardAboutUs: data.heardAboutUs,
         notes: data.notes || undefined,
         source: orderSource,
-        // Advisory only — the server re-resolves this against the live flag and
-        // recomputes the charge, so a tampered code cannot change the price.
-        couponCode: appliedCouponCode ?? undefined,
         items: orderItems,
       }),
     });
@@ -292,7 +242,6 @@ export function CheckoutPageContent({
             heardAboutUs: data.heardAboutUs,
             notes: data.notes || undefined,
             source: orderSource,
-            couponCode: appliedCouponCode ?? undefined,
             items: orderItems,
           }),
         });
@@ -836,51 +785,14 @@ export function CheckoutPageContent({
                           Free (India)
                         </span>
                       </div>
-                      {discountRupees > 0 && appliedCouponCode && (
-                        <div className="flex justify-between text-primary">
-                          <span>Coupon ({appliedCouponCode})</span>
-                          <span className="font-semibold">
-                            −{formatInr(discountRupees)}
-                          </span>
-                        </div>
-                      )}
                     </div>
-
-                    {/* Coupon entry. Hidden entirely when the sale is off and
-                        no code is in play, so the normal checkout is unchanged
-                        for customers who have no coupon to give. */}
-                    {(saleEnabled || appliedCouponCode) && (
-                      <CouponField
-                        saleEnabled={saleEnabled}
-                        saleEndsAt={saleEndsAt}
-                        subtotalRupees={orderSubtotal}
-                        appliedCode={couponCode}
-                        autoApplied={autoAppliedCoupon}
-                        formatPrice={(n) => formatInr(n)}
-                        onApply={(code) => {
-                          setCouponTouched(true);
-                          setCouponCode(code);
-                        }}
-                        onRemove={() => {
-                          setCouponTouched(true);
-                          setCouponCode(null);
-                        }}
-                      />
-                    )}
 
                     <div className="flex items-center justify-between border-t border-secondary-border/15 pt-4">
                       <span className="font-display text-lg font-bold">
                         Total
                       </span>
-                      <span className="flex items-baseline gap-2">
-                        {discountRupees > 0 && (
-                          <span className="text-sm text-secondary line-through font-body">
-                            {formatInr(orderSubtotal)}
-                          </span>
-                        )}
-                        <span className="font-display text-2xl font-bold text-primary">
-                          {formattedTotal}
-                        </span>
+                      <span className="font-display text-2xl font-bold text-primary">
+                        {formattedTotal}
                       </span>
                     </div>
 

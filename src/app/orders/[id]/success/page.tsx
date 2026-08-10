@@ -6,7 +6,7 @@ import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { Badge } from "@/components/ui/Badge";
 import { SITE_CONFIG } from "@/lib/constants";
-import { orderPayableRupees } from "@/lib/freedom-sale";
+import { orderPayableRupees } from "@/lib/order-totals";
 import { getOrderWithReceipt } from "@/lib/order-receipt";
 import { getProductById } from "@/lib/product-data";
 import { cn } from "@/lib/utils";

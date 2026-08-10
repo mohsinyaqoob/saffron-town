@@ -3,18 +3,8 @@ import { Figtree, Playfair_Display } from "next/font/google";
 import Script from "next/script";
 import { Gtag } from "@/components/analytics/Gtag";
 import MetaPixel from "@/components/analytics/MetaPixel";
-import { SaleCountdownStrip } from "@/components/layout/SaleCountdownStrip";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { checkoutHref } from "@/lib/checkout-line";
 import { SITE_CONFIG } from "@/lib/constants";
-import {
-  FREEDOM_SALE_COUPON,
-  getFreedomSaleEndsAt,
-  isFreedomSaleEnabled,
-  isSaleLive,
-} from "@/lib/freedom-sale";
-import { getDefaultProduct } from "@/lib/product-data";
-import { getDefaultPackVariant } from "@/lib/saffron-pack-variants";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -88,28 +78,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // Freedom Sale strip — resolved on the server so the browser is never the
-  // authority on whether the promotion exists. The layout is the only place
-  // that renders on every route, so the strip lives here rather than being
-  // wired into each page's <Header />.
-  const saleEndsAt = getFreedomSaleEndsAt();
-  const saleActive = isFreedomSaleEnabled() && isSaleLive(saleEndsAt);
-  const product = saleActive ? getDefaultProduct() : undefined;
-  const defaultVariant = product
-    ? (getDefaultPackVariant(product) ?? product.variants[0])
-    : undefined;
-  const claimHref =
-    product && defaultVariant
-      ? checkoutHref(
-          product.id,
-          defaultVariant.id,
-          1,
-          undefined,
-          undefined,
-          FREEDOM_SALE_COUPON,
-        )
-      : "/shop/saffron";
-
   return (
     <html
       lang="en"
@@ -152,16 +120,7 @@ export default function RootLayout({
         <link rel="prefetch" href="/ai.txt" />
         <link rel="prefetch" href="/llms.txt" />
       </head>
-      <body
-        className={`min-h-screen overflow-x-hidden font-body antialiased${
-          // Sets --promo-h so the sticky header (and the home hero's top
-          // padding) offset themselves without hardcoding the strip height.
-          saleActive ? " promo-active" : ""
-        }`}
-      >
-        {saleActive && (
-          <SaleCountdownStrip endsAt={saleEndsAt} claimHref={claimHref} />
-        )}
+      <body className="min-h-screen overflow-x-hidden font-body antialiased">
         {children}
         <MetaPixel />
         <Script id="zoho-salesiq-init" strategy="afterInteractive">

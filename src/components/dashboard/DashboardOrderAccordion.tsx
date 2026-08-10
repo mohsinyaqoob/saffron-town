@@ -4,7 +4,7 @@ import { OrderActions } from "@/components/dashboard/OrderActions";
 import { Badge } from "@/components/ui/Badge";
 import type { PartnerServiceability } from "@/lib/delivery/serviceability";
 import { normalizePincode } from "@/lib/delivery/serviceability";
-import { orderPayableRupees } from "@/lib/freedom-sale";
+import { orderPayableRupees } from "@/lib/order-totals";
 
 type OrderWithItems = Order & { items: OrderItem[] };
 

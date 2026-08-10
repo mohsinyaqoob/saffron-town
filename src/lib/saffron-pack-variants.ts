@@ -7,16 +7,21 @@ export const MONGRA_SAFFRON_SLUG = "mongra-saffron" as const;
  * Pack weights shown in the shop buy box and the prebook grid, in display order.
  * Both surfaces resolve prices from `products.json` variants that match these grams.
  */
-export const SHOP_PACK_GRID_GRAMS = [1, 2, 5, 10, 20, 30, 50] as const;
+export const SHOP_PACK_GRID_GRAMS = [2, 5, 10, 20, 30, 50, 100] as const;
 
 export type ShopPackGrams = (typeof SHOP_PACK_GRID_GRAMS)[number];
 
 /**
- * Pack pre-selected on the product page. Deliberately NOT the first grid entry:
- * 1g is a low-friction trial size, but defaulting to it would drop average
- * order value (and the value we report to Meta as ViewContent).
+ * Pack pre-selected on the product page — the entry size, which is also the
+ * price anchor the whole ladder is built from.
  */
 export const DEFAULT_SHOP_PACK_GRAMS = 2;
+
+/**
+ * The bundle sold on /offer. Not a grid pack: it is deliberately excluded from
+ * the shop's pack selector so the offer page is the only place it is priced.
+ */
+export const BUNDLE_VARIANT_ID = "mongra-bundle-2x2g" as const;
 
 /**
  * Parse leading "12g" / "2g" style gram amount from a variant `size` label.
