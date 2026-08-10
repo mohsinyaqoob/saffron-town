@@ -202,23 +202,41 @@ export default function OfferPage() {
               ))}
             </div>
 
-            {/* ── Why the scarcity is real ── */}
+            {/* ── Why the scarcity is real ──
+                Leads on what remains of this crop rather than on how far off
+                the next one is. Both are true, but the second framing is
+                self-defeating late in the cycle: told the new harvest is close,
+                a wavering customer simply waits for it.
+
+                The "last of" wording is gated on gap.isLastOfCrop so it only
+                appears in the closing stretch of the crop's year. Note it makes
+                no claim about *how much* is left — that would need live stock,
+                and an invented number is exactly the fake scarcity this page
+                otherwise avoids. */}
             <div className="mx-auto mt-10 max-w-2xl rounded-2xl border border-white/10 bg-white/[0.04] p-5 text-center sm:p-6">
               <h2 className="font-display text-lg font-bold text-white sm:text-xl">
-                Why this does not run all year
+                {gap.isLastOfCrop
+                  ? `You are buying the last of the ${harvest.harvestLabel} crop`
+                  : "Why this does not run all year"}
               </h2>
-              {/* The distance to the next picking is derived, never asserted.
-                  This paragraph used to end "the next one is a year away",
-                  which is only true in the weeks after a harvest — read in
-                  August it claimed a year against a real gap of about three
-                  months. */}
               <p className="mt-2.5 text-sm leading-relaxed text-white/70 font-body">
-                Saffron is picked once a year, over about three weeks. You are
-                buying the {harvest.harvestLabel} crop, and we sell it until it
-                runs out and then we stop — we do not buy in from traders to
-                fill the gap. The next picking, {gap.nextWindowLabel}, is{" "}
-                {gap.phrase}, and whatever is left of this crop has to last
-                until it lands.
+                Saffron is picked once a year, over about three weeks, and we
+                sell that crop until it runs out and then we stop — we do not
+                buy in from traders to fill the gap.{" "}
+                {gap.isLastOfCrop ? (
+                  <>
+                    What is on the shelf now is what came out of{" "}
+                    {harvest.harvestWindowLabel}. When it is gone, it is gone —
+                    the {gap.nextWindowLabel} picking has to be dried, sorted
+                    and packed before any of it ships.
+                  </>
+                ) : (
+                  <>
+                    You are buying the {harvest.harvestLabel} crop, and whatever
+                    is left of it has to last until the {gap.nextWindowLabel}{" "}
+                    picking lands — {gap.phrase}.
+                  </>
+                )}
               </p>
             </div>
           </div>

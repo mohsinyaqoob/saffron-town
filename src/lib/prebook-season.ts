@@ -47,6 +47,14 @@ export function getHarvestGap(now = new Date()): {
   isPickingNow: boolean;
   /** Natural-language distance, e.g. "about three months away". */
   phrase: string;
+  /**
+   * True in the closing stretch of a crop's year — the next picking is near
+   * enough that whatever remains is genuinely the tail of this harvest.
+   *
+   * Gates the "last of the crop" framing, which is only honest late in the
+   * cycle. Used right after a picking it would be plainly false.
+   */
+  isLastOfCrop: boolean;
 } {
   const next = getUpcomingHarvestSeason(now);
   const month = now.getMonth(); // 0-based
@@ -74,6 +82,9 @@ export function getHarvestGap(now = new Date()): {
     nextWindowLabel: `October–November ${next.harvestYear}`,
     isPickingNow,
     phrase,
+    // Roughly the final third of the crop's year. Before that, calling the
+    // stock "the last of" it would be a scarcity claim we cannot stand behind.
+    isLastOfCrop: months <= 5,
   };
 }
 
