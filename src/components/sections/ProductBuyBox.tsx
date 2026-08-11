@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useMemo, useRef, useState, useTransition } from "react";
+import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { BundleOfferCallout } from "@/components/sections/BundleOfferCallout";
 import { StickyBuyBar } from "@/components/sections/StickyBuyBar";
 import { trackAddToCart } from "@/lib/analytics";
@@ -51,6 +51,30 @@ export function ProductBuyBox({ product, bundlePromo }: ProductBuyBoxProps) {
     () => getDefaultPackVariant(product) ?? product.variants[0],
   );
   const router = useRouter();
+
+  /**
+   * `?pack=20` pre-selects a pack — how /pregnancy's week planner hands over a
+   * recommendation, and a link anyone can share.
+   *
+   * Read from `window.location` in an effect rather than with
+   * `useSearchParams`: this page is `force-static`, and that hook would either
+   * opt the whole route out of static generation or force a Suspense boundary
+   * around the buy box, costing the shop page its prerendered HTML to serve a
+   * campaign link. The trade is that the selection lands just after hydration
+   * instead of in the first paint, which nobody perceives on a page whose
+   * default is already a valid choice.
+   */
+  useEffect(() => {
+    const raw = new URLSearchParams(window.location.search).get("pack");
+    if (!raw) return;
+    const grams = Number.parseFloat(raw);
+    if (!Number.isFinite(grams) || grams <= 0) return;
+    const match = gridVariants.find(
+      (v) => parsePackGramsFromSize(v.size) === grams,
+    );
+    if (match) setSelectedVariant(match);
+  }, [gridVariants]);
+
   const [isBuyNowPending, startBuyNowTransition] = useTransition();
   const buyButtonRef = useRef<HTMLButtonElement>(null);
   const harvest = useMemo(() => getCurrentHarvestSeason(), []);

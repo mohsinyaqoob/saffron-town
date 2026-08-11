@@ -7,6 +7,7 @@ import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { PregnancyCta } from "@/components/pregnancy/PregnancyCta";
 import { PregnancyGallery } from "@/components/pregnancy/PregnancyGallery";
+import { PregnancyWeekPlanner } from "@/components/pregnancy/PregnancyWeekPlanner";
 import { TestimonialCard } from "@/components/testimonials/TestimonialCard";
 import { formatRupees } from "@/lib/bundle-offer";
 import { checkoutHref } from "@/lib/checkout-line";
@@ -19,7 +20,11 @@ import {
   PREGNANCY_FAQS,
 } from "@/lib/pregnancy-landing";
 import { getDefaultProduct } from "@/lib/product-data";
-import { getDefaultPackVariant } from "@/lib/saffron-pack-variants";
+import {
+  getDefaultPackVariant,
+  getGridPackVariants,
+  parsePackGramsFromSize,
+} from "@/lib/saffron-pack-variants";
 
 /**
  * /pregnancy — Meta-ads landing page for expectant mothers.
@@ -42,8 +47,9 @@ import { getDefaultPackVariant } from "@/lib/saffron-pack-variants";
  * sources the shop uses, so this page cannot drift from /shop/saffron.
  *
  * ── Speed ──
- * Static, one client component, one priority image above the fold. The gallery
- * is CSS scroll-snap with no JS.
+ * Static, one priority image above the fold. The client components below it —
+ * the CTA, the drifting gallery and the week planner — all degrade to something
+ * usable before hydration.
  */
 
 export const dynamic = "force-static";
@@ -108,6 +114,21 @@ export default function PregnancyLandingPage() {
   const reviews = getPurityTestimonials(3);
   const href = checkoutHref(product.id, variant.id, 1, undefined, "pregnancy");
 
+  // Packs the week planner can recommend — read from the same grid the shop
+  // sells, so it can never point at a pack that is not on offer.
+  const plannerPacks = getGridPackVariants(product).flatMap((v) => {
+    const grams = parsePackGramsFromSize(v.size);
+    return grams === null
+      ? []
+      : [
+          {
+            grams,
+            size: v.size,
+            priceLabel: formatRupees(v.price, product.currency),
+          },
+        ];
+  });
+
   const priceLabel = formatRupees(variant.price, product.currency);
   const mrpLabel =
     variant.mrp && variant.mrp > variant.price
@@ -142,16 +163,18 @@ export default function PregnancyLandingPage() {
                 </p>
 
                 <h1 className="mt-5 font-display text-[2.1rem] font-bold leading-[1.06] tracking-tight text-text-primary sm:text-5xl lg:text-[3.3rem]">
-                  Right now you read
-                  <span className="block text-primary">every single label</span>
+                  Everyone is telling you
+                  <span className="block text-primary">to have kesar milk</span>
                 </h1>
 
                 <p className="mt-5 max-w-xl text-base leading-relaxed text-secondary font-body sm:text-lg">
-                  Kesar milk has been made in Indian homes for generations. The
-                  hard part today is knowing what is actually in the jar — most
-                  saffron sold online is dyed, cut or mislabelled. This is ours,
-                  grown on our own land, and you can check every claim on this
-                  page yourself.
+                  Your mother, your mother-in-law, every aunt who visits. It is
+                  one of the warmest traditions we have, and you are probably
+                  happy to keep it. The hard part is the jar — a lot of saffron
+                  sold online is dyed, cut or quietly mislabelled, and right now
+                  you are reading every label twice. So here is ours: grown on
+                  our own land in Pampore, with every claim on this page
+                  something you can check yourself.
                 </p>
 
                 <div className="mt-7 flex flex-wrap items-end gap-x-4 gap-y-2">
@@ -211,6 +234,13 @@ export default function PregnancyLandingPage() {
 
         {/* ── Lifestyle rail ── */}
         <PregnancyGallery images={gallery} />
+
+        {/* ── Which pack lasts until the birth ──
+            Placed after the photography, where a visitor has warmed to the
+            product and the open question has become "how much do I buy". */}
+        {plannerPacks.length > 0 && (
+          <PregnancyWeekPlanner packs={plannerPacks} />
+        )}
 
         {/* ── What is actually in the jar ── */}
         <section className="bg-background-alt py-12 sm:py-16">
