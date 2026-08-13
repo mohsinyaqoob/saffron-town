@@ -5,9 +5,9 @@ import { notFound } from "next/navigation";
 import { FAQSection } from "@/components/FAQSection";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
-import { PregnancyCta } from "@/components/pregnancy/PregnancyCta";
+import { PregnancyBuyPanel } from "@/components/pregnancy/PregnancyBuyPanel";
 import { PregnancyGallery } from "@/components/pregnancy/PregnancyGallery";
-import { PregnancyWeekPlanner } from "@/components/pregnancy/PregnancyWeekPlanner";
+import { PregnancyJsonLd } from "@/components/pregnancy/PregnancyJsonLd";
 import { TestimonialCard } from "@/components/testimonials/TestimonialCard";
 import { formatRupees } from "@/lib/bundle-offer";
 import { checkoutHref } from "@/lib/checkout-line";
@@ -56,27 +56,60 @@ export const dynamic = "force-static";
 
 const PAGE_URL = `${SITE_CONFIG.url}/pregnancy`;
 
+/**
+ * 1200×630 JPEG cropped from the kitchen photograph in `public/`.
+ *
+ * Deliberately not one of the source PNGs: those are ~2MB portrait frames, and
+ * link scrapers either reject them on size (WhatsApp gives up around 300KB) or
+ * centre-crop a 4:5 image to 1.91:1 and cut both faces out of it.
+ */
+const OG_IMAGE = `${SITE_CONFIG.url}/images/pregnancy/og-pregnancy.jpg`;
+
 export function generateMetadata(): Metadata {
   const title =
-    "Pure Kashmiri Kesar for Pregnancy — Farm-Direct from Pampore | Saffron Town";
+    "Kashmiri Mongra Saffron for Pregnancy — Pure Kesar, Farm-Direct from Pampore";
   const description =
-    "Buying kesar while you are pregnant? Know exactly what is in the jar. Farm-direct Kashmiri Mongra from Pampore, hand-sorted red stigma tips, current harvest. Free delivery, money-back guarantee.";
+    "Buy pure Kashmiri Mongra kesar for pregnancy — hand-picked red stigma tips from our own Pampore fields. No additives, preservatives or colouring. Test it yourself. Free delivery across India, money-back guarantee.";
 
   return {
     title,
     description,
+    // Commercial-intent counterpart to the Journal guide, which owns the
+    // informational query ("Kesar in Pregnancy: Safety, Dose…"). This page
+    // answers "which kesar do I buy", so the two should not compete.
+    keywords: [
+      "kashmiri saffron for pregnancy",
+      "mongra saffron for pregnancy",
+      "kesar for pregnancy",
+      "pure kesar for pregnant women",
+      "saffron milk during pregnancy",
+      "buy kesar online india",
+      "original kashmiri kesar pampore",
+      "grade a++ mongra saffron",
+    ],
     alternates: { canonical: PAGE_URL },
-    // Paid-traffic landing page: kept out of the index so it cannot compete
-    // with /shop/saffron and the pregnancy Journal post for the same terms.
-    robots: { index: false, follow: true },
     openGraph: {
       title,
       description,
       url: PAGE_URL,
       type: "website",
-      images: [`${SITE_CONFIG.url}/images/products/mongra-saffron/1.png`],
+      siteName: SITE_CONFIG.name,
+      locale: "en_IN",
+      images: [
+        {
+          url: OG_IMAGE,
+          width: 1200,
+          height: 630,
+          alt: "A grandmother stirring saffron into warm milk beside her pregnant daughter-in-law",
+        },
+      ],
     },
-    twitter: { card: "summary_large_image", title, description },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [OG_IMAGE],
+    },
   };
 }
 
@@ -109,24 +142,46 @@ export default function PregnancyLandingPage() {
   const variant = getDefaultPackVariant(product) ?? product.variants[0];
   if (!variant) notFound();
 
+  // Pack pre-selected on arrival — the same entry size the shop pre-selects.
+  const defaultGrams = parsePackGramsFromSize(variant.size) ?? 2;
+
   const harvest = getCurrentHarvestSeason();
   const gallery = getGalleryImages();
   const reviews = getPurityTestimonials(3);
-  const href = checkoutHref(product.id, variant.id, 1, undefined, "pregnancy");
 
-  // Packs the week planner can recommend — read from the same grid the shop
-  // sells, so it can never point at a pack that is not on offer.
-  const plannerPacks = getGridPackVariants(product).flatMap((v) => {
+  // Every pack the shop sells, so someone who lands here can buy any size
+  // without a second hop. Read from the shop's own grid, so this page cannot
+  // offer a pack that /shop/saffron does not.
+  const gridVariants = getGridPackVariants(product);
+  const entryRatePerGram = (() => {
+    const smallest = gridVariants[0];
+    if (!smallest) return null;
+    const g = parsePackGramsFromSize(smallest.size);
+    return g ? smallest.price / g : null;
+  })();
+
+  const packs = gridVariants.flatMap((v) => {
     const grams = parsePackGramsFromSize(v.size);
-    return grams === null
-      ? []
-      : [
-          {
-            grams,
-            size: v.size,
-            priceLabel: formatRupees(v.price, product.currency),
-          },
-        ];
+    if (grams === null) return [];
+    const perGram = Math.round(v.price / grams);
+    return [
+      {
+        variantId: v.id,
+        grams,
+        size: v.size,
+        priceRupees: v.price,
+        priceLabel: formatRupees(v.price, product.currency),
+        mrpLabel:
+          v.mrp && v.mrp > v.price
+            ? formatRupees(v.mrp, product.currency)
+            : null,
+        perGramLabel: formatRupees(perGram, product.currency),
+        savePercent: entryRatePerGram
+          ? Math.round((1 - perGram / entryRatePerGram) * 100)
+          : 0,
+        checkoutHref: checkoutHref(product.id, v.id, 1, undefined, "pregnancy"),
+      },
+    ];
   });
 
   // Hero photography, taken from the same set the rail below uses. The kitchen
@@ -135,27 +190,24 @@ export default function PregnancyLandingPage() {
   const heroImage = gallery[0] ?? null;
   const heroInset = gallery.find((g) => g.src.includes("holding-jar")) ?? null;
 
-  const priceLabel = formatRupees(variant.price, product.currency);
-  const mrpLabel =
-    variant.mrp && variant.mrp > variant.price
-      ? formatRupees(variant.mrp, product.currency)
-      : null;
-
-  const cta = (
-    <PregnancyCta
+  const buyPanel = (withStickyBar: boolean) => (
+    <PregnancyBuyPanel
+      packs={packs}
       productId={product.id}
       productName={product.name}
-      variantLabel={variant.size}
-      priceRupees={variant.price}
       currency={product.currency}
-      checkoutHref={href}
-      priceLabel={priceLabel}
-      mrpLabel={mrpLabel}
+      defaultGrams={defaultGrams}
+      withStickyBar={withStickyBar}
     />
   );
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
+      <PregnancyJsonLd
+        pageUrl={PAGE_URL}
+        imageUrl={OG_IMAGE}
+        harvestLabel={harvest.harvestLabel}
+      />
       <Header />
 
       <main className="flex-grow">
@@ -168,55 +220,24 @@ export default function PregnancyLandingPage() {
                   Farm-direct from Pampore · {harvest.harvestLabel} harvest
                 </p>
 
-                <h1 className="mt-5 font-display text-[2.1rem] font-bold leading-[1.06] tracking-tight text-text-primary sm:text-5xl lg:text-[3.3rem]">
-                  You check everything twice now
-                  <span className="block text-primary">
-                    the kesar should be no different
-                  </span>
+                <h1 className="mt-5 font-display text-[2.4rem] font-bold leading-[1.04] tracking-tight text-text-primary sm:text-6xl lg:text-[3.8rem]">
+                  Is your kesar real?
+                  <span className="block text-primary">Most of it is not.</span>
                 </h1>
 
                 <p className="mt-5 max-w-xl text-base leading-relaxed text-secondary font-body sm:text-lg">
-                  You are carrying your baby, and it has already changed how you
-                  shop — reading every label, asking questions, putting things
-                  back on the shelf. Most saffron sold online does not survive
-                  that kind of attention. It is dyed corn silk, safflower
-                  petals, threads coated in sugar syrup to make up weight.
+                  You are having a baby, so you read every label twice now. Read
+                  this one too. Most kesar sold online is dyed corn silk or
+                  safflower, coated in sugar syrup to weigh more.
                 </p>
 
                 <p className="mt-4 max-w-xl text-base leading-relaxed text-secondary font-body sm:text-lg">
-                  Ours is Kashmiri Mongra from our own fields in Pampore,
-                  hand-picked, red stigma tips only. No additives, no
-                  preservatives, no colouring, nothing added at all — and every
-                  claim on this page is one you can test yourself the day it
-                  arrives.
+                  Ours is Kashmiri Mongra, hand-picked on our own land in
+                  Pampore. Red tips only. No colour, no chemicals, nothing added
+                  — and you can test it yourself at home the day it arrives.
                 </p>
 
-                <div className="mt-7 flex flex-wrap items-end gap-x-4 gap-y-2">
-                  <span className="font-display text-4xl font-bold leading-none text-text-primary sm:text-5xl">
-                    {priceLabel}
-                  </span>
-                  {mrpLabel && (
-                    <span className="text-lg text-text-muted line-through font-body">
-                      {mrpLabel}
-                    </span>
-                  )}
-                  <span className="text-sm text-secondary font-body">
-                    {variant.size} pack
-                  </span>
-                </div>
-
-                {/* The week picker sits directly above the CTA: someone who
-                    has just read "how do I know it is real" is one question
-                    away from "how much do I buy", and answering it here means
-                    the pack decision is made before the buy button rather
-                    than after it. */}
-                {plannerPacks.length > 0 && (
-                  <div className="mt-7 max-w-md">
-                    <PregnancyWeekPlanner packs={plannerPacks} variant="hero" />
-                  </div>
-                )}
-
-                <div className="mt-5 max-w-md">{cta}</div>
+                <div className="mt-7 max-w-lg">{buyPanel(true)}</div>
               </div>
 
               {/* Lifestyle photography rather than the packshot: this audience
@@ -404,28 +425,16 @@ export default function PregnancyLandingPage() {
               Nothing added. Nothing to worry about in the jar.
             </h2>
             <p className="mt-3 text-sm leading-relaxed text-secondary font-body sm:text-base">
-              {variant.size} of hand-sorted Kashmiri Mongra,{" "}
-              {harvest.harvestLabel} harvest, sent from Pampore. Free delivery,
-              and your money back if it is not right.
+              Hand-sorted Kashmiri Mongra, {harvest.harvestLabel} harvest, sent
+              from Pampore. Free delivery, and your money back if it is not
+              right.
             </p>
-            <div className="mx-auto mt-7 max-w-sm">{cta}</div>
+            <div className="mx-auto mt-7 max-w-lg text-left">
+              {buyPanel(false)}
+            </div>
           </div>
         </section>
       </main>
-
-      {/* Mobile sticky buy bar — the in-page CTA scrolls away on a phone long
-          before the FAQ, and this page is read end-to-end by a careful buyer. */}
-      <PregnancyCta
-        productId={product.id}
-        productName={product.name}
-        variantLabel={variant.size}
-        priceRupees={variant.price}
-        currency={product.currency}
-        checkoutHref={href}
-        priceLabel={priceLabel}
-        mrpLabel={mrpLabel}
-        sticky
-      />
 
       <Footer />
     </div>

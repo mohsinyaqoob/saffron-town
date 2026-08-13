@@ -95,6 +95,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     },
     {
+      // Commercial-intent pregnancy page. Ranks for "buy kesar for pregnancy";
+      // the Journal guide owns the informational query, so the two are not
+      // competing for the same result.
+      url: `${baseUrl}/pregnancy`,
+      lastModified: monthAnchor,
+      changeFrequency: "monthly" as const,
+      priority: 0.85,
+    },
+    {
       url: `${baseUrl}/reviews`,
       lastModified: now,
       changeFrequency: "weekly" as const,
