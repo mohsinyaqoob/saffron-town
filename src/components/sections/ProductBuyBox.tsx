@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState, useTransition } from "react";
-import { BundleOfferCallout } from "@/components/sections/BundleOfferCallout";
 import { StickyBuyBar } from "@/components/sections/StickyBuyBar";
 import { trackAddToCart } from "@/lib/analytics";
 import { checkoutHref } from "@/lib/checkout-line";
@@ -15,23 +14,8 @@ import {
   parsePackGramsFromSize,
 } from "@/lib/saffron-pack-variants";
 
-/** Preformatted bundle promo, resolved server-side. Null when the flag is off. */
-export interface BuyBoxBundlePromo {
-  priceLabel: string;
-  regularLabel: string;
-  savingLabel: string;
-  savingPercent: number;
-  packCount: number;
-  packSize: string;
-}
-
 interface ProductBuyBoxProps {
   product: ProductPageData;
-  /**
-   * Passed in rather than read here: the bundle flag is server-only and this is
-   * a client component.
-   */
-  bundlePromo?: BuyBoxBundlePromo | null;
 }
 
 /**
@@ -43,7 +27,7 @@ interface ProductBuyBoxProps {
  * only offered a worse way to reach the same spend, and added a decision
  * between the price and the buy button.
  */
-export function ProductBuyBox({ product, bundlePromo }: ProductBuyBoxProps) {
+export function ProductBuyBox({ product }: ProductBuyBoxProps) {
   const gridVariants = useMemo(() => getGridPackVariants(product), [product]);
   // Pre-select the 2g pack, not the cheapest grid entry — see
   // DEFAULT_SHOP_PACK_GRAMS.
@@ -352,15 +336,6 @@ export function ProductBuyBox({ product, bundlePromo }: ProductBuyBoxProps) {
                 );
               })}
             </div>
-          </div>
-        )}
-
-        {/* Sits directly under the pack selector: the customer has just decided
-            how much they want, which is exactly when a better price on that
-            decision is relevant rather than interruptive. */}
-        {bundlePromo && (
-          <div className="mb-4">
-            <BundleOfferCallout {...bundlePromo} />
           </div>
         )}
 

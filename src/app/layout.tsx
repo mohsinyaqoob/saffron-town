@@ -3,7 +3,15 @@ import { Figtree, Playfair_Display } from "next/font/google";
 import Script from "next/script";
 import { Gtag } from "@/components/analytics/Gtag";
 import MetaPixel from "@/components/analytics/MetaPixel";
+import { OfferBarProvider } from "@/components/layout/OfferBarContext";
 import { JsonLd } from "@/components/seo/JsonLd";
+import {
+  BUNDLE_PACK_COUNT,
+  BUNDLE_PACK_SIZE,
+  formatRupees,
+  getBundleOffer,
+  isBundleOfferEnabled,
+} from "@/lib/bundle-offer";
 import { SITE_CONFIG } from "@/lib/constants";
 import "./globals.css";
 
@@ -78,6 +86,18 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Site-wide offer strip. Resolved here so the server-only flag stays the sole
+  // authority on whether the offer exists, and so every page gets the same
+  // numbers — the strip, /offer and checkout all read one variant.
+  const bundle = isBundleOfferEnabled() ? getBundleOffer() : null;
+  const offerPromo = bundle
+    ? {
+        headline: `${BUNDLE_PACK_COUNT} × ${BUNDLE_PACK_SIZE} packs for ${formatRupees(bundle.priceRupees, bundle.currency)}`,
+        detail: `Save ${formatRupees(bundle.savingRupees, bundle.currency)} (${bundle.savingPercent}%)`,
+        href: "/offer",
+      }
+    : null;
+
   return (
     <html
       lang="en"
@@ -121,7 +141,7 @@ export default function RootLayout({
         <link rel="prefetch" href="/llms.txt" />
       </head>
       <body className="min-h-screen overflow-x-hidden font-body antialiased">
-        {children}
+        <OfferBarProvider promo={offerPromo}>{children}</OfferBarProvider>
         <MetaPixel />
         <Script id="zoho-salesiq-init" strategy="afterInteractive">
           {`window.$zoho=window.$zoho || {};$zoho.salesiq=$zoho.salesiq||{ready:function(){}}`}

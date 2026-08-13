@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useOfferBar } from "@/components/layout/OfferBarContext";
 import {
   NAV_MENU,
   type NavEntry,
@@ -107,6 +108,19 @@ export function Header({ isHome: isHomeProp }: HeaderProps = {}) {
     setDrawerOpen(false);
   }, []);
 
+  // Site-wide offer strip. Suppressed on the offer page itself and through
+  // checkout: on /offer it would point at the page you are already reading, and
+  // during checkout a promo link is an invitation to abandon a paid cart.
+  const offer = useOfferBar();
+  const showOfferBar =
+    offer !== null &&
+    !pathname.startsWith("/offer") &&
+    !pathname.startsWith("/checkout");
+
+  // Note the offer strip deliberately does NOT force the opaque header on home.
+  // The home hero is designed to sit under a transparent, `fixed` bar; making
+  // it solid drops an opaque block over the top of the hero heading. The strip
+  // carries its own background, so it stays legible either way.
   const transparentMode = isHome && isAtTop && !drawerOpen;
 
   return (
@@ -121,6 +135,30 @@ export function Header({ isHome: isHomeProp }: HeaderProps = {}) {
             : "bg-background border-b border-secondary-border/30 shadow-sm shadow-dark/5",
         )}
       >
+        {/* Rendered inside the header, not above it in the layout: the home
+            header is `fixed` and would otherwise cover a strip sitting at the
+            top of the document, while every other page's is `sticky`. Living
+            in here means one element behaves correctly under both. */}
+        {showOfferBar && offer && (
+          <Link
+            href={offer.href}
+            className="flex w-full items-center justify-center gap-x-2 gap-y-0.5 bg-primary px-4 py-2 text-center text-white transition-colors hover:bg-primary-hover"
+          >
+            <span className="text-[11px] font-bold sm:text-xs font-body">
+              {offer.headline}
+            </span>
+            <span className="text-[11px] text-white/80 sm:text-xs font-body">
+              {offer.detail}
+            </span>
+            <span
+              aria-hidden
+              className="hidden text-[11px] font-bold underline underline-offset-2 sm:inline"
+            >
+              Claim it
+            </span>
+          </Link>
+        )}
+
         <div
           className={cn(
             "mx-auto flex min-w-0 w-full max-w-7xl items-center justify-between",

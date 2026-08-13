@@ -19,6 +19,12 @@ export interface PlannerPack {
 
 interface PregnancyWeekPlannerProps {
   packs: PlannerPack[];
+  /**
+   * `hero` is the compact form that sits directly above the hero CTA: no
+   * section chrome, no heading, and the recommendation appears inline the
+   * moment a week is picked. `section` is the standalone card.
+   */
+  variant?: "section" | "hero";
 }
 
 /**
@@ -29,14 +35,17 @@ interface PregnancyWeekPlannerProps {
  * It converts weeks-to-go into grams at a household usage rate and points at
  * the pack that covers it. It says nothing about what saffron does, and nothing
  * about how much anyone should have — the copy is about how long a jar lasts,
- * the way it would be for coffee. The medical note stays attached to the
- * result rather than living further down the page, because this is the moment
- * a visitor is most likely to read it as advice.
+ * the way it would be for coffee. The medical note stays with the result rather
+ * than living only further down the page, because this is the moment a visitor
+ * is most likely to read it as advice.
  *
  * Nothing is submitted anywhere: the week never leaves the browser, which also
  * means no consent question and nothing to store.
  */
-export function PregnancyWeekPlanner({ packs }: PregnancyWeekPlannerProps) {
+export function PregnancyWeekPlanner({
+  packs,
+  variant = "section",
+}: PregnancyWeekPlannerProps) {
   const selectId = useId();
   const [week, setWeek] = useState<number | null>(null);
 
@@ -45,6 +54,77 @@ export function PregnancyWeekPlanner({ packs }: PregnancyWeekPlannerProps) {
   const pack = plan
     ? (packs.find((p) => p.grams === plan.packGrams) ?? null)
     : null;
+
+  const picker = (
+    <>
+      <label
+        htmlFor={selectId}
+        className="block text-sm font-semibold text-text-primary font-body"
+      >
+        What week of pregnancy are you or your partner in?
+      </label>
+      <select
+        id={selectId}
+        value={week ?? ""}
+        onChange={(e) =>
+          setWeek(e.target.value === "" ? null : Number(e.target.value))
+        }
+        className="mt-2 min-h-[48px] w-full max-w-xs rounded-xl border border-secondary-border bg-background px-4 text-base text-text-primary font-body focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/25"
+      >
+        <option value="">Select a week…</option>
+        {PREGNANCY_WEEK_OPTIONS.map((w) => (
+          <option key={w} value={w}>
+            Week {w} · {trimesterLabel(w)}
+          </option>
+        ))}
+      </select>
+    </>
+  );
+
+  // ── Compact form for the hero ──
+  if (variant === "hero") {
+    return (
+      <div className="rounded-2xl border border-primary/20 bg-white/60 p-4 sm:p-5">
+        {picker}
+
+        {/* Announced, not silently swapped in — the answer appears below the
+            fold of the picker on a phone and would otherwise be missed. */}
+        <div aria-live="polite">
+          {plan && pack && (
+            <div className="mt-4 rounded-xl bg-primary/8 p-4">
+              <p className="text-sm leading-relaxed text-secondary font-body">
+                {plan.weeksRemaining === 0 ? (
+                  <>You are at full term.</>
+                ) : (
+                  <>
+                    <strong className="font-semibold text-text-primary">
+                      {plan.weeksRemaining}{" "}
+                      {plan.weeksRemaining === 1 ? "week" : "weeks"} to go
+                    </strong>{" "}
+                    — about {plan.gramsNeeded}g at a glass a day.
+                  </>
+                )}
+              </p>
+              <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
+                <p className="font-display text-lg font-bold text-text-primary">
+                  The {pack.size} pack
+                  <span className="ml-2 text-sm font-normal text-secondary font-body">
+                    {pack.priceLabel}
+                  </span>
+                </p>
+                <Link
+                  href={`/shop/saffron?pack=${pack.grams}`}
+                  className="inline-flex min-h-[44px] items-center justify-center rounded-full border border-primary bg-transparent px-5 text-sm font-bold text-primary transition-colors hover:bg-primary hover:text-white font-body"
+                >
+                  See the {pack.size} pack
+                </Link>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <section
@@ -65,33 +145,8 @@ export function PregnancyWeekPlanner({ packs }: PregnancyWeekPlannerProps) {
             sitting on more saffron than you can use.
           </p>
 
-          <div className="mt-6">
-            <label
-              htmlFor={selectId}
-              className="block text-sm font-semibold text-text-primary font-body"
-            >
-              What week of pregnancy are you or your partner in?
-            </label>
-            <select
-              id={selectId}
-              value={week ?? ""}
-              onChange={(e) =>
-                setWeek(e.target.value === "" ? null : Number(e.target.value))
-              }
-              className="mt-2 min-h-[48px] w-full max-w-xs rounded-xl border border-secondary-border bg-background px-4 text-base text-text-primary font-body focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/25"
-            >
-              <option value="">Select a week…</option>
-              {PREGNANCY_WEEK_OPTIONS.map((w) => (
-                <option key={w} value={w}>
-                  Week {w} · {trimesterLabel(w)}
-                </option>
-              ))}
-            </select>
-          </div>
+          <div className="mt-6">{picker}</div>
 
-          {/* The result is announced rather than silently swapped in — a picker
-              whose answer appears somewhere below it is easy to miss on a
-              phone, and invisible to a screen reader. */}
           <div aria-live="polite">
             {plan && pack && (
               <div className="mt-6 border-t border-secondary-border/60 pt-6">

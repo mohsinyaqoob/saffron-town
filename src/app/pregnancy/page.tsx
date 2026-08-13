@@ -91,8 +91,8 @@ const PROOF_POINTS = [
     body: "Our own plots in Pampore. It goes from the field to your door without passing through a trader or a repacker.",
   },
   {
-    title: "Nothing added",
-    body: "No dye, no sugar syrup coating, no colouring agent. Test it yourself when it arrives — we tell you how below.",
+    title: "No additives, no preservatives",
+    body: "No dye, no sugar syrup coating, no colouring agent, nothing added to make up weight. Test it yourself when it arrives — we tell you how below.",
   },
 ] as const;
 
@@ -129,6 +129,12 @@ export default function PregnancyLandingPage() {
         ];
   });
 
+  // Hero photography, taken from the same set the rail below uses. The kitchen
+  // frame leads because it carries the whole proposition in one picture; the
+  // jar-in-hand sits inset behind it.
+  const heroImage = gallery[0] ?? null;
+  const heroInset = gallery.find((g) => g.src.includes("holding-jar")) ?? null;
+
   const priceLabel = formatRupees(variant.price, product.currency);
   const mrpLabel =
     variant.mrp && variant.mrp > variant.price
@@ -163,18 +169,26 @@ export default function PregnancyLandingPage() {
                 </p>
 
                 <h1 className="mt-5 font-display text-[2.1rem] font-bold leading-[1.06] tracking-tight text-text-primary sm:text-5xl lg:text-[3.3rem]">
-                  Everyone is telling you
-                  <span className="block text-primary">to have kesar milk</span>
+                  You check everything twice now
+                  <span className="block text-primary">
+                    the kesar should be no different
+                  </span>
                 </h1>
 
                 <p className="mt-5 max-w-xl text-base leading-relaxed text-secondary font-body sm:text-lg">
-                  Your mother, your mother-in-law, every aunt who visits. It is
-                  one of the warmest traditions we have, and you are probably
-                  happy to keep it. The hard part is the jar — a lot of saffron
-                  sold online is dyed, cut or quietly mislabelled, and right now
-                  you are reading every label twice. So here is ours: grown on
-                  our own land in Pampore, with every claim on this page
-                  something you can check yourself.
+                  You are carrying your baby, and it has already changed how you
+                  shop — reading every label, asking questions, putting things
+                  back on the shelf. Most saffron sold online does not survive
+                  that kind of attention. It is dyed corn silk, safflower
+                  petals, threads coated in sugar syrup to make up weight.
+                </p>
+
+                <p className="mt-4 max-w-xl text-base leading-relaxed text-secondary font-body sm:text-lg">
+                  Ours is Kashmiri Mongra from our own fields in Pampore,
+                  hand-picked, red stigma tips only. No additives, no
+                  preservatives, no colouring, nothing added at all — and every
+                  claim on this page is one you can test yourself the day it
+                  arrives.
                 </p>
 
                 <div className="mt-7 flex flex-wrap items-end gap-x-4 gap-y-2">
@@ -191,21 +205,66 @@ export default function PregnancyLandingPage() {
                   </span>
                 </div>
 
-                <div className="mt-7 max-w-md">{cta}</div>
+                {/* The week picker sits directly above the CTA: someone who
+                    has just read "how do I know it is real" is one question
+                    away from "how much do I buy", and answering it here means
+                    the pack decision is made before the buy button rather
+                    than after it. */}
+                {plannerPacks.length > 0 && (
+                  <div className="mt-7 max-w-md">
+                    <PregnancyWeekPlanner packs={plannerPacks} variant="hero" />
+                  </div>
+                )}
+
+                <div className="mt-5 max-w-md">{cta}</div>
               </div>
 
+              {/* Lifestyle photography rather than the packshot: this audience
+                  is being sold a kitchen and a habit they already recognise,
+                  and the jar on its own said nothing they could not get from
+                  the shop page. Falls back to the packshot when the photos are
+                  not on disk — see getGalleryImages. */}
               <div className="relative mx-auto w-full max-w-sm lg:max-w-none">
-                <div className="relative aspect-square w-full overflow-hidden rounded-3xl bg-surface-muted ring-1 ring-secondary-border/25">
-                  <Image
-                    src="/images/products/mongra-saffron/1.png"
-                    alt={`Saffron Town Mongra saffron jar — hand-sorted Kashmiri kesar from Pampore, ${harvest.harvestLabel} harvest`}
-                    fill
-                    priority
-                    fetchPriority="high"
-                    sizes="(max-width: 1024px) 90vw, 460px"
-                    className="object-contain p-4"
-                  />
-                </div>
+                {heroImage ? (
+                  <>
+                    <div className="relative aspect-[4/5] w-full overflow-hidden rounded-3xl bg-surface-muted ring-1 ring-secondary-border/25">
+                      <Image
+                        src={heroImage.src}
+                        alt={heroImage.alt}
+                        fill
+                        priority
+                        fetchPriority="high"
+                        sizes="(max-width: 1024px) 90vw, 460px"
+                        className="object-cover"
+                      />
+                    </div>
+                    {/* Inset second frame, desktop only — on a phone it would
+                        cover the primary image rather than sit beside it. */}
+                    {heroInset && (
+                      <div className="absolute -bottom-8 -left-10 hidden aspect-square w-44 overflow-hidden rounded-2xl ring-4 ring-background lg:block">
+                        <Image
+                          src={heroInset.src}
+                          alt=""
+                          fill
+                          sizes="176px"
+                          className="object-cover"
+                        />
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <div className="relative aspect-square w-full overflow-hidden rounded-3xl bg-surface-muted ring-1 ring-secondary-border/25">
+                    <Image
+                      src="/images/products/mongra-saffron/1.png"
+                      alt={`Saffron Town Mongra saffron jar — hand-sorted Kashmiri kesar from Pampore, ${harvest.harvestLabel} harvest`}
+                      fill
+                      priority
+                      fetchPriority="high"
+                      sizes="(max-width: 1024px) 90vw, 460px"
+                      className="object-contain p-4"
+                    />
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -235,18 +294,11 @@ export default function PregnancyLandingPage() {
         {/* ── Lifestyle rail ── */}
         <PregnancyGallery images={gallery} />
 
-        {/* ── Which pack lasts until the birth ──
-            Placed after the photography, where a visitor has warmed to the
-            product and the open question has become "how much do I buy". */}
-        {plannerPacks.length > 0 && (
-          <PregnancyWeekPlanner packs={plannerPacks} />
-        )}
-
         {/* ── What is actually in the jar ── */}
         <section className="bg-background-alt py-12 sm:py-16">
           <div className="mx-auto max-w-6xl px-5 sm:px-8 lg:px-12">
             <h2 className="font-display text-2xl font-bold leading-tight text-text-primary sm:text-3xl">
-              What is actually in the jar
+              What is in the jar, and what is not
             </h2>
             <div className="mt-7 grid gap-4 sm:grid-cols-3 sm:gap-5">
               {PROOF_POINTS.map((p) => (
@@ -296,7 +348,7 @@ export default function PregnancyLandingPage() {
           <section className="py-12 sm:py-16">
             <div className="mx-auto max-w-6xl px-5 sm:px-8 lg:px-12">
               <h2 className="font-display text-2xl font-bold leading-tight text-text-primary sm:text-3xl">
-                What customers say about the saffron itself
+                What other buyers say about the threads themselves
               </h2>
               <div className="mt-7 grid gap-4 sm:grid-cols-3 sm:gap-5">
                 {reviews.map((t) => (
@@ -349,7 +401,7 @@ export default function PregnancyLandingPage() {
         <section className="bg-background-alt py-12 sm:py-16">
           <div className="mx-auto max-w-3xl px-5 text-center sm:px-8">
             <h2 className="font-display text-2xl font-bold leading-tight text-text-primary sm:text-3xl">
-              Know what is in the jar
+              Nothing added. Nothing to worry about in the jar.
             </h2>
             <p className="mt-3 text-sm leading-relaxed text-secondary font-body sm:text-base">
               {variant.size} of hand-sorted Kashmiri Mongra,{" "}
