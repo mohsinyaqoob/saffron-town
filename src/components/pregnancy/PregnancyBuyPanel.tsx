@@ -43,10 +43,14 @@ const TRIMESTERS = ["First trimester", "Second trimester", "Third trimester"];
  * ── The week picker is a hint, not a step ──
  * It used to sit in the flow as a dropdown, which made choosing a pack look
  * like a two-part form. Most people know what they want; the ones who do not
- * are the only ones who need the calculator, so it now hides behind "Not sure
- * which size?" and opens as a grid of weeks — one tap, no dropdown. Picking a
- * week selects the covering pack and closes the modal, leaving the visitor in
- * the same place they started with the decision made for them.
+ * are the only ones who need the calculator, so it hides behind "Don't know
+ * what pack size you need?" and opens as a grid of weeks — one tap, no
+ * dropdown.
+ *
+ * Tapping a week does not change the selection. It advances to step 2, which
+ * states the arithmetic and offers the covering pack alongside the small jar,
+ * so the person spending the money makes the last call rather than finding a
+ * ₹10,799 pack selected on their behalf.
  *
  * Still a quantity tool, not a dosage one: it says how long a jar lasts, never
  * how much anyone should have. See lib/pregnancy-plan.ts.
@@ -62,6 +66,8 @@ export function PregnancyBuyPanel({
   const [selectedGrams, setSelectedGrams] = useState(defaultGrams);
   const [modalOpen, setModalOpen] = useState(false);
   const [pickedWeek, setPickedWeek] = useState<number | null>(null);
+  /** 1 = pick a week, 2 = here is the pack we worked out. */
+  const [step, setStep] = useState<1 | 2>(1);
   const openerRef = useRef<HTMLButtonElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
 
@@ -92,15 +98,22 @@ export function PregnancyBuyPanel({
     };
   }, [modalOpen, closeModal]);
 
+  // Picking a week advances to the recommendation; it does not change the
+  // selection. The visitor still gets the last word, on step 2.
   const chooseWeek = (week: number) => {
-    const plan = planForWeek(
-      week,
-      packs.map((p) => p.grams),
-    );
     setPickedWeek(week);
-    if (plan) setSelectedGrams(plan.packGrams);
+    setStep(2);
+  };
+
+  const commitGrams = (grams: number) => {
+    setSelectedGrams(grams);
     setModalOpen(false);
     openerRef.current?.focus();
+  };
+
+  const openModal = () => {
+    setStep(pickedWeek === null ? 1 : 2);
+    setModalOpen(true);
   };
 
   if (!selected) return null;
@@ -112,6 +125,14 @@ export function PregnancyBuyPanel({
           pickedWeek,
           packs.map((p) => p.grams),
         );
+  const recommended = plan
+    ? (packs.find((p) => p.grams === plan.packGrams) ?? null)
+    : null;
+  /** Smallest pack on offer — the "just the small one" escape hatch. */
+  const entryPack = packs.reduce<PregnancyPack | null>(
+    (min, p) => (min === null || p.grams < min.grams ? p : min),
+    null,
+  );
 
   return (
     <div className="w-full">
@@ -140,7 +161,7 @@ export function PregnancyBuyPanel({
           <button
             ref={openerRef}
             type="button"
-            onClick={() => setModalOpen(true)}
+            onClick={openModal}
             className="text-sm font-semibold text-primary underline underline-offset-4 transition-colors hover:text-primary-hover font-body"
           >
             Don&apos;t know what pack size you need?
@@ -177,21 +198,6 @@ export function PregnancyBuyPanel({
             );
           })}
         </div>
-
-        {/* Only shown once the calculator has actually been used, so the panel
-            stays quiet for the majority who just pick a size. */}
-        {plan && pickedWeek !== null && (
-          <p
-            className="mt-3 rounded-lg bg-primary/8 px-3 py-2 text-xs leading-relaxed text-secondary font-body"
-            aria-live="polite"
-          >
-            Week {pickedWeek} —{" "}
-            {plan.weeksRemaining === 0
-              ? "you are at full term"
-              : `${plan.weeksRemaining} ${plan.weeksRemaining === 1 ? "week" : "weeks"} to go, about ${plan.gramsNeeded}g at a glass a day`}
-            . We picked the {selected.size} pack for you.
-          </p>
-        )}
       </div>
 
       <div className="mt-6">
@@ -243,11 +249,14 @@ export function PregnancyBuyPanel({
                   id="week-modal-heading"
                   className="font-display text-xl font-bold text-text-primary sm:text-2xl"
                 >
-                  How far along are you?
+                  {step === 1
+                    ? "How far along are you?"
+                    : "Here is what will last you"}
                 </h2>
                 <p className="mt-1.5 text-sm leading-relaxed text-secondary font-body">
-                  Tap your week and we will pick the jar that lasts until the
-                  birth.
+                  {step === 1
+                    ? "Tap your week and we will work out the jar that lasts until the birth."
+                    : "Based on the week you picked. You can still take the small jar instead."}
                 </p>
               </div>
               <button
@@ -271,36 +280,105 @@ export function PregnancyBuyPanel({
               </button>
             </div>
 
-            {TRIMESTERS.map((label) => {
-              const weeks = PREGNANCY_WEEK_OPTIONS.filter(
-                (w) => trimesterLabel(w) === label,
-              );
-              if (weeks.length === 0) return null;
-              return (
-                <div key={label} className="mt-5">
-                  <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-secondary font-body">
-                    {label}
-                  </p>
-                  <div className="mt-2 grid grid-cols-6 gap-1.5 sm:grid-cols-7 sm:gap-2">
-                    {weeks.map((w) => (
-                      <button
-                        key={w}
-                        type="button"
-                        onClick={() => chooseWeek(w)}
-                        aria-pressed={pickedWeek === w}
-                        className={`flex min-h-[44px] items-center justify-center rounded-lg border text-sm font-semibold transition-colors font-body ${
-                          pickedWeek === w
-                            ? "border-primary bg-primary text-white"
-                            : "border-secondary-border bg-background text-text-primary hover:border-primary hover:bg-primary/10"
-                        }`}
-                      >
-                        {w}
-                      </button>
-                    ))}
+            {step === 1 &&
+              TRIMESTERS.map((label) => {
+                const weeks = PREGNANCY_WEEK_OPTIONS.filter(
+                  (w) => trimesterLabel(w) === label,
+                );
+                if (weeks.length === 0) return null;
+                return (
+                  <div key={label} className="mt-5">
+                    <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-secondary font-body">
+                      {label}
+                    </p>
+                    <div className="mt-2 grid grid-cols-6 gap-1.5 sm:grid-cols-7 sm:gap-2">
+                      {weeks.map((w) => (
+                        <button
+                          key={w}
+                          type="button"
+                          onClick={() => chooseWeek(w)}
+                          aria-pressed={pickedWeek === w}
+                          className={`flex min-h-[44px] items-center justify-center rounded-lg border text-sm font-semibold transition-colors font-body ${
+                            pickedWeek === w
+                              ? "border-primary bg-primary text-white"
+                              : "border-secondary-border bg-background text-text-primary hover:border-primary hover:bg-primary/10"
+                          }`}
+                        >
+                          {w}
+                        </button>
+                      ))}
+                    </div>
                   </div>
+                );
+              })}
+
+            {step === 2 && plan && recommended && pickedWeek !== null && (
+              <div className="mt-5">
+                <p className="text-sm leading-relaxed text-secondary font-body">
+                  {plan.weeksRemaining === 0 ? (
+                    <>
+                      Week {pickedWeek} — you are at full term, so the smallest
+                      jar is plenty.
+                    </>
+                  ) : (
+                    <>
+                      Week {pickedWeek} —{" "}
+                      <strong className="font-semibold text-text-primary">
+                        {plan.weeksRemaining}{" "}
+                        {plan.weeksRemaining === 1 ? "week" : "weeks"} to go
+                      </strong>
+                      . At a glass a day that is roughly{" "}
+                      {Math.max(1, Math.round(plan.gramsNeeded))}g of saffron
+                      between now and the birth.
+                    </>
+                  )}
+                </p>
+
+                <div className="mt-4 rounded-2xl border border-primary/30 bg-primary/8 p-4">
+                  <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-primary font-body">
+                    Our recommendation
+                  </p>
+                  <p className="mt-1.5 font-display text-2xl font-bold text-text-primary">
+                    The {recommended.size} pack
+                  </p>
+                  <p className="mt-1 text-sm text-secondary font-body">
+                    {recommended.priceLabel} · {recommended.perGramLabel} per
+                    gram
+                    {recommended.savePercent >= 5
+                      ? ` · ${recommended.savePercent}% cheaper per gram than the ${entryPack?.size ?? ""}`
+                      : ""}
+                  </p>
                 </div>
-              );
-            })}
+
+                <div className="mt-4 flex flex-col gap-2.5">
+                  <button
+                    type="button"
+                    onClick={() => commitGrams(recommended.grams)}
+                    className="flex min-h-[52px] w-full items-center justify-center rounded-full bg-primary px-6 text-base font-bold text-white shadow-lg shadow-primary/25 transition-colors hover:bg-primary-hover font-body"
+                  >
+                    Proceed with {recommended.size}
+                  </button>
+                  {/* Hidden when the recommendation already is the small jar,
+                      where the two buttons would do exactly the same thing. */}
+                  {entryPack && entryPack.grams !== recommended.grams && (
+                    <button
+                      type="button"
+                      onClick={() => commitGrams(entryPack.grams)}
+                      className="flex min-h-[48px] w-full items-center justify-center rounded-full border border-secondary-border bg-background px-6 text-sm font-semibold text-text-primary transition-colors hover:border-primary hover:text-primary font-body"
+                    >
+                      Buy {entryPack.size} only — {entryPack.priceLabel}
+                    </button>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => setStep(1)}
+                    className="mt-1 text-sm font-semibold text-secondary underline underline-offset-4 transition-colors hover:text-text-primary font-body"
+                  >
+                    Pick a different week
+                  </button>
+                </div>
+              </div>
+            )}
 
             <p className="mt-5 text-xs leading-relaxed text-text-muted font-body">
               This is arithmetic about pack sizes, not advice about your diet.
