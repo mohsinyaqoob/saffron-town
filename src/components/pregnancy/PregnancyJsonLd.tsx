@@ -54,12 +54,16 @@ export function PregnancyJsonLd({
       "Pure Kashmiri Mongra kesar for expectant mothers — hand-picked red stigma tips from our own fields in Pampore, with no additives, preservatives or colouring.",
     inLanguage: "en-IN",
     primaryImageOfPage: { "@type": "ImageObject", url: imageUrl },
+    // `Thing`, not `Product`. A Product node without offers/review/
+    // aggregateRating is an invalid product snippet, and Google fails the whole
+    // item rather than ignoring it — confirmed by URL Inspection. The real
+    // Product (with all eight offers and the ratings) lives on /shop/saffron,
+    // and this only needs to point at it.
     about: {
-      "@type": "Product",
+      "@type": "Thing",
       name: "Kashmiri Mongra Saffron (Kesar), Grade A++",
       url: `${SITE_CONFIG.url}/shop/saffron`,
-      brand: { "@type": "Brand", name: SITE_CONFIG.name },
-      countryOfOrigin: "IN",
+      description: `Grade A++ Mongra saffron — red stigma tips only, grown and hand-picked in Pampore, Kashmir (GI-tagged region), ${harvestLabel} harvest. No dye, colouring, preservative or sugar-syrup coating.`,
       additionalProperty: [
         {
           "@type": "PropertyValue",
